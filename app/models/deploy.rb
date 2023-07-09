@@ -1,0 +1,2 @@
+class Deploy < ApplicationRecord
+end
