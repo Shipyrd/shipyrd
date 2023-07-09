@@ -1,10 +1,10 @@
-<%= form_with(model: api_token, class: "contents") do |form| %>
-  <% if api_token.errors.any? %>
+<%= form_with(model: api_key, class: "contents") do |form| %>
+  <% if api_key.errors.any? %>
     <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(api_token.errors.count, "error") %> prohibited this api_token from being saved:</h2>
+      <h2><%= pluralize(api_key.errors.count, "error") %> prohibited this api_key from being saved:</h2>
 
       <ul>
-        <% api_token.errors.each do |error| %>
+        <% api_key.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
