@@ -1,9 +1,11 @@
 #!/bin/bash -e
 
+export SECRET_KEY_BASE=`./bin/rails secret`
+
 # If running the rails server then create or migrate existing database
 if [ "${*}" == "./bin/rails server" ]; then
   ./bin/rails db:prepare
-  ./bin/bootstrap
+  ./bin/rails db:seed
 fi
 
 exec "${@}"
