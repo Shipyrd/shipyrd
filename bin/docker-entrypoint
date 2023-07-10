@@ -2,8 +2,9 @@
 
 export SECRET_KEY_BASE=`./bin/secret-key-base`
 
-# If running the rails server then create or migrate existing database
 if [ "${*}" == "./bin/rails server" ]; then
+  # - Create and prepare the database
+  # - Create the configured SHIPYRD_API_KEY
   ./bin/rails db:prepare
   ./bin/rails db:seed
 fi
