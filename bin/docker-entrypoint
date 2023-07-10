@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-export SECRET_KEY_BASE=`./bin/rails secret`
+export SECRET_KEY_BASE=`./bin/secret-key-base`
 
 # If running the rails server then create or migrate existing database
 if [ "${*}" == "./bin/rails server" ]; then

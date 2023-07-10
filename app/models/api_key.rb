@@ -1,3 +1,3 @@
 class ApiKey < ApplicationRecord
-  has_secure_token, length: 64
+  has_secure_token length: 64
 end

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  # TODO: Wrap all these behind credentials
   resources :api_keys
   resources :deploys
   resources :applications
