@@ -31,7 +31,8 @@ accessories:
 2. Setup the `shipyrd` gem in your Rails application.
 
 - Add the `shipyrd` gem to your rails application
-- Set `SHIPYRD_API_KEY` or `Rails.application.credentials.shipyrd_api_key` to the same API key you just configured within MRSK.
+- Set `SHIPYRD_API_KEY` to the same API key you just configured within MRSK.
+- Set `SHIPYRD_HOST` to the host you just set as a router with traefik.
 
 .mrsk/hooks/pre-connect
 ```

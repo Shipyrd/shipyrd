@@ -1,5 +1,5 @@
 class DeploysController < ApplicationController
-  skip_before_action :authenticate, only: %i[create]
+  skip_before_action :verify_authenticity_token, if: proc { |c| c.action_name == 'create' && request.format.json? }
   before_action :set_deploy, only: %i[ show edit update destroy ]
 
   # GET /deploys or /deploys.json
@@ -66,6 +66,6 @@ class DeploysController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def deploy_params
-      params.require(:deploy).permit(:deployed_at, :status, :deployer, :version, :service_version, :hosts, :command, :subcommand, :destination, :role, :runtime)
+      params.require(:deploy).permit(:recorded_at, :status, :performer, :version, :service_version, :hosts, :command, :subcommand, :destination, :role, :runtime)
     end
 end
