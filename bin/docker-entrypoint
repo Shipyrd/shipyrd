@@ -1,11 +1,12 @@
 #!/bin/bash -e
 
 export SECRET_KEY_BASE=`./bin/secret-key-base`
+export DATABASE_URL=$SHIPYRD_DATABASE_URL
 
 if [ "${*}" == "./bin/rails server" ]; then
-  # - Create and prepare the database
-  # - Create the configured SHIPYRD_API_KEY
+  # Create and prepare the database
   ./bin/rails db:prepare
+  # Create the configured SHIPYRD_API_KEY
   ./bin/rails db:seed
 fi
 
