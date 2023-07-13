@@ -35,21 +35,41 @@ accessories:
 - Set `SHIPYRD_HOST` to the host you just set as a router with traefik.
 
 .mrsk/hooks/pre-connect
-```
+``` ruby
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'shipyrd'
+
 Shipyrd.trigger('pre-connect')
 ```
 
 .mrsk/hooks/pre-build
-```
+``` ruby
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'shipyrd'
+
 Shipyrd.trigger('pre-build')
 ```
 
 .mrsk/hooks/pre-deploy
-```
+``` ruby
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'shipyrd'
+
 Shipyrd.trigger('pre-deploy')
 ```
 
 .mrsk/hooks/post-deploy
-```
+``` ruby
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'shipyrd'
+
 Shipyrd.trigger('post-deploy')
 ```
