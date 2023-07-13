@@ -1,24 +1,54 @@
-# README
+# Shipyrd
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Shipyrd is a deployment status dashboard for MRSK based deployments.
 
-Things you may want to cover:
+# Setup
 
-* Ruby version
+There's two main parts to getting going with Shipyrd. The first part is getting Shipyrd
+running as an accessory within your existing MRSK setup. The second is enabling the various
+hooks that MRSK supports to update the deploy state in Shipyrd.
 
-* System dependencies
+1. Add shipyrd as an accessory. Give it a subdomain with traefik and point your DNS to the same
+host.
 
-* Configuration
+- SHIPYRD_API_KEY - Generate an API key(`bin/rails secret`) and set it in your env file as `SHIPYRD_API_KEY`,
+this will be the password for basic HTTP authentication.
+- SHIPYRD_DATABASE_URL - Point this to a mysql2:// address and new database so that Shipyrd can store deployments.
 
-* Database creation
+```
+accessories:
+  shipyrd:
+    image: nickhammond/shipyrd:latest
+    host: 867.530.9
+    env:
+      secret:
+        - SHIPYRD_API_KEY
+        - SHIPYRD_DATABASE_URL
+    labels:
+      traefik.http.routers.myapp-shipyrd.rule: Host(`shipyrd.myapp.com`)
+```
 
-* Database initialization
+2. Setup the `shipyrd` gem in your Rails application.
 
-* How to run the test suite
+- Add the `shipyrd` gem to your rails application
+- Set `SHIPYRD_API_KEY` or `Rails.application.credentials.shipyrd_api_key` to the same API key you just configured within MRSK.
 
-* Services (job queues, cache servers, search engines, etc.)
+.mrsk/hooks/pre-connect
+```
+Shipyrd.trigger('pre-connect')
+```
 
-* Deployment instructions
+.mrsk/hooks/pre-build
+```
+Shipyrd.trigger('pre-build')
+```
 
-* ...
+.mrsk/hooks/pre-deploy
+```
+Shipyrd.trigger('pre-deploy')
+```
+
+.mrsk/hooks/post-deploy
+```
+Shipyrd.trigger('post-deploy')
+```
