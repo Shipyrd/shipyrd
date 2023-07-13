@@ -15,7 +15,7 @@ host.
 this will be the password for basic HTTP authentication.
 - SHIPYRD_DATABASE_URL - Point this to a mysql2:// address and new database so that Shipyrd can store deployments.
 
-```
+``` yml
 accessories:
   shipyrd:
     image: nickhammond/shipyrd:latest
