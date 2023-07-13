@@ -9,6 +9,7 @@ gem "rails", github: "rails/rails", branch: "main"
 gem "sprockets-rails"
 
 gem "mysql2"
+gem 'dotenv-rails'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
