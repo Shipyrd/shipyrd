@@ -1,4 +1,5 @@
 class DeploysController < ApplicationController
+  skip_before_action :authenticate, only: %i[create]
   before_action :set_deploy, only: %i[ show edit update destroy ]
 
   # GET /deploys or /deploys.json
