@@ -66,6 +66,6 @@ class DeploysController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def deploy_params
-      params.require(:deploy).permit(:recorded_at, :status, :performer, :version, :service_version, :hosts, :command, :subcommand, :destination, :role, :runtime)
+      params.require(:deploy).permit(:recorded_at, :status, :performer, :version, :service_version, :service, :hosts, :command, :subcommand, :destination, :role, :runtime)
     end
 end
