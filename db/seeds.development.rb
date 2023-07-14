@@ -1,3 +1,7 @@
+ApiKey.find_or_create_by(
+  token: ENV['SHIPYRD_API_KEY']
+)
+
 app = Application.find_or_create_by(name: :apps)
 
 app.update(
@@ -9,9 +13,9 @@ stages = %w[pre-connect pre-build pre-deploy post-deploy]
 
 stages.each do |stage|
   Deploy.create(
-    deployed_at: Time.now,
+    recorded_at: Time.now,
     status: 'pre-deploy',
-    deployer: 'nick',
+    performer: 'nick',
     version: '7b3c0f04106366acfc7e1fcfe4b2e27f9667f8dc',
     service_version: 'apps@7b3c0f04',
     command: 'deploy',
