@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   private
   def authenticate
-    if authenticate_with_http_basic { |u, p| p == ENV['SHIPYRD_API_KEY'] }
+    if authenticate_with_http_basic { |u, p| ApiKey.exists?(token: p) }
       true
     else
       request_http_basic_authentication
