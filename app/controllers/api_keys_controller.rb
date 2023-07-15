@@ -1,5 +1,5 @@
 class ApiKeysController < ApplicationController
-  before_action :set_api_key, only: %i[ show edit update destroy ]
+  before_action :set_api_key, only: %i[show edit update destroy]
 
   # GET /api_keys or /api_keys.json
   def index
@@ -58,13 +58,14 @@ class ApiKeysController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_api_key
-      @api_key = ApiKey.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def api_key_params
-      params.require(:api_key).permit(:token)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_api_key
+    @api_key = ApiKey.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def api_key_params
+    params.require(:api_key).permit(:token)
+  end
 end

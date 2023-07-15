@@ -17,7 +17,7 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
 
   test "should create deploy" do
     assert_difference("Deploy.count") do
-      post deploys_url, params: { deploy: { command: @deploy.command, deployed_at: @deploy.deployed_at, deployer: @deploy.deployer, destination: @deploy.destination, hosts: @deploy.hosts, role: @deploy.role, runtime: @deploy.runtime, service_version: @deploy.service_version, status: @deploy.status, subcommand: @deploy.subcommand, version: @deploy.version } }
+      post deploys_url, params: {deploy: {command: @deploy.command, deployed_at: @deploy.deployed_at, deployer: @deploy.deployer, destination: @deploy.destination, hosts: @deploy.hosts, role: @deploy.role, runtime: @deploy.runtime, service_version: @deploy.service_version, status: @deploy.status, subcommand: @deploy.subcommand, version: @deploy.version}}
     end
 
     assert_redirected_to deploy_url(Deploy.last)
@@ -34,7 +34,7 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update deploy" do
-    patch deploy_url(@deploy), params: { deploy: { command: @deploy.command, deployed_at: @deploy.deployed_at, deployer: @deploy.deployer, destination: @deploy.destination, hosts: @deploy.hosts, role: @deploy.role, runtime: @deploy.runtime, service_version: @deploy.service_version, status: @deploy.status, subcommand: @deploy.subcommand, version: @deploy.version } }
+    patch deploy_url(@deploy), params: {deploy: {command: @deploy.command, deployed_at: @deploy.deployed_at, deployer: @deploy.deployer, destination: @deploy.destination, hosts: @deploy.hosts, role: @deploy.role, runtime: @deploy.runtime, service_version: @deploy.service_version, status: @deploy.status, subcommand: @deploy.subcommand, version: @deploy.version}}
     assert_redirected_to deploy_url(@deploy)
   end
 

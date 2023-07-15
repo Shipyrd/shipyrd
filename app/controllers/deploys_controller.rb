@@ -1,6 +1,6 @@
 class DeploysController < ApplicationController
-  skip_before_action :verify_authenticity_token, if: proc { |c| c.action_name == 'create' && request.format.json? }
-  before_action :set_deploy, only: %i[ show edit update destroy ]
+  skip_before_action :verify_authenticity_token, if: proc { |c| c.action_name == "create" && request.format.json? }
+  before_action :set_deploy, only: %i[show edit update destroy]
 
   # GET /deploys or /deploys.json
   def index
@@ -59,13 +59,14 @@ class DeploysController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_deploy
-      @deploy = Deploy.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def deploy_params
-      params.require(:deploy).permit(:recorded_at, :status, :performer, :version, :service_version, :service, :hosts, :command, :subcommand, :destination, :role, :runtime)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_deploy
+    @deploy = Deploy.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def deploy_params
+    params.require(:deploy).permit(:recorded_at, :status, :performer, :version, :service_version, :service, :hosts, :command, :subcommand, :destination, :role, :runtime)
+  end
 end

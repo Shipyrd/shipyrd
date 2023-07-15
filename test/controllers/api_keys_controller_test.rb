@@ -17,7 +17,7 @@ class ApiKeysControllerTest < ActionDispatch::IntegrationTest
 
   test "should create api_key" do
     assert_difference("ApiKey.count") do
-      post api_keys_url, params: { api_key: { token: @api_key.token } }
+      post api_keys_url, params: {api_key: {token: @api_key.token}}
     end
 
     assert_redirected_to api_key_url(ApiKey.last)
@@ -34,7 +34,7 @@ class ApiKeysControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update api_key" do
-    patch api_key_url(@api_key), params: { api_key: { token: @api_key.token } }
+    patch api_key_url(@api_key), params: {api_key: {token: @api_key.token}}
     assert_redirected_to api_key_url(@api_key)
   end
 

@@ -1,9 +1,9 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  deployed_at: 2023-07-08 19:35:59
+  recorded_at: 2023-07-08 19:35:59
   status: MyString
-  deployer: MyString
+  performer: MyString
   version: MyString
   service_version: MyString
   hosts: MyText
@@ -14,9 +14,9 @@ one:
   runtime: 1
 
 two:
-  deployed_at: 2023-07-08 19:35:59
+  recorded_at: 2023-07-08 19:35:59
   status: MyString
-  deployer: MyString
+  performer: MyString
   version: MyString
   service_version: MyString
   hosts: MyText
