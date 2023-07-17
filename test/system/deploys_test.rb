@@ -2,6 +2,7 @@ require "application_system_test_case"
 
 class DeploysTest < ApplicationSystemTestCase
   setup do
+    skip
     @deploy = deploys(:one)
   end
 

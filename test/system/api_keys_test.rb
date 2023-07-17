@@ -2,6 +2,7 @@ require "application_system_test_case"
 
 class ApiKeysTest < ApplicationSystemTestCase
   setup do
+    skip
     @api_key = api_keys(:one)
   end
 

@@ -5,8 +5,9 @@ ApiKey.find_or_create_by(
 app = Application.find_or_create_by(name: :apps)
 
 app.update(
-  name: "Apps",
-  url: "https://example.com"
+  name: "Shipyrd",
+  url: "https://shipyrd.io",
+  repository_url: "https://github.com/nickhammond/shipyrd"
 )
 
 stages = %w[pre-connect pre-build pre-deploy post-deploy]

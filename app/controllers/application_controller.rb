@@ -4,7 +4,11 @@ class ApplicationController < ActionController::Base
   private
 
   def authenticate
-    if authenticate_with_http_basic { |u, p| ApiKey.exists?(token: p) }
+    if request.headers["Authorization"] && request.headers["Authorization"] =~ /^bearer/i
+      session[:authenticated] = authenticate_with_http_token do |token, _options|
+        ApiKey.exists?(token: token)
+      end
+    elsif authenticate_with_http_basic { |u, p| p.present? && ApiKey.exists?(token: p) }
       true
     else
       request_http_basic_authentication

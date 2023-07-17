@@ -5,7 +5,7 @@ one:
   status: MyString
   performer: MyString
   version: MyString
-  service_version: MyString
+  service_version: app@83f0f21a
   hosts: MyText
   command: MyString
   subcommand: MyString
