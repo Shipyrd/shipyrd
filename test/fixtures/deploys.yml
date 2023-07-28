@@ -1,7 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  application: bacon
+  service: bacon
   recorded_at: <%= 10.minutes.ago %>
   status: pre-deploy
   performer: Nick
@@ -15,7 +15,7 @@ one:
   runtime:
 
 two:
-  application: eggs
+  service: eggs
   recorded_at: <%= 1.day.ago %>
   status: post-deploy
   performer: Ron

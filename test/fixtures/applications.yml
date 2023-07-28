@@ -1,11 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+bacon:
+  key: bacon
   name: Bacon
   url: https://example.com
   repository_url: https://github.com/example/example
 
-two:
+eggs:
+  key: eggs
   name: Eggs
   url: https://example.com
   repository_url: https://github.com/example/example

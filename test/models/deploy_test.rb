@@ -1,6 +1,12 @@
 require "test_helper"
 
 class DeployTest < ActiveSupport::TestCase
+  describe "set_service_name" do
+    it "split service_version" do
+      assert_equal "app", Deploy.create(service_version: "app@123").service
+    end
+  end
+
   describe "find_or_create_application" do
     describe "without a known app" do
       it "creates a basic app with creation" do
