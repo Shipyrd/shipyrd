@@ -1,0 +1,7 @@
+default: &default
+  url: mysql2://root:root@127.0.0.1:3306/shipyrd_<%= Rails.env %>
+
+development:
+  <<: *default
+test:
+  <<: *default

@@ -10,6 +10,10 @@ class Application < ApplicationRecord
   end
 
   def current_status(destination:)
-    deploys.where(destination: destination).last.status
+    latest_deploy(destination: destination).status
+  end
+
+  def latest_deploy(destination:)
+    deploys.where(destination: destination).last
   end
 end

@@ -6,19 +6,27 @@
 
       <% destination_count = application.destinations.count %>
       <% application.destinations.each_with_index do |destination, i| %>
+        <% deploy = application.latest_deploy(destination: destination) %>
+        <% status = deploy.status %>
+        <% color = application_status_color(status) %>
+
         <div class="<%= i+1 == destination_count ? nil : 'border-b' %> border-gray-200 py-2 mb-2 px-6">
           <li class="flex items-center justify-between gap-x-6 py-5">
             <div class="min-w-0">
               <div class="flex items-start gap-x-3">
-                <p class="text-sm font-semibold leading-6 text-gray-900"><%= destination.humanize %></p>
-                <p class="rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-green-700 bg-green-50 ring-green-600/20"><%= application.current_status(destination: destination) %></p>
+                <% if destination.present? %>
+                  <p class="text-sm font-semibold leading-6 text-gray-900"><%= destination.humanize %></p>
+                <% end %>
+
+                <span class="tailwind hidden text-slate-700 bg-slate-50 ring-slate-600/20 text-orange-700 bg-orange-50 ring-orange-600/20 text-yellow-700 bg-yellow-50 ring-yellow-600/20 text-green-700 bg-green-50 ring-green-600/20"></span>
+                <p class="rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-<%= color %>-700 bg-<%= color %>-50 ring-<%= color %>-600/20"><%= status %></p>
               </div>
               <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-                <p class="whitespace-nowrap">Due on <time datetime="2023-03-17T00:00Z">March 17, 2023</time></p>
+                <p class="whitespace-nowrap">Recorded at <time datetime="<%= deploy.recorded_at %>"><%= deploy.recorded_at %></time></p>
                 <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
                   <circle cx="1" cy="1" r="1" />
                 </svg>
-                <p class="truncate">Performed by Leslie Alexander</p>
+                <p class="truncate">by <%= deploy.performer %></p>
               </div>
             </div>
             <div class="flex flex-none items-center gap-x-4">
