@@ -4,6 +4,10 @@ class Deploy < ApplicationRecord
 
   belongs_to :application, foreign_key: "service", primary_key: "key", optional: true
 
+  def full_command
+    "#{command} #{subcommand}"
+  end
+
   private
 
   def set_service_name
