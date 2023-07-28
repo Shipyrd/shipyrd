@@ -13,6 +13,7 @@ gem "stimulus-rails"
 gem "tailwindcss-rails"
 gem "jbuilder"
 gem "bootsnap", require: false
+gem "redis"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
@@ -23,6 +24,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "hotwire-livereload", "~> 1.2"
   gem "web-console"
   gem "guard"
   gem "guard-minitest"

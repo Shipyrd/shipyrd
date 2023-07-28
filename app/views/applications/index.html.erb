@@ -8,7 +8,6 @@
     <%= link_to 'New application', new_application_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
   </div>
 
-  <div id="applications" class="min-w-full">
+  <ul role="list" class="divide-y divide-gray-100">
     <%= render @applications %>
-  </div>
-</div>
+  </ul>

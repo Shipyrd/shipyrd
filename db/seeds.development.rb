@@ -2,28 +2,54 @@ ApiKey.find_or_create_by(
   token: ENV["SHIPYRD_API_KEY"]
 )
 
-app = Application.find_or_create_by(name: :apps)
+bacon = Application.find_or_create_by(key: :bacon)
 
-app.update(
-  name: "Shipyrd",
-  key: "shipyrd",
-  url: "https://shipyrd.io",
-  repository_url: "https://github.com/nickhammond/shipyrd"
+bacon.update(
+  name: "Bacon",
+  key: :bacon,
+  url: "https://bacon.io",
+  repository_url: "https://github.com/nickhammond/bacon"
 )
+
+eggs = Application.find_or_create_by(key: :eggs)
+
+eggs.update(
+  name: "Eggs",
+  key: :eggs,
+  url: "https://eggs.io",
+  repository_url: "https://github.com/nickhammond/eggs"
+)
+
+ham = Application.find_or_create_by(key: :ham)
+
+ham.update(
+  name: "Ham",
+  key: :ham,
+  url: "https://ham.io",
+  repository_url: "https://github.com/nickhammond/ham"
+)
+
+applications = [bacon, eggs, ham]
 
 stages = %w[pre-connect pre-build pre-deploy post-deploy]
 
-%w[staging production].each do |destination|
-  stages.each do |stage|
-    Deploy.create(
-      recorded_at: Time.now,
-      status: "pre-deploy",
-      performer: "nick",
-      version: "7b3c0f04106366acfc7e1fcfe4b2e27f9667f8dc",
-      service_version: "shipyrd@7b3c0f04",
-      command: "deploy",
-      destination: destination,
-      runtime: (stage == "post-deploy") ? rand(60..119) : nil
-    )
+applications.each do |application|
+  %w[staging production].each do |destination|
+    state = rand(1..3)
+
+    (1..state).each do |i|
+      stage = stages[i]
+
+      Deploy.create(
+        recorded_at: Time.now,
+        status: stage,
+        performer: "nick",
+        version: "7b3c0f04106366acfc7e1fcfe4b2e27f9667f8dc",
+        service_version: "#{application.key}@7b3c0f04",
+        command: "deploy",
+        destination: destination,
+        runtime: (stage == "post-deploy") ? rand(60..119) : nil
+      )
+    end
   end
 end

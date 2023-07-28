@@ -1,13 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  url: MyString
-  environment: MyString
-  repository_url: MyString
+  name: Bacon
+  url: https://example.com
+  repository_url: https://github.com/example/example
 
 two:
-  name: MyString
-  url: MyString
-  environment: MyString
-  repository_url: MyString
+  name: Eggs
+  url: https://example.com
+  repository_url: https://github.com/example/example
