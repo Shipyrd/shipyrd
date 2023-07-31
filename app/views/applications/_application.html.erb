@@ -23,7 +23,7 @@
                   <%= deploy.full_command %>
                 </p>
                 ->
-                <p class="rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-<%= color %>-700 bg-<%= color %>-50 ring-<%= color %>-600/20">
+                <p class="<%= deploy.status == 'post-deploy' ? nil : 'animate-pulse' %> rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-<%= color %>-700 bg-<%= color %>-50 ring-<%= color %>-600/20">
                   <%= deploy.status %>
                 </p>
 
