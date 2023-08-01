@@ -8,6 +8,12 @@ class Deploy < ApplicationRecord
     "#{command} #{subcommand}"
   end
 
+  def compare_url
+    return nil unless application.repository_url =~ /github\.com/
+
+    "#{application.repository_url}/compare/#{version}...main"
+  end
+
   private
 
   def set_service_name

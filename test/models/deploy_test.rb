@@ -7,6 +7,20 @@ class DeployTest < ActiveSupport::TestCase
     end
   end
 
+  describe "compare_url" do
+    let(:deploy) { Deploy.create(service_version: "app@123") }
+
+    it "crafts a github link" do
+      deploy.application.update(repository_url: "https://github.com/nickhammond/shipyrd")
+
+      assert_equal "#{deploy.application.repository_url}/compare/#{deploy.version}...main", deploy.compare_url
+    end
+
+    it "renders nil if not github" do
+      assert_nil deploy.compare_url
+    end
+  end
+
   describe "find_or_create_application" do
     describe "without a known app" do
       it "creates a basic app with creation" do
