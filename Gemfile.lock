@@ -148,6 +148,8 @@ GEM
       guard (>= 2.0.0)
       guard-compat (~> 1.0)
       standardrb
+    heroicon (1.0.0)
+      rails (>= 5.2)
     hotwire-livereload (1.2.3)
       listen (>= 3.0.0)
       rails (>= 6.0.0)
@@ -335,6 +337,7 @@ DEPENDENCIES
   guard
   guard-minitest
   guard-standardrb
+  heroicon
   hotwire-livereload (~> 1.2)
   importmap-rails
   jbuilder
