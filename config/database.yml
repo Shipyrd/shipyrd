@@ -1,5 +1,5 @@
 default: &default
-  url: mysql2://root:root@127.0.0.1:3306/shipyrd_<%= Rails.env %>
+  url: postgresql://postgres:postgres@127.0.0.1:5432/shipyrd_<%= Rails.env %>
 
 development:
   <<: *default

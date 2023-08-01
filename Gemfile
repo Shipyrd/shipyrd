@@ -4,7 +4,7 @@ ruby "3.2.2"
 
 gem "rails", github: "rails/rails", branch: "main"
 gem "sprockets-rails"
-gem "mysql2"
+gem "pg", "~> 1.1"
 gem "dotenv-rails"
 gem "puma", ">= 5.0"
 gem "importmap-rails"
