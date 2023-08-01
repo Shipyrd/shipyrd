@@ -60,13 +60,24 @@ class DeploysController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_deploy
     @deploy = Deploy.find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
   def deploy_params
-    params.require(:deploy).permit(:recorded_at, :status, :performer, :version, :service_version, :service, :hosts, :command, :subcommand, :destination, :role, :runtime)
+    params.require(:deploy).permit(
+      :recorded_at,
+      :status,
+      :performer,
+      :version,
+      :service_version,
+      :service,
+      :hosts,
+      :command,
+      :subcommand,
+      :destination,
+      :role,
+      :runtime
+    )
   end
 end
