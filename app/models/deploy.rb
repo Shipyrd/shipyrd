@@ -9,9 +9,9 @@ class Deploy < ApplicationRecord
   end
 
   def compare_url
-    return nil unless application.repository_url =~ /github\.com/
+    return nil unless /github\.com/.match?(application.repository_url)
 
-    "#{application.repository_url}/compare/#{version}...main"
+    "#{application.repository_url}/compare/#{version}...#{application.branch}"
   end
 
   private

@@ -11,9 +11,12 @@ class DeployTest < ActiveSupport::TestCase
     let(:deploy) { Deploy.create(service_version: "app@123") }
 
     it "crafts a github link" do
-      deploy.application.update(repository_url: "https://github.com/nickhammond/shipyrd")
+      deploy.application.update(
+        repository_url: "https://github.com/nickhammond/shipyrd",
+        branch: "custom"
+      )
 
-      assert_equal "#{deploy.application.repository_url}/compare/#{deploy.version}...main", deploy.compare_url
+      assert_equal "#{deploy.application.repository_url}/compare/#{deploy.version}...#{deploy.application.branch}", deploy.compare_url
     end
 
     it "renders nil if not github" do
