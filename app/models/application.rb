@@ -14,6 +14,6 @@ class Application < ApplicationRecord
   end
 
   def latest_deploy(destination:)
-    deploys.where(destination: destination).last
+    deploys.where(destination: destination, command: :deploy).last
   end
 end
