@@ -2,7 +2,7 @@ class Deploy < ApplicationRecord
   before_create :set_service_name
   before_create :find_or_create_application
 
-  belongs_to :application, foreign_key: "service", primary_key: "key", optional: true
+  belongs_to :application, foreign_key: "service", primary_key: "key", optional: true, touch: true
 
   def full_command
     "#{command} #{subcommand}"

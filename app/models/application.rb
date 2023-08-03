@@ -1,6 +1,8 @@
 class Application < ApplicationRecord
   has_many :deploys, dependent: :destroy, foreign_key: :service, primary_key: :key
 
+  broadcasts
+
   def display_name
     name || key
   end
