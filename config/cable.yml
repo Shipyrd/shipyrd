@@ -1,11 +1,8 @@
 development:
   adapter: postgresql
-  url: postgresql://postgres:postgres@127.0.0.1:5432/shipyrd_<%= Rails.env %>
 
 test:
   adapter: test
 
 production:
-  adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  channel_prefix: shipyrd_production
+  adapter: postgresql
