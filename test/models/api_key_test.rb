@@ -1,7 +1,9 @@
 require "test_helper"
 
 class ApiKeyTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  describe "has_secure_token" do
+    it "generates a token" do
+      assert create(:api_key).token
+    end
+  end
 end

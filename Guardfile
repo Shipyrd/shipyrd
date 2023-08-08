@@ -13,7 +13,7 @@ guard :minitest, all_on_start: false do
   watch(%r{^test/test_helper\.rb$}) { "test" }
 end
 
-guard :standardrb, fix: false, all_on_start: false, progress: false do
-  UI.info "StandardRb is initialized"
-  watch(/.+\.rb$/)
-end
+# guard :standardrb, fix: false, all_on_start: false, progress: false do
+#   UI.info "StandardRb is initialized"
+#   watch(/.+\.rb$/)
+# end

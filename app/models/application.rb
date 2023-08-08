@@ -3,6 +3,14 @@ class Application < ApplicationRecord
 
   broadcasts
 
+  validates :key, presence: true
+
+  def destination_names
+    destinations.map do |d|
+      d.present? ? d.humanize : 'Default'
+    end
+  end
+
   def display_name
     name || key
   end

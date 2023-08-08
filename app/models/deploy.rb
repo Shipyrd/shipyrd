@@ -4,6 +4,9 @@ class Deploy < ApplicationRecord
 
   belongs_to :application, foreign_key: "service", primary_key: "key", optional: true, touch: true
 
+  validates :recorded_at, :performer, :service_version, :command, presence: true
+  validate :service_version_is_valid
+
   def full_command
     "#{command} #{subcommand}"
   end
@@ -16,8 +19,13 @@ class Deploy < ApplicationRecord
 
   private
 
+  def service_version_is_valid
+    # service@sha
+    service_version =~ /\w+@\w+/
+  end
+
   def set_service_name
-    return false if service_version.blank?
+    return false if service.present? || service_version.blank?
 
     self.service = service_version.split("@").first
   end

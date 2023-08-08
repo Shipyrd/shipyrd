@@ -14,43 +14,48 @@
       <% destination_count = application.destinations.count %>
       <% application.destinations.each_with_index do |destination, i| %>
         <% deploy = application.latest_deploy(destination: destination) %>
-        <% color = application_status_color(deploy.status) %>
 
         <div class="<%= i+1 == destination_count ? nil : 'border-b' %> border-gray-200 py-2 mb-2 px-6">
           <li class="flex items-center justify-between gap-x-6 py-5">
             <div class="min-w-0">
               <div class="flex items-start gap-x-3">
-                <% if destination.present? %>
-                  <p class="text-sm font-semibold leading-6 text-gray-900"><%= destination.humanize %></p>
-                <% end %>
+                <p class="text-sm font-semibold leading-6 text-gray-900"><%= destination %></p>
 
                 <span class="tailwind hidden text-slate-700 bg-slate-50 ring-slate-600/20 text-orange-700 bg-orange-50 ring-orange-600/20 text-yellow-700 bg-yellow-50 ring-yellow-600/20 text-green-700 bg-green-50 ring-green-600/20"></span>
 
-                <p class="rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-neutral-700 ring-neutral-600/20">
-                  <%= deploy.full_command %>
-                </p>
-                ->
-                <p class="<%= deploy.status == 'post-deploy' ? nil : 'animate-pulse' %> rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-<%= color %>-700 bg-<%= color %>-50 ring-<%= color %>-600/20">
-                  <%= deploy.status %>
-                </p>
+                <% if deploy %>
+                  <% color = application_status_color(deploy.status) %>
 
-                <% if deploy.status == 'post-deploy' && deploy.runtime.present? %>
+                  <p class="rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-neutral-700 ring-neutral-600/20">
+                    <%= deploy.full_command %>
 
-                  <p class="rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium text-neutral-700 bg-neutral-50">
-                    <%= deploy.runtime %>s
                   </p>
+                  ->
+                  <p class="<%= deploy.status == 'post-deploy' ? nil : 'animate-pulse' %> rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-<%= color %>-700 bg-<%= color %>-50 ring-<%= color %>-600/20">
+                    <%= deploy.status %>
+                  </p>
+
+                  <% if deploy.status == 'post-deploy' && deploy.runtime.present? %>
+                    <p class="rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium text-neutral-700 bg-neutral-50">
+                      <%= deploy.runtime %>s
+                    </p>
+                  <% end %>
                 <% end %>
               </div>
               <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-                <p class="whitespace-nowrap">Recorded <time datetime="<%= deploy.recorded_at %>"><%= time_ago_in_words(deploy.recorded_at) %> ago</time></p>
-                <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
-                  <circle cx="1" cy="1" r="1" />
-                </svg>
-                <p class="truncate">by <%= deploy.performer %></p>
+                <% if deploy %>
+                  <p class="whitespace-nowrap">Recorded <time datetime="<%= deploy.recorded_at %>"><%= time_ago_in_words(deploy.recorded_at) %> ago</time></p>
+                  <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
+                    <circle cx="1" cy="1" r="1" />
+                  </svg>
+                  <p class="truncate">by <%= deploy.performer %></p>
+                <% end %>
               </div>
             </div>
             <div class="flex flex-none items-center gap-x-4">
-              <a href="<%= deploy.compare_url %>" target="_blank" class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">View diff<span class="sr-only">, GraphQL API</span></a>
+              <% if deploy %>
+                <a href="<%= deploy.compare_url %>" target="_blank" class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">View diff<span class="sr-only">, GraphQL API</span></a>
+              <% end %>
             </div>
           </li>
         </div>

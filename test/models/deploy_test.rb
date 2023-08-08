@@ -3,12 +3,12 @@ require "test_helper"
 class DeployTest < ActiveSupport::TestCase
   describe "set_service_name" do
     it "split service_version" do
-      assert_equal "app", Deploy.create(service_version: "app@123").service
+      assert_equal "app", create(:deploy, service_version: "app@123").service
     end
   end
 
   describe "compare_url" do
-    let(:deploy) { Deploy.create(service_version: "app@123") }
+    let(:deploy) { create(:deploy, service_version: "app@123") }
 
     it "crafts a github link" do
       deploy.application.update(
@@ -28,20 +28,16 @@ class DeployTest < ActiveSupport::TestCase
     describe "without a known app" do
       it "creates a basic app with creation" do
         assert_difference("Application.where(key: 'heyo').count") do
-          Deploy.create(
-            service_version: "heyo@abcdef12"
-          )
+          create(:deploy, service_version: "heyo@abcdef12")
         end
       end
     end
 
     describe "with a known app" do
       it "points to existing app" do
-        application = Application.create(key: "heyo")
+        application = create(:applicaiton, key: "heyo")
 
-        deploy = Deploy.create(
-          service_version: "heyo@abcdef12"
-        )
+        deploy = create(:deploy, service_version: "heyo@abcdef12")
 
         assert_equal deploy.application, application
       end

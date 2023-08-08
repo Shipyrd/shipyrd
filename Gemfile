@@ -20,6 +20,8 @@ gem "heroicon"
 # gem "image_processing", "~> 1.2"
 
 group :development, :test do
+  gem "factory_bot_rails"
+  gem "faker"
   gem "debug", platforms: %i[mri windows]
   gem "standard"
 end

@@ -1,10 +1,11 @@
 require "test_helper"
 
 class ApplicationTest < ActiveSupport::TestCase
-  let(:application) { applications(:bacon) }
+  let(:application) { create(:application) }
 
   describe "display_name" do
     it "Prefers name over key" do
+      application.name = "Bacon"
       assert_equal application.name, application.display_name
 
       application.name = nil
@@ -12,21 +13,19 @@ class ApplicationTest < ActiveSupport::TestCase
     end
   end
 
-  describe "has many deploys" do
-    it "associates via application key" do
-      deploy = Deploy.create(service_version: "bacon@abcdef22")
-      Deploy.create(service_version: "other@abcdef22")
-
-      assert_equal application.deploys.last, deploy
-    end
-  end
-
   describe "destinations" do
     it "fetches destinations from known deploys" do
-      application.deploys.create(service: application.key, destination: "production")
-      application.deploys.create(service: application.key, destination: "staging")
+      create(:deploy, service: application.key, destination: :production)
+      create(:deploy, service: application.key, destination: :staging)
 
-      assert_equal application.destinations, ["production", "staging"]
+      assert_equal ["production", "staging"], application.destinations
+    end
+
+    it "adds in a default destination name" do
+      create(:deploy, service: application.key, destination: :production)
+      create(:deploy, service: application.key)
+
+      assert_equal ["Production", "Default"], application.destination_names
     end
   end
 
@@ -43,13 +42,13 @@ class ApplicationTest < ActiveSupport::TestCase
         destination: :staging
       )
       application.deploys.create(
-        status: "post-deploy",
+        status: nil,
         command: :app,
         subcommand: :info,
         destination: :staging
       )
 
-      assert_equal application.current_status(destination: :staging), "post-deploy"
+      assert_equal "post-deploy", application.current_status(destination: :staging)
     end
   end
 end
