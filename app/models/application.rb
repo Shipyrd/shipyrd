@@ -7,7 +7,7 @@ class Application < ApplicationRecord
 
   def destination_names
     destinations.map do |d|
-      d.present? ? d.humanize : 'Default'
+      d.present? ? d.humanize : "Default"
     end
   end
 

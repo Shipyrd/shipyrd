@@ -1,6 +1,6 @@
 class Deploy < ApplicationRecord
-  before_create :set_service_name
-  before_create :find_or_create_application
+  before_validation :set_service_name
+  before_validation :find_or_create_application
 
   belongs_to :application, foreign_key: "service", primary_key: "key", optional: true, touch: true
 
@@ -12,7 +12,8 @@ class Deploy < ApplicationRecord
   end
 
   def compare_url
-    return nil unless /github\.com/.match?(application.repository_url)
+    return nil if /uncommitted/.match?(version)
+    return nil if !/github\.com/.match?(application.repository_url)
 
     "#{application.repository_url}/compare/#{version}...#{application.branch}"
   end

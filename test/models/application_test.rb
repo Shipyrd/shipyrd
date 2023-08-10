@@ -31,17 +31,23 @@ class ApplicationTest < ActiveSupport::TestCase
 
   describe "current_status" do
     it "fetches latest deploy status" do
-      application.deploys.create(
-        status: "pre-build",
+      create(
+        :deploy,
+        application: application,
+        status: 'pre-build',
         command: :deploy,
         destination: :staging
       )
-      application.deploys.create(
+      create(
+        :deploy,
+        application: application,
         status: "post-deploy",
         command: :deploy,
         destination: :staging
       )
-      application.deploys.create(
+      create(
+        :deploy,
+        application: application,
         status: nil,
         command: :app,
         subcommand: :info,
