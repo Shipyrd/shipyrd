@@ -1,6 +1,6 @@
 ignore([%r{^bin/*}, %r{^config/*}, %r{^db/*}, %r{^lib/*}, %r{^log/*}, %r{^public/*}, %r{^tmp/*}])
 
-guard :minitest, all_on_start: false, cli: '--verbose' do
+guard :minitest, all_on_start: false do
   # with Minitest::Unit
   watch(%r{^test/(.*)/?test_(.*)\.rb$})
   watch(%r{^lib/(.*/)?([^/]+)\.rb$}) { |m| "test/#{m[1]}test_#{m[2]}.rb" }

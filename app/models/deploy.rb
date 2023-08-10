@@ -14,8 +14,17 @@ class Deploy < ApplicationRecord
   def compare_url
     return nil if /uncommitted/.match?(version)
     return nil if !/github\.com/.match?(application.repository_url)
+    return nil if !previous_deploy
 
-    "#{application.repository_url}/compare/#{version}...#{application.branch}"
+    "#{application.repository_url}/compare/#{previous_deploy.version}...#{version}"
+  end
+
+  def previous_deploy
+    application.deploys.where(
+      destination: destination,
+      command: :deploy,
+      status: 'post-deploy'
+    ).where.not(id: id).last
   end
 
   private
