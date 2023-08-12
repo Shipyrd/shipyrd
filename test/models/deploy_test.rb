@@ -8,22 +8,34 @@ class DeployTest < ActiveSupport::TestCase
   end
 
   describe "compare_url" do
-    let(:deploy) { create(:deploy, service_version: "app@123") }
+    let(:application) { create(:application, key: "heyo", repository_url: "https://github.com/nickhammond/shipyrd") }
 
     it "crafts a github link" do
-      deploy.application.update(
-        repository_url: "https://github.com/nickhammond/shipyrd",
-        branch: "custom"
+      create(
+        :deploy,
+        application: application,
+        command: :deploy,
+        status: 'post-deploy',
+        version: 'previous-sha'
+      )
+      deploy = create(
+        :deploy,
+        application: application,
+        command: :deploy,
+        version: "current-sha"
       )
 
-      assert_equal "#{deploy.application.repository_url}/compare/#{deploy.version}...#{deploy.application.branch}", deploy.compare_url
+      assert_equal "#{application.repository_url}/compare/previous-sha...current-sha", deploy.compare_url
     end
 
-    it "renders nil if not github" do
+    it "renders nil if not github or gitlab" do
+      application.update(repository_url: nil)
+      deploy = create(:deploy, application: application)
       assert_nil deploy.compare_url
     end
 
     it "returns nil if uncommitted version" do
+      deploy = build(:deploy, application: application)
       deploy.version = "heyo@uncommitted"
       assert_nil deploy.compare_url
     end

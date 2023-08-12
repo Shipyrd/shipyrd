@@ -13,7 +13,7 @@ class Deploy < ApplicationRecord
 
   def compare_url
     return nil if /uncommitted/.match?(version)
-    return nil if !/github\.com/.match?(application.repository_url)
+    return nil if !/(github|gitlab)\.com/.match?(application.repository_url)
     return nil if !previous_deploy
 
     "#{application.repository_url}/compare/#{previous_deploy.version}...#{version}"
