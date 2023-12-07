@@ -18,16 +18,13 @@ accessories:
     env:
       secret:
         - SHIPYRD_API_KEY
-        - SHIPYRD_DATABASE_URL
     labels:
       traefik.http.routers.myapp-shipyrd.rule: Host(`shipyrd.myapp.com`)
 ```
 
-The accessory configuration includes two environment secrets:
-
-- SHIPYRD_API_KEY - Generate an API key(`bin/rails secret`) and set it in your env file as `SHIPYRD_API_KEY`,
+The accessory configuration requires one secret which is the `SHIPYRD_API_KEY`. Generate an
+API key(`bin/rails secret`) and set it in your env file as `SHIPYRD_API_KEY`,
 this will be the password for basic HTTP authentication.
-- SHIPYRD_DATABASE_URL - Point this to a postgresql:// address and new database so that Shipyrd can store deployments.
 
 2. Configure your hooks. Setup the `shipyrd` gem in your Rails application.
 
