@@ -4,7 +4,6 @@ ruby "3.2.2"
 
 gem "rails", github: "rails/rails", branch: "main"
 gem "sprockets-rails"
-gem "pg", "~> 1.1"
 gem "dotenv-rails"
 gem "puma", ">= 5.0"
 gem "importmap-rails"
@@ -15,6 +14,7 @@ gem "jbuilder"
 gem "bootsnap", require: false
 gem "redis"
 gem "heroicon"
+gem "litestack"
 
 group :development, :test do
   gem "factory_bot_rails"
