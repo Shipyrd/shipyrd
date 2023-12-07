@@ -1,8 +1,11 @@
 development:
-  adapter: postgresql
+  adapter: litecable
 
 test:
   adapter: test
 
+staging:
+  adapter: litecable
+
 production:
-  adapter: postgresql
+  adapter: litecable
