@@ -2,6 +2,8 @@
 
 # Ignore git directory.
 /.git/
+/.github/
+.gitattributes
 
 # Ignore bundler config.
 /.bundle
@@ -37,3 +39,8 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /public/assets
+
+Dockerfile
+Guardfile
+Procfile.dev
+/test
