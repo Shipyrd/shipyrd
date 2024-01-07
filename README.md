@@ -17,14 +17,19 @@ Generate an API key(`bin/rails secret` or your favorite key generator) and set i
 ``` yml
 accessories:
   shipyrd:
-    image: shipyrd/shipyrd:latest
+    image: ghcr.io/shipyrd/shipyrd:main
     host: 867.530.9
     env:
       secret:
         - SHIPYRD_API_KEY
     labels:
       traefik.http.routers.myapp-shipyrd.rule: Host(`shipyrd.myapp.com`)
+    volumes:
+      - data:/rails/db/production
+
 ```
+
+The `volumes` map is where the sqlite database will be stored which contains basic deploy information.
 
 **Configure your Kamal hooks** 
 
