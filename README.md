@@ -2,11 +2,11 @@
 
 The simple deployment dashboard for Kamal based deployments.
 
-# Setup
+## Setup
 
 There's two main parts to getting started with Shipyrd. The first part is getting Shipyrd running as an accessory within your existing Kamal setup. The second is enabling the various hooks that Kamal supports to update the deploy state in Shipyrd.
 
-**Add shipyrd as an accessory** 
+### Add shipyrd as an accessory
 
 Within your Kamal accessories deploy configuration you'll need to add a new accessory for Shipyrd. Swap out the host IP address as well as the traefik host rule in the example below. You'll also want to point DNS towards this server unless you already have a wildcard record pointing to your host.
 
@@ -31,7 +31,7 @@ accessories:
 
 The `volumes` map is where the sqlite database will be stored which contains basic deploy information.
 
-**Configure your Kamal hooks** 
+### Configure your Kamal hooks
 
 Setup the `shipyrd` gem in your Rails application.
 
