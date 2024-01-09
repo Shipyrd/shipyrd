@@ -1,8 +1,10 @@
 class Deploy < ApplicationRecord
   before_validation :set_service_name
   before_validation :find_or_create_application
+  before_validation :find_or_create_user
 
   belongs_to :application, foreign_key: "service", primary_key: "key", optional: true, touch: true
+  belongs_to :user, foreign_key: :performer, primary_key: :username
 
   validates :recorded_at, :performer, :service_version, :command, presence: true
   validate :service_version_is_valid
@@ -44,5 +46,13 @@ class Deploy < ApplicationRecord
     return true if application
 
     create_application
+  end
+
+  def find_or_create_user
+    return true if user
+
+    create_user(
+      username: performer
+    )
   end
 end

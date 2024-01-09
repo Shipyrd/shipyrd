@@ -2,7 +2,7 @@ require "test_helper"
 
 class ApplicationsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @application = applications(:one)
+    @application = create(:application)
   end
 
   describe "anonymous" do
@@ -26,14 +26,6 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
     test "should get new" do
       get new_application_url, headers: @auth_headers
       assert_response :success
-    end
-
-    test "should create application" do
-      assert_difference("Application.count") do
-        post applications_url, params: {application: {environment: @application.environment, name: @application.name, repository_url: @application.repository_url, url: @application.url}}, headers: @auth_headers
-      end
-
-      assert_redirected_to application_url(Application.last)
     end
 
     test "should show application" do

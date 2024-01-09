@@ -41,6 +41,26 @@ class DeployTest < ActiveSupport::TestCase
     end
   end
 
+  describe "find_or_create_user" do
+    describe "without a known user" do
+      it "creates a basic user " do
+        assert_difference("User.count") do
+          create(:deploy, performer: "greta")
+        end
+      end
+    end
+
+    describe "with a known user" do
+      it "points to existing user" do
+        user = create(:user, username: "greta")
+
+        deploy = create(:deploy, performer: "greta")
+
+        assert_equal user, deploy.user
+      end
+    end
+  end
+
   describe "find_or_create_application" do
     describe "without a known app" do
       it "creates a basic app with creation" do

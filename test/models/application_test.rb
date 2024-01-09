@@ -22,10 +22,10 @@ class ApplicationTest < ActiveSupport::TestCase
     end
 
     it "adds in a default destination name" do
-      create(:deploy, service: application.key, destination: :production)
       create(:deploy, service: application.key)
+      create(:deploy, service: application.key, destination: :production)
 
-      assert_equal ["Production", "Default"], application.destination_names
+      assert_equal ["Default", "Production"], application.destination_names.sort
     end
   end
 
