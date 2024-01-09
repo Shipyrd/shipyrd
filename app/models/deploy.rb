@@ -29,6 +29,10 @@ class Deploy < ApplicationRecord
     ).where.not(id: id).last
   end
 
+  def performer_avatar
+    user&.avatar_url
+  end
+
   private
 
   def service_version_is_valid
