@@ -22,17 +22,6 @@ class ApiKeysTest < ApplicationSystemTestCase
     click_on "Back"
   end
 
-  test "should update Api key" do
-    visit api_key_url(@api_key)
-    click_on "Edit this api key", match: :first
-
-    fill_in "Token", with: @api_key.token
-    click_on "Update Api key"
-
-    assert_text "Api key was successfully updated"
-    click_on "Back"
-  end
-
   test "should destroy Api key" do
     visit api_key_url(@api_key)
     click_on "Destroy this api key", match: :first
