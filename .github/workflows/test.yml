@@ -26,6 +26,9 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
 
+    - name: Prepare test DB
+      run: bundle exec rails db:prepare
+
     - name: Run tests
       run: bundle exec rails test
 
