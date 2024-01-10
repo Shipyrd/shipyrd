@@ -3,7 +3,7 @@ require "test_helper"
 class DeployTest < ActiveSupport::TestCase
   describe "set_service_name" do
     it "split service_version" do
-      assert_equal "app", create(:deploy, application: nil, service_version: "app@123").service
+      assert_equal "app", create(:deploy, service_version: "app@123").service
     end
   end
 
@@ -30,7 +30,7 @@ class DeployTest < ActiveSupport::TestCase
 
     it "renders nil if not github or gitlab" do
       application.update(repository_url: nil)
-      deploy = create(:deploy, application: application)
+      deploy = build(:deploy, application: application)
       assert_nil deploy.compare_url
     end
 
@@ -43,7 +43,7 @@ class DeployTest < ActiveSupport::TestCase
 
   describe "find_or_create_user" do
     describe "without a known user" do
-      it "creates a basic user " do
+      it "creates a basic user" do
         assert_difference("User.count") do
           create(:deploy, performer: "greta")
         end
@@ -65,7 +65,7 @@ class DeployTest < ActiveSupport::TestCase
     describe "without a known app" do
       it "creates a basic app with creation" do
         assert_difference("Application.where(key: 'heyo').count") do
-          create(:deploy, application: nil, service_version: "heyo@abcdef12")
+          create(:deploy, service_version: "heyo@abcdef12")
         end
       end
     end
@@ -74,7 +74,7 @@ class DeployTest < ActiveSupport::TestCase
       it "points to existing app" do
         application = create(:application, key: "heyo")
 
-        deploy = create(:deploy, application: nil, service_version: "heyo@abcdef12")
+        deploy = create(:deploy, service_version: "heyo@abcdef12")
 
         assert_equal application, deploy.application
       end

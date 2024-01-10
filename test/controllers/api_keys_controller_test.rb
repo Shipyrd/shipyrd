@@ -1,5 +1,5 @@
 require "test_helper"
-require "helpers/http_basic_auth"
+require "helpers/basic_auth_helpers"
 
 class ApiKeysControllerTest < ActionDispatch::IntegrationTest
   setup do

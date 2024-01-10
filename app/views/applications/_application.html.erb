@@ -4,12 +4,12 @@
   <div>
     <div class="rounded-lg border border-gray-200 bg-white my-5">
       <div class="items-center border-gray-200 border-b rounded-t-lg bg-gray-50">
-        <h3 class="text-base font-semibold leading-6 border-gray-200 text-gray-900 pb-5 px-4 pt-5">
+        <h2 class="text-base font-semibold leading-6 border-gray-200 text-gray-900 pb-5 px-4 pt-5">
           <%= application.display_name %>
           <span class="mt-1 text-sm text-gray-400 text-underline float-right">
-            <%= link_to heroicon('cog-8-tooth', variant: :outline), edit_application_url(application), class: 'w-4 h-4' %>
+            <%= link_to heroicon('cog-8-tooth', variant: :outline), edit_application_url(application), class: 'w-4 h-4', title: 'Edit this application' %>
           </span>
-        </h3>
+        </h2>
       </div>
 
       <p class="mt-1 text-sm text-gray-500"></p>

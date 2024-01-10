@@ -49,7 +49,11 @@ class Deploy < ApplicationRecord
   def find_or_create_application
     return true if application
 
-    create_application
+    create_application(
+      # This is automatically handled in the association but leaving
+      # this here to highlight the magic.
+      key: service
+    )
   end
 
   def find_or_create_user
