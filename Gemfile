@@ -30,7 +30,6 @@ group :development do
   gem "guard"
   gem "guard-minitest"
   gem "guard-standardrb"
-  gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
 end
 
 group :test do
