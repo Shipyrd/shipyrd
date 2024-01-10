@@ -76,7 +76,6 @@ class ApplicationsTest < ApplicationSystemTestCase
       click_on "Edit this application", match: :first
 
       fill_in "Name", with: @application.name
-      fill_in "URL", with: @application.url
       fill_in "Repository URL", with: @application.repository_url
       fill_in "Branch", with: "main"
       click_on "Update"
