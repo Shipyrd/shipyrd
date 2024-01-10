@@ -398,6 +398,7 @@ DEPENDENCIES
   jbuilder
   litestack
   minitest-spec-rails
+  pry
   puma (>= 5.0)
   rails (~> 7.1.2)
   redis

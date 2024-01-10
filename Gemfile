@@ -20,6 +20,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "debug", platforms: %i[mri windows]
+  gem "pry"
   gem "standard"
 end
 
