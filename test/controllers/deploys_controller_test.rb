@@ -1,49 +1,57 @@
 require "test_helper"
+require "helpers/basic_auth_helpers"
 
 class DeploysControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    skip
-    @deploy = deploys(:one)
-  end
-
-  test "should get index" do
-    get deploys_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_deploy_url
-    assert_response :success
-  end
-
-  test "should create deploy" do
-    assert_difference("Deploy.count") do
-      post deploys_url, params: {deploy: {command: @deploy.command, deployed_at: @deploy.deployed_at, deployer: @deploy.deployer, destination: @deploy.destination, hosts: @deploy.hosts, role: @deploy.role, runtime: @deploy.runtime, service_version: @deploy.service_version, status: @deploy.status, subcommand: @deploy.subcommand, version: @deploy.version}}
+  describe "with api key" do
+    setup do
+      @api_key = ApiKey.create
     end
 
-    assert_redirected_to deploy_url(Deploy.last)
-  end
+    test "should create deploy with minimal information" do
+      assert_difference("Deploy.count") do
+        post deploys_url,
+          params: {
+            format: :json,
+            deploy: {
+              command: "deploy",
+              recorded_at: Time.now,
+              performer: 'nick',
+              version: '123456',
+              service_version: 'potato@123456',
+              status: 'pre-build'
+            }
 
-  test "should show deploy" do
-    get deploy_url(@deploy)
-    assert_response :success
-  end
+          },
+          headers: auth_headers(@api_key.token)
+      end
 
-  test "should get edit" do
-    get edit_deploy_url(@deploy)
-    assert_response :success
-  end
-
-  test "should update deploy" do
-    patch deploy_url(@deploy), params: {deploy: {command: @deploy.command, deployed_at: @deploy.deployed_at, deployer: @deploy.deployer, destination: @deploy.destination, hosts: @deploy.hosts, role: @deploy.role, runtime: @deploy.runtime, service_version: @deploy.service_version, status: @deploy.status, subcommand: @deploy.subcommand, version: @deploy.version}}
-    assert_redirected_to deploy_url(@deploy)
-  end
-
-  test "should destroy deploy" do
-    assert_difference("Deploy.count", -1) do
-      delete deploy_url(@deploy)
+      assert_response :created
     end
 
-    assert_redirected_to deploys_url
+    test "should create deploy with full information" do
+      assert_difference("Deploy.count") do
+        post deploys_url,
+          params: {
+            format: :json,
+            deploy: {
+              command: "app",
+              subcommand: "exec",
+              recorded_at: Time.now,
+              performer: 'nick',
+              version: '123456',
+              service_version: 'potato@123456',
+              status: 'pre-build',
+              hosts: '127.0.0.1',
+              destination: 'production',
+              role: 'web',
+              runtime: 120
+            }
+
+          },
+          headers: auth_headers(@api_key.token)
+      end
+
+      assert_response :created
+    end
   end
 end

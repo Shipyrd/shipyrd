@@ -1,4 +1,5 @@
 require "test_helper"
+require 'helpers/basic_auth_helpers'
 
 class ApplicationsControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -15,7 +16,7 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
   describe "authenticated" do
     before do
       @api_key = ApiKey.create
-      @auth_headers = {Authorization: ActionController::HttpAuthentication::Basic.encode_credentials("", @api_key.token)}
+      @auth_headers = auth_headers(@api_key.token)
     end
 
     test "should get index" do
