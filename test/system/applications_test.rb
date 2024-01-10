@@ -41,7 +41,7 @@ class ApplicationsTest < ApplicationSystemTestCase
       assert_content "less than a minute ago"
       assert_content "by #{@deploy.performer}"
 
-      @deploy = create(
+      create(
         :deploy,
         service_version: "potato@123456",
         command: :deploy,
@@ -52,6 +52,16 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       assert_content "post-deploy"
       assert_content "by Nick"
+
+      create(
+        :deploy,
+        service_version: "potato@123456",
+        command: :deploy,
+        destination: 'production',
+        status: 'post-deploy'
+      )
+
+      assert_content "production"
     end
 
     test "should update Application" do
