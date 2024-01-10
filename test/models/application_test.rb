@@ -1,7 +1,7 @@
 require "test_helper"
 
 class ApplicationTest < ActiveSupport::TestCase
-  let(:application) { create(:application) }
+  let(:application) { create(:application, key: 'bacon') }
 
   describe "display_name" do
     it "Prefers name over key" do

@@ -20,6 +20,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "debug", platforms: %i[mri windows]
+  gem "pry"
   gem "standard"
 end
 
@@ -29,7 +30,6 @@ group :development do
   gem "guard"
   gem "guard-minitest"
   gem "guard-standardrb"
-  gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
 end
 
 group :test do

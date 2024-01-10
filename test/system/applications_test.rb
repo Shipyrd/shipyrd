@@ -1,47 +1,101 @@
 require "application_system_test_case"
+require "helpers/basic_auth_helpers"
 
 class ApplicationsTest < ApplicationSystemTestCase
   setup do
-    @application = applications(:one)
+    @api_key = ApiKey.create
   end
 
-  test "visiting the index" do
-    visit applications_url
-    assert_selector "h1", text: "Applications"
+  describe "initial setup" do
+    it "requires authentication" do
+      visit root_url
+
+      assert_text "HTTP Basic: Access denied."
+    end
+
+    it "points to setup instructions" do
+      visit basic_auth_url(root_url, @api_key.token)
+
+      assert_text "No deploy information found yet"
+      click_link "Setup instructions"
+    end
   end
 
-  test "should create application" do
-    visit applications_url
-    click_on "New application"
+  describe "with an application avaiable" do
+    setup do
+      @deploy = create(
+        :deploy,
+        service_version: "potato@123456",
+        command: :deploy,
+        status: 'pre-build',
+        version: '123456'
+      )
+    end
 
-    fill_in "Environment", with: @application.environment
-    fill_in "Name", with: @application.name
-    fill_in "Repository url", with: @application.repository_url
-    fill_in "Url", with: @application.url
-    click_on "Create Application"
+    test "visiting the index" do
+      visit basic_auth_url(root_url, @api_key.token)
+      visit root_url
 
-    assert_text "Application was successfully created"
-    click_on "Back"
-  end
+      assert_selector "h2", text: "potato"
+      assert_content "pre-build"
+      assert_content "less than a minute ago"
+      assert_content "by #{@deploy.performer}"
 
-  test "should update Application" do
-    visit application_url(@application)
-    click_on "Edit this application", match: :first
+      create(
+        :deploy,
+        service_version: "potato@123456",
+        command: :deploy,
+        status: 'post-deploy',
+        version: '123456',
+        performer: 'Nick'
+      )
 
-    fill_in "Environment", with: @application.environment
-    fill_in "Name", with: @application.name
-    fill_in "Repository url", with: @application.repository_url
-    fill_in "Url", with: @application.url
-    click_on "Update Application"
+      assert_content "post-deploy"
+      assert_content "by Nick"
 
-    assert_text "Application was successfully updated"
-    click_on "Back"
-  end
+      create(
+        :deploy,
+        service_version: "potato@123456",
+        command: :deploy,
+        destination: 'production',
+        status: 'post-deploy'
+      )
 
-  test "should destroy Application" do
-    visit application_url(@application)
-    click_on "Destroy this application", match: :first
+      assert_content "production"
+    end
 
-    assert_text "Application was successfully destroyed"
+    test "should update Application" do
+      @application = create(
+        :deploy,
+        service_version: 'potato@123456'
+      ).application
+
+      visit basic_auth_url(root_url, @api_key.token)
+      visit root_url
+
+      click_on "Edit this application", match: :first
+
+      fill_in "Name", with: @application.name
+      fill_in "URL", with: @application.url
+      fill_in "Repository URL", with: @application.repository_url
+      fill_in "Branch", with: "main"
+      click_on "Update"
+
+      assert_text "Application was successfully updated"
+    end
+
+    test "should destroy Application" do
+      @application = create(
+        :deploy,
+        service_version: 'potato@123456'
+      ).application
+
+      visit basic_auth_url(root_url, @api_key.token)
+      visit application_url(@application)
+
+      click_on "Destroy"
+
+      assert_text "Application was successfully destroyed"
+    end
   end
 end

@@ -109,7 +109,6 @@ GEM
       railties (>= 3.2)
     drb (2.2.0)
       ruby2_keywords
-    error_highlight (0.6.0)
     erubi (1.12.0)
     factory_bot (6.4.5)
       activesupport (>= 5.0.0)
@@ -386,7 +385,6 @@ DEPENDENCIES
   capybara
   debug
   dotenv-rails
-  error_highlight (>= 0.4.0)
   factory_bot_rails
   faker
   guard
@@ -398,6 +396,7 @@ DEPENDENCIES
   jbuilder
   litestack
   minitest-spec-rails
+  pry
   puma (>= 5.0)
   rails (~> 7.1.2)
   redis

@@ -14,8 +14,8 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
 
   describe "authenticated" do
     before do
-      ApiKey.create(token: ENV["SHIPYRD_API_KEY"])
-      @auth_headers = {Authorization: ActionController::HttpAuthentication::Basic.encode_credentials("", ENV["SHIPYRD_API_KEY"])}
+      @api_key = ApiKey.create
+      @auth_headers = {Authorization: ActionController::HttpAuthentication::Basic.encode_credentials("", @api_key.token)}
     end
 
     test "should get index" do
