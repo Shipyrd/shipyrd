@@ -27,7 +27,7 @@ jobs:
         bundler-cache: true
 
     - name: Run tests
-      run: bundle exec bin/rails test
+      run: bundle exec rails test
 
     - name: Run system tests
-      run: bundle exec bin/rails test:system
+      run: bundle exec rails test:system
