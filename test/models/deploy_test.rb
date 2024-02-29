@@ -80,4 +80,21 @@ class DeployTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe "find or create destination" do
+    it "creates the main destination" do
+      deploy = create(:deploy, service_version: "heyo@abcdef12")
+
+      assert "main", deploy.application.destinations.first.name
+    end
+
+    it "uses existing destination" do
+      application = create(:application, key: "heyo")
+      application.destinations.create(name: :production)
+
+      assert_no_difference("Destination.count") do
+        assert create(:deploy, service_version: "heyo@abcdef12", destination: :production)
+      end
+    end
+  end
 end

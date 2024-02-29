@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :deploys, foreign_key: :performer, primary_key: :username
+
   # TODO: Queue with a lite service?
 
   def populate_avatar_url

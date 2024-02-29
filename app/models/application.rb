@@ -1,22 +1,17 @@
 class Application < ApplicationRecord
   has_many :deploys, dependent: :destroy, foreign_key: :service, primary_key: :key
+  has_many :destinations, dependent: :destroy
 
   broadcasts
 
   validates :key, presence: true
 
   def destination_names
-    destinations.map do |d|
-      d.present? ? d.humanize : "Default"
-    end
+    destinations.group(:name).pluck(:name)
   end
 
   def display_name
     name || key
-  end
-
-  def destinations
-    deploys.group(:destination).pluck(:destination)
   end
 
   def current_status(destination:)

@@ -14,18 +14,20 @@ class ApplicationTest < ActiveSupport::TestCase
   end
 
   describe "destinations" do
-    it "fetches destinations from known deploys" do
-      create(:deploy, service: application.key, destination: :production)
-      create(:deploy, service: application.key, destination: :staging)
+    let(:service_version) { "#{application.key}@123" }
 
-      assert_equal ["production", "staging"], application.destinations
+    it "fetches destinations from known deploys" do
+      create(:deploy, service_version: service_version, destination: :production)
+      create(:deploy, service_version: service_version, destination: :staging)
+
+      assert_equal ["production", "staging"], application.reload.destination_names
     end
 
     it "adds in a default destination name" do
-      create(:deploy, service: application.key)
-      create(:deploy, service: application.key, destination: :production)
+      create(:deploy, service_version: service_version)
+      create(:deploy, service_version: service_version, destination: :production)
 
-      assert_equal ["Default", "Production"], application.destination_names.sort
+      assert_equal [nil, "production"], application.reload.destination_names
     end
   end
 

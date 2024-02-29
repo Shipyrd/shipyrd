@@ -2,6 +2,7 @@ class Deploy < ApplicationRecord
   before_validation :set_service_name
   before_validation :find_or_create_application
   before_validation :find_or_create_user
+  before_validation :find_or_create_destination
 
   belongs_to :application, foreign_key: "service", primary_key: "key", optional: true, touch: true
   belongs_to :user, foreign_key: :performer, primary_key: :username
@@ -49,7 +50,7 @@ class Deploy < ApplicationRecord
   def find_or_create_application
     return true if application
 
-    create_application(
+    create_application!(
       # This is automatically handled in the association but leaving
       # this here to highlight the magic.
       key: service
@@ -61,6 +62,14 @@ class Deploy < ApplicationRecord
 
     create_user(
       username: performer
+    )
+  end
+
+  def find_or_create_destination
+    return true if application.destination_names.include?(destination)
+
+    application.destinations.create(
+      name: destination
     )
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_09_022513) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_11_022620) do
   create_table "api_keys", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -19,13 +19,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_09_022513) do
 
   create_table "applications", force: :cascade do |t|
     t.string "name"
-    t.string "url"
-    t.string "environment"
     t.string "repository_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "key"
-    t.string "branch", default: "main"
   end
 
   create_table "deploys", force: :cascade do |t|
@@ -45,6 +42,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_09_022513) do
     t.string "service"
   end
 
+  create_table "destinations", force: :cascade do |t|
+    t.string "url"
+    t.string "name", default: "default"
+    t.string "branch", default: "main"
+    t.integer "application_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_id"], name: "index_destinations_on_application_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "avatar_url"
@@ -52,4 +59,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_09_022513) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "destinations", "applications"
 end
