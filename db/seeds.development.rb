@@ -7,7 +7,6 @@ bacon = Application.find_or_create_by(key: :bacon)
 bacon.update(
   name: "Bacon",
   key: :bacon,
-  url: "https://bacon.io",
   repository_url: "https://github.com/nickhammond/bacon"
 )
 
@@ -16,7 +15,6 @@ eggs = Application.find_or_create_by(key: :eggs)
 eggs.update(
   name: "Eggs",
   key: :eggs,
-  url: "https://eggs.io",
   repository_url: "https://github.com/nickhammond/eggs"
 )
 
@@ -25,7 +23,6 @@ ham = Application.find_or_create_by(key: :ham)
 ham.update(
   name: "Ham",
   key: :ham,
-  url: "https://ham.io",
   repository_url: "https://github.com/nickhammond/ham"
 )
 
