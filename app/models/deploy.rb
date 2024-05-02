@@ -34,6 +34,20 @@ class Deploy < ApplicationRecord
     user&.avatar_url
   end
 
+  # TODO: Just replace the status with an enum? What about custom statuses?
+  def progress_value
+    case status
+    when "pre-connect"
+      1
+    when "pre-build"
+      2
+    when "pre-deploy"
+      3
+    when "post-deploy"
+      4
+    end
+  end
+
   private
 
   def service_version_is_valid

@@ -4,7 +4,10 @@ The simple deployment dashboard for Kamal based deployments.
 
 ## Setup
 
-There's two main parts to getting started with Shipyrd. The first part is getting Shipyrd running as an accessory within your existing Kamal setup. The second is enabling the various hooks that Kamal supports to update the deploy state in Shipyrd.
+There's two main parts to getting started with Shipyrd. 
+
+1. Running Shipyrd as an accessory within your existing Kamal setup. 
+2. Enable the various hooks that Kamal supports to update the deploy state in Shipyrd.
 
 ### Add shipyrd as an accessory
 
