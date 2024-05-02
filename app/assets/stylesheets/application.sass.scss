@@ -2,10 +2,10 @@
 
 :root {
   // --accent: #42dca3;
-  --grey: "grey";
-  --orange: "orange";
-  --yellow: "yellow";
-  --green: "green";
+  --grey: grey;
+  --orange: orange;
+  --yellow: yellow;
+  --green: green;
 }
 
 .aside_naked {
@@ -15,18 +15,22 @@
   padding-right: 0;
 }
 
-$colors: "grey","orange","yellow","green";
+$colors: grey,orange,yellow,green;
 
 @each $color in $colors {
-  .#{$color} {
-    color: var(--#{$color});
+  .#{"" + $color} {
+    color: var(--#{"" + $color});
   }
 
-  progress.#{$color} {
-    --accent: var(--#{$color});
+  progress.#{"" + $color} {
+    --accent: var(--#{"" + $color});
   }
 }
 
-main a, a:visited {
-  color: #303030 !important;
+main a, main a:visited {
+  color: #303030;
+}
+
+main a.button {
+  color: white;
 }

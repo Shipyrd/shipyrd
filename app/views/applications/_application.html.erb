@@ -1,7 +1,7 @@
 <%= turbo_stream_from application %>
 <div id="<%= dom_id application %>">
   <h2><%= link_to application.display_name, edit_application_url(application) %></h2>
-  <% application.destinations.each_with_index do |destination, i| %>
+  <% application.destinations.order("created_at DESC").each_with_index do |destination, i| %>
     <% deploy = application.latest_deploy(destination: destination.name) %>
       <article>
         <kbd><%= link_to destination.name %></kbd>
@@ -9,7 +9,13 @@
         <% if deploy %>
           <% color = application_status_color(deploy.status) %>
           <p>
-            <label class="<%= color %> for="status"><%= deploy.status%></label>
+            <label for="status">
+              <em><%= deploy.status%></em>
+              <% if deploy.runtime.present? %>
+                <cite><%= deploy.runtime %>s</cite>
+              <% end %>
+            </label>
+
             <progress class="<%= color %>" id="status" max="4" value="<%= deploy.progress_value %>"></progress>
           </p>
 
@@ -30,9 +36,6 @@
               <%= time_ago_in_words(deploy.recorded_at) %> ago
             </time>
 
-            <% if deploy.runtime.present? %>
-              <cite><%= deploy.runtime %>s</cite>
-            <% end %>
           <p>
         <% end %>
       </article>
