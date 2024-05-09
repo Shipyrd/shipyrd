@@ -3,10 +3,6 @@
     <p class="notice" id="notice"><%= notice %></p>
   <% end %>
 
-  <div class="flex justify-between items-center">
-    <%= link_to image_tag("logo.png", width: 100), root_url %>
-  </div>
-
   <% if @applications.empty? %>
     <div class="rounded-lg border border-gray-200 bg-white my-5">
       <div class="items-center border-gray-200 border-b rounded-t-lg bg-gray-50">
