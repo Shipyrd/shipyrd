@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+
     <%= favicon_link_tag "favicon.png" %>
     <%= javascript_importmap_tags %>
     <%= hotwire_livereload_tags if Rails.env.development? %>
   </head>
 
   <body>
-    <main class="container mx-auto mt-5 px-5 flex">
+    <main>
+      <%= link_to image_tag("logo.png", width: 125), root_url %>
+
       <%= yield %>
     </main>
   </body>

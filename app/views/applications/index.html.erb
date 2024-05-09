@@ -1,11 +1,7 @@
 <div class="w-full">
   <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+    <p class="notice" id="notice"><%= notice %></p>
   <% end %>
-
-  <div class="flex justify-between items-center">
-    <%= link_to image_tag("logo.png", width: 100), root_url %>
-  </div>
 
   <% if @applications.empty? %>
     <div class="rounded-lg border border-gray-200 bg-white my-5">
@@ -25,7 +21,5 @@
       </div>
     </div>
   <% else %>
-    <ul role="list" class="divide-y divide-gray-100">
-      <%= render @applications %>
-    </ul>
+    <%= render @applications %>
   <% end %>

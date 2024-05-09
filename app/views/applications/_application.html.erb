@@ -1,76 +1,43 @@
 <%= turbo_stream_from application %>
-
 <div id="<%= dom_id application %>">
-  <div>
-    <div class="rounded-lg border border-gray-200 bg-white my-5">
-      <div class="items-center border-gray-200 border-b rounded-t-lg bg-gray-50">
-        <h2 class="text-base font-semibold leading-6 border-gray-200 text-gray-900 pb-5 px-4 pt-5">
-          <%= application.display_name %>
-          <span class="mt-1 text-sm text-gray-400 text-underline float-right">
-            <%= link_to heroicon('cog-8-tooth', variant: :outline), edit_application_url(application), class: 'w-4 h-4', title: 'Edit this application' %>
-          </span>
-        </h2>
-      </div>
+  <h2><%= link_to application.display_name, edit_application_url(application), title: 'Edit this application' %></h2>
+  <% application.destinations.order("created_at DESC").each_with_index do |destination, i| %>
+    <% deploy = application.latest_deploy(destination: destination.name) %>
+      <article>
+        <kbd><%= destination.name %></kbd>
 
-      <p class="mt-1 text-sm text-gray-500"></p>
-
-      <% destination_count = application.destinations.count %>
-      <% application.destination_names.each_with_index do |destination, i| %>
-        <% deploy = application.latest_deploy(destination: destination) %>
-
-        <div class="<%= i+1 == destination_count ? nil : 'border-b' %> border-gray-200 py-2 mb-2 px-6">
-          <li class="flex items-center justify-between gap-x-6 py-5">
-            <div class="min-w-0">
-              <div class="flex items-start">
-                <% if destination.present? %>
-                  <p class="mr-2 text-sm font-semibold leading-6 text-gray-900"><%= destination %></p>
-                <% end %>
-
-                <span class="tailwind hidden text-slate-700 bg-slate-50 ring-slate-600/20 text-orange-700 bg-orange-50 ring-orange-600/20 text-yellow-700 bg-yellow-50 ring-yellow-600/20 text-green-700 bg-green-50 ring-green-600/20"></span>
-
-                <% if deploy %>
-                  <% color = application_status_color(deploy.status) %>
-
-                  <p class="<%= deploy.status == 'post-deploy' ? nil : 'animate-pulse' %> rounded-md whitespace-nowrap mt-0.5 px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset text-<%= color %>-700 bg-<%= color %>-50 ring-<%= color %>-600/20">
-                    <%= deploy.status %>
-                  </p>
-
-                  <% if deploy.status == 'post-deploy' && deploy.runtime.present? %>
-                    <p class="rounded-md whitespace-nowrap ml-2 mt-0.5 px-1.5 py-0.5 text-xs font-medium text-neutral-700 bg-neutral-100">
-                      <%= deploy.runtime %>s
-                    </p>
-                  <% end %>
-                <% end %>
-              </div>
-              <div class="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
-                <% if deploy %>
-                  <p class="whitespace-nowrap">
-                    <time datetime="<%= deploy.recorded_at %>">
-                      <%= time_ago_in_words(deploy.recorded_at) %> ago
-                    </time>
-                  </p>
-                  <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 fill-current">
-                    <circle cx="1" cy="1" r="1" />
-                  </svg>
-
-                  <% if deploy.performer_avatar %>
-                    <%= image_tag deploy.performer_avatar, width: 25, class: 'shadow rounded-full max-w-full h-auto align-middle border-none' %>
-                  <% else %>
-                    <p>by <%= deploy.performer %></p>
-                  <% end %>
-                <% end %>
-              </div>
-            </div>
-            <div class="flex flex-none items-center gap-x-4">
-              <% if deploy && deploy.compare_url.present? %>
-                <a href="<%= deploy.compare_url %>" target="_blank" class="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block">Compare changes</a>
+        <% if deploy %>
+          <% color = application_status_color(deploy.status) %>
+          <p>
+            <label for="status">
+              <em><%= deploy.status%></em>
+              <% if deploy.runtime.present? %>
+                <cite><%= deploy.runtime %>s</cite>
               <% end %>
-            </div>
-          </li>
-        </div>
-      <% end %>
-    </div>
-  </div>
+            </label>
+
+            <progress class="<%= color %>" id="status" max="4" value="<%= deploy.progress_value %>"></progress>
+          </p>
+
+          <aside class="aside_naked">
+            <% if deploy.compare_url.present? %>
+              <%= link_to "Compare changes", deploy.compare_url, target: "_blank", class: "button" %>
+            <% end %>
+          </aside>
+
+          <p>
+            <% if deploy.performer_avatar %>
+              <%= image_tag deploy.performer_avatar, width: 25 %>
+            <% else %>
+              <p>by <%= deploy.performer %></p>
+            <% end %>
+
+            <time datetime="<%= deploy.recorded_at %>">
+              <%= time_ago_in_words(deploy.recorded_at) %> ago
+            </time>
+
+          <p>
+        <% end %>
+      </article>
+  <% end %>
 </div>
-
-

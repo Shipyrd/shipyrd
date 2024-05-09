@@ -2,7 +2,7 @@ module ApplicationHelper
   def application_status_color(status)
     case status
     when "pre-connect"
-      "slate"
+      "grey"
     when "pre-build"
       "orange"
     when "pre-deploy"
