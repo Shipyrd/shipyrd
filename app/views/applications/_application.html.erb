@@ -4,7 +4,7 @@
   <% application.destinations.order("created_at DESC").each_with_index do |destination, i| %>
     <% deploy = application.latest_deploy(destination: destination.name) %>
       <article>
-        <kbd><%= destination.name %></kbd>
+        <kbd><%= link_to_if destination.url.present?, destination.name, destination.url, target: '_blank' %></kbd>
 
         <% if deploy %>
           <% color = application_status_color(deploy.status) %>

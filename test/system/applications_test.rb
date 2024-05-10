@@ -61,7 +61,10 @@ class ApplicationsTest < ApplicationSystemTestCase
         status: 'post-deploy'
       )
 
-      assert_content "production"
+      destination = @deploy.application.destinations.first
+      destination.update(url: 'https://production.com')
+
+      assert_link "production", href: destination.url
     end
 
     test "should update Application" do
