@@ -12,7 +12,6 @@ gem "stimulus-rails"
 gem "jbuilder"
 gem "bootsnap", require: false
 gem "redis"
-gem "heroicon"
 gem "litestack"
 
 group :development, :test do

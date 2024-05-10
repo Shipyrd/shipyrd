@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+docker build . -t shipyrd-local
+docker run --rm -it --platform linux/amd64 shipyrd-local "${@}"

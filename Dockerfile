@@ -24,7 +24,8 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
 # Install application gems
 COPY Gemfile Gemfile.lock .ruby-version ./
 
-RUN --mount=type=cache,id=gem-cache,sharing=locked,target=/srv/vendor \
+RUN --mount=type=cache,id=gem-cache-3.3,sharing=locked,target=/srv/vendor \
+    find /srv/vendor -type d -wholename 'ruby/3.3.0' -delete && \
     bundle config set app_config .bundle && \
     bundle config set path /srv/vendor && \
     bundle install --jobs 8 --deployment --without="development test toolbox" && \
