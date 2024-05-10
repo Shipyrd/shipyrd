@@ -16,8 +16,8 @@ class ApplicationsTest < ApplicationSystemTestCase
     it "points to setup instructions" do
       visit basic_auth_url(root_url, @api_key.token)
 
-      assert_text "No deploy information found yet"
-      click_link "Setup instructions"
+      assert_text "Waiting for a deploy to start..."
+      assert_link "Setup instructions", href: "https://github.com/shipyrd/shipyrd"
     end
   end
 
