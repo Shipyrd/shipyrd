@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-export SECRET_KEY_BASE=`./bin/secret-key-base`
+echo "SECRET_KEY_BASE=`./bin/secret-key-base`" >> ~/.profile
 
 if [ "${*}" == "./bin/rails server" ]; then
   # Create and prepare the database
