@@ -28,7 +28,7 @@ RUN --mount=type=cache,id=gem-cache-3.3,sharing=locked,target=/srv/vendor \
     find /srv/vendor -type d -wholename 'ruby/3.3.0' -delete && \
     bundle config set app_config .bundle && \
     bundle config set path /srv/vendor && \
-    bundle install --jobs 8 --deployment --without="development test toolbox" && \
+    bundle install --jobs 8 --deployment --without="development test" && \
     bundle clean && \
     mkdir -p vendor && \
     bundle config set --local path vendor && \
@@ -39,9 +39,6 @@ RUN --mount=type=cache,id=gem-cache-3.3,sharing=locked,target=/srv/vendor \
 
 # Copy application code
 COPY . .
-
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN --mount=type=cache,id=bld-assets-cache,sharing=locked,target=tmp/cache/assets \
