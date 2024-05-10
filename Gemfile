@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "3.2.2"
+ruby file: '.ruby-version'
 
 gem "rails", "~> 7.1.2"
 gem "dotenv-rails"
