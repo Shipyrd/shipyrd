@@ -44,3 +44,9 @@ Dockerfile
 Guardfile
 Procfile.dev
 /test
+.DS_Store
+.gitignore
+/db/development
+/db/production
+/db/test
+tmp/local_secret.txt
