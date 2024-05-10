@@ -1,0 +1,60 @@
+@import url("simple.min.css");
+
+:root {
+  /* --accent: #42dca3; */
+  --grey: grey;
+  --orange: orange;
+  --yellow: yellow;
+  --green: green;
+}
+
+.aside_naked {
+  border: 0;
+  background: none;
+  text-align: right;
+  padding-right: 0;
+}
+
+.grey {
+  color: var(--grey);
+}
+
+progress.grey {
+  --accent: var(--grey);
+}
+
+.orange {
+  color: var(--orange);
+}
+
+progress.orange {
+  --accent: var(--orange);
+}
+
+.yellow {
+  color: var(--yellow);
+}
+
+progress.yellow {
+  --accent: var(--yellow);
+}
+
+.green {
+  color: var(--green);
+}
+
+progress.green {
+  --accent: var(--green);
+}
+
+main a, main a:visited {
+  color: #303030;
+}
+
+main a.button {
+  color: white;
+}
+
+.w-full {
+  width: 100%;
+}
