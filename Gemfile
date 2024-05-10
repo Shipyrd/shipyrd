@@ -10,6 +10,7 @@ gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
+gem "bootsnap", require: false
 gem "redis"
 gem "litestack"
 

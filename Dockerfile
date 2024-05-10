@@ -40,6 +40,9 @@ RUN --mount=type=cache,id=gem-cache-3.3,sharing=locked,target=/srv/vendor \
 # Copy application code
 COPY . .
 
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile app/ lib/
+
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN --mount=type=cache,id=bld-assets-cache,sharing=locked,target=tmp/cache/assets \
     SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
