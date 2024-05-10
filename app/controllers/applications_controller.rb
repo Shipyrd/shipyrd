@@ -51,6 +51,10 @@ class ApplicationsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def application_params
-    params.require(:application).permit(:name, :repository_url)
+    params.require(:application).permit(
+      :name,
+      :repository_url,
+      destinations_attributes: %i[id name branch url _destroy]
+    )
   end
 end

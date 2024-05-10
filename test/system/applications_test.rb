@@ -67,7 +67,8 @@ class ApplicationsTest < ApplicationSystemTestCase
     test "should update Application" do
       @application = create(
         :deploy,
-        service_version: 'potato@123456'
+        service_version: 'potato@123456',
+        destination: 'production'
       ).application
 
       visit basic_auth_url(root_url, @api_key.token)
@@ -77,7 +78,10 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       fill_in "Name", with: @application.name
       fill_in "Repository URL", with: @application.repository_url
-      fill_in "Branch", with: "main"
+      within_fieldset "production" do
+        fill_in "Branch", with: "main"
+        fill_in "URL", with: "https://production.com"
+      end
       click_on "Update"
 
       assert_text "Application was successfully updated"

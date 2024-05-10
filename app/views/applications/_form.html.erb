@@ -11,6 +11,8 @@
     </div>
   <% end %>
 
+  <h3>Application details</h3>
+
   <div class="my-5">
     <%= form.label :name %>
     <%= form.text_field :name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
@@ -21,10 +23,32 @@
     <%= form.text_field :repository_url, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :branch %>
-    <%= form.text_field :branch, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+  <h3>Destinations</h3>
+
+  <% application.destinations.each do |destination| %>
+    <%= form.fields_for :destinations, destination do |d| %>
+      <fieldset>
+        <legend><%= d.object.name %></h3></legend>
+
+        <div>
+          <%= d.label :branch %>
+          <%= d.text_field :branch, class: "w-full" %>
+        </div>
+
+        <div>
+          <%= d.label :url %>
+          <%= d.text_field :url, class: "w-full" %>
+        </div>
+
+        <div>
+          <%= d.label :_destroy do %>
+            <%= d.check_box :_destroy %>
+            Remove this destination
+          <% end %>
+        </div>
+      </fieldset>
+    <% end %>
+  <% end %>
 
   <br>
   <%= form.submit %>

@@ -6,6 +6,8 @@ class Application < ApplicationRecord
 
   validates :key, presence: true
 
+  accepts_nested_attributes_for :destinations, allow_destroy: true
+
   def destination_names
     destinations.group(:name).pluck(:name)
   end
