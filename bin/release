@@ -1,0 +1,11 @@
+#!/bin/bash -eux
+
+VERSION=$1
+
+echo $VERSION > VERSION
+
+git add VERSION
+git commit -m "Bump version to $VERSION"
+git push
+git tag v$VERSION
+git push --tags
