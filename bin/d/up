@@ -1,0 +1,4 @@
+#!/bin/bash -xe
+
+./bin/d/build
+docker run --rm -it --platform linux/amd64 --publish 3100:3000 --env-file .env shipyrd-local

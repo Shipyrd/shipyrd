@@ -183,7 +183,7 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.0.2)
+    marcel (1.0.4)
     matrix (0.4.2)
     method_source (1.0.0)
     mini_mime (1.1.5)
@@ -193,14 +193,14 @@ GEM
       railties (>= 4.1)
     mutex_m (0.2.0)
     nenv (0.3.0)
-    net-imap (0.4.9.1)
+    net-imap (0.4.11)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
     net-protocol (0.2.2)
       timeout
-    net-smtp (0.4.0.1)
+    net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.0)
     nokogiri (1.16.0-aarch64-linux)
