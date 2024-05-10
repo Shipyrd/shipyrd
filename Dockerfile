@@ -24,7 +24,7 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     apt-get install --no-install-recommends -y build-essential git
 
 # Install application gems
-COPY Gemfile Gemfile.lock ./
+COPY Gemfile Gemfile.lock .ruby-version ./
 
 RUN --mount=type=cache,id=gem-cache,sharing=locked,target=/srv/vendor \
     bundle config set app_config .bundle && \
