@@ -2,17 +2,10 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   describe "populate_avatar_url" do
-    it "with unknown username" do
-      stub_request(:get, "https://api.github.com/users/haxor").
-        to_return(
-          body: { message: "Not Found" }.to_json,
-          status: 404
-          )
-
+    it "with local user" do
       user = create(:user, username: "haxor")
 
-      user.populate_avatar_url
-
+      assert_equal "haxor", user.username
       assert_nil user.avatar_url
     end
 
@@ -23,11 +16,10 @@ class UserTest < ActiveSupport::TestCase
           status: 404
         )
 
-      user = create(:user, username: "nickhammond")
+      user = create(:user, username: "https://github.com/nickhammond")
 
-      user.populate_avatar_url
-
-      assert_equal user.avatar_url, "https://avatars.githubusercontent.com/u/17698?v=4&s=100"
+      assert_equal "nickhammond", user.username
+      assert_equal "https://avatars.githubusercontent.com/u/17698?v=4&s=100", user.avatar_url
     end
   end
 end
