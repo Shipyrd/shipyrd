@@ -27,8 +27,8 @@ class ApplicationsTest < ApplicationSystemTestCase
         :deploy,
         service_version: "potato@123456",
         command: :deploy,
-        status: 'pre-build',
-        version: '123456'
+        status: "pre-build",
+        version: "123456"
       )
     end
 
@@ -45,9 +45,9 @@ class ApplicationsTest < ApplicationSystemTestCase
         :deploy,
         service_version: "potato@123456",
         command: :deploy,
-        status: 'post-deploy',
-        version: '123456',
-        performer: 'Nick'
+        status: "post-deploy",
+        version: "123456",
+        performer: "Nick"
       )
 
       assert_content "post-deploy"
@@ -57,12 +57,12 @@ class ApplicationsTest < ApplicationSystemTestCase
         :deploy,
         service_version: "potato@123456",
         command: :deploy,
-        destination: 'production',
-        status: 'post-deploy'
+        destination: "production",
+        status: "post-deploy"
       )
 
       destination = @deploy.application.destinations.first
-      destination.update(url: 'https://production.com')
+      destination.update(url: "https://production.com")
 
       assert_link "production", href: destination.url
     end
@@ -70,8 +70,8 @@ class ApplicationsTest < ApplicationSystemTestCase
     test "should update Application" do
       @application = create(
         :deploy,
-        service_version: 'potato@123456',
-        destination: 'production'
+        service_version: "potato@123456",
+        destination: "production"
       ).application
 
       visit basic_auth_url(root_url, @api_key.token)
@@ -93,7 +93,7 @@ class ApplicationsTest < ApplicationSystemTestCase
     test "should destroy Application" do
       @application = create(
         :deploy,
-        service_version: 'potato@123456'
+        service_version: "potato@123456"
       ).application
 
       visit basic_auth_url(root_url, @api_key.token)

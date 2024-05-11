@@ -15,8 +15,8 @@ class DeployTest < ActiveSupport::TestCase
         :deploy,
         application: application,
         command: :deploy,
-        status: 'post-deploy',
-        version: 'previous-sha'
+        status: "post-deploy",
+        version: "previous-sha"
       )
       deploy = create(
         :deploy,
@@ -76,7 +76,6 @@ class DeployTest < ActiveSupport::TestCase
 
         assert_equal user, deploy.user
       end
-
     end
   end
 

@@ -15,10 +15,10 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
             deploy: {
               command: "deploy",
               recorded_at: Time.now,
-              performer: 'nick',
-              version: '123456',
-              service_version: 'potato@123456',
-              status: 'pre-build'
+              performer: "nick",
+              version: "123456",
+              service_version: "potato@123456",
+              status: "pre-build"
             }
 
           },
@@ -37,13 +37,13 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
               command: "app",
               subcommand: "exec",
               recorded_at: Time.now,
-              performer: 'nick',
-              version: '123456',
-              service_version: 'potato@123456',
-              status: 'pre-build',
-              hosts: '127.0.0.1',
-              destination: 'production',
-              role: 'web',
+              performer: "nick",
+              version: "123456",
+              service_version: "potato@123456",
+              status: "pre-build",
+              hosts: "127.0.0.1",
+              destination: "production",
+              role: "web",
               runtime: 120
             }
 
