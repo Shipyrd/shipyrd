@@ -3,7 +3,7 @@ require "helpers/basic_auth_helpers"
 
 class ApplicationsTest < ApplicationSystemTestCase
   setup do
-    @api_key = ApiKey.create
+    @api_key = ApiKey.create!
   end
 
   describe "initial setup" do
@@ -62,7 +62,7 @@ class ApplicationsTest < ApplicationSystemTestCase
       )
 
       destination = @deploy.application.destinations.first
-      destination.update(url: "https://production.com")
+      destination.update!(url: "https://production.com")
 
       assert_link "production", href: destination.url
     end

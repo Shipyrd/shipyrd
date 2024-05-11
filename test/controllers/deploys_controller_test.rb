@@ -4,7 +4,7 @@ require "helpers/basic_auth_helpers"
 class DeploysControllerTest < ActionDispatch::IntegrationTest
   describe "with api key" do
     setup do
-      @api_key = ApiKey.create
+      @api_key = ApiKey.create!
     end
 
     test "should create deploy with minimal information" do
@@ -14,7 +14,7 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
             format: :json,
             deploy: {
               command: "deploy",
-              recorded_at: Time.now,
+              recorded_at: Time.zone.now,
               performer: "nick",
               version: "123456",
               service_version: "potato@123456",
@@ -36,7 +36,7 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
             deploy: {
               command: "app",
               subcommand: "exec",
-              recorded_at: Time.now,
+              recorded_at: Time.zone.now,
               performer: "nick",
               version: "123456",
               service_version: "potato@123456",

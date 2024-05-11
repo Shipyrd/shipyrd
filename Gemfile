@@ -20,6 +20,7 @@ group :development, :test do
   gem "debug", platforms: %i[mri windows]
   gem "pry"
   gem "standard"
+  gem "standard-rails"
 end
 
 group :development do

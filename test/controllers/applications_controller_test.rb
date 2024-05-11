@@ -15,7 +15,7 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
 
   describe "authenticated" do
     before do
-      @api_key = ApiKey.create
+      @api_key = ApiKey.create!
       @auth_headers = auth_headers(@api_key.token)
     end
 

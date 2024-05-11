@@ -15,7 +15,7 @@ class User < ApplicationRecord
 
     return user if user.present?
 
-    user = User.create(username: username)
+    user = User.create!(username: username)
     user.populate_avatar_url if github_user
 
     user
@@ -26,8 +26,8 @@ class User < ApplicationRecord
     url = URI("https://api.github.com/users/#{username}")
     user_info = JSON.parse(Net::HTTP.get(url))
 
-    return unless user_info["avatar_url"].present?
+    return if user_info["avatar_url"].blank?
 
-    update(avatar_url: "#{user_info["avatar_url"]}&s=100")
+    update!(avatar_url: "#{user_info["avatar_url"]}&s=100")
   end
 end

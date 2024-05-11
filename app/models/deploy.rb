@@ -78,7 +78,7 @@ class Deploy < ApplicationRecord
   def find_or_create_destination
     return true if application.destination_names.include?(destination)
 
-    application.destinations.create(
+    application.destinations.create!(
       name: destination
     )
   end
