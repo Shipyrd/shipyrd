@@ -74,9 +74,7 @@ class Deploy < ApplicationRecord
   def find_or_create_user
     return true if user
 
-    create_user(
-      username: performer
-    )
+    self.user = User.find_or_create_performer(performer)
   end
 
   def find_or_create_destination

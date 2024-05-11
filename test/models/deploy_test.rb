@@ -48,6 +48,14 @@ class DeployTest < ActiveSupport::TestCase
           create(:deploy, performer: "greta")
         end
       end
+
+      it "creates a github user" do
+        User.any_instance.stubs(:populate_avatar_url)
+
+        assert_difference("User.count") do
+          create(:deploy, performer: "https:github.com/nickhammond")
+        end
+      end
     end
 
     describe "with a known user" do
@@ -58,6 +66,17 @@ class DeployTest < ActiveSupport::TestCase
 
         assert_equal user, deploy.user
       end
+
+      it "points to an existing github user" do
+        User.any_instance.stubs(:populate_avatar_url)
+
+        user = create(:user, username: "nickhammond")
+
+        deploy = create(:deploy, performer: "https://github.com/nickhammond")
+
+        assert_equal user, deploy.user
+      end
+
     end
   end
 

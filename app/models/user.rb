@@ -7,6 +7,16 @@ class User < ApplicationRecord
   # TODO: Queue with a lite service?
   before_create :populate_avatar_url
 
+  def self.find_or_create_performer(username)
+    username = if username =~ /github.com/
+      username.split('/').last
+    else
+      username
+    end
+
+    find_or_create_by(username: username)
+  end
+
   def populate_avatar_url
     return false unless username =~ /github.com/
 

@@ -193,6 +193,8 @@ GEM
     minitest-spec-rails (7.2.0)
       minitest (>= 5.0)
       railties (>= 4.1)
+    mocha (2.2.0)
+      ruby2_keywords (>= 0.0.5)
     msgpack (1.7.2)
     mutex_m (0.2.0)
     nenv (0.3.0)
@@ -386,6 +388,7 @@ DEPENDENCIES
   jbuilder
   litestack
   minitest-spec-rails
+  mocha
   propshaft
   pry
   puma (>= 5.0)

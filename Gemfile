@@ -33,6 +33,7 @@ end
 group :test do
   gem "minitest-spec-rails"
   gem "capybara"
+  gem "mocha"
   gem "selenium-webdriver"
   gem "webdrivers"
   gem "webmock"
