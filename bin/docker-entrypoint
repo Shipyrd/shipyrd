@@ -3,7 +3,7 @@
 SECRET_KEY_BASE=`./bin/secret-key-base`
 
 export SECRET_KEY_BASE
-echo "SECRET_KEY_BASE=$SECRET_KEY_BASE" >> ~/.bashrc
+echo "export SECRET_KEY_BASE=$SECRET_KEY_BASE" >> ~/.bashrc
 
 if [ "${*}" == "./bin/rails server" ]; then
   # Create and prepare the database
