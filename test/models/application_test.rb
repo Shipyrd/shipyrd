@@ -1,7 +1,7 @@
 require "test_helper"
 
 class ApplicationTest < ActiveSupport::TestCase
-  let(:application) { create(:application, key: 'bacon') }
+  let(:application) { create(:application, key: "bacon") }
 
   describe "display_name" do
     it "Prefers name over key" do
@@ -36,7 +36,7 @@ class ApplicationTest < ActiveSupport::TestCase
       create(
         :deploy,
         application: application,
-        status: 'pre-build',
+        status: "pre-build",
         command: :deploy,
         destination: :staging
       )

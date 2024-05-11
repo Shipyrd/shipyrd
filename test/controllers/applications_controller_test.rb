@@ -1,5 +1,5 @@
 require "test_helper"
-require 'helpers/basic_auth_helpers'
+require "helpers/basic_auth_helpers"
 
 class ApplicationsControllerTest < ActionDispatch::IntegrationTest
   setup do

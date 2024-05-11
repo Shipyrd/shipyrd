@@ -1,32 +1,33 @@
-require 'net/http'
-require 'json'
+require "net/http"
+require "json"
 
 class User < ApplicationRecord
   has_many :deploys, foreign_key: :performer, primary_key: :username
 
-  # TODO: Queue with a lite service?
-  before_create :populate_avatar_url
-
   def self.find_or_create_performer(username)
-    username = if username =~ /github.com/
-      username.split('/').last
+    username, github_user = if /github.com/.match?(username)
+      [username.split("/").last, true]
     else
-      username
+      [username, false]
     end
 
-    find_or_create_by(username: username)
+    user = find_by(username: username)
+
+    return user if user.present?
+
+    user = User.create(username: username)
+    user.populate_avatar_url if github_user
+
+    user
   end
 
+  # TODO: Queue with a lite service?
   def populate_avatar_url
-    return false unless username =~ /github.com/
-
-    self.username = username.split('/').last
-
     url = URI("https://api.github.com/users/#{username}")
     user_info = JSON.parse(Net::HTTP.get(url))
 
-    return unless user_info['avatar_url'].present?
+    return unless user_info["avatar_url"].present?
 
-    self.avatar_url = "#{user_info['avatar_url']}&s=100"
+    self.avatar_url = "#{user_info["avatar_url"]}&s=100"
   end
 end

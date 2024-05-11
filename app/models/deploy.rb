@@ -26,7 +26,7 @@ class Deploy < ApplicationRecord
     application.deploys.where(
       destination: destination,
       command: :deploy,
-      status: 'post-deploy'
+      status: "post-deploy"
     ).where.not(id: id).last
   end
 
