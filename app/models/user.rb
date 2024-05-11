@@ -28,6 +28,6 @@ class User < ApplicationRecord
 
     return unless user_info["avatar_url"].present?
 
-    self.avatar_url = "#{user_info["avatar_url"]}&s=100"
+    update(avatar_url: "#{user_info["avatar_url"]}&s=100")
   end
 end

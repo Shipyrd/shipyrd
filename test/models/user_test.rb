@@ -9,6 +9,7 @@ class UserTest < ActiveSupport::TestCase
         )
 
       user = User.find_or_create_performer("https://github.com/nickhammond")
+      user.reload
 
       assert_equal "https://avatars.githubusercontent.com/u/17698?v=4&s=100", user.avatar_url
     end
