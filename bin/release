@@ -4,6 +4,8 @@
 
 bundle exec rails test
 bundle exec rails test:system
+bundle exec standardrb
+bundle exec brakeman
 
 VERSION=$1
 
