@@ -1,10 +1,10 @@
 # Shipyrd
 
-The simple deployment dashboard for Kamal based deployments.
+The simple deployment dashboard for Kamal-based deployments.
 
 ## Setup
 
-There's two main parts to getting started with Shipyrd. 
+There's two main steps to getting started with Shipyrd.
 
 1. Running Shipyrd as an accessory within your existing Kamal setup. 
 2. Enable the various hooks that Kamal supports to update the deploy state in Shipyrd.
@@ -13,9 +13,9 @@ There's two main parts to getting started with Shipyrd.
 
 Within your Kamal accessories deploy configuration you'll need to add a new accessory for Shipyrd. Swap out the host IP address as well as the traefik host rule in the example below. You'll also want to point DNS towards this server unless you already have a wildcard record pointing to your host.
 
-The accessory configuration requires one secret which is the `SHIPYRD_API_KEY`. 
+The accessory configuration requires two secrets `SHIPYRD_API_KEY` and `SHIPYRD_HOST`.
 
-Generate an API key(`bin/rails secret` or your favorite key generator) and set it in your env file as `SHIPYRD_API_KEY`, this will be the password for basic HTTP authentication.
+Generate an API key(`bin/rails secret` or your favorite key generator) and set it in your env file as `SHIPYRD_API_KEY`, this will be the password for basic HTTP authentication. Set your `SHIPYRD_HOST` as a clear variable for the accessory.
 
 ``` yml
 accessories:
@@ -23,6 +23,8 @@ accessories:
     image: ghcr.io/shipyrd/shipyrd:main
     host: 867.530.9
     env:
+      clear:
+        SHIPYRD_HOST: shipyrd.myapp.com
       secret:
         - SHIPYRD_API_KEY
     labels:
@@ -32,7 +34,7 @@ accessories:
 
 ```
 
-The `volumes` map is where the sqlite database will be stored which contains basic deploy information.
+The `volumes` map is where the sqlite database will be stored which contains basic deploy information. For an overview of the information that's automatically collected with the Kamal hooks take a look at the documentation for the [shipyrd gem](https://shipyrd/shipyrd-gem).
 
 ### Configure your Kamal hooks
 
