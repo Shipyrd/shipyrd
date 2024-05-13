@@ -17,6 +17,10 @@
             </label>
 
             <progress class="<%= color %>" id="status" max="4" value="<%= deploy.progress_value %>"></progress>
+
+            <small>
+              <em><%= deploy.commit_message %></em>
+            </small>
           </p>
 
           <aside class="aside_naked">

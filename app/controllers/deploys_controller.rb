@@ -21,6 +21,7 @@ class DeploysController < ApplicationController
       :recorded_at,
       :status,
       :performer,
+      :commit_message,
       :version,
       :service_version,
       :service,

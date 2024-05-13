@@ -47,11 +47,13 @@ class ApplicationsTest < ApplicationSystemTestCase
         command: :deploy,
         status: "post-deploy",
         version: "123456",
-        performer: "Nick"
+        performer: "Nick",
+        commit_message: "Deploying the potato"
       )
 
       assert_content "post-deploy"
       assert_content "by Nick"
+      assert_content "Deploying the potato"
 
       create(
         :deploy,
