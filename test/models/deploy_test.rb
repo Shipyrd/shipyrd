@@ -29,7 +29,7 @@ class DeployTest < ActiveSupport::TestCase
     end
 
     it "renders nil if not github or gitlab" do
-      application.update(repository_url: nil)
+      application.update!(repository_url: nil)
       deploy = build(:deploy, application: application)
       assert_nil deploy.compare_url
     end
@@ -108,7 +108,7 @@ class DeployTest < ActiveSupport::TestCase
 
     it "uses existing destination" do
       application = create(:application, key: "heyo")
-      application.destinations.create(name: :production)
+      application.destinations.create!(name: :production)
 
       assert_no_difference("Destination.count") do
         assert create(:deploy, service_version: "heyo@abcdef12", destination: :production)

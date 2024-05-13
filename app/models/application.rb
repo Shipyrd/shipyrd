@@ -1,5 +1,5 @@
 class Application < ApplicationRecord
-  has_many :deploys, dependent: :destroy, foreign_key: :service, primary_key: :key
+  has_many :deploys, dependent: :destroy, foreign_key: :service, primary_key: :key, inverse_of: "application"
   has_many :destinations, dependent: :destroy
 
   broadcasts

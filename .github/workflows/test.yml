@@ -26,3 +26,9 @@ jobs:
 
       - name: Run system tests
         run: bundle exec rails test:system
+
+      - name: Run standardrb
+        run: bundle exec standardrb
+
+      - name: Run brakeman
+        run: bundle exec brakeman

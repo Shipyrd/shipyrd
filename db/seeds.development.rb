@@ -1,26 +1,26 @@
-ApiKey.find_or_create_by(
+ApiKey.find_or_create_by!(
   token: ENV["SHIPYRD_API_KEY"]
 )
 
-bacon = Application.find_or_create_by(key: :bacon)
+bacon = Application.find_or_create_by!(key: :bacon)
 
-bacon.update(
+bacon.update!(
   name: "Bacon",
   key: :bacon,
   repository_url: "https://github.com/nickhammond/bacon"
 )
 
-eggs = Application.find_or_create_by(key: :eggs)
+eggs = Application.find_or_create_by!(key: :eggs)
 
-eggs.update(
+eggs.update!(
   name: "Eggs",
   key: :eggs,
   repository_url: "https://github.com/nickhammond/eggs"
 )
 
-ham = Application.find_or_create_by(key: :ham)
+ham = Application.find_or_create_by!(key: :ham)
 
-ham.update(
+ham.update!(
   name: "Ham",
   key: :ham,
   repository_url: "https://github.com/nickhammond/ham"
@@ -37,8 +37,8 @@ applications.each do |application|
     (1..state).each do |i|
       stage = stages[i]
 
-      Deploy.create(
-        recorded_at: Time.now,
+      Deploy.create!(
+        recorded_at: Time.zone.now,
         status: stage,
         performer: "nickhammond",
         version: "7b3c0f04106366acfc7e1fcfe4b2e27f9667f8dc",
