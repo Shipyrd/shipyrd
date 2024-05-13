@@ -38,6 +38,7 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
               subcommand: "exec",
               recorded_at: Time.zone.now,
               performer: "nick",
+              commit_message: "New fancy things",
               version: "123456",
               service_version: "potato@123456",
               status: "pre-build",
