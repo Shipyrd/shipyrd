@@ -36,9 +36,11 @@
               <p>by <%= deploy.performer %></p>
             <% end %>
 
-            <time datetime="<%= deploy.recorded_at %>">
-              <%= time_ago_in_words(deploy.recorded_at) %> ago
-            </time>
+            <small>
+              <time datetime="<%= deploy.recorded_at %>">
+                <%= time_ago_in_words(deploy.recorded_at) %> ago
+              </time>
+            </small>
 
           <p>
         <% end %>
