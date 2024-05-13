@@ -41,6 +41,7 @@ applications.each do |application|
         recorded_at: Time.zone.now,
         status: stage,
         performer: "nickhammond",
+        commit_message: Faker::Hipster.sentence,
         version: "7b3c0f04106366acfc7e1fcfe4b2e27f9667f8dc",
         service_version: "#{application.key}@7b3c0f04",
         command: "deploy",
