@@ -2,7 +2,7 @@ require "net/http"
 require "json"
 
 class User < ApplicationRecord
-  has_many :deploys, foreign_key: :performer, primary_key: :username
+  has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
 
   def self.find_or_create_performer(username)
     username, github_user = if /github.com/.match?(username)
