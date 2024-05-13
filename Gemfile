@@ -15,6 +15,7 @@ gem "redis"
 gem "litestack"
 
 group :development, :test do
+  gem "brakeman"
   gem "factory_bot_rails"
   gem "faker"
   gem "debug", platforms: %i[mri windows]
