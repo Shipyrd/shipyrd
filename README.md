@@ -2,6 +2,8 @@
 
 The simple deployment dashboard for Kamal-based deployments.
 
+![](doc/images/demo.png)
+
 ## Setup
 
 There's two main steps to getting started with Shipyrd.

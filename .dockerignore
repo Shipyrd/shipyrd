@@ -50,3 +50,4 @@ Procfile.dev
 /db/production
 /db/test
 tmp/local_secret.txt
+/doc
