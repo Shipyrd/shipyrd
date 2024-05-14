@@ -47,8 +47,11 @@ progress.green {
   --accent: var(--green);
 }
 
-main a, main a:visited {
-  color: #303030;
+
+@media (prefers-color-scheme: light) {
+  main a, main a:visited {
+    color: #303030;
+  }
 }
 
 main a.button {
