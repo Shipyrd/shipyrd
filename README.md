@@ -2,7 +2,7 @@
 
 The simple deployment dashboard for Kamal-based deployments.
 
-![](doc/images/demo.png)
+<img src="doc/images/demo.png" border="1" />
 
 ## Setup
 
@@ -45,6 +45,14 @@ Setup the `shipyrd` gem in your Rails application.
 - Add the `shipyrd` gem to Bundler
 - Set `SHIPYRD_API_KEY` to the same API key you just configured within Kamal
 - Set `SHIPYRD_HOST` to the host you just set as a router for traefik
+
+If `SHIPYRD_HOST` and `SHIPYRD_API_KEY` are not available in your `ENV` and are in some other credentials store like Rails credentials, you can add an initializer to set both of these.
+
+*config/initializers/shipyrd.rb*
+``` ruby
+ENV["SHIPYRD_HOST"] = Rails.application.credentials.shipyrd_host
+ENV["SHIPYRD_API_KEY"] = Rails.application.credentials.shipyrd_api_key
+```
 
 *.kamal/hooks/pre-connect*
 ``` ruby
