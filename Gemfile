@@ -11,8 +11,8 @@ gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
 gem "bootsnap", require: false
-gem "redis"
 gem "litestack"
+gem "sqlite3"
 
 group :development, :test do
   gem "brakeman"

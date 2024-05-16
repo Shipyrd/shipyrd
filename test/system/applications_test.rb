@@ -45,13 +45,13 @@ class ApplicationsTest < ApplicationSystemTestCase
         :deploy,
         service_version: "potato@123456",
         command: :deploy,
-        status: "post-deploy",
+        status: "pre-deploy",
         version: "123456",
         performer: "Nick",
         commit_message: "Deploying the potato"
       )
 
-      assert_content "post-deploy"
+      assert_content "pre-deploy"
       assert_content "by Nick"
       assert_content "Deploying the potato"
 
@@ -63,7 +63,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         status: "post-deploy"
       )
 
-      destination = @deploy.application.destinations.first
+      destination = @deploy.application.destinations.find_by(name: "production")
       destination.update!(url: "https://production.com")
 
       assert_link "production", href: destination.url
