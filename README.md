@@ -22,7 +22,7 @@ Generate an API key(`bin/rails secret` or your favorite key generator) and set i
 ``` yml
 accessories:
   shipyrd:
-    image: ghcr.io/shipyrd/shipyrd:main
+    image: ghcr.io/shipyrd/shipyrd:v0.2.6
     host: 867.530.9
     env:
       clear:
@@ -30,29 +30,28 @@ accessories:
       secret:
         - SHIPYRD_API_KEY
     labels:
-      traefik.http.routers.myapp-shipyrd.rule: Host(`shipyrd.myapp.com`)
+      traefik.http.routers.YOURKAMALSERVICE-shipyrd.rule: Host(`shipyrd.myapp.com`)
     volumes:
       - data:/rails/db/production
 
 ```
 
+*Make sure you update the traefik router in the configuration above to match the name of your service so that it's "#{service}-shipyrd"*
+
 The `volumes` map is where the sqlite database will be stored which contains basic deploy information. For an overview of the information that's automatically collected with the Kamal hooks take a look at the documentation for the [shipyrd gem](https://shipyrd/shipyrd-gem).
+
+With your accessory added and `SHIPYRD_API_KEY` in your `.env` file for Kamal you should be able to push up your environment settings and then boot the Shipyrd accessory. 
+
+``` bash
+kamal env push
+kamal accessory boot shipyrd
+```
 
 ### Configure your Kamal hooks
 
-Setup the `shipyrd` gem in your Rails application.
+Setup the `shipyrd` gem in your Rails application by adding `shipyrd` to your *Gemfile* and then configure the various hooks.
 
-- Add the `shipyrd` gem to Bundler
-- Set `SHIPYRD_API_KEY` to the same API key you just configured within Kamal
-- Set `SHIPYRD_HOST` to the host you just set as a router for traefik
-
-If `SHIPYRD_HOST` and `SHIPYRD_API_KEY` are not available in your `ENV` and are in some other credentials store like Rails credentials, you can add an initializer to set both of these.
-
-*config/initializers/shipyrd.rb*
-``` ruby
-ENV["SHIPYRD_HOST"] = Rails.application.credentials.shipyrd_host
-ENV["SHIPYRD_API_KEY"] = Rails.application.credentials.shipyrd_api_key
-```
+If you're already using any of these hooks just place the below code in the hook at the point of success within the hook. If you're creating new hooks for all of these make sure that you make them all executable with `chmod +x .kamal/hooks/pre-connect` for example.
 
 *.kamal/hooks/pre-connect*
 ``` ruby
