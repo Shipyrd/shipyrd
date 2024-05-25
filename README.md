@@ -60,7 +60,7 @@ If you're already using any of these hooks just place the below code in the hook
 require 'bundler/setup'
 require 'shipyrd'
 
-Shipyrd.trigger('pre-connect')
+Shipyrd::Client.new.trigger('pre-connect')
 ```
 
 *.kamal/hooks/pre-build*
@@ -70,7 +70,7 @@ Shipyrd.trigger('pre-connect')
 require 'bundler/setup'
 require 'shipyrd'
 
-Shipyrd.trigger('pre-build')
+Shipyrd::Client.new.trigger('pre-build')
 ```
 
 *.kamal/hooks/pre-deploy*
@@ -80,7 +80,7 @@ Shipyrd.trigger('pre-build')
 require 'bundler/setup'
 require 'shipyrd'
 
-Shipyrd.trigger('pre-deploy')
+Shipyrd::Client.new.trigger('pre-deploy')
 ```
 
 *.kamal/hooks/post-deploy*
@@ -90,5 +90,5 @@ Shipyrd.trigger('pre-deploy')
 require 'bundler/setup'
 require 'shipyrd'
 
-Shipyrd.trigger('post-deploy')
+Shipyrd::Client.new.trigger('post-deploy')
 ```
