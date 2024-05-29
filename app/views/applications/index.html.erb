@@ -1,4 +1,8 @@
-<div class="w-full">
+<%= turbo_refreshes_with method: :morph, scroll: :preserve %>
+<%= turbo_stream_refresh_tag %>
+<%= turbo_stream_from :applications %>
+
+<div id="applications" class="w-full">
   <% if notice.present? %>
     <p class="notice" id="notice"><%= notice %></p>
   <% end %>

@@ -2,7 +2,8 @@ class Application < ApplicationRecord
   has_many :deploys, dependent: :destroy, foreign_key: :service, primary_key: :key, inverse_of: "application"
   has_many :destinations, dependent: :destroy
 
-  broadcasts
+  broadcasts_refreshes # For broadcasting on the index before there's an application record
+  broadcasts # For broadcasting deploys as they come in
 
   validates :key, presence: true
 

@@ -28,7 +28,7 @@
   <% application.destinations.each do |destination| %>
     <%= form.fields_for :destinations, destination do |d| %>
       <fieldset>
-        <legend><%= d.object.name %></h3></legend>
+        <legend><%= d.object.name %></legend>
 
         <div>
           <%= d.label :branch %>

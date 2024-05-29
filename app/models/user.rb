@@ -21,7 +21,7 @@ class User < ApplicationRecord
     user
   end
 
-  # TODO: Queue with a lite service?
+  # TODO: Queue this
   def populate_avatar_url
     url = URI("https://api.github.com/users/#{username}")
     user_info = JSON.parse(Net::HTTP.get(url))
