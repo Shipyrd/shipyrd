@@ -15,9 +15,25 @@ class ApplicationsTest < ApplicationSystemTestCase
 
     it "points to setup instructions" do
       visit basic_auth_url(root_url, @api_key.token)
+      visit root_url
 
       assert_text "Waiting for a deploy to start..."
       assert_link "Setup instructions", href: "https://github.com/shipyrd/shipyrd"
+
+      create(
+        :deploy,
+        service_version: "potato@123456",
+        command: :deploy,
+        status: "pre-deploy",
+        version: "123456",
+        performer: "Nick",
+        commit_message: "Deploying the potato"
+      )
+
+      assert_text "potato"
+      assert_text "pre-deploy"
+      assert_text "by Nick"
+      assert_text "Deploying the potato"
     end
   end
 
@@ -73,20 +89,24 @@ class ApplicationsTest < ApplicationSystemTestCase
       @application = create(
         :deploy,
         service_version: "potato@123456",
-        destination: "production"
+        command: :deploy,
+        destination: "production",
+        status: "pre-connect"
       ).application
 
       visit basic_auth_url(root_url, @api_key.token)
       visit root_url
+      sleep(1) # TODO: Turbo page navigation isn't refreshing properly with Capybara state
 
-      click_on "Edit this application", match: :first
+      click_link "Edit this application"
 
       fill_in "Name", with: @application.name
-      fill_in "Repository URL", with: @application.repository_url
+
       within_fieldset "production" do
         fill_in "Branch", with: "main"
         fill_in "URL", with: "https://production.com"
       end
+
       click_on "Update"
 
       assert_text "Application was successfully updated"

@@ -7,11 +7,11 @@ gem "dotenv-rails"
 gem "puma", ">= 5.0"
 gem "propshaft"
 gem "importmap-rails"
-gem "turbo-rails"
+gem "turbo-rails", github: "hotwired/turbo-rails" # for broadcasts_refreshes support
 gem "stimulus-rails"
 gem "jbuilder"
 gem "bootsnap", require: false
-gem "litestack"
+gem "solid_cable"
 gem "sqlite3"
 
 group :development, :test do
@@ -35,6 +35,7 @@ end
 group :test do
   gem "minitest-spec-rails"
   gem "capybara"
+  gem "launchy"
   gem "mocha"
   gem "selenium-webdriver"
   gem "webdrivers"
