@@ -2,6 +2,8 @@
 
 The simple deployment dashboard for Kamal-based deployments.
 
+For a more detailed project and concept overview check out the [initial announcement details](https://www.fromthekeyboard.com/shipyrd-the-dashboard-for-your-kamal-deployments/).
+
 <img src="doc/images/demo.png" border="1" />
 
 ## Setup
@@ -15,9 +17,9 @@ There's two main steps to getting started with Shipyrd.
 
 Within your Kamal accessories deploy configuration you'll need to add a new accessory for Shipyrd. Swap out the host IP address as well as the traefik host rule in the example below. You'll also want to point DNS towards this server unless you already have a wildcard record pointing to your host.
 
-The accessory configuration requires two secrets `SHIPYRD_API_KEY` and `SHIPYRD_HOST`.
+The accessory configuration requires two variables `SHIPYRD_API_KEY` and `SHIPYRD_HOST`.
 
-Generate an API key(`bin/rails secret` or your favorite key generator) and set it in your env file as `SHIPYRD_API_KEY`, this will be the password for basic HTTP authentication. Set your `SHIPYRD_HOST` as a clear variable for the accessory.
+Generate an API key(`bin/rails secret` or your favorite key generator) and set it in your env file(_.env_) as `SHIPYRD_API_KEY`, this will be the password for basic HTTP authentication. Set your `SHIPYRD_HOST` as a clear variable for the accessory.
 
 ``` yml
 accessories:
@@ -92,3 +94,12 @@ require 'shipyrd'
 
 Shipyrd::Client.new.trigger('post-deploy')
 ```
+
+### Deploy
+
+With the triggers added to your Kamal hooks you'll now be able to see your app go through the deploy process in Shipyrd. Once a deploy completes you'll then be able to see the changes that went out with a deploy, who deployed it, when it was last deployed, how long the deploy took. 
+
+
+## Contributing
+
+If you discover an issue, or are interested in a new feature, please open an issue. If you want to contribute code, feel free to open a pull request. If the PR is substantial, it may be beneficial to open an issue beforehand to discuss.
