@@ -22,7 +22,7 @@ Generate an API key(`bin/rails secret` or your favorite key generator) and set i
 ``` yml
 accessories:
   shipyrd:
-    image: ghcr.io/shipyrd/shipyrd:v0.2.6
+    image: shipyrd/shipyrd:v0.3.4
     host: 867.530.9
     env:
       clear:
