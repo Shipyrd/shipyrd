@@ -65,7 +65,8 @@ COPY --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
+    mkdir db/production && \
+    chown -R rails:rails db log storage tmp db/production
 
 RUN mkdir /shipyrd && chown rails:rails /shipyrd
 VOLUME /shipyrd
