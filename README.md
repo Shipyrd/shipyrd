@@ -98,6 +98,23 @@ Shipyrd::Client.new.trigger('post-deploy')
 
 With the triggers added to your Kamal hooks you'll now be able to see your app go through the deploy process in Shipyrd. Once a deploy completes you'll then be able to see the changes that went out with a deploy, who deployed it, when it was last deployed, how long the deploy took. 
 
+## Upgrading
+
+When you're ready to upgrade to a newer version of Shipyrd it's just a matter of bumping the version in your _deploy.yml_ file and then rebooting the accessory via Kamal.
+
+1. Change the version(`v0.3.5`) in the image reference line in your _deploy.yml_ file.
+
+```
+image: shipyrd/shipyrd:v0.3.5
+```
+
+2. Reboot the accessory via Kamal.
+
+```
+kamal accessory reboot shipyrd
+```
+
+The reboot command retains your data and just stops the container, removes the container, starts the container with the new version. Rebooting will cause a short downtime while the new container boots up, usually just a few seconds.
 
 ## Contributing
 
