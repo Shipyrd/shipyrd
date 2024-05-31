@@ -17,9 +17,9 @@ There's two main steps to getting started with Shipyrd.
 
 Within your Kamal accessories deploy configuration you'll need to add a new accessory for Shipyrd. Swap out the host IP address as well as the traefik host rule in the example below. You'll also want to point DNS towards this server unless you already have a wildcard record pointing to your host.
 
-The accessory configuration requires two variables `SHIPYRD_API_KEY` and `SHIPYRD_HOST`.
+The accessory configuration requires two secrets, `SHIPYRD_API_KEY` and `SHIPYRD_HOST`.
 
-Generate an API key(`bin/rails secret` or your favorite key generator) and set it in your env file(_.env_) as `SHIPYRD_API_KEY`, this will be the password for basic HTTP authentication. Set your `SHIPYRD_HOST` as a clear variable for the accessory.
+Generate an API key(`bin/rails secret` or your favorite key generator) and set it in your env file(_.env_) as `SHIPYRD_API_KEY`, this will be the password for basic HTTP authentication. `SHIPYRD_HOST` should also be set in your _.env_ file pointing to your host, `shipyrd.myapp.com` for example.
 
 ``` yml
 accessories:
@@ -27,10 +27,9 @@ accessories:
     image: shipyrd/shipyrd:v0.3.5
     host: 867.530.9
     env:
-      clear:
-        SHIPYRD_HOST: shipyrd.myapp.com
       secret:
         - SHIPYRD_API_KEY
+        - SHIPYRD_HOST
     labels:
       traefik.http.routers.YOURKAMALSERVICE-shipyrd.rule: Host(`shipyrd.myapp.com`)
     volumes:
