@@ -34,7 +34,7 @@ accessories:
     labels:
       traefik.http.routers.YOURKAMALSERVICE-shipyrd.rule: Host(`shipyrd.myapp.com`)
     volumes:
-      - data:/rails/db/production
+      - shipyrd:/rails/db/production
 
 ```
 
