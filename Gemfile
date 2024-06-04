@@ -12,7 +12,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 gem "bootsnap", require: false
 gem "solid_cable"
-gem "sqlite3"
+gem "sqlite3", "~> 1.7.3"
 
 group :development, :test do
   gem "brakeman"
