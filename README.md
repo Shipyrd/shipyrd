@@ -98,6 +98,14 @@ Shipyrd::Client.new.trigger('post-deploy')
 
 With the triggers added to your Kamal hooks you'll now be able to see your app go through the deploy process in Shipyrd. Once a deploy completes you'll then be able to see the changes that went out with a deploy, who deployed it, when it was last deployed, how long the deploy took. 
 
+### Customizing the deploy performer
+
+Kamal sets `ENV['KAMAL_PERFORMER']` to your username on your computer via `whoami`. Shipyrd will instead fetch your GitHub username from your local configuration if it's set since this helps with linking over to GitHub and avatars. You can set your GitHub username in your local configuration via:
+
+```
+gh config get -h github.com [USERNAME]
+```
+
 ## Upgrading
 
 When you're ready to upgrade to a newer version of Shipyrd it's just a matter of bumping the version in your _deploy.yml_ file and then rebooting the accessory via Kamal.
