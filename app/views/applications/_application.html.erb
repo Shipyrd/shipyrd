@@ -37,7 +37,7 @@
             <% end %>
 
             <small>
-              <time datetime="<%= deploy.recorded_at %>">
+              <time class="timeago" datetime="<%= deploy.recorded_at %>">
                 <%= time_ago_in_words(deploy.recorded_at) %> ago
               </time>
             </small>
