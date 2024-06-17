@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class ApplicationsHelperTest < ActionView::TestCase
   describe "application_status_color" do
@@ -19,12 +19,12 @@ class ApplicationsHelperTest < ActionView::TestCase
     it "returns the commit message if blank or unsupported repository url" do
       assert_equal "Changed this thing #22, #43", display_commit_message("Changed this thing #22, #43", @application)
 
-      @application.update(repository_url: "https://gitlab.com/u/r")
+      @application.update!(repository_url: "https://gitlab.com/u/r")
       assert_equal "Changed this thing #22", display_commit_message("Changed this thing #22", @application)
     end
 
     it "links to all issues if github repository URL is set" do
-      @application.update(repository_url: "https://github.com/u/r")
+      @application.update!(repository_url: "https://github.com/u/r")
       issues_url = "#{@application.repository_url}/issues"
 
       assert_equal(
