@@ -38,24 +38,22 @@ class ApplicationsTest < ApplicationSystemTestCase
   end
 
   describe "with an application avaiable" do
-    setup do
-      @deploy = create(
+    test "visiting the index" do
+      deploy = create(
         :deploy,
         service_version: "potato@123456",
         command: :deploy,
         status: "pre-build",
         version: "123456"
       )
-    end
 
-    test "visiting the index" do
       visit basic_auth_url(root_url, @api_key.token)
       visit root_url
 
       assert_selector "h2", text: "potato"
       assert_content "pre-build"
       assert_content "less than a minute ago"
-      assert_content "by #{@deploy.performer}"
+      assert_content "by #{deploy.performer}"
 
       create(
         :deploy,
@@ -71,7 +69,7 @@ class ApplicationsTest < ApplicationSystemTestCase
       assert_content "by Nick"
       assert_content "Deploying the potato"
 
-      create(
+      deploy = create(
         :deploy,
         service_version: "potato@123456",
         command: :deploy,
@@ -79,10 +77,23 @@ class ApplicationsTest < ApplicationSystemTestCase
         status: "post-deploy"
       )
 
-      destination = @deploy.application.destinations.find_by(name: "production")
+      destination = deploy.application.destinations.find_by(name: "production")
       destination.update!(url: "https://production.com")
 
       assert_link "production", href: destination.url
+
+      deploy = create(
+        :deploy,
+        service_version: "potato@123456",
+        command: :deploy,
+        status: "pre-deploy",
+        version: "123456",
+        performer: "Nick",
+        commit_message: "Deploying the potato #10"
+      )
+      deploy.application.update!(repository_url: "https://github.com/shipyrd/shipyrd")
+
+      assert_link "#10", href: "https://github.com/shipyrd/shipyrd/issues/10"
     end
 
     test "should update Application" do
