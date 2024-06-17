@@ -19,7 +19,7 @@
             <progress class="<%= color %>" id="status" max="4" value="<%= deploy.progress_value %>"></progress>
 
             <small>
-              <em><%= deploy.commit_message %></em>
+              <em><%= sanitize display_commit_message(deploy.commit_message, application), tags: %w(a), attributes: %w(href) %></em>
             </small>
           </p>
 
