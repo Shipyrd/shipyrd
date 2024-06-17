@@ -1,0 +1,26 @@
+default: &defaults
+  # Your app's name as reported on AppSignal.com. Required
+  name: "Shipyrd"
+
+  ignore_actions:
+    - "GET /up" # Ignore the /up endpoint for metrics
+
+  ignore_logs:
+    - "\"/up\"" # Ignore logs that contain "/up"
+
+  log: stdout
+
+# Configuration per environment, leave out an environment or set active
+# to false to not push metrics for that environment.
+development:
+  <<: *defaults
+  debug: true
+  active: false
+
+test:
+  <<: *defaults
+  active: false
+
+production:
+  <<: *defaults
+  active: <%= ENV["APPSIGNAL_PUSH_API_KEY"].present? %>
