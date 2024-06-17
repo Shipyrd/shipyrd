@@ -73,6 +73,9 @@ VOLUME /shipyrd
 
 USER rails:rails
 
+HEALTHCHECK --timeout=10s \
+  CMD curl -f http://localhost:3000/up || exit 1
+
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
