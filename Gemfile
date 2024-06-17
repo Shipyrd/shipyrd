@@ -13,6 +13,7 @@ gem "jbuilder"
 gem "bootsnap", require: false
 gem "solid_cable"
 gem "sqlite3", "~> 1.7.3"
+gem "appsignal"
 
 group :development, :test do
   gem "brakeman"

@@ -86,6 +86,8 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.6)
       public_suffix (>= 2.0.2, < 6.0)
+    appsignal (3.7.5)
+      rack
     ast (2.4.2)
     base64 (0.2.0)
     bigdecimal (3.1.8)
@@ -372,6 +374,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  appsignal
   bootsnap
   brakeman
   capybara
