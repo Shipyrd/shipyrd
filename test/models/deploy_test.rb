@@ -100,18 +100,42 @@ class DeployTest < ActiveSupport::TestCase
   end
 
   describe "find or create destination" do
-    it "creates the main destination" do
+    it "creates a default destination" do
       deploy = create(:deploy, service_version: "heyo@abcdef12")
 
-      assert "main", deploy.application.destinations.first.name
+      assert_nil deploy.application.destinations.first.name
     end
 
     it "uses existing destination" do
-      application = create(:application, key: "heyo")
-      application.destinations.create!(name: :production)
+      create(:deploy, service_version: "heyo@abcdef12", destination: :production)
 
       assert_no_difference("Destination.count") do
         assert create(:deploy, service_version: "heyo@abcdef12", destination: :production)
+      end
+    end
+  end
+
+  describe "find or create servers" do
+    it "creates the servers" do
+      deploy = create(
+        :deploy,
+        service_version: "heyo@abcdef12",
+        destination: :production,
+        hosts: "123.456.789.0,867.53.0.9"
+      )
+
+      destination = deploy.application.destinations.find_by(name: :production)
+
+      assert_equal 2, destination.servers.count
+      assert_equal %w[123.456.789.0 867.53.0.9], destination.servers.map(&:ip)
+
+      assert_no_difference("Server.count") do
+        create(
+          :deploy,
+          service_version: "heyo@abcdef12",
+          destination: :production,
+          hosts: "123.456.789.0,867.53.0.9"
+        )
       end
     end
   end
