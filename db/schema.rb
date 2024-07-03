@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_03_173935) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_03_200937) do
   create_table "api_keys", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -50,6 +50,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_03_173935) do
     t.integer "application_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "public_key"
+    t.text "private_key"
     t.index ["application_id"], name: "index_destinations_on_application_id"
   end
 
