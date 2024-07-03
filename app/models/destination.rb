@@ -5,11 +5,13 @@ class Destination < ApplicationRecord
 
   encrypts :private_key
 
-  before_create :generate_key_pair
+  before_save :generate_key_pair
 
   private
 
   def generate_key_pair
+    return unless private_key.blank? || public_key.blank?
+
     key = SSHKey.generate(
       comment: "Shipyrd(destination=#{name})",
       type: "ECDSA",
