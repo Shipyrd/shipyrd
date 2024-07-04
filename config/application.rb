@@ -23,9 +23,9 @@ module Shipyrd
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
-    config.active_record.encryption.primary_key = ENV['SHIPYRD_ENCRYPTION_PRIMARY_KEY']
-    config.active_record.encryption.deterministic_key = ENV['SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY']
-    config.active_record.encryption.key_derivation_salt = ENV['SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT']
+    config.active_record.encryption.primary_key = ENV["SHIPYRD_ENCRYPTION_PRIMARY_KEY"]
+    config.active_record.encryption.deterministic_key = ENV["SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY"]
+    config.active_record.encryption.key_derivation_salt = ENV["SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT"]
 
     # Configuration for the application, engines, and railties goes here.
     #
