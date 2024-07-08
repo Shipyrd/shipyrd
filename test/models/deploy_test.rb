@@ -127,7 +127,7 @@ class DeployTest < ActiveSupport::TestCase
       destination = deploy.application.destinations.find_by(name: :production)
 
       assert_equal 2, destination.servers.count
-      assert_equal %w[123.456.789.0 867.53.0.9], destination.servers.map(&:ip)
+      assert_equal %w[123.456.789.0 867.53.0.9], destination.servers.map(&:host)
 
       assert_no_difference("Server.count") do
         create(

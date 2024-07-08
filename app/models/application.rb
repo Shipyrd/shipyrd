@@ -8,10 +8,10 @@ class Application < ApplicationRecord
 
       hosts = hosts_string.split(",")
 
-      return destination if destination.servers.where(ip: hosts).count == hosts.count
+      return destination if destination.servers.where(host: hosts).count == hosts.count
 
       hosts.each do |host|
-        destination.servers.find_or_create_by!(ip: host)
+        destination.servers.find_or_create_by!(host: host)
       end
 
       destination
