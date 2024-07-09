@@ -7,6 +7,10 @@ class Destination < ApplicationRecord
 
   before_save :generate_key_pair
 
+  def new_servers_available?
+    servers.where(last_connected_at: nil).any?
+  end
+
   private
 
   def generate_key_pair

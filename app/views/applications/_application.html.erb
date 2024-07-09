@@ -5,6 +5,9 @@
     <% deploy = application.latest_deploy(destination: destination.name) %>
       <article>
         <kbd><%= link_to_if destination.url.present?, destination.name || "default", destination.url, target: '_blank' %></kbd>
+        <% if destination.new_servers_available? %>
+          <%= link_to "New", application_destination_path(application, destination), alt: "New hosts found!" %>
+        <% end %>
 
         <% if deploy %>
           <% color = application_status_color(deploy.status) %>

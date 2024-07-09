@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_08_190019) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_09_133759) do
   create_table "api_keys", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -60,6 +60,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_08_190019) do
     t.string "host"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_connected_at"
     t.index ["destination_id", "host"], name: "index_servers_on_destination_id_and_host", unique: true
     t.index ["destination_id"], name: "index_servers_on_destination_id"
   end

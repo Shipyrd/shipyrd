@@ -37,7 +37,7 @@ class ApplicationsTest < ApplicationSystemTestCase
     end
   end
 
-  describe "with an application avaiable" do
+  describe "with an application available" do
     test "visiting the index" do
       deploy = create(
         :deploy,
@@ -74,6 +74,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         service_version: "potato@123456",
         command: :deploy,
         destination: "production",
+        hosts: "867.53.0.9",
         status: "post-deploy"
       )
 
@@ -102,7 +103,8 @@ class ApplicationsTest < ApplicationSystemTestCase
         service_version: "potato@123456",
         command: :deploy,
         destination: "production",
-        status: "pre-connect"
+        status: "pre-connect",
+        hosts: "867.53.0.9"
       ).application
 
       visit basic_auth_url(root_url, @api_key.token)
@@ -111,12 +113,12 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       click_link "Edit this application"
 
-      fill_in "Name", with: @application.name
+      assert_link "Edit production", href: edit_application_destination_path(@application, @application.destinations.find_by(name: "production"))
 
-      within_fieldset "production" do
-        fill_in "Branch", with: "main"
-        fill_in "URL", with: "https://production.com"
-      end
+      assert_text "production 1 server"
+
+      fill_in "Name", with: "Potato"
+      fill_in "Repository URL", with: "https://github.com/shipyrd/shipyrd"
 
       click_on "Update"
 

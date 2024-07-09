@@ -26,28 +26,15 @@
   <h3>Destinations</h3>
 
   <% application.destinations.each do |destination| %>
-    <%= form.fields_for :destinations, destination do |d| %>
-      <fieldset>
-        <legend><%= d.object.name %></legend>
+    <article>
+      <kbd><%= destination.name %></kbd>
+      <%= pluralize(destination.servers.count, "server") %>
 
-        <div>
-          <%= d.label :branch %>
-          <%= d.text_field :branch, class: "w-full" %>
-        </div>
+      <aside class="aside_naked">
+        <%= link_to "Edit #{destination.name}", edit_application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
 
-        <div>
-          <%= d.label :url %>
-          <%= d.text_field :url, class: "w-full" %>
-        </div>
-
-        <div>
-          <%= d.label :_destroy do %>
-            <%= d.check_box :_destroy %>
-            Remove this destination
-          <% end %>
-        </div>
-      </fieldset>
-    <% end %>
+      </aside>
+    </article>
   <% end %>
 
   <br>
