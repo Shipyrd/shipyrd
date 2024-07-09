@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_29_150202) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_09_193953) do
   create_table "api_keys", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -45,7 +45,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_150202) do
 
   create_table "destinations", force: :cascade do |t|
     t.string "url"
-    t.string "name", default: "default"
+    t.string "name"
     t.string "branch", default: "main"
     t.integer "application_id", null: false
     t.datetime "created_at", null: false
@@ -58,6 +58,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_29_150202) do
     t.text "payload"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["channel"], name: "index_solid_cable_messages_on_channel"
     t.index ["created_at"], name: "index_solid_cable_messages_on_created_at"
   end
 
