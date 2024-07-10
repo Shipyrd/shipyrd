@@ -52,7 +52,7 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       assert_selector "h2", text: "potato"
       assert_content "pre-build"
-      assert_content "less than a minute ago"
+      assert_content "just now"
       assert_content "by #{deploy.performer}"
 
       create(
@@ -113,7 +113,7 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       click_link "Edit this application"
 
-      assert_link "Edit production", href: edit_application_destination_path(@application, @application.destinations.find_by(name: "production"))
+      assert_link "Edit", href: edit_application_destination_path(@application, @application.destinations.find_by(name: "production"))
 
       assert_text "production 1 server"
 
