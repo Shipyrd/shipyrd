@@ -31,8 +31,9 @@
       <%= pluralize(destination.servers.count, "server") %>
 
       <aside class="aside_naked">
-        <%= link_to "Edit #{destination.name}", edit_application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
 
+        <%= link_to "View", application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
+        <%= link_to "Edit", edit_application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
       </aside>
     </article>
   <% end %>

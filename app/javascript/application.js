@@ -1,7 +1,17 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails"
 import "controllers"
-import 'timeago';
+import "timeago";
+import ClipboardJS from 'clipboard'
 
-const timeago_nodes = document.querySelectorAll('.timeago');
-timeago.render(timeago_nodes);
+document.addEventListener('turbo:load', (event) => {
+  const timeago_nodes = document.querySelectorAll('.timeago');
+  if (timeago_nodes.length > 0) {
+    timeago.render(timeago_nodes);
+  }
+
+  const clipboard = new ClipboardJS('.clipboard');
+  clipboard.on('success', function(e) {
+    e.clearSelection();
+  });
+})

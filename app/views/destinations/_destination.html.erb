@@ -1,12 +1,12 @@
 <div id="<%= dom_id destination %>">
-  <p>
-    <strong>Name:</strong>
-    <%= destination.name %>
-  </p>
+  <h2>
+    <%= destination.application.name %>
+    <kbd><%= destination.name %></kbd>
+  </h2>
 
   <p>
     <strong>URL:</strong>
-    <%= destination.url %>
+    <%= link_to destination.url, destination.url, target: "_blank" %>
   </p>
 
   <p>
@@ -14,8 +14,34 @@
     <%= destination.branch %>
   </p>
 
-  <p>
-    <strong>Public key:</strong>
-    <%= destination.public_key %>
-  </p>
+  <article>
+    <strong>
+      Connecting Shipyrd to your servers
+    </strong>
+
+    <p>
+      A key pair is generated for each application + destination combination within Shipyrd. 
+    </p>
+
+    <p>
+      To give Shipyrd access to your servers you'll need to add the public key to the <code>~/.ssh/authorized_keys</code> file. Shipyrd uses this connection to run various Kamal commands like logs, app exec, server exec when you request it to. 
+    </p>
+
+    <p>
+      The following command will add the public key to the authorized_keys file on your server via the <code>kamal server exec</code> command.
+    </p>
+
+    <p>Run this command locally:</p>
+    <article class="notice">
+      <code id="destination_setup_<%= destination.id %>">
+        kamal server exec -d <%= destination.name %> "mkdir ~/.ssh && echo <%= destination.public_key %> >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
+      </code>
+    </article>
+    <button class="btn clipboard" data-clipboard-target="#destination_setup_<%= destination.id %>">
+      <img src="assets/clippy.svg" alt="Copy to clipboard">
+    </button>
+  </article>
+
+
+  <%# TODO: List servers out here %>
 </div>

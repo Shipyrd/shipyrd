@@ -27,7 +27,6 @@ group :development, :test do
 end
 
 group :development do
-  gem "hotwire-livereload", "~> 1.2"
   gem "web-console"
   gem "guard"
   gem "guard-minitest"

@@ -17,7 +17,7 @@ class Destination < ApplicationRecord
     return unless private_key.blank? || public_key.blank?
 
     key = SSHKey.generate(
-      comment: "Shipyrd(destination=#{name})",
+      comment: "Shipyrd - #{application.name}@#{name}",
       type: "ECDSA",
       bits: 521
     )

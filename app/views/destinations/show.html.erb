@@ -1,7 +1,9 @@
-<mark><%= notice %></mark>
+<% if notice %>
+  <p><mark><%= notice %></mark></p>
+<% end %>
 
 <%= render @destination %>
 
 <div>
-  <%= link_to "Edit this destination", edit_application_destination_path(@application, @destination) %>
+  <%= link_to "Edit this destination", edit_application_destination_path(@application, @destination), class: "button" %>
 </div>
