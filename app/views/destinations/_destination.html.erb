@@ -31,15 +31,20 @@
       The following command will add the public key to the authorized_keys file on your server via the <code>kamal server exec</code> command.
     </p>
 
-    <p>Run this command locally:</p>
+    <p>
+      Run this command locally:
+
+      <button class="btn clipboard" data-clipboard-target="#destination_setup_<%= destination.id %>">
+        Copy to clipboard
+        <i class="fa-solid fa-copy"></i>
+      </button>
+    </p>
     <article class="notice">
       <code id="destination_setup_<%= destination.id %>">
         kamal server exec -d <%= destination.name %> "mkdir ~/.ssh && echo <%= destination.public_key %> >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
       </code>
     </article>
-    <button class="btn clipboard" data-clipboard-target="#destination_setup_<%= destination.id %>">
-      <img src="assets/clippy.svg" alt="Copy to clipboard">
-    </button>
+
   </article>
 
 

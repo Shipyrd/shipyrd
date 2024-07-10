@@ -1,6 +1,7 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails"
 import "controllers"
+import "@fortawesome/fontawesome-free"
 import "timeago";
 import ClipboardJS from 'clipboard'
 
@@ -12,6 +13,7 @@ document.addEventListener('turbo:load', (event) => {
 
   const clipboard = new ClipboardJS('.clipboard');
   clipboard.on('success', function(e) {
+    e.trigger.textContent = "Copied!";
     e.clearSelection();
   });
 })
