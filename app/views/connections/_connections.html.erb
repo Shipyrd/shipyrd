@@ -1,0 +1,11 @@
+<article>
+    GitHub
+
+    <aside class="aside_naked">
+      <% if @application.connections.find_by(provider: :github).blank? %>
+        <%= link_to "Connect", new_application_connection_path(@application, provider: :github), class: "button", title: "Connect to GitHub" %>
+      <% else %>
+        <mark>Connected!</mark>
+      <% end %>
+    </aside>
+</article>

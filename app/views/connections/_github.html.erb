@@ -1,0 +1,46 @@
+<div>
+  <p>
+    Shipyrd utilizes the GitHub API to fetch your <code>deploy.yml</code> file to run the correct Kamal commands for your application and optionally create deployments events on GitHub for you.
+  </p>
+
+  <p>
+  To connect Shipyrd to your GitHub repository:
+  </p>
+
+  <p>
+    <ol>
+      <li>Create a new <a href="https://github.com/settings/personal-access-tokens/new" target="_blank">fine-grained personal access token</a> on GitHub with the following scopes:
+        <ul>
+          <li>Contents: Read-only</li>
+          <li>Deployments: Read and write</li>
+          <li>Metadata: Read-only</li>
+        </ul>
+      </li>
+      <li>
+        Enter the new token below and click "Connect to GitHub".
+
+        <%= form_with(model: [@application, @connection]) do |form| %>
+          <%= form.hidden_field :provider %>
+
+          <% if @connection.errors.any? %>
+            <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+              <h2><%= pluralize(@connection.errors.count, "error") %> prohibited this connection from being saved:</h2>
+
+              <ul>
+                <% @connection.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <p>
+            <%= form.text_field :key, class: "w-full" %>
+          </p>
+
+          <%= form.submit "Connect to GitHub" %>
+        <% end %>
+      </li>
+    </ol>
+  </p>
+</div>

@@ -125,6 +125,27 @@ class ApplicationsTest < ApplicationSystemTestCase
       assert_text "Application was successfully updated"
     end
 
+    test "connecting GitHub" do
+      @application = create(
+        :deploy,
+        service_version: "potato@123456",
+        command: :deploy,
+        destination: "production",
+        status: "pre-connect",
+        hosts: "867.53.0.9"
+      ).application
+
+      visit basic_auth_url(root_url, @api_key.token)
+      visit edit_application_url(@application)
+
+      click_link "Connect to GitHub"
+
+      fill_in "connection_key", with: "key-from-github"
+      click_on "Connect to GitHub"
+
+      assert_text "Connected!"
+    end
+
     test "should destroy Application" do
       @application = create(
         :deploy,

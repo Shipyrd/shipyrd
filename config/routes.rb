@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   resources :deploys
   resources :applications do
+    resources :connections
     resources :destinations
   end
 

@@ -11,8 +11,6 @@
     </div>
   <% end %>
 
-  <h3>Application details</h3>
-
   <div class="my-5">
     <%= form.label :name %>
     <%= form.text_field :name, class: "w-full" %>
@@ -22,6 +20,10 @@
     <%= form.label :repository_url %>
     <%= form.text_field :repository_url, class: "w-full" %>
   </div>
+
+  <h3>Connections</h3>
+
+  <%= render "connections/connections" %>
 
   <h3>Destinations</h3>
 

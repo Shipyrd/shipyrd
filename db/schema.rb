@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_09_193953) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_30_195937) do
   create_table "api_keys", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -23,6 +23,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_09_193953) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "key"
+  end
+
+  create_table "connections", force: :cascade do |t|
+    t.string "provider"
+    t.text "key"
+    t.datetime "last_connected_at"
+    t.integer "application_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_id"], name: "index_connections_on_application_id"
   end
 
   create_table "deploys", force: :cascade do |t|
@@ -81,6 +91,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_09_193953) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "connections", "applications"
   add_foreign_key "destinations", "applications"
   add_foreign_key "servers", "destinations"
 end
