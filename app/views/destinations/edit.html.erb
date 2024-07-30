@@ -1,0 +1,11 @@
+<h2>
+  Editing 
+  <%= @application.name %> 
+  <kbd><%= @destination.name %></kbd>
+</h2>
+
+<% if notice %>
+  <p><mark><%= notice %></mark></p>
+<% end %>
+
+<%= render "form", destination: @destination %>

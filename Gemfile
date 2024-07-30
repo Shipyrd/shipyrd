@@ -13,7 +13,8 @@ gem "jbuilder"
 gem "bootsnap", require: false
 gem "solid_cable"
 gem "sqlite3", "~> 1.7.3"
-gem "appsignal"
+gem "appsignal", require: false # TODO: Verify loading properly
+gem "sshkey"
 
 group :development, :test do
   gem "brakeman"
@@ -26,7 +27,6 @@ group :development, :test do
 end
 
 group :development do
-  gem "hotwire-livereload", "~> 1.2"
   gem "web-console"
   gem "guard"
   gem "guard-minitest"
