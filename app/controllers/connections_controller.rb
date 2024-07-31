@@ -11,10 +11,16 @@ class ConnectionsController < ApplicationController
   end
 
   def create
-    @connection = @application.connections.create!(connection_params)
+    @connection = @application.connections.new(connection_params)
 
-    respond_to do |format|
-      format.html { redirect_to edit_application_url(@application), notice: "Connection was successfully created." }
+    if @connection.save
+      respond_to do |format|
+        format.html { redirect_to edit_application_url(@application), notice: "Connection was successfully created." }
+      end
+    else
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -40,7 +46,7 @@ class ConnectionsController < ApplicationController
   def verify_provider_parameter
     provider = params[:provider] || connection_params[:provider]
 
-    unless Connection::PROVIDERS.include?(provider)
+    unless Connection.providers.key?(provider)
       flash[:notice] = "Invalid provider #{provider}"
       redirect_to edit_application_url(@application) and return
     end

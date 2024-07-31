@@ -41,4 +41,12 @@ class Application < ApplicationRecord
   def latest_deploy(destination:)
     deploys.where(destination: destination, command: :deploy).last
   end
+
+  def repository_name
+    repository_url.split("/").last
+  end
+
+  def repository_username
+    repository_url.split("/").slice(-2)
+  end
 end

@@ -13,6 +13,18 @@ class ApplicationTest < ActiveSupport::TestCase
     end
   end
 
+  describe "repo parts from URL" do
+    let(:application) { build(:application, repository_url: "https://github.com/nickhammond/ham") }
+
+    it "knows the username" do
+      assert_equal "nickhammond", application.repository_username
+    end
+
+    it "knows the repository name" do
+      assert_equal "ham", application.repository_name
+    end
+  end
+
   describe "destinations" do
     let(:service_version) { "#{application.key}@123" }
 

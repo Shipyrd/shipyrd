@@ -2,4 +2,20 @@
   Connect <code><%= params[:provider] %></code> to <%= @application.display_name %>
 </h1>
 
-<%= render params[:provider] %>
+<%= form_with(model: [@application, @connection]) do |form| %>
+  <%= form.hidden_field :provider %>
+
+  <% if @connection.errors.any? %>
+    <div class="notice">
+      <h4><%= pluralize(@connection.errors.count, "error") %> prohibited this connection from being saved:</h4>
+
+      <ul>
+        <% @connection.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= render @connection.provider, form: form %>
+<% end %>

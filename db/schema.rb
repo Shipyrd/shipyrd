@@ -26,7 +26,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_195937) do
   end
 
   create_table "connections", force: :cascade do |t|
-    t.string "provider"
+    t.integer "provider"
     t.text "key"
     t.datetime "last_connected_at"
     t.integer "application_id", null: false
