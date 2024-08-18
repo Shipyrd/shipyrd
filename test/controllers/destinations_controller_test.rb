@@ -20,6 +20,6 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
 
   test "should update destination" do
     patch application_destination_path(@application, @destination), params: {destination: {branch: @destination.branch, name: @destination.name, url: @destination.url}}, headers: auth_headers(@api_key.token)
-    assert_redirected_to edit_application_destination_path(@application, @destination)
+    assert_redirected_to application_destination_path(@application, @destination)
   end
 end

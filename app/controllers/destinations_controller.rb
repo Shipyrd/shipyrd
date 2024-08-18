@@ -14,7 +14,7 @@ class DestinationsController < ApplicationController
   def update
     respond_to do |format|
       if @destination.update(destination_params)
-        format.html { redirect_to edit_application_destination_path(@destination), notice: "Destination was successfully updated." }
+        format.html { redirect_to application_destination_path(@application, @destination), notice: "Destination was successfully updated." }
       else
         format.html { render :edit, status: :unprocessable_entity }
       end

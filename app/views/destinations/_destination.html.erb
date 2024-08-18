@@ -14,6 +14,12 @@
     <%= destination.branch %>
   </p>
 
+  <div>
+    <%= link_to "Edit this destination", edit_application_destination_path(@application, @destination), class: "button" %>
+  </div>
+
+  <br>
+
   <article>
     <strong>
       Connecting Shipyrd to your servers

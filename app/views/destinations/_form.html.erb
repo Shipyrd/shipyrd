@@ -13,7 +13,7 @@
 
   <div>
     <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name, class: "w-full" %>
+    <%= form.text_field :name, class: "w-full", disabled: true %>
   </div>
 
   <div>
@@ -27,6 +27,6 @@
   </div>
 
   <div>
-    <%= form.submit %>
+    <%= form.submit "Update destination" %>
   </div>
 <% end %>
