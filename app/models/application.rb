@@ -31,7 +31,7 @@ class Application < ApplicationRecord
   end
 
   def display_name
-    name || key
+    name.presence || key
   end
 
   def current_status(destination:)

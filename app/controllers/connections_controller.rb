@@ -28,7 +28,7 @@ class ConnectionsController < ApplicationController
     @connection.destroy!
 
     respond_to do |format|
-      format.html { redirect_to edit_application_url(@application), notice: "Application was successfully destroyed." }
+      format.html { redirect_to edit_application_url(@application), notice: "Connection was successfully destroyed." }
       format.json { head :no_content }
     end
   end

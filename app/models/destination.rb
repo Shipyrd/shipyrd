@@ -4,6 +4,7 @@ class Destination < ApplicationRecord
   has_many :servers, dependent: :destroy
 
   encrypts :private_key
+  encrypts :recipe
 
   before_save :generate_key_pair
 

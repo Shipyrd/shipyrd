@@ -3,7 +3,8 @@ require "helpers/basic_auth_helpers"
 
 class ConnectionsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @application = create(:application)
+    @application = create(:application_with_repository_url)
+    Connection.any_instance.stubs(:connects_successfully)
   end
 
   describe "authenticated" do
@@ -33,7 +34,7 @@ class ConnectionsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "should destroy" do
-      @connection = @application.connections.create!(provider: :github, key: "123456")
+      @connection = @application.connections.create!(provider: :github)
 
       assert_difference("Connection.count", -1) do
         delete application_connection_url(@application, @connection), headers: @auth_headers

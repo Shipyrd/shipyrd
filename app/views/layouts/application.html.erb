@@ -18,6 +18,10 @@
     <main>
       <%= link_to image_tag("logo.png", width: 125), root_url %>
 
+      <% if notice.present? %>
+        <p><mark><%= notice %></mark></p>
+      <% end %>
+
       <%= yield %>
     </main>
   </body>

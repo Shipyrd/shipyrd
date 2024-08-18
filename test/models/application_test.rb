@@ -10,6 +10,9 @@ class ApplicationTest < ActiveSupport::TestCase
 
       application.name = nil
       assert_equal application.key, application.display_name
+
+      application.name = ""
+      assert_equal application.key, application.display_name
     end
   end
 

@@ -138,12 +138,24 @@ class ApplicationsTest < ApplicationSystemTestCase
       visit basic_auth_url(root_url, @api_key.token)
       visit edit_application_url(@application)
 
+      fill_in "Repository URL", with: "https://github.com/kevin/bacon"
+      click_on "Update"
+
+      click_link "Edit this application"
       click_link "Connect to GitHub"
+
+      Connection.any_instance.stubs(:connects_successfully)
 
       fill_in "connection_key", with: "key-from-github"
       click_on "Connect to GitHub"
 
-      assert_text "Connected!"
+      assert_text "Connection was successfully created."
+
+      accept_confirm do
+        click_on "Disconnect GitHub"
+      end
+
+      assert_text "Connection was successfully destroyed."
     end
 
     test "should destroy Application" do
@@ -153,9 +165,11 @@ class ApplicationsTest < ApplicationSystemTestCase
       ).application
 
       visit basic_auth_url(root_url, @api_key.token)
-      visit application_url(@application)
+      visit edit_application_url(@application)
 
-      click_on "Destroy"
+      accept_confirm do
+        click_on "Destroy application"
+      end
 
       assert_text "Application was successfully destroyed"
     end

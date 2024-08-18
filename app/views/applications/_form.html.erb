@@ -21,25 +21,25 @@
     <%= form.text_field :repository_url, class: "w-full" %>
   </div>
 
-  <h3>Connections</h3>
+  <%= form.submit "Update application" %>
+<% end %>
+  <%= button_to "Destroy application", application_path(@application), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
 
-  <%= render "connections/connections" %>
+<h3>Connections</h3>
 
-  <h3>Destinations</h3>
+<%= render "connections/connections" %>
 
-  <% application.destinations.each do |destination| %>
-    <article>
-      <kbd><%= destination.name %></kbd>
-      <%= pluralize(destination.servers.count, "server") %>
+<h3>Destinations</h3>
 
-      <aside class="aside_naked">
+<% application.destinations.each do |destination| %>
+  <article>
+    <kbd><%= destination.name %></kbd>
+    <%= pluralize(destination.servers.count, "server") %>
 
-        <%= link_to "View", application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
-        <%= link_to "Edit", edit_application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
-      </aside>
-    </article>
-  <% end %>
+    <aside class="aside_naked">
 
-  <br>
-  <%= form.submit %>
+      <%= link_to "View", application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
+      <%= link_to "Edit", edit_application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
+    </aside>
+  </article>
 <% end %>
