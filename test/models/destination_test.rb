@@ -5,6 +5,20 @@ class DestinationTest < ActiveSupport::TestCase
     @application = create(:application)
   end
 
+  describe "display_name" do
+    it "returns name if present" do
+      destination = build(:destination)
+
+      assert_equal "default", destination.display_name
+
+      destination.name = ""
+      assert_equal "default", destination.display_name
+
+      destination.name = "production"
+      assert_equal "production", destination.display_name
+    end
+  end
+
   describe "key pairs" do
     it "generates on create" do
       destination = create(:destination, application: @application, name: "test")

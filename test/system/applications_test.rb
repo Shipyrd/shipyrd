@@ -142,12 +142,12 @@ class ApplicationsTest < ApplicationSystemTestCase
       click_on "Update"
 
       click_link "Edit this application"
-      click_link "Connect to GitHub"
+      click_link "Connect GitHub"
 
       Connection.any_instance.stubs(:connects_successfully)
 
       fill_in "connection_key", with: "key-from-github"
-      click_on "Connect to GitHub"
+      click_on "Connect GitHub"
 
       assert_text "Connection was successfully created."
 

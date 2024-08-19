@@ -7,7 +7,7 @@
       <% if github %>
         <%= button_to "Disconnect", application_connection_path(@application, github), method: :delete, class: "button", title: "Disconnect GitHub", data: { turbo_confirm: "Are you sure?" } %>
       <% else %>
-        <%= link_to "Connect", new_application_connection_path(@application, provider: :github), class: "button", title: "Connect to GitHub" %>
+        <%= link_to "Connect", new_application_connection_path(@application, provider: :github, return_to: request.path), class: "button", title: "Connect GitHub" %>
       <% end %>
     </aside>
 </article>

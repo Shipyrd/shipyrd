@@ -12,6 +12,14 @@ class Destination < ApplicationRecord
     servers.where(last_connected_at: nil).any?
   end
 
+  def recipe_path
+    "config/deploy#{name.present? ? ".#{name}" : nil}.yml"
+  end
+
+  def display_name
+    name.presence || "default"
+  end
+
   private
 
   def generate_key_pair

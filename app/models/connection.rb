@@ -24,10 +24,8 @@ class Connection < ApplicationRecord
 
   def import_destination_deploy_recipes
     application.destinations.each do |destination|
-      path = "config/deploy#{destination.name.present? ? ".#{destination.name}" : nil}.yml"
-
       destination.update!(
-        recipe: fetch_repository_content(path)
+        recipe: fetch_repository_content(destination.recipe_path)
       )
     end
   end

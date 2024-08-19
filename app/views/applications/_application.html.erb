@@ -6,7 +6,7 @@
       <article>
         <kbd><%= link_to_if destination.url.present?, destination.name || "default", destination.url, target: '_blank' %></kbd>
         <% if destination.new_servers_available? %>
-          <%= link_to "New", application_destination_path(application, destination), alt: "New hosts found!" %>
+          <mark><%= link_to "New servers available!", application_destination_path(application, destination), alt: "New servers available!" %></mark>
         <% end %>
 
         <% if deploy %>

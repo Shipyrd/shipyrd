@@ -49,4 +49,8 @@ class Application < ApplicationRecord
   def repository_username
     repository_url.split("/").slice(-2)
   end
+
+  def github_connection
+    connections.find_by(provider: "github")
+  end
 end

@@ -74,4 +74,14 @@ class ApplicationTest < ActiveSupport::TestCase
       assert_equal "post-deploy", application.current_status(destination: :staging)
     end
   end
+
+  describe "github_connection" do
+    it "finds the connection" do
+      Connection.any_instance.stubs(:connects_successfully)
+
+      connection = application.connections.create!(provider: :github, key: "123456")
+
+      assert_equal connection, application.github_connection
+    end
+  end
 end

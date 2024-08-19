@@ -14,6 +14,15 @@
     <%= destination.branch %>
   </p>
 
+  <p>
+    <strong>Kamal recipe:</strong>
+    <% if @application.github_connection.present? %>
+      <code><%= destination.recipe_path %></code> imported
+    <% else %>
+      <%= link_to "Connect GitHub", new_application_connection_path(@application, provider: :github, return_to: request.path), class: "button", title: "Connect GitHub" %>
+    <% end %>
+  </p>
+
   <div>
     <%= link_to "Edit this destination", edit_application_destination_path(@application, @destination), class: "button" %>
   </div>
@@ -26,11 +35,11 @@
     </strong>
 
     <p>
-      An SSH key pair is generated for each application + destination combination within Shipyrd.
+      An SSH key pair is generated for each application + destination combination.
     </p>
 
     <p>
-      To give Shipyrd access to your servers you'll need to add the public key to the <code>~/.ssh/authorized_keys</code> file. Shipyrd uses this connection to run various Kamal commands like logs, app exec, server exec when you request it to. 
+      To give Shipyrd access to your servers you'll need to add the generated public key to the <code>~/.ssh/authorized_keys</code> file. Shipyrd uses this connection to run various Kamal commands like <kbd>logs</kbd>, <kbd>app exec</kbd>, <kbd>server exec</kbd>, etc. when you request it to. 
     </p>
 
     <p>
