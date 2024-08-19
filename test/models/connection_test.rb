@@ -42,6 +42,7 @@ class ConnectionTest < ActiveSupport::TestCase
       @connection.import_destination_deploy_recipes
 
       assert_equal "recipe", @connection.application.destinations.first.recipe
+      assert @connection.application.destinations.first.recipe_updated_at
     end
 
     it "saves destination specific recipes" do

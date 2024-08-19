@@ -17,7 +17,9 @@
   <p>
     <strong>Kamal recipe:</strong>
     <% if @application.github_connection.present? %>
-      <code><%= destination.recipe_path %></code> imported
+      <% if destination.recipe_updated_at.present? %>
+        <code><%= destination.recipe_path %></code> imported <%= time_ago_in_words(destination.recipe_updated_at) %> ago
+      <% end %>
     <% else %>
       <%= link_to "Connect GitHub", new_application_connection_path(@application, provider: :github, return_to: request.path), class: "button", title: "Connect GitHub" %>
     <% end %>

@@ -145,6 +145,7 @@ class ApplicationsTest < ApplicationSystemTestCase
       click_link "Connect GitHub"
 
       Connection.any_instance.stubs(:connects_successfully)
+      Connection.any_instance.stubs(:import_destination_deploy_recipes)
 
       fill_in "connection_key", with: "key-from-github"
       click_on "Connect GitHub"

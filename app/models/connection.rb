@@ -12,6 +12,9 @@ class Connection < ApplicationRecord
   validates :provider, presence: true, inclusion: {in: providers.keys}
   validate :connects_successfully, on: :create
 
+  # TODO: Move this to solid_queue
+  after_create_commit :import_destination_deploy_recipes
+
   def connects_successfully
     if fetch_repository_content(".").present?
       self.last_connected_at = Time.current
@@ -25,7 +28,8 @@ class Connection < ApplicationRecord
   def import_destination_deploy_recipes
     application.destinations.each do |destination|
       destination.update!(
-        recipe: fetch_repository_content(destination.recipe_path)
+        recipe: fetch_repository_content(destination.recipe_path),
+        recipe_updated_at: Time.current
       )
     end
   end

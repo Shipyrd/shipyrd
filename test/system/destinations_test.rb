@@ -39,13 +39,14 @@ class ApplicationsTest < ApplicationSystemTestCase
       click_on "Connect GitHub"
 
       Connection.any_instance.stubs(:connects_successfully)
+      Connection.any_instance.stubs(:fetch_repository_content).returns("recipe")
 
       fill_in "connection_key", with: "key-from-github"
       click_on "Connect GitHub"
 
       assert_text "Connection was successfully created."
 
-      assert_text "Kamal recipe: config/deploy.yml imported"
+      assert_text "Kamal recipe: config/deploy.yml imported less than a minute ago"
     end
   end
 end
