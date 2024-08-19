@@ -33,11 +33,10 @@
   </div>
 
   <br>
-
-  <article>
-    <strong>
+  <details <%= destination.new_servers_available? ? "open" : "" %>>
+    <summary>
       Connecting Shipyrd to your servers
-    </strong>
+    </summary>
 
     <p>
       An SSH key pair is generated for each application + destination combination.
@@ -64,8 +63,7 @@
         kamal server exec -d <%= destination.name %> "mkdir ~/.ssh && echo <%= destination.public_key %> >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
       </code>
     </article>
-
-  </article>
+  </details>
 
   <h3>Servers</h3>
 

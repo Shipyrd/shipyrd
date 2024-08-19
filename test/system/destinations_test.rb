@@ -61,6 +61,9 @@ class ApplicationsTest < ApplicationSystemTestCase
         assert_text "Last connected just now"
       end
 
+      assert_text "Connecting Shipyrd to your servers"
+      assert_text "An SSH key pair is generated"
+
       within "#server_#{@new_server.id}" do
         assert_text "123.456.789.1"
       end
@@ -70,6 +73,11 @@ class ApplicationsTest < ApplicationSystemTestCase
       within "#server_#{@new_server.id}" do
         assert_text "Last connected less than a minute ago"
       end
+
+      visit application_destination_path(@application, @destination)
+
+      # Setup instructions are closed/collapsed when all servers are connected.
+      refute_text "An SSH key pair is generated"
     end
   end
 end
