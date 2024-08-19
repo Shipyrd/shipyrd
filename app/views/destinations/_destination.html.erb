@@ -18,7 +18,10 @@
     <strong>Kamal recipe:</strong>
     <% if @application.github_connection.present? %>
       <% if destination.recipe_updated_at.present? %>
-        <code><%= destination.recipe_path %></code> imported <%= time_ago_in_words(destination.recipe_updated_at) %> ago
+        <code><%= destination.recipe_path %></code> imported 
+        <time class="timeago" datetime="<%= destination.recipe_updated_at %>" %>">
+          <%= time_ago_in_words(destination.recipe_updated_at) %> ago
+        </time>
       <% end %>
     <% else %>
       <%= link_to "Connect GitHub", new_application_connection_path(@application, provider: :github, return_to: request.path), class: "button", title: "Connect GitHub" %>
@@ -64,6 +67,13 @@
 
   </article>
 
+  <h3>Servers</h3>
 
-  <%# TODO: List servers out here %>
+  <% if destination.servers.empty? %>
+    <p>No servers deployed to for this destination.</p>
+  <% else %>
+    <% destination.servers.each do |server| %>
+      <%= render server %>
+    <% end %>
+  <% end %>
 </div>

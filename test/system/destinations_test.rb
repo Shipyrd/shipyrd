@@ -46,7 +46,30 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       assert_text "Connection was successfully created."
 
-      assert_text "Kamal recipe: config/deploy.yml imported less than a minute ago"
+      assert_text "Kamal recipe: config/deploy.yml imported just now"
+    end
+
+    test "with servers" do
+      @connected_server = @destination.servers.create!(host: "123.456.789.0", last_connected_at: Time.current)
+      @new_server = @destination.servers.create!(host: "123.456.789.1")
+
+      visit basic_auth_url(root_url, @api_key.token)
+      visit application_destination_path(@application, @destination)
+
+      within "#server_#{@connected_server.id}" do
+        assert_text "123.456.789.0"
+        assert_text "Last connected just now"
+      end
+
+      within "#server_#{@new_server.id}" do
+        assert_text "123.456.789.1"
+      end
+
+      @new_server.update!(last_connected_at: Time.current)
+
+      within "#server_#{@new_server.id}" do
+        assert_text "Last connected less than a minute ago"
+      end
     end
   end
 end

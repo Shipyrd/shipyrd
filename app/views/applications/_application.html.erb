@@ -1,4 +1,5 @@
 <%= turbo_stream_from application %>
+
 <div id="<%= dom_id application %>">
     <h2><%= link_to application.display_name, edit_application_path(application), title: 'Edit this application' %></h2>
   <% application.destinations.order("created_at DESC").each_with_index do |destination, i| %>
