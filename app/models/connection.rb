@@ -21,7 +21,7 @@ class Connection < ApplicationRecord
     else
       errors.add(:provider, "is not supported")
     end
-  rescue => e
+  rescue
     errors.add(:provider, "#{provider} could not connect")
   end
 
@@ -30,7 +30,7 @@ class Connection < ApplicationRecord
 
     application.destinations.each do |destination|
       destination.update!(
-        recipe: destination.default? ? base_recipe : fetch_repository_content(destination.recipe_path),
+        recipe: destination.default? ? nil : fetch_repository_content(destination.recipe_path),
         base_recipe: base_recipe,
         recipe_updated_at: Time.current
       )

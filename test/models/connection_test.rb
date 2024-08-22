@@ -7,7 +7,7 @@ class ConnectionTest < ActiveSupport::TestCase
     it "fails if invalid token" do
       connection = build(:connection, provider: :github, key: "invalid", application: application)
 
-      stub_request(:get, "https://api.github.com/repos/kevin/bacon/contents/?access_token=invalid").to_return(status: 401)
+      stub_request(:get, "https://api.github.com/repos/kevin/bacon/contents/config/deploy.yml?access_token=invalid").to_return(status: 401)
 
       refute connection.valid?
     end
@@ -42,7 +42,10 @@ class ConnectionTest < ActiveSupport::TestCase
 
       @connection.import_deploy_recipes
 
-      assert_equal "recipe", @connection.application.destinations.first.recipe
+      # When we just have the default destination that's the base_recipe, the destination specific recipe
+      # is then layered on if we have an actual destination such as staging or production.
+      refute @connection.application.destinations.first.recipe
+      assert_equal "recipe", @connection.application.destinations.first.base_recipe
       assert @connection.application.destinations.first.recipe_updated_at
     end
 

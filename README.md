@@ -22,9 +22,9 @@ The accessory configuration requires a few secrets:
 - `SHIPYRD_API_KEY` - Use `rails secret` or `openssl rand -hex 64` to generate one.
 - `SHIPYRD_HOST` - Host where Shipyrd will live.
 - `SHIPYRD_SECRET_KEY_BASE` - Use `rails secret` or `openssl rand -hex 64` to generate one.
-- `SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY` - Use `rails db:encryption:init` or openssl rand -base64 32 to generate one.
-- `SHIPYRD_ENCRYPTION_PRIMARY_KEY`- Use `rails db:encryption:init` or openssl rand -base64 32 to generate one.
-- `SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT` - Use `rails db:encryption:init` or openssl rand -base64 32 to generate one.
+- `SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY` - Use `rails db:encryption:init` or `openssl rand -base64 32` to generate one.
+- `SHIPYRD_ENCRYPTION_PRIMARY_KEY`- Use `rails db:encryption:init` or `openssl rand -base64 32` to generate one.
+- `SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT` - Use `rails db:encryption:init` or `openssl rand -base64 32` to generate one.
 
 ``` yml
 accessories:

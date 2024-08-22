@@ -5,6 +5,7 @@ class ConnectionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @application = create(:application_with_repository_url)
     Connection.any_instance.stubs(:connects_successfully)
+    Connection.any_instance.stubs(:import_deploy_recipes)
   end
 
   describe "authenticated" do
