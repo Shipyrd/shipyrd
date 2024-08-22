@@ -13,22 +13,25 @@ class Connection < ApplicationRecord
   validate :connects_successfully, on: :create
 
   # TODO: Move this to solid_queue
-  after_create_commit :import_destination_deploy_recipes
+  after_create_commit :import_deploy_recipes
 
   def connects_successfully
-    if fetch_repository_content(".").present?
+    if fetch_repository_content("config/deploy.yml").present?
       self.last_connected_at = Time.current
     else
       errors.add(:provider, "is not supported")
     end
-  rescue
+  rescue => e
     errors.add(:provider, "#{provider} could not connect")
   end
 
-  def import_destination_deploy_recipes
+  def import_deploy_recipes
+    base_recipe = fetch_repository_content("config/deploy.yml")
+
     application.destinations.each do |destination|
       destination.update!(
-        recipe: fetch_repository_content(destination.recipe_path),
+        recipe: destination.default? ? base_recipe : fetch_repository_content(destination.recipe_path),
+        base_recipe: base_recipe,
         recipe_updated_at: Time.current
       )
     end

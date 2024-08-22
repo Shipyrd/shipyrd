@@ -42,6 +42,41 @@ class DestinationTest < ActiveSupport::TestCase
     end
   end
 
+  describe "process_recipe" do
+    let(:destination) { create(:destination, name: "production", application: @application) }
+
+    it "creates a new server based on recipes" do
+      base_recipe = {
+        service: "shipyrd",
+        image: "shipyrd/shipyrd",
+        registry: {
+          username: "shipyrd",
+          password: "KAMAL_REGISTRY_PASSWORD"
+        }
+      }.deep_stringify_keys.to_yaml
+      destination.update!(base_recipe: base_recipe)
+
+      recipe = {
+        servers: {
+          web: {
+            hosts: ["123.456.789.0"]
+          }
+        }
+      }.deep_stringify_keys.to_yaml
+
+      assert_difference -> { destination.servers.count }, 1 do
+        destination.update(
+          recipe: recipe
+        )
+      end
+
+      assert_no_difference -> { destination.servers.count }, 1 do
+        destination.recipe_will_change!
+        destination.save!
+      end
+    end
+  end
+
   it "new_servers_available?" do
     destination = create(:destination, application: @application)
 

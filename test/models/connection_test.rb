@@ -22,8 +22,9 @@ class ConnectionTest < ActiveSupport::TestCase
     end
   end
 
-  describe "import_destination_deploy_recipes" do
+  describe "import_deploy_recipes" do
     setup do
+      Destination.any_instance.stubs(:process_recipe)
       @destination = create(:destination, application: application, name: nil)
       @connection = build(:connection, provider: :github, key: "valid", application: application)
     end
@@ -31,7 +32,7 @@ class ConnectionTest < ActiveSupport::TestCase
     it "fails gracefully if no recipe" do
       stub_request(:get, "https://api.github.com/repos/kevin/bacon/contents/config/deploy.yml?access_token=valid").to_return(status: 404)
 
-      @connection.import_destination_deploy_recipes
+      @connection.import_deploy_recipes
 
       refute @connection.application.destinations.first.recipe
     end
@@ -39,7 +40,7 @@ class ConnectionTest < ActiveSupport::TestCase
     it "saves the recipe" do
       Github::Client::Repos::Contents.any_instance.stubs(:find).returns(OpenStruct.new(content: Base64.encode64("recipe")))
 
-      @connection.import_destination_deploy_recipes
+      @connection.import_deploy_recipes
 
       assert_equal "recipe", @connection.application.destinations.first.recipe
       assert @connection.application.destinations.first.recipe_updated_at
@@ -48,10 +49,12 @@ class ConnectionTest < ActiveSupport::TestCase
     it "saves destination specific recipes" do
       @destination.update!(name: "production")
       @connection.stubs(:fetch_repository_content).with("config/deploy.production.yml").returns("production recipe")
+      @connection.stubs(:fetch_repository_content).with("config/deploy.yml").returns("base recipe")
 
-      @connection.import_destination_deploy_recipes
+      @connection.import_deploy_recipes
 
       assert_equal "production recipe", @connection.application.destinations.first.recipe
+      assert_equal "base recipe", @connection.application.destinations.first.base_recipe
     end
   end
 end

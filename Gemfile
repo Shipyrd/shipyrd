@@ -7,6 +7,7 @@ gem "dotenv-rails"
 gem "puma", ">= 5.0"
 gem "propshaft"
 gem "github_api"
+gem "kamal"
 gem "importmap-rails"
 gem "turbo-rails", github: "hotwired/turbo-rails" # for broadcasts_refreshes support
 gem "stimulus-rails"
