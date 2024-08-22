@@ -57,6 +57,8 @@ kamal env push
 kamal accessory boot shipyrd
 ```
 
+*If you're upgrading you can reboot the Shipyrd accessory with `kamal accessory reboot shipyrd` so that it picks up the new version*
+
 ### Configure your Kamal hooks
 
 Setup the `shipyrd` gem in your Rails application by adding `shipyrd` to your *Gemfile* and then configure the various hooks.
