@@ -60,7 +60,7 @@
     </p>
     <article class="notice">
       <code id="destination_setup_<%= destination.id %>">
-        kamal server exec -d <%= destination.name %> "mkdir ~/.ssh && echo <%= destination.public_key %> >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
+        kamal server exec -d <%= destination.name %> "mkdir -p ~/.ssh && echo <%= destination.public_key %> >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
       </code>
     </article>
   </details>
