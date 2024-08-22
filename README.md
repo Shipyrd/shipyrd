@@ -50,7 +50,7 @@ accessories:
 
 The `volumes` map is where the sqlite database will be stored which contains basic deploy information. For an overview of the information that's automatically collected with the Kamal hooks take a look at the documentation for the [shipyrd gem](https://github.com/shipyrd/shipyrd-gem).
 
-With your accessory added and `SHIPYRD_API_KEY` in your `.env` file for Kamal you should be able to push up your environment settings and then boot the Shipyrd accessory. 
+With your accessory added and the `SHIPYRD_*` secrets set in your `.env` file for Kamal you should be able to push up your environment settings and then boot the Shipyrd accessory.
 
 ``` bash
 kamal env push
