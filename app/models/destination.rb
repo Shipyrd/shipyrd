@@ -41,7 +41,7 @@ class Destination < ApplicationRecord
       File.write("#{tmp_dir}/#{recipe_name}", recipe)
     end
 
-    yield(base_recipe_path)
+    yield(tmp_dir)
 
     FileUtils.remove_dir(tmp_dir) if File.directory?(tmp_dir)
   end
@@ -49,10 +49,19 @@ class Destination < ApplicationRecord
   private
 
   def process_recipe
-    with_recipe do |base_recipe_path|
-      kamal_config = Kamal::Configuration.create_from(
-        config_file: Pathname.new(File.expand_path(base_recipe_path)),
-        destination: name
+    with_recipe do |base_recipe_dir|
+      config = YAML.load_file("#{base_recipe_dir}/deploy.yml").symbolize_keys
+
+      unless default?
+        config.deep_merge!(
+          YAML.load_file("#{base_recipe_dir}/#{recipe_name}").symbolize_keys
+        )
+      end
+
+      kamal_config = Kamal::Configuration.new(
+        config,
+        destination: name,
+        validate: false
       )
 
       kamal_config.roles.each do |role|
