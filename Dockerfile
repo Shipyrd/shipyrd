@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.3.5
+ARG RUBY_VERSION=3.3.1
 FROM --platform=linux/amd64 ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
@@ -74,7 +74,7 @@ VOLUME /shipyrd
 USER rails:rails
 
 HEALTHCHECK --timeout=10s \
-    CMD curl -f http://localhost:3000/up || exit 1
+  CMD curl -f http://localhost:3000/up || exit 1
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
