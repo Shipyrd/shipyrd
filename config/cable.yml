@@ -2,7 +2,7 @@ default: &default
   adapter: solid_cable
   silence_polling: true
   polling_interval: 1.second
-  keep_messages_around_for: 60.minutes
+  keep_messages_around_for: 10.seconds
   
 development:
   <<: *default

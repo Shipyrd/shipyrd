@@ -24,11 +24,6 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
     end
 
-    test "should get new" do
-      get new_application_url, headers: @auth_headers
-      assert_response :success
-    end
-
     test "should show application" do
       get application_url(@application), headers: @auth_headers
       assert_response :success

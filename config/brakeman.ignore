@@ -1,6 +1,40 @@
 {
   "ignored_warnings": [
     {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "73d449bce5b506287a814219d0496b63b5e473a70de90f337264b95cb9e8bc8a",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/destinations/show.html.erb",
+      "line": 1,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => Application.find(params[:application_id]).destinations.find(params[:id]), {})",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "DestinationsController",
+          "method": "show",
+          "line": 11,
+          "file": "app/controllers/destinations_controller.rb",
+          "rendered": {
+            "name": "destinations/show",
+            "file": "app/views/destinations/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "destinations/show"
+      },
+      "user_input": "params[:id]",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "Mass Assignment",
       "warning_code": 105,
       "fingerprint": "a530199ab745c10ef46d9af6485a3b454957b6774e4134ffa61bbdab36ded5ae",
@@ -24,6 +58,6 @@
       "note": ""
     }
   ],
-  "updated": "2024-05-13 15:52:09 -0700",
+  "updated": "2024-08-22 13:51:11 -0700",
   "brakeman_version": "6.1.2"
 }

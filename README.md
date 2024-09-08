@@ -17,9 +17,14 @@ There's two main steps to getting started with Shipyrd.
 
 Within your Kamal accessories deploy configuration you'll need to add a new accessory for Shipyrd. Swap out the host IP address as well as the traefik host rule in the example below. You'll also want to point DNS towards this server unless you already have a wildcard record pointing to your host.
 
-The accessory configuration requires two secrets, `SHIPYRD_API_KEY` and `SHIPYRD_HOST`.
+The accessory configuration requires a few secrets:
 
-Generate an API key(`bin/rails secret` or your favorite key generator) and set it in your env file(_.env_) as `SHIPYRD_API_KEY`, this will be the password for basic HTTP authentication. `SHIPYRD_HOST` should also be set in your _.env_ file pointing to your host, `shipyrd.myapp.com` for example.
+- `SHIPYRD_API_KEY` - Use `rails secret` or `openssl rand -hex 64` to generate one.
+- `SHIPYRD_HOST` - Host where Shipyrd will live.
+- `SHIPYRD_SECRET_KEY_BASE` - Use `rails secret` or `openssl rand -hex 64` to generate one.
+- `SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY` - Use `rails db:encryption:init` or `openssl rand -base64 32` to generate one.
+- `SHIPYRD_ENCRYPTION_PRIMARY_KEY`- Use `rails db:encryption:init` or `openssl rand -base64 32` to generate one.
+- `SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT` - Use `rails db:encryption:init` or `openssl rand -base64 32` to generate one.
 
 ``` yml
 accessories:
@@ -30,6 +35,10 @@ accessories:
       secret:
         - SHIPYRD_API_KEY
         - SHIPYRD_HOST
+        - SHIPYRD_SECRET_KEY_BASE
+        - SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY
+        - SHIPYRD_ENCRYPTION_PRIMARY_KEY
+        - SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT
     labels:
       traefik.http.routers.YOURKAMALSERVICE-shipyrd.rule: Host(`shipyrd.myapp.com`)
     volumes:
@@ -41,12 +50,14 @@ accessories:
 
 The `volumes` map is where the sqlite database will be stored which contains basic deploy information. For an overview of the information that's automatically collected with the Kamal hooks take a look at the documentation for the [shipyrd gem](https://github.com/shipyrd/shipyrd-gem).
 
-With your accessory added and `SHIPYRD_API_KEY` in your `.env` file for Kamal you should be able to push up your environment settings and then boot the Shipyrd accessory. 
+With your accessory added and the `SHIPYRD_*` secrets set in your `.env` file for Kamal you should be able to push up your environment settings and then boot the Shipyrd accessory.
 
 ``` bash
 kamal env push
 kamal accessory boot shipyrd
 ```
+
+*If you're upgrading you can reboot the Shipyrd accessory with `kamal accessory reboot shipyrd` so that it picks up the new version*
 
 ### Configure your Kamal hooks
 

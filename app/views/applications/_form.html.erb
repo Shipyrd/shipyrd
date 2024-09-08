@@ -11,45 +11,35 @@
     </div>
   <% end %>
 
-  <h3>Application details</h3>
-
   <div class="my-5">
     <%= form.label :name %>
-    <%= form.text_field :name, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.text_field :name, class: "w-full" %>
   </div>
 
   <div class="my-5">
     <%= form.label :repository_url %>
-    <%= form.text_field :repository_url, class: "block shadow rounded-md border border-gray-200 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.text_field :repository_url, class: "w-full" %>
   </div>
 
-  <h3>Destinations</h3>
+  <%= form.submit "Update application" %>
+<% end %>
+  <%= button_to "Destroy application", application_path(@application), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
 
-  <% application.destinations.each do |destination| %>
-    <%= form.fields_for :destinations, destination do |d| %>
-      <fieldset>
-        <legend><%= d.object.name %></legend>
+<h3>Connections</h3>
 
-        <div>
-          <%= d.label :branch %>
-          <%= d.text_field :branch, class: "w-full" %>
-        </div>
+<%= render "connections/connections" %>
 
-        <div>
-          <%= d.label :url %>
-          <%= d.text_field :url, class: "w-full" %>
-        </div>
+<h3>Destinations</h3>
 
-        <div>
-          <%= d.label :_destroy do %>
-            <%= d.check_box :_destroy %>
-            Remove this destination
-          <% end %>
-        </div>
-      </fieldset>
-    <% end %>
-  <% end %>
+<% application.destinations.each do |destination| %>
+  <article>
+    <kbd><%= destination.name %></kbd>
+    <%= pluralize(destination.servers.count, "server") %>
 
-  <br>
-  <%= form.submit %>
+    <aside class="aside_naked">
+
+      <%= link_to "View", application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
+      <%= link_to "Edit", edit_application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
+    </aside>
+  </article>
 <% end %>

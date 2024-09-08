@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_09_193953) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_08_141400) do
   create_table "api_keys", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -23,6 +23,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_09_193953) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "key"
+  end
+
+  create_table "connections", force: :cascade do |t|
+    t.integer "provider"
+    t.text "key"
+    t.datetime "last_connected_at"
+    t.integer "application_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_id"], name: "index_connections_on_application_id"
   end
 
   create_table "deploys", force: :cascade do |t|
@@ -50,7 +60,23 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_09_193953) do
     t.integer "application_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "public_key"
+    t.text "private_key"
+    t.text "recipe"
+    t.datetime "recipe_updated_at"
+    t.text "base_recipe"
+    t.datetime "recipe_last_processed_at"
     t.index ["application_id"], name: "index_destinations_on_application_id"
+  end
+
+  create_table "servers", force: :cascade do |t|
+    t.integer "destination_id", null: false
+    t.string "host"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "last_connected_at"
+    t.index ["destination_id", "host"], name: "index_servers_on_destination_id_and_host", unique: true
+    t.index ["destination_id"], name: "index_servers_on_destination_id"
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -69,5 +95,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_09_193953) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "connections", "applications"
   add_foreign_key "destinations", "applications"
+  add_foreign_key "servers", "destinations"
 end

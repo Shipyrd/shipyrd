@@ -1,10 +1,14 @@
 <%= turbo_stream_from application %>
+
 <div id="<%= dom_id application %>">
     <h2><%= link_to application.display_name, edit_application_path(application), title: 'Edit this application' %></h2>
   <% application.destinations.order("created_at DESC").each_with_index do |destination, i| %>
     <% deploy = application.latest_deploy(destination: destination.name) %>
       <article>
         <kbd><%= link_to_if destination.url.present?, destination.name || "default", destination.url, target: '_blank' %></kbd>
+        <% if destination.new_servers_available? %>
+          <mark><%= link_to "New servers available!", application_destination_path(application, destination), alt: "New servers available!" %></mark>
+        <% end %>
 
         <% if deploy %>
           <% color = application_status_color(deploy.status) %>

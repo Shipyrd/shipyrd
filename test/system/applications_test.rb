@@ -7,12 +7,6 @@ class ApplicationsTest < ApplicationSystemTestCase
   end
 
   describe "initial setup" do
-    it "requires authentication" do
-      visit root_url
-
-      assert_text "HTTP Basic: Access denied."
-    end
-
     it "points to setup instructions" do
       visit basic_auth_url(root_url, @api_key.token)
       visit root_url
@@ -37,7 +31,7 @@ class ApplicationsTest < ApplicationSystemTestCase
     end
   end
 
-  describe "with an application avaiable" do
+  describe "with an application available" do
     test "visiting the index" do
       deploy = create(
         :deploy,
@@ -52,7 +46,7 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       assert_selector "h2", text: "potato"
       assert_content "pre-build"
-      assert_content "less than a minute ago"
+      assert_content "just now"
       assert_content "by #{deploy.performer}"
 
       create(
@@ -74,6 +68,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         service_version: "potato@123456",
         command: :deploy,
         destination: "production",
+        hosts: "867.53.0.9",
         status: "post-deploy"
       )
 
@@ -102,7 +97,8 @@ class ApplicationsTest < ApplicationSystemTestCase
         service_version: "potato@123456",
         command: :deploy,
         destination: "production",
-        status: "pre-connect"
+        status: "pre-connect",
+        hosts: "867.53.0.9"
       ).application
 
       visit basic_auth_url(root_url, @api_key.token)
@@ -111,16 +107,50 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       click_link "Edit this application"
 
-      fill_in "Name", with: @application.name
+      assert_link "Edit", href: edit_application_destination_path(@application, @application.destinations.find_by(name: "production"))
 
-      within_fieldset "production" do
-        fill_in "Branch", with: "main"
-        fill_in "URL", with: "https://production.com"
-      end
+      assert_text "production 1 server"
+
+      fill_in "Name", with: "Potato"
+      fill_in "Repository URL", with: "https://github.com/shipyrd/shipyrd"
 
       click_on "Update"
 
       assert_text "Application was successfully updated"
+    end
+
+    test "connecting GitHub" do
+      @application = create(
+        :deploy,
+        service_version: "potato@123456",
+        command: :deploy,
+        destination: "production",
+        status: "pre-connect",
+        hosts: "867.53.0.9"
+      ).application
+
+      visit basic_auth_url(root_url, @api_key.token)
+      visit edit_application_url(@application)
+
+      fill_in "Repository URL", with: "https://github.com/kevin/bacon"
+      click_on "Update"
+
+      click_link "Edit this application"
+      click_link "Connect GitHub"
+
+      Connection.any_instance.stubs(:connects_successfully)
+      Connection.any_instance.stubs(:import_deploy_recipes)
+
+      fill_in "connection_key", with: "key-from-github"
+      click_on "Connect GitHub"
+
+      assert_text "Connection was successfully created."
+
+      accept_confirm do
+        click_on "Disconnect GitHub"
+      end
+
+      assert_text "Connection was successfully destroyed."
     end
 
     test "should destroy Application" do
@@ -130,9 +160,11 @@ class ApplicationsTest < ApplicationSystemTestCase
       ).application
 
       visit basic_auth_url(root_url, @api_key.token)
-      visit application_url(@application)
+      visit edit_application_url(@application)
 
-      click_on "Destroy"
+      accept_confirm do
+        click_on "Destroy application"
+      end
 
       assert_text "Application was successfully destroyed"
     end

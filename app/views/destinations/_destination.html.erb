@@ -1,0 +1,87 @@
+<%= turbo_stream_from destination %>
+
+<% application = destination.application %>
+
+<div id="<%= dom_id destination %>">
+  <h2>
+    <%= destination.application.name %>
+    <kbd><%= destination.name %></kbd>
+  </h2>
+
+  <p>
+    <strong>URL:</strong>
+    <%= link_to destination.url, destination.url, target: "_blank" %>
+  </p>
+
+  <p>
+    <strong>Branch:</strong>
+    <%= destination.branch %>
+  </p>
+
+  <p>
+    <strong>Kamal recipe:</strong>
+    <% if application.github_connection.present? %>
+      <% if destination.recipe_updated_at.present? %>
+        imported 
+        <%= render 'shared/time', time: destination.recipe_updated_at %>
+
+        <% if destination.recipe_last_processed_at.present? %>
+          (processed
+          <%= render 'shared/time', time: destination.recipe_last_processed_at %>)
+        <% else %>
+          (not processed yet)
+        <% end %>
+
+      <% end %>
+    <% else %>
+      <%= link_to "Connect GitHub", new_application_connection_path(application, provider: :github, return_to: request.path), class: "button", title: "Connect GitHub" %>
+    <% end %>
+  </p>
+
+  <div>
+    <%= link_to "Edit this destination", edit_application_destination_path(application, destination), class: "button" %>
+  </div>
+
+  <br>
+  <details <%= destination.new_servers_available? ? "open" : "" %>>
+    <summary>
+      Connecting Shipyrd to your servers
+    </summary>
+
+    <p>
+      An SSH key pair is generated for each application + destination combination.
+    </p>
+
+    <p>
+      To give Shipyrd access to your servers you'll need to add the generated public key to the <code>~/.ssh/authorized_keys</code> file. Shipyrd uses this connection to run various Kamal commands like <kbd>logs</kbd>, <kbd>app exec</kbd>, <kbd>server exec</kbd>, etc. when you request it to. 
+    </p>
+
+    <p>
+      The following command will add the public key to the authorized_keys file on your server via the <code>kamal server exec</code> command.
+    </p>
+
+    <p>
+      Run this command locally:
+
+      <button class="btn clipboard" data-clipboard-target="#destination_setup_<%= destination.id %>">
+        Copy to clipboard
+        <i class="fa-solid fa-copy"></i>
+      </button>
+    </p>
+    <article class="notice">
+      <code id="destination_setup_<%= destination.id %>">
+        kamal server exec -d <%= destination.name %> "mkdir -p ~/.ssh && echo <%= destination.public_key %> >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
+      </code>
+    </article>
+  </details>
+
+  <h3>Servers</h3>
+
+  <% if destination.servers.empty? %>
+    <p>No servers deployed to for this destination.</p>
+  <% else %>
+    <% destination.servers.each do |server| %>
+      <%= render server %>
+    <% end %>
+  <% end %>
+</div>

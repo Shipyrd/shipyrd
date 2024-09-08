@@ -14,12 +14,13 @@ default: &defaults
 # to false to not push metrics for that environment.
 development:
   <<: *defaults
-  debug: true
+  debug: false
   active: false
 
 test:
   <<: *defaults
   active: false
+  debug: false
 
 production:
   <<: *defaults

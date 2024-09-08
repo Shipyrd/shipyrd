@@ -10,11 +10,6 @@ class ApplicationsController < ApplicationController
   def show
   end
 
-  # GET /applications/new
-  def new
-    @application = Application.new
-  end
-
   # GET /applications/1/edit
   def edit
   end

@@ -3,10 +3,6 @@
 <%= turbo_stream_from :applications %>
 
 <div id="applications" class="w-full">
-  <% if notice.present? %>
-    <p class="notice" id="notice"><%= notice %></p>
-  <% end %>
-
   <% if @applications.empty? %>
     <div class="rounded-lg border border-gray-200 bg-white my-5">
       <div class="items-center border-gray-200 border-b rounded-t-lg bg-gray-50">
