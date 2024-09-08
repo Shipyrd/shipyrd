@@ -239,7 +239,7 @@ GEM
     method_source (1.1.0)
     mini_mime (1.1.5)
     minitest (5.25.1)
-    minitest-spec-rails (7.2.0)
+    minitest-spec-rails (7.3.0)
       minitest (>= 5.0)
       railties (>= 4.1)
     mocha (2.3.0)
@@ -285,7 +285,7 @@ GEM
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
-    propshaft (0.9.0)
+    propshaft (0.9.1)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
       rack

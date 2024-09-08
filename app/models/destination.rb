@@ -44,7 +44,7 @@ class Destination < ApplicationRecord
     end
 
     yield(tmp_dir)
-
+  ensure
     FileUtils.remove_dir(tmp_dir) if File.directory?(tmp_dir)
   end
 
@@ -83,7 +83,7 @@ class Destination < ApplicationRecord
     return unless private_key.blank? || public_key.blank?
 
     key = SSHKey.generate(
-      comment: "Shipyrd - #{application.name}@#{name}",
+      comment: "Shipyrd - #{application.name} - #{name}",
       type: "ECDSA",
       bits: 521
     )
