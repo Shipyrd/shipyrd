@@ -8,6 +8,8 @@ class Destination < ApplicationRecord
   before_save :generate_key_pair
   after_update_commit :process_recipe, if: -> { saved_change_to_recipe? }
 
+  broadcasts
+
   def new_servers_available?
     servers.where(last_connected_at: nil).any?
   end
@@ -70,6 +72,11 @@ class Destination < ApplicationRecord
         end
       end
     end
+
+    update!(recipe_last_processed_at: Time.current)
+  rescue => e
+    logger.info "Failed to process recipe #{e}"
+    false
   end
 
   def generate_key_pair

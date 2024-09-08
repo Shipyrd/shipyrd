@@ -1,3 +1,7 @@
+<%= turbo_stream_from destination %>
+
+<% application = destination.application %>
+
 <div id="<%= dom_id destination %>">
   <h2>
     <%= destination.application.name %>
@@ -16,20 +20,26 @@
 
   <p>
     <strong>Kamal recipe:</strong>
-    <% if @application.github_connection.present? %>
+    <% if application.github_connection.present? %>
       <% if destination.recipe_updated_at.present? %>
-        <code><%= destination.recipe_path %></code> imported 
-        <time class="timeago" datetime="<%= destination.recipe_updated_at %>" %>">
-          <%= time_ago_in_words(destination.recipe_updated_at) %> ago
-        </time>
+        imported 
+        <%= render 'shared/time', time: destination.recipe_updated_at %>
+
+        <% if destination.recipe_last_processed_at.present? %>
+          (processed
+          <%= render 'shared/time', time: destination.recipe_last_processed_at %>)
+        <% else %>
+          (not processed yet)
+        <% end %>
+
       <% end %>
     <% else %>
-      <%= link_to "Connect GitHub", new_application_connection_path(@application, provider: :github, return_to: request.path), class: "button", title: "Connect GitHub" %>
+      <%= link_to "Connect GitHub", new_application_connection_path(application, provider: :github, return_to: request.path), class: "button", title: "Connect GitHub" %>
     <% end %>
   </p>
 
   <div>
-    <%= link_to "Edit this destination", edit_application_destination_path(@application, @destination), class: "button" %>
+    <%= link_to "Edit this destination", edit_application_destination_path(application, destination), class: "button" %>
   </div>
 
   <br>

@@ -70,6 +70,8 @@ class DestinationTest < ActiveSupport::TestCase
         )
       end
 
+      assert destination.recipe_last_processed_at
+
       assert_no_difference -> { destination.servers.count }, 1 do
         destination.recipe_will_change!
         destination.save!

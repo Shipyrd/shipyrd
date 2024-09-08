@@ -46,7 +46,14 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       assert_text "Connection was successfully created."
 
-      assert_text "Kamal recipe: config/deploy.yml imported just now"
+      assert_text "Kamal recipe: imported just now (not processed yet)"
+
+      @destination.update!(recipe_last_processed_at: Time.current)
+
+      assert_text "Kamal recipe: imported just now (processed just now)"
+    end
+
+    test "recipe status with destination" do
     end
 
     test "with servers" do
