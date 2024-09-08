@@ -5,9 +5,7 @@ class Connection < ApplicationRecord
 
   encrypts :key
 
-  enum provider: {
-    github: 0
-  }
+  enum :provider, github: 0
 
   validates :provider, presence: true, inclusion: {in: providers.keys}
   validate :connects_successfully, on: :create
