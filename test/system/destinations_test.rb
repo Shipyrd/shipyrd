@@ -49,9 +49,6 @@ class ApplicationsTest < ApplicationSystemTestCase
       assert_text "Kamal recipe: imported just now (processed just now)"
     end
 
-    test "recipe status with destination" do
-    end
-
     test "with servers" do
       @connected_server = @destination.servers.create!(host: "123.456.789.0", last_connected_at: Time.current)
       @new_server = @destination.servers.create!(host: "123.456.789.1")
@@ -74,7 +71,7 @@ class ApplicationsTest < ApplicationSystemTestCase
       @new_server.update!(last_connected_at: Time.current)
 
       within "#server_#{@new_server.id}" do
-        assert_text "Last connected less than a minute ago"
+        assert_text "Last connected just now"
       end
 
       visit application_destination_path(@application, @destination)
