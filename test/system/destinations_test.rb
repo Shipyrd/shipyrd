@@ -6,12 +6,6 @@ class ApplicationsTest < ApplicationSystemTestCase
     @api_key = ApiKey.create!
   end
 
-  it "requires authentication" do
-    visit root_url
-
-    assert_text "HTTP Basic: Access denied."
-  end
-
   describe "with an existing destination" do
     setup do
       @application = create(:application_with_repository_url)
@@ -49,6 +43,8 @@ class ApplicationsTest < ApplicationSystemTestCase
       assert_text "Kamal recipe: imported just now (not processed yet)"
 
       @destination.update!(recipe_last_processed_at: Time.current)
+
+      visit application_destination_path(@application, @destination)
 
       assert_text "Kamal recipe: imported just now (processed just now)"
     end

@@ -7,12 +7,6 @@ class ApplicationsTest < ApplicationSystemTestCase
   end
 
   describe "initial setup" do
-    it "requires authentication" do
-      visit root_url
-
-      assert_text "HTTP Basic: Access denied."
-    end
-
     it "points to setup instructions" do
       visit basic_auth_url(root_url, @api_key.token)
       visit root_url

@@ -8,6 +8,13 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
     @destination = create(:destination, application: @application)
   end
 
+  describe "anonymous" do
+    it "denies access" do
+      get application_destination_path(@application, @destination)
+      assert_response :unauthorized
+    end
+  end
+
   test "should get edit" do
     get edit_application_destination_path(@application, @destination), headers: auth_headers(@api_key.token)
     assert_response :success
