@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/hotwired/turbo-rails.git
-  revision: e376852bfb273f69f4ebb54cf516b99fcbaa7acb
+  revision: e9ed0a2d8746475d3dd643057ec6d2d793709cb8
   specs:
-    turbo-rails (2.0.5)
+    turbo-rails (2.0.6)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
