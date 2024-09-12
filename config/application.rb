@@ -27,6 +27,10 @@ module Shipyrd
     config.active_record.encryption.deterministic_key = ENV["SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY"]
     config.active_record.encryption.key_derivation_salt = ENV["SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT"]
 
+    # Use a real queuing backend for Active Job (and separate queues per environment).
+    config.active_job.queue_adapter = :solid_queue
+    config.solid_queue.connects_to = { database: { writing: :queue } }
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

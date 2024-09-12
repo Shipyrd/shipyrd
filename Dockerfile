@@ -65,8 +65,8 @@ COPY --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
-    mkdir db/production && \
-    chown -R rails:rails db log storage tmp db/production
+    mkdir db/production db/production_queue && \
+    chown -R rails:rails db log storage tmp db/production db/production_queue
 
 RUN mkdir /shipyrd && chown rails:rails /shipyrd
 VOLUME /shipyrd
@@ -74,7 +74,7 @@ VOLUME /shipyrd
 USER rails:rails
 
 HEALTHCHECK --timeout=10s \
-  CMD curl -f http://localhost:3000/up || exit 1
+    CMD curl -f http://localhost:3000/up || exit 1
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
