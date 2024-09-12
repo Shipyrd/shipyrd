@@ -193,6 +193,7 @@ GEM
       standard
     hashdiff (1.1.0)
     hashie (3.6.0)
+    honeybadger (5.15.6)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
@@ -468,6 +469,7 @@ DEPENDENCIES
   guard
   guard-minitest
   guard-standardrb
+  honeybadger
   importmap-rails
   jbuilder
   kamal

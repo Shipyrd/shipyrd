@@ -3,11 +3,12 @@ source "https://rubygems.org"
 ruby file: ".ruby-version"
 
 # Core
+gem "bootsnap", require: false
+gem "dotenv-rails"
+gem "kamal"
+gem "puma", ">= 5.0"
 gem "rails", "~> 7.1.2"
 gem "sqlite3", "~> 1.7.3"
-gem "dotenv-rails"
-gem "puma", ">= 5.0"
-gem "bootsnap", require: false
 
 # Assets
 gem "propshaft"
@@ -15,14 +16,16 @@ gem "importmap-rails"
 gem "turbo-rails", github: "hotwired/turbo-rails" # for broadcasts_refreshes support
 gem "stimulus-rails"
 
+# 3rd Party
+gem "github_api"
+gem "honeybadger", require: false
+
 # Jobs/Cable
+gem "mission_control-jobs"
 gem "solid_cable"
 gem "solid_queue"
-gem "mission_control-jobs"
 
 # Misc.
-gem "github_api"
-gem "kamal"
 gem "jbuilder"
 gem "sshkey"
 
