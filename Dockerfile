@@ -32,6 +32,7 @@ RUN --mount=type=cache,id=gem-cache-3.3,sharing=locked,target=/srv/vendor \
     bundle config set without 'development test toolbox' && \
     bundle install --jobs 8 && \
     bundle clean && \
+    gem install foreman && \
     mkdir -p vendor && \
     bundle config set --local path vendor && \
     cp -ar /srv/vendor . && \
@@ -81,4 +82,4 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["./bin/rails", "server"]
+CMD ["foreman", "start"]
