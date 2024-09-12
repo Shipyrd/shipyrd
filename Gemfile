@@ -2,26 +2,19 @@ source "https://rubygems.org"
 
 ruby file: ".ruby-version"
 
-# Core
-gem "bootsnap", require: false
-gem "dotenv-rails"
-gem "kamal"
-gem "puma", ">= 5.0"
 gem "rails", "~> 7.1.2"
+gem "dotenv-rails"
+gem "puma", ">= 5.0"
+gem "propshaft"
+gem "github_api"
+gem "kamal"
+gem "importmap-rails"
+gem "turbo-rails", github: "hotwired/turbo-rails" # for broadcasts_refreshes support
+gem "stimulus-rails"
+gem "jbuilder"
+gem "bootsnap", require: false
 gem "solid_cable"
 gem "sqlite3", "~> 1.7.3"
-
-# Assets/Views
-gem "importmap-rails"
-gem "jbuilder"
-gem "propshaft"
-gem "stimulus-rails"
-gem "turbo-rails", github: "hotwired/turbo-rails" # for broadcasts_refreshes support
-
-# 3rd Party
-gem "github_api"
-
-# Misc.
 gem "sshkey"
 
 group :development, :test do
