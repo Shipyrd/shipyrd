@@ -32,6 +32,7 @@ RUN --mount=type=cache,id=gem-cache-3.3,sharing=locked,target=/srv/vendor \
     bundle config set without 'development test toolbox' && \
     bundle install --jobs 8 && \
     bundle clean && \
+    gem install foreman && \
     mkdir -p vendor && \
     bundle config set --local path vendor && \
     cp -ar /srv/vendor . && \
@@ -65,8 +66,8 @@ COPY --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
-    mkdir db/production && \
-    chown -R rails:rails db log storage tmp db/production
+    mkdir db/production db/production_queue && \
+    chown -R rails:rails db log storage tmp db/production db/production_queue
 
 RUN mkdir /shipyrd && chown rails:rails /shipyrd
 VOLUME /shipyrd
@@ -74,11 +75,11 @@ VOLUME /shipyrd
 USER rails:rails
 
 HEALTHCHECK --timeout=10s \
-  CMD curl -f http://localhost:3000/up || exit 1
+    CMD curl -f http://localhost:3000/up || exit 1
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["./bin/rails", "server"]
+CMD ["foreman", "start"]

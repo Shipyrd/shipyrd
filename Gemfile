@@ -8,21 +8,25 @@ gem "dotenv-rails"
 gem "kamal"
 gem "puma", ">= 5.0"
 gem "rails", "~> 7.1.2"
-gem "solid_cable"
 gem "sqlite3", "~> 1.7.3"
 
-# Assets/Views
-gem "importmap-rails"
-gem "jbuilder"
+# Assets
 gem "propshaft"
-gem "stimulus-rails"
+gem "importmap-rails"
 gem "turbo-rails", github: "hotwired/turbo-rails" # for broadcasts_refreshes support
+gem "stimulus-rails"
 
 # 3rd Party
 gem "github_api"
 gem "honeybadger", require: false
 
+# Jobs/Cable
+gem "mission_control-jobs"
+gem "solid_cable"
+gem "solid_queue"
+
 # Misc.
+gem "jbuilder"
 gem "sshkey"
 
 group :development, :test do
