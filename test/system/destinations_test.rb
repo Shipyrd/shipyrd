@@ -1,7 +1,7 @@
 require "application_system_test_case"
 require "helpers/basic_auth_helpers"
 
-class ApplicationsTest < ApplicationSystemTestCase
+class DestinationsTest < ApplicationSystemTestCase
   setup do
     @api_key = ApiKey.create!
   end

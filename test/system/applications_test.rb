@@ -74,8 +74,9 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       destination = deploy.application.destinations.find_by(name: "production")
       destination.update!(url: "https://production.com")
+      # TODO: Add back in a link to the production URL
 
-      assert_link "production", href: destination.url
+      assert_link "production", href: application_destination_path(destination.application, destination)
 
       deploy = create(
         :deploy,

@@ -16,6 +16,7 @@ gem "bootsnap", require: false
 gem "solid_cable"
 gem "sqlite3", "~> 1.7.3"
 gem "sshkey"
+gem "tty-command"
 
 group :development, :test do
   gem "brakeman"

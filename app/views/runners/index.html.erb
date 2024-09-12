@@ -1,0 +1,12 @@
+<% @runners.each do |runner| %>
+  <article>
+    <%= runner.display_command %>
+    <% if runner.time %>
+      (<%= runner.time %>s)
+    <% end %>
+
+    <aside class="aside_naked">
+      <%= link_to "View", application_destination_runner_path(@application, @destination, runner), class: "button" %>
+    </aside>
+  </article>
+<% end %>

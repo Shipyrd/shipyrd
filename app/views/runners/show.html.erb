@@ -1,0 +1,24 @@
+<% content_for :head do %>
+  <%= stylesheet_link_tag "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" %>
+  <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" %>
+  <script>hljs.highlightAll();</script>
+<% end %>
+
+<h2>
+  <%= @destination.application.name %>
+  <kbd><%= @destination.name %></kbd>
+</h2>
+
+<p>
+  Running
+  <kbd><%= @runner.command %></kbd>
+  <% unless @runner.destination.default? %>
+    on
+    <kbd><%= @runner.destination.display_name %></kbd>
+  <% end %>
+</p>
+
+<pre><code class="language-bash">
+$ <%= @runner.full_command %>
+<%= @runner.output %>
+</code></pre>
