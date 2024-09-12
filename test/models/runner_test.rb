@@ -15,7 +15,7 @@ class RunnerTest < ActiveSupport::TestCase
     assert_equal 60, @runner.time
   end
 
-  describe "start_runner" do
+  describe "run!" do
     it "runs a command successfully" do
       @runner.command = "lock status"
 
@@ -25,7 +25,7 @@ class RunnerTest < ActiveSupport::TestCase
       cmd.expects(:run).yields("output", "error")
       @runner.stubs(:cmd).returns(cmd)
 
-      @runner.start_runner
+      @runner.run!
 
       assert @runner.started_at
       assert @runner.finished_at
@@ -40,7 +40,7 @@ class RunnerTest < ActiveSupport::TestCase
       cmd.expects(:run).yields(nil, "error")
       @runner.stubs(:cmd).returns(cmd)
 
-      @runner.start_runner
+      @runner.run!
 
       assert_equal "error", @runner.error
     end

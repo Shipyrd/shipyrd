@@ -1,13 +1,19 @@
 class Runner < ApplicationRecord
   belongs_to :destination
 
-  # after_create_commit :start_runner
+  after_create_commit :queue_run
+
+  broadcasts
 
   def display_command
     "kamal #{command}"
   end
 
-  def start_runner
+  def queue_run
+    RunnerJob.perform_later(id)
+  end
+
+  def run!
     update(started_at: Time.current)
 
     output, error = "", ""

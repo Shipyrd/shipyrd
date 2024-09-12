@@ -4,21 +4,10 @@
   <script>hljs.highlightAll();</script>
 <% end %>
 
+
 <h2>
   <%= @destination.application.name %>
   <kbd><%= @destination.name %></kbd>
 </h2>
 
-<p>
-  Running
-  <kbd><%= @runner.command %></kbd>
-  <% unless @runner.destination.default? %>
-    on
-    <kbd><%= @runner.destination.display_name %></kbd>
-  <% end %>
-</p>
-
-<pre><code class="language-bash">
-$ <%= @runner.full_command %>
-<%= @runner.output %>
-</code></pre>
+<%= render @runner %>
