@@ -2,7 +2,8 @@
 
 <div id="<%= dom_id runner %>"%>
   <p>
-    Running
+    <%= runner.finished? ? "Ran": "Running" %>
+
     <kbd><%= runner.command %></kbd>
     <% unless runner.destination.default? %>
       on
@@ -10,10 +11,10 @@
     <% end %>
   </p>
 
-  <pre><code class="language-bash">
-  <% if runner.output.present? %>
-    $ <%= runner.full_command %>
-  <% end %>
-  <%= runner.output %>
-  </code></pre>
+<pre><code class="language-bash">
+<% if runner.output.present? %>
+  $ <%= runner.full_command %>
+<% end %>
+<%= runner.output %>
+</code></pre>
 </div>

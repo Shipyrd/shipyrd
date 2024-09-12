@@ -34,6 +34,10 @@ class Runner < ApplicationRecord
     update(finished_at: Time.current)
   end
 
+  def finished?
+    finished_at.present?
+  end
+
   def cli_options(base_recipe_path)
     [
       destination.default? ? nil : "--destination #{destination.name}",
