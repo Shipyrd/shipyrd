@@ -53,7 +53,7 @@ class DestinationsTest < ApplicationSystemTestCase
     end
 
     test "with servers" do
-      @connected_server = @destination.servers.create!(host: "123.456.789.0", last_connected_at: Time.current)
+      @connected_server = @destination.servers.create!(host: "123.456.789.0", last_connected_at: 3.minutes.ago)
       @new_server = @destination.servers.create!(host: "123.456.789.1")
 
       visit basic_auth_url(root_url, @api_key.token)
@@ -61,7 +61,7 @@ class DestinationsTest < ApplicationSystemTestCase
 
       within "#server_#{@connected_server.id}" do
         assert_text "123.456.789.0"
-        assert_text "Last connected just now"
+        assert_text "Last connected 3 minutes ago"
       end
 
       assert_text "Connecting Shipyrd to your servers"
@@ -71,10 +71,11 @@ class DestinationsTest < ApplicationSystemTestCase
         assert_text "123.456.789.1"
       end
 
-      @new_server.update!(last_connected_at: Time.current)
+      @new_server.update!(last_connected_at: 2.minutes.ago)
+      visit application_destination_path(@application, @destination)
 
       within "#server_#{@new_server.id}" do
-        assert_text "Last connected less than a minute ago"
+        assert_text "Last connected 2 minutes ago"
       end
 
       visit application_destination_path(@application, @destination)

@@ -1,14 +1,28 @@
-default: &default
+primary_default: &primary_default
   adapter: sqlite3
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   idle_timeout: 0
   database: db/<%= Rails.env %>/data.sqlite3
 
+queue_default: &queue_default
+  adapter: sqlite3
+  database: db/<%= Rails.env %>_queue/data.sqlite3
+  migrations_paths: db/queue_migrate
+
 development:
-  <<: *default
+  primary:
+    <<: *primary_default
+  queue:
+    <<: *queue_default
 
 test:
-  <<: *default
+  primary:
+    <<: *primary_default
+  queue:
+    <<: *queue_default
 
 production:
-  <<: *default
+  primary:
+    <<: *primary_default
+  queue:
+    <<: *queue_default
