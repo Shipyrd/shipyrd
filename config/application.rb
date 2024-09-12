@@ -29,7 +29,7 @@ module Shipyrd
 
     # Use a real queuing backend for Active Job (and separate queues per environment).
     config.active_job.queue_adapter = :solid_queue
-    config.solid_queue.connects_to = { database: { writing: :queue } }
+    config.solid_queue.connects_to = {database: {writing: :queue}}
 
     # Configuration for the application, engines, and railties goes here.
     #
