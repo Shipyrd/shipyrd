@@ -2,19 +2,28 @@ source "https://rubygems.org"
 
 ruby file: ".ruby-version"
 
+# Core
 gem "rails", "~> 7.1.2"
+gem "sqlite3", "~> 1.7.3"
 gem "dotenv-rails"
 gem "puma", ">= 5.0"
+gem "bootsnap", require: false
+
+# Assets
 gem "propshaft"
-gem "github_api"
-gem "kamal"
 gem "importmap-rails"
 gem "turbo-rails", github: "hotwired/turbo-rails" # for broadcasts_refreshes support
 gem "stimulus-rails"
-gem "jbuilder"
-gem "bootsnap", require: false
+
+# Jobs/Cable
 gem "solid_cable"
-gem "sqlite3", "~> 1.7.3"
+gem "solid_queue"
+gem "mission_control-jobs"
+
+# Misc.
+gem "github_api"
+gem "kamal"
+gem "jbuilder"
 gem "sshkey"
 
 group :development, :test do
