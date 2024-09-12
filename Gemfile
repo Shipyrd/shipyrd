@@ -20,6 +20,7 @@ gem "turbo-rails", github: "hotwired/turbo-rails" # for broadcasts_refreshes sup
 
 # 3rd Party
 gem "github_api"
+gem "honeybadger", require: false
 
 # Misc.
 gem "sshkey"
