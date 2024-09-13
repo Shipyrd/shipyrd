@@ -7,7 +7,7 @@ gem "bootsnap", require: false
 gem "dotenv-rails"
 gem "kamal"
 gem "puma", ">= 5.0"
-gem "rails", "~> 7.1.2"
+gem "rails", "~> 7.2.1"
 gem "sqlite3", "~> 1.7.3"
 
 # Assets
