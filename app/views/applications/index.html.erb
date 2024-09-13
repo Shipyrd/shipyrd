@@ -1,9 +1,10 @@
 <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <%= turbo_stream_refresh_tag %>
-<%= turbo_stream_from :applications %>
 
 <div id="applications" class="w-full">
   <% if @applications.empty? %>
+    <%= turbo_stream_from :applications %>
+
     <div class="rounded-lg border border-gray-200 bg-white my-5">
       <div class="items-center border-gray-200 border-b rounded-t-lg bg-gray-50">
         <h3 class="text-center text-base font-semibold leading-6 border-gray-200 text-gray-900 pb-5 px-4 pt-5">
