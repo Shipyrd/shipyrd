@@ -18,11 +18,9 @@
   </head>
 
   <body class="container is-max-desktop">
-    <section class="section">
-      <nav class="navbar" role="navigation" aria-label="main navigation">
-        <%= link_to image_tag("logo.png", width: 125), root_url, class: "navbar-item" %>
-      </nav>
-    </section>
+    <nav class="navbar py-5" role="navigation" aria-label="main navigation">
+      <%= link_to image_tag("logo.png", width: 125), root_url %>
+    </nav>
 
     <% if notice.present? %>
       <section class="container">

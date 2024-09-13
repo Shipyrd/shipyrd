@@ -12,17 +12,9 @@
   --bulma-info-l: 40%;
 
   --grey: grey;
-  --orange: orange;
-  --yellow: yellow;
-  --green: green;
-}
-
-.aside_naked {
-  width: 40%;
-  border: 0;
-  background: none;
-  text-align: right;
-  padding-right: 0;
+  --orange: hsl(39, 100%, 50%);
+  --yellow: #ffe70f;
+  --green: #42dca3;
 }
 
 .grey {
@@ -30,7 +22,7 @@
 }
 
 progress.grey {
-  --accent: var(--grey);
+  --bulma-progress-value-background-color: var(--grey);
 }
 
 .orange {
@@ -38,7 +30,7 @@ progress.grey {
 }
 
 progress.orange {
-  --accent: var(--orange);
+  --bulma-progress-value-background-color: var(--orange);
 }
 
 .yellow {
@@ -46,7 +38,7 @@ progress.orange {
 }
 
 progress.yellow {
-  --accent: var(--yellow);
+  --bulma-progress-value-background-color: var(--yellow)
 }
 
 .green {
@@ -54,7 +46,7 @@ progress.yellow {
 }
 
 progress.green {
-  --accent: var(--green);
+  --bulma-progress-value-background-color: var(--green);
 }
 
 

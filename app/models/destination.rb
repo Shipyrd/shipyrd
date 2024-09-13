@@ -31,6 +31,10 @@ class Destination < ApplicationRecord
     name.blank?
   end
 
+  def production?
+    name == "production"
+  end
+
   def with_recipe
     tmp_dir = Rails.root.join("tmp", "#{SecureRandom.hex(10)}/config")
     FileUtils.mkdir_p(tmp_dir)
