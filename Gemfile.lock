@@ -93,6 +93,9 @@ GEM
     brakeman (6.2.1)
       racc
     builder (3.3.0)
+    bullet (7.2.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     capybara (3.40.0)
       addressable
       matrix
@@ -431,6 +434,7 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
+    uniform_notifier (1.16.0)
     useragent (0.16.10)
     web-console (4.2.1)
       actionview (>= 6.0.0)
@@ -463,6 +467,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   brakeman
+  bullet
   capybara
   debug
   dotenv-rails

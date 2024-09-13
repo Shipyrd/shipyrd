@@ -32,25 +32,26 @@ gem "tty-command"
 
 group :development, :test do
   gem "brakeman"
+  gem "bullet"
+  gem "debug", platforms: %i[mri windows]
   gem "factory_bot_rails"
   gem "faker"
-  gem "debug", platforms: %i[mri windows]
   gem "pry"
   gem "standard"
   gem "standard-rails"
 end
 
 group :development do
-  gem "web-console"
   gem "guard"
   gem "guard-minitest"
   gem "guard-standardrb"
+  gem "web-console"
 end
 
 group :test do
-  gem "minitest-spec-rails"
   gem "capybara"
   gem "launchy"
+  gem "minitest-spec-rails"
   gem "mocha"
   gem "selenium-webdriver"
   gem "webdrivers"
