@@ -49,9 +49,6 @@ class DestinationsTest < ApplicationSystemTestCase
       assert_text "Kamal recipe: imported just now (processed just now)"
     end
 
-    test "recipe status with destination" do
-    end
-
     test "with servers" do
       @connected_server = @destination.servers.create!(host: "123.456.789.0", last_connected_at: 3.minutes.ago)
       @new_server = @destination.servers.create!(host: "123.456.789.1")
