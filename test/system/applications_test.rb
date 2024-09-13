@@ -72,10 +72,13 @@ class ApplicationsTest < ApplicationSystemTestCase
         status: "post-deploy"
       )
 
-      destination = deploy.application.destinations.find_by(name: "production")
+      # TODO: Test is failing to trigger a cable refresh
+      visit root_url
+
+      destination = deploy.application.destinations.find_by!(name: "production")
 
       # TODO: Add back in a link to the production URL
-      assert_link "production", href: application_destination_path(destination.application, destination)
+      assert_link "production", href: application_destination_path(destination.application.id, destination.id)
 
       deploy = create(
         :deploy,
