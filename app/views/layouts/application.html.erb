@@ -6,6 +6,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= stylesheet_link_tag "https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 
     <%= favicon_link_tag "favicon.png" %>
@@ -14,14 +17,22 @@
     <%= yield :head %>
   </head>
 
-  <body>
-    <main>
-      <%= link_to image_tag("logo.png", width: 125), root_url %>
+  <body class="container is-max-desktop">
+    <section class="section">
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <%= link_to image_tag("logo.png", width: 125), root_url, class: "navbar-item" %>
+      </nav>
+    </section>
 
-      <% if notice.present? %>
-        <p><mark><%= notice %></mark></p>
-      <% end %>
+    <% if notice.present? %>
+      <section class="container">
+        <div class="notification is-info is-light">
+          <%= notice %>
+        </div>
+      </section>
+    <% end %>
 
+    <main class="container">
       <%= yield %>
     </main>
   </body>
