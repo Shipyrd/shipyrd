@@ -7,7 +7,7 @@ gem "bootsnap", require: false
 gem "dotenv-rails"
 gem "kamal"
 gem "puma", ">= 5.0"
-gem "rails", "~> 7.1.2"
+gem "rails", "~> 7.2.1"
 gem "sqlite3", "~> 2.0.4"
 
 # Assets
@@ -28,6 +28,7 @@ gem "solid_queue"
 # Misc.
 gem "jbuilder"
 gem "sshkey"
+gem "tty-command"
 
 group :development, :test do
   gem "brakeman"

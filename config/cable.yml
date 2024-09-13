@@ -1,17 +1,17 @@
 default: &default
   adapter: solid_cable
   silence_polling: true
-  polling_interval: 1.second
-  keep_messages_around_for: 10.seconds
-  
+  polling_interval: 0.5.seconds
+  message_retention: 10.seconds
+  connects_to:
+    database:
+      writing: cable
+
 development:
   <<: *default
 
 test:
-  adapter: inline
-
-staging:
-  <<: *default
+  adapter: test
 
 production:
   <<: *default

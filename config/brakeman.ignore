@@ -56,8 +56,42 @@
         915
       ],
       "note": ""
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "aa2ff7a7b2434d3ce722fd68c00f847c03e0f95edcf22e2bdb39086519b1b4e8",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/runners/show.html.erb",
+      "line": 13,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => Application.find(params[:application_id]).destinations.find(params[:destination_id]).runners.find(params[:id]), {})",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "RunnersController",
+          "method": "show",
+          "line": 29,
+          "file": "app/controllers/runners_controller.rb",
+          "rendered": {
+            "name": "runners/show",
+            "file": "app/views/runners/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "runners/show"
+      },
+      "user_input": "params[:id]",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
     }
   ],
-  "updated": "2024-08-22 13:51:11 -0700",
-  "brakeman_version": "6.1.2"
+  "updated": "2024-09-12 17:31:02 -0700",
+  "brakeman_version": "6.2.1"
 }
