@@ -6,12 +6,12 @@ primary_default: &primary_default
 
 queue_default: &queue_default
   adapter: sqlite3
-  database: db/<%= Rails.env %>_queue/data.sqlite3
+  database: db/<%= Rails.env %>/queue.sqlite3
   migrations_paths: db/queue_migrate
 
 cable_default: &cable_default
   adapter: sqlite3
-  database: db/<%= Rails.env %>_cable/data.sqlite3
+  database: db/<%= Rails.env %>/cable.sqlite3
   migrations_paths: db/cable_migrate
 
 development:
