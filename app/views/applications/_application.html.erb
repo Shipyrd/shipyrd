@@ -5,7 +5,7 @@
   <% application.destinations.order("created_at DESC").each_with_index do |destination, i| %>
     <% deploy = application.latest_deploy(destination: destination.name) %>
       <article>
-        <kbd><%= link_to_if destination.url.present?, destination.name || "default", destination.url, target: '_blank' %></kbd>
+        <kbd><%= link_to destination.display_name || "default", application_destination_path(application, destination) %></kbd>
         <% if destination.new_servers_available? %>
           <mark><%= link_to "New servers available!", application_destination_path(application, destination), alt: "New servers available!" %></mark>
         <% end %>

@@ -80,6 +80,10 @@
   <% if destination.servers.empty? %>
     <p>No servers deployed to for this destination.</p>
   <% else %>
+    <p>
+      <%= link_to "Run command #{destination.default? ? nil : "on #{destination.name}"}", new_application_destination_runner_path(application, destination), class: "button" %>
+    </p>
+
     <% destination.servers.each do |server| %>
       <%= render server %>
     <% end %>

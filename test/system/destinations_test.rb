@@ -1,7 +1,7 @@
 require "application_system_test_case"
 require "helpers/basic_auth_helpers"
 
-class ApplicationsTest < ApplicationSystemTestCase
+class DestinationsTest < ApplicationSystemTestCase
   setup do
     @api_key = ApiKey.create!
   end
@@ -47,9 +47,6 @@ class ApplicationsTest < ApplicationSystemTestCase
       visit application_destination_path(@application, @destination)
 
       assert_text "Kamal recipe: imported just now (processed just now)"
-    end
-
-    test "recipe status with destination" do
     end
 
     test "with servers" do

@@ -1,0 +1,20 @@
+<%= turbo_stream_from runner %>
+
+<div id="<%= dom_id runner %>"%>
+  <p>
+    <%= runner.finished? ? "Ran": "Running" %>
+
+    <kbd><%= runner.command %></kbd>
+    <% unless runner.destination.default? %>
+      on
+      <kbd><%= runner.destination.display_name %></kbd>
+    <% end %>
+  </p>
+
+<pre><code class="language-bash">
+<% if runner.output.present? %>
+  $ <%= runner.full_command %>
+<% end %>
+<%= runner.output %>
+</code></pre>
+</div>
