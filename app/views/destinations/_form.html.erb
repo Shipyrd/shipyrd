@@ -11,22 +11,30 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name, class: "w-full", disabled: true %>
+  <div class="field">
+    <%= form.label :name, class: "label" %>
+    <div class="control">
+      <%= form.text_field :name, class: "input", disabled: true %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :url, style: "display: block" %>
-    <%= form.text_field :url, class: "w-full" %>
+  <div class="field">
+    <%= form.label :url, class: "label" %>
+    <div class="control">
+      <%= form.text_field :url, class: "input" %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label :branch, style: "display: block" %>
-    <%= form.text_field :branch, class: "w-full" %>
+  <div class="field">
+    <%= form.label :branch, style: "label" %>
+    <div class="control">
+      <%= form.text_field :branch, class: "input" %>
+    </div>
   </div>
 
-  <div>
-    <%= form.submit "Update destination" %>
+  <div class="field">
+    <div class="control">
+      <%= form.submit "Update destination", class: "button is-primary" %>
+    </div>
   </div>
 <% end %>

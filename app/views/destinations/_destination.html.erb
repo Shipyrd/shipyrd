@@ -3,9 +3,12 @@
 <% application = destination.application %>
 
 <div id="<%= dom_id destination %>">
-  <h2>
-    <%= destination.application.name %>
-    <kbd><%= destination.name %></kbd>
+  <h2 class="mb-4 is-size-2 has-text-weight-medium">
+    <%= application.display_name %> 
+
+    <div style="" class="is-inline-block">
+      <%= destination_tag(destination) %>
+    </div>
   </h2>
 
   <p>

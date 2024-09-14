@@ -17,6 +17,10 @@
   --green: #42dca3;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
 .grey {
   color: var(--grey);
 }
