@@ -6,20 +6,20 @@
   <h2 class="mb-4 is-size-2 has-text-weight-medium">
     <%= application.display_name %> 
 
-    <div style="" class="is-inline-block">
-      <%= destination_tag(destination) %>
-    </div>
+    <%= destination_tag(destination) %>
   </h2>
 
-  <p>
-    <strong>URL:</strong>
-    <%= link_to destination.url, destination.url, target: "_blank" %>
-  </p>
+  <div class="content">
+    <p>
+      <strong>URL:</strong>
+      <%= link_to destination.url, destination.url, target: "_blank", class: "is-link" %>
+    </p>
 
-  <p>
-    <strong>Branch:</strong>
-    <%= destination.branch %>
-  </p>
+    <p>
+      <strong>Branch:</strong>
+      <span class="tag"><%= destination.branch %></span>
+    </p>
+  </div>
 
   <p>
     <strong>Kamal recipe:</strong>

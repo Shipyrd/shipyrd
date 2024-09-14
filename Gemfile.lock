@@ -193,6 +193,10 @@ GEM
     hashdiff (1.1.0)
     hashie (3.6.0)
     honeybadger (5.15.6)
+    hotwire-livereload (1.4.1)
+      actioncable (>= 6.0.0)
+      listen (>= 3.0.0)
+      railties (>= 6.0.0)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
@@ -355,6 +359,10 @@ GEM
       ffi (~> 1.0)
     rdoc (6.7.0)
       psych (>= 4.0.0)
+    redis (5.3.0)
+      redis-client (>= 0.22.0)
+    redis-client (0.22.2)
+      connection_pool
     regexp_parser (2.9.2)
     reline (0.5.10)
       io-console (~> 0.5)
@@ -478,6 +486,7 @@ DEPENDENCIES
   guard-minitest
   guard-standardrb
   honeybadger
+  hotwire-livereload
   importmap-rails
   jbuilder
   kamal
@@ -489,6 +498,7 @@ DEPENDENCIES
   pry
   puma (>= 5.0)
   rails (~> 7.2.1)
+  redis
   selenium-webdriver
   solid_cable
   solid_queue

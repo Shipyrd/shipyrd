@@ -45,6 +45,7 @@ group :development do
   gem "guard"
   gem "guard-minitest"
   gem "guard-standardrb"
+  gem "hotwire-livereload"
   gem "web-console"
 end
 
