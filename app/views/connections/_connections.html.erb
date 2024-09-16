@@ -1,13 +1,28 @@
 <article>
-    GitHub
-
     <% github = @application.connections.find_by(provider: :github) %>
 
     <aside class="aside_naked">
       <% if github %>
-        <%= button_to "Disconnect", application_connection_path(@application, github), method: :delete, class: "button", title: "Disconnect GitHub", data: { turbo_confirm: "Are you sure?" } %>
+        <span class="icon-text">
+          <%= button_to application_connection_path(@application, github), method: :delete, class: "button is-dark", title: "Disconnect GitHub", data: { turbo_confirm: "Are you sure?" } do %>
+            <span class="icon">
+              <i class="fa-brands fa-github"></i>
+            </span>
+            <span>
+              Disconnect
+            </span>
+          <% end %>
       <% else %>
-        <%= link_to "Connect", new_application_connection_path(@application, provider: :github, return_to: request.path), class: "button", title: "Connect GitHub" %>
+        <span class="icon-text">
+          <%= link_to new_application_connection_path(@application, provider: :github, return_to: request.path), class: "button is-dark", title: "Connect GitHub" do %>
+            <span class="icon">
+              <i class="fa-brands fa-github"></i>
+            </span>
+            <span>
+              Connect
+            </span>
+          <% end %>
+        </span>
       <% end %>
     </aside>
 </article>
