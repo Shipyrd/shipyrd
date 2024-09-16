@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_10_221450) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_16_013929) do
   create_table "api_keys", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -66,6 +66,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_10_221450) do
     t.datetime "recipe_updated_at"
     t.text "base_recipe"
     t.datetime "recipe_last_processed_at"
+    t.integer "servers_count", default: 0
     t.index ["application_id"], name: "index_destinations_on_application_id"
   end
 
