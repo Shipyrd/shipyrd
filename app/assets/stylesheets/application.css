@@ -17,6 +17,10 @@
   --green: #42dca3;
 }
 
+.code {
+  text-wrap: wrap;
+}
+
 a:hover {
   text-decoration: underline;
 }

@@ -5,9 +5,10 @@
 <% end %>
 
 
-<h2>
-  <%= @destination.application.name %>
-  <kbd><%= @destination.name %></kbd>
+<h2 class="mb-4 is-size-2 has-text-weight-medium">
+  <%= @application.display_name %> 
+
+  <%= destination_tag(@destination) %>
 </h2>
 
 <%= render @runner %>

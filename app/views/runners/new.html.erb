@@ -1,6 +1,7 @@
-<h2>
-  <%= @destination.application.name %>
-  <kbd><%= @destination.name %></kbd>
+<h2 class="mb-4 is-size-2 has-text-weight-medium">
+  <%= @application.display_name %> 
+
+  <%= destination_tag(@destination) %>
 </h2>
 
 <%= form_with(model: @runner, url: application_destination_runners_path(@application, @destination)) do |form| %>
@@ -16,12 +17,16 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :command, "Command to run", style: "display: block" %>
-    <%= form.text_field :command, class: "w-full" %>
+  <div class="field">
+    <%= form.label :command, "Command to run", class: "label" %>
+    <div class="control">
+      <%= form.text_field :command, class: "input" %>
+    </div>
   </div>
 
-  <div>
-    <%= form.submit "Run command on #{@destination.display_name}" %>
+  <div class="field">
+    <div class="control">
+      <%= form.submit "Run command on #{@destination.display_name}", class: "button is-primary" %>
+    </div>
   </div>
 <% end %>
