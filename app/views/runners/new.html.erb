@@ -5,17 +5,7 @@
 </h2>
 
 <%= form_with(model: @runner, url: application_destination_runners_path(@application, @destination)) do |form| %>
-  <% if @runner.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@runner.errors.count, "error") %> prohibited this runner from being starting:</h2>
-
-      <ul>
-        <% @runner.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render "shared/errors", form: form %>
 
   <div class="field">
     <%= form.label :command, "Command to run", class: "label" %>

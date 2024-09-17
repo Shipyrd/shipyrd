@@ -1,15 +1,5 @@
 <%= form_with(model: application, class: "contents") do |form| %>
-  <% if application.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(application.errors.count, "error") %> prohibited this application from being saved:</h2>
-
-      <ul>
-        <% application.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render "shared/errors", form: form %>
 
   <div class="field">
     <%= form.label :name, class: "label" %>

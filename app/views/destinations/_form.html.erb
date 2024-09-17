@@ -1,15 +1,5 @@
 <%= form_with(model: destination, url: application_destination_path(destination.application, destination)) do |form| %>
-  <% if destination.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(destination.errors.count, "error") %> prohibited this destination from being saved:</h2>
-
-      <ul>
-        <% destination.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render "shared/errors", form: form %>
 
   <div class="field">
     <%= form.label :name, class: "label" %>

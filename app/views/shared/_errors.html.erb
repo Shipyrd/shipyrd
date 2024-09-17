@@ -1,0 +1,11 @@
+<% if form.object.errors.any? %>
+  <div id="error_explanation" class="notification is-danger content">
+    <h6><%= pluralize(form.object.errors.count, "error") %> prohibited this <%= form.object.model_name %> from being saved:</h6>
+
+    <ul>
+      <% form.object.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
