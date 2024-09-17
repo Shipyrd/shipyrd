@@ -15,15 +15,16 @@
     </div>
   </div>
 
-  <div class="field is-grouped">
+  <div class="field">
     <div class="control">
       <%= form.submit "Update application", class: "button is-primary" %>
     </div>
-    <div class="control">
-      <%= button_to "Destroy application", application_path(@application), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "button is-danger" %>
-    </div>
   </div>
 <% end %>
+
+<div class="field mt-2">
+  <%= button_to "Destroy application", application_path(@application), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "button is-danger" %>
+</div>
 
 <hr>
 

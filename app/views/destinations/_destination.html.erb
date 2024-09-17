@@ -42,7 +42,7 @@
               <i class="fa-brands fa-github"></i>
             </span>
             <span>
-              Connect
+              Connect to GitHub
             </span>
           <% end %>
         </span>
@@ -96,13 +96,13 @@ kamal server exec -d <%= destination.name %> "mkdir -p ~/.ssh && echo <%= destin
 
   <h3 class="is-size-3">Servers</h3>
 
-  <% if destination.servers %>
+  <% if destination.servers.empty? %>
+    <p>No servers deployed to for this destination.</p>
+  <% else %>
     <%= link_to "Run command on #{destination.display_name}", new_application_destination_runner_path(application, destination), class: "button is-primary mb-4" %>
 
     <% destination.servers.each do |server| %>
       <%= render server %>
     <% end %>
-  <% else %>
-    <p>No servers deployed to for this destination.</p>
   <% end %>
 </div>

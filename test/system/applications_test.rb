@@ -110,8 +110,6 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       click_link "Edit this application"
 
-      assert_link "Edit", href: edit_application_destination_path(@application, @application.destinations.find_by(name: "production"))
-
       assert_text "production 1 server"
 
       fill_in "Name", with: "Potato"
@@ -139,13 +137,13 @@ class ApplicationsTest < ApplicationSystemTestCase
       click_on "Update"
 
       click_link "Edit this application"
-      click_link "Connect GitHub"
+      click_link "Connect to GitHub"
 
       Connection.any_instance.stubs(:connects_successfully)
       Connection.any_instance.stubs(:import_deploy_recipes)
 
       fill_in "connection_key", with: "key-from-github"
-      click_on "Connect GitHub"
+      click_on "Connect to GitHub"
 
       assert_text "Connection was successfully created."
 

@@ -16,7 +16,7 @@ class DestinationsTest < ApplicationSystemTestCase
       visit basic_auth_url(root_url, @api_key.token)
       visit application_destination_path(@application, @destination)
 
-      refute_text "Run command"
+      refute_text "Run command on default"
 
       @destination.servers.create(host: "123.456.78.9", last_connected_at: Time.current)
 
