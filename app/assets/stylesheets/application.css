@@ -17,8 +17,9 @@
   --green: #42dca3;
 }
 
-.code {
+pre code {
   text-wrap: wrap;
+  overflow-wrap: break-word;
 }
 
 a:hover {
@@ -72,8 +73,4 @@ main a.button {
 
 .w-full {
   width: 100%;
-}
-
-code {
-  overflow-wrap: break-word;
 }
