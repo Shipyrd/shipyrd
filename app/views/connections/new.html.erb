@@ -1,6 +1,6 @@
-<h1>
+<h2 class="mb-4 is-size-2">
   Connect <code><%= params[:provider] %></code> to <%= @application.display_name %>
-</h1>
+</h2>
 
 <%= form_with(model: [@application, @connection]) do |form| %>
   <%= form.hidden_field :provider %>
