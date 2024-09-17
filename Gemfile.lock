@@ -1,12 +1,3 @@
-GIT
-  remote: https://github.com/hotwired/turbo-rails.git
-  revision: e9ed0a2d8746475d3dd643057ec6d2d793709cb8
-  specs:
-    turbo-rails (2.0.6)
-      actionpack (>= 6.0.0)
-      activejob (>= 6.0.0)
-      railties (>= 6.0.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -437,6 +428,10 @@ GEM
     tty-color (0.6.0)
     tty-command (0.10.1)
       pastel (~> 0.8)
+    turbo-rails (2.0.7)
+      actionpack (>= 6.0.0)
+      activejob (>= 6.0.0)
+      railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
@@ -505,7 +500,7 @@ DEPENDENCIES
   standard-rails
   stimulus-rails
   tty-command
-  turbo-rails!
+  turbo-rails
   web-console
   webdrivers
   webmock
