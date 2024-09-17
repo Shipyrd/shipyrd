@@ -7,11 +7,17 @@
 <%= form_with(model: @runner, url: application_destination_runners_path(@application, @destination)) do |form| %>
   <%= render "shared/errors", form: form %>
 
-  <div class="field">
-    <%= form.label :command, "Command to run", class: "label" %>
-    <div class="control">
+  <%= form.label :command, "Command to run", class: "label" %>
+
+  <div class="field has-addons">
+    <p class="control">
+      <a class="button is-static">
+        kamal
+      </a>
+    </p>
+    <p class="control is-expanded">
       <%= form.text_field :command, class: "input" %>
-    </div>
+    </p>
   </div>
 
   <div class="field">
