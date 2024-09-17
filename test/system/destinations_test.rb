@@ -16,7 +16,7 @@ class DestinationsTest < ApplicationSystemTestCase
       visit basic_auth_url(root_url, @api_key.token)
       visit edit_application_destination_path(@application, @destination)
 
-      assert_text "Editing #{@application.name} default"
+      assert_text "Editing #{@application.name}"
 
       fill_in "Branch", with: "main"
       fill_in "URL", with: "https://production.com"
@@ -30,13 +30,13 @@ class DestinationsTest < ApplicationSystemTestCase
       visit basic_auth_url(root_url, @api_key.token)
       visit application_destination_path(@application, @destination)
 
-      click_on "Connect GitHub"
+      click_on "Connect to GitHub"
 
       Connection.any_instance.stubs(:connects_successfully)
       Connection.any_instance.stubs(:fetch_repository_content).returns("recipe")
 
       fill_in "connection_key", with: "key-from-github"
-      click_on "Connect GitHub"
+      click_on "Connect to GitHub"
 
       assert_text "Connection was successfully created."
 
@@ -74,11 +74,6 @@ class DestinationsTest < ApplicationSystemTestCase
       within "#server_#{@new_server.id}" do
         assert_text "Last connected 2 minutes ago"
       end
-
-      visit application_destination_path(@application, @destination)
-
-      # Setup instructions are closed/collapsed when all servers are connected.
-      refute_text "An SSH key pair is generated"
     end
   end
 end

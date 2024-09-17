@@ -1,27 +1,22 @@
-<h2>
-  <%= @destination.application.name %>
-  <kbd><%= @destination.name %></kbd>
+<h2 class="mb-4 is-size-2 has-text-weight-medium">
+  <%= @application.display_name %> 
+
+  <%= destination_tag(@destination) %>
 </h2>
 
 <%= form_with(model: @runner, url: application_destination_runners_path(@application, @destination)) do |form| %>
-  <% if @runner.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@runner.errors.count, "error") %> prohibited this runner from being starting:</h2>
+  <%= render "shared/errors", form: form %>
 
-      <ul>
-        <% @runner.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <div class="field">
+    <%= form.label :command, "Command to run", class: "label" %>
+    <div class="control">
+      <%= form.text_field :command, class: "input" %>
     </div>
-  <% end %>
-
-  <div>
-    <%= form.label :command, "Command to run", style: "display: block" %>
-    <%= form.text_field :command, class: "w-full" %>
   </div>
 
-  <div>
-    <%= form.submit "Run command on #{@destination.display_name}" %>
+  <div class="field">
+    <div class="control">
+      <%= form.submit "Run command on #{@destination.display_name}", class: "button is-primary" %>
+    </div>
   </div>
 <% end %>

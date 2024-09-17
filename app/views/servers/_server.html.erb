@@ -1,16 +1,22 @@
 <%= turbo_stream_from server %>
 
-<article id="<%= dom_id server %>">
-  <kbd><%= server.host %></kbd>
+<div class="my-4" id="<%= dom_id server %>">
+  <div class="box">
+    <div class="columns">
+      <div class="column">
+        <kbd><%= server.host %></kbd>
+      </div>
 
-  <% if server.last_connected_at.present? %>
-    <aside class="aside_naked">
-      <small>
-        Last connected 
-        <time class="timeago" datetime="<%= server.last_connected_at %>">
-          <%= time_ago_in_words(server.last_connected_at) %> ago
-        </time>
-      </small>
-    </aside>
-  <% end %>
-</article>
+      <div class="column has-text-right">
+        <% if server.last_connected_at.present? %>
+            <small>
+              Last connected 
+              <time class="timeago" datetime="<%= server.last_connected_at %>">
+                <%= time_ago_in_words(server.last_connected_at) %> ago
+              </time>
+            </small>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

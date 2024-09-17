@@ -193,6 +193,10 @@ GEM
     hashdiff (1.1.0)
     hashie (3.6.0)
     honeybadger (5.15.6)
+    hotwire-livereload (1.4.1)
+      actioncable (>= 6.0.0)
+      listen (>= 3.0.0)
+      railties (>= 6.0.0)
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
@@ -478,6 +482,7 @@ DEPENDENCIES
   guard-minitest
   guard-standardrb
   honeybadger
+  hotwire-livereload
   importmap-rails
   jbuilder
   kamal

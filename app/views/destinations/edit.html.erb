@@ -1,7 +1,10 @@
-<h2>
+<h2 class="mb-4 is-size-2 has-text-weight-medium">
   Editing 
-  <%= @application.name %> 
-  <kbd><%= @destination.display_name %></kbd>
+  <%= @application.display_name %> 
+
+  <div style="" class="is-inline-block">
+    <%= destination_tag(@destination) %>
+  </div>
 </h2>
 
 <%= render "form", destination: @destination %>

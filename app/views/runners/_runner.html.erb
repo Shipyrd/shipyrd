@@ -1,14 +1,12 @@
 <%= turbo_stream_from runner %>
 
 <div id="<%= dom_id runner %>"%>
-  <p>
+  <p class="mb-5">
     <%= runner.finished? ? "Ran": "Running" %>
 
-    <kbd><%= runner.command %></kbd>
-    <% unless runner.destination.default? %>
-      on
-      <kbd><%= runner.destination.display_name %></kbd>
-    <% end %>
+    <code class="is-medium">
+      <%= runner.command %>
+    </code>
   </p>
 
 <pre><code class="language-bash">
@@ -17,4 +15,5 @@
 <% end %>
 <%= runner.output %>
 </code></pre>
+
 </div>
