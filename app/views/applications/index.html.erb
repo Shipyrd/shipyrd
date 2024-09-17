@@ -1,7 +1,7 @@
 <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <%= turbo_stream_refresh_tag %>
 
-<div id="applications" class="w-full">
+<div id="applications">
   <% if @applications.empty? %>
     <%= turbo_stream_from :applications %>
 

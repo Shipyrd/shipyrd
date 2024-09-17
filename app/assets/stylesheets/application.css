@@ -26,38 +26,21 @@ a:hover {
   text-decoration: underline;
 }
 
-.grey {
-  color: var(--grey);
-}
-
 progress.grey {
   --bulma-progress-value-background-color: var(--grey);
-}
-
-.orange {
-  color: var(--orange);
 }
 
 progress.orange {
   --bulma-progress-value-background-color: var(--orange);
 }
 
-.yellow {
-  color: var(--yellow);
-}
-
 progress.yellow {
   --bulma-progress-value-background-color: var(--yellow)
-}
-
-.green {
-  color: var(--green);
 }
 
 progress.green {
   --bulma-progress-value-background-color: var(--green);
 }
-
 
 @media (prefers-color-scheme: light) {
 
@@ -65,12 +48,4 @@ progress.green {
   main a:visited {
     color: #303030;
   }
-}
-
-main a.button {
-  color: white;
-}
-
-.w-full {
-  width: 100%;
 }
