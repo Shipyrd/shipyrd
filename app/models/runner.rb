@@ -23,7 +23,7 @@ class Runner < ApplicationRecord
         full_command: "kamal #{command} #{cli_options(base_recipe_path)}"
       )
 
-      cmd.run(full_command) do |out, err|
+      cmd.run(*full_command.split(" ")) do |out, err|
         update(output: output += out) if out
         update(error: error += err) if err
       end
