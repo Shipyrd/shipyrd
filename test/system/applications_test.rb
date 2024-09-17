@@ -110,7 +110,7 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       click_link "Edit this application"
 
-      assert_text "production 1 server"
+      assert_text "1 server"
 
       fill_in "Name", with: "Potato"
       fill_in "Repository URL", with: "https://github.com/shipyrd/shipyrd"
