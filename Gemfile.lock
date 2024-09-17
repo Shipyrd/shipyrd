@@ -1,10 +1,9 @@
 GIT
   remote: https://github.com/hotwired/turbo-rails.git
-  revision: e9ed0a2d8746475d3dd643057ec6d2d793709cb8
+  revision: 1b60474bcb594fecc715b4c603db69189e880c21
   specs:
-    turbo-rails (2.0.6)
+    turbo-rails (2.0.7)
       actionpack (>= 6.0.0)
-      activejob (>= 6.0.0)
       railties (>= 6.0.0)
 
 GEM
@@ -197,7 +196,7 @@ GEM
       actioncable (>= 6.0.0)
       listen (>= 3.0.0)
       railties (>= 6.0.0)
-    i18n (1.14.5)
+    i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
       actionpack (>= 6.0.0)
