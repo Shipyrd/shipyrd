@@ -1,7 +1,7 @@
 class Destination < ApplicationRecord
   belongs_to :application, optional: true, touch: true
   has_many :deploys, through: :application
-  has_many :servers, dependent: :destroy, counter_cache: true
+  has_many :servers, dependent: :destroy
   has_many :runners, dependent: :destroy
 
   encrypts :private_key
