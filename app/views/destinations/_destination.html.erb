@@ -50,9 +50,7 @@
     </p>
   </div>
 
-  <div class="my-4">
-    <%= link_to "Edit this destination", edit_application_destination_path(application, destination), class: "button is-primary" %>
-  </div>
+  <%= link_to "Edit this destination", edit_application_destination_path(application, destination), class: "button is-primary my-4" %>
 
   <hr>
 
@@ -96,17 +94,15 @@ kamal server exec -d <%= destination.name %> "mkdir -p ~/.ssh && echo <%= destin
 
   <hr>
 
-  <h3>Servers</h3>
+  <h3 class="is-size-3">Servers</h3>
 
   <% if destination.servers %>
-    <p>No servers deployed to for this destination.</p>
-  <% else %>
-    <p>
-      <%= link_to "Run command #{destination.default? ? nil : "on #{destination.name}"}", new_application_destination_runner_path(application, destination), class: "button" %>
-    </p>
+    <%= link_to "Run command on #{destination.display_name}", new_application_destination_runner_path(application, destination), class: "button is-primary mb-4" %>
 
     <% destination.servers.each do |server| %>
       <%= render server %>
     <% end %>
+  <% else %>
+    <p>No servers deployed to for this destination.</p>
   <% end %>
 </div>
