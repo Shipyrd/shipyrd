@@ -13,7 +13,7 @@ gem "sqlite3", "~> 2.0.4"
 # Assets
 gem "propshaft"
 gem "importmap-rails"
-gem "turbo-rails"
+gem "turbo-rails", "= 2.0.7"
 gem "stimulus-rails"
 
 # 3rd Party
