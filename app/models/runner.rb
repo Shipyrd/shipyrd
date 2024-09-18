@@ -24,8 +24,8 @@ class Runner < ApplicationRecord
       )
 
       cmd.run(*full_command.split(" ")) do |out, err|
-        update(output: output += out.force_encoding('UTF-8')) if out
-        update(error: error += err.force_encoding('UTF-8')) if err
+        update(output: output += out.force_encoding("UTF-8")) if out
+        update(error: error += err.force_encoding("UTF-8")) if err
       end
     end
   rescue TTY::Command::ExitError => e

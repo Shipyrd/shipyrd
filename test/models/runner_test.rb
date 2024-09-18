@@ -3,7 +3,7 @@ require "test_helper"
 class RunnerTest < ActiveSupport::TestCase
   setup do
     @application = build(:application)
-    @destination = build(:destination, application: @application)
+    @destination = build(:destination, application: @application, base_recipe: {service: :shipyrd}.to_yaml)
     @runner = build(:runner, destination: @destination)
   end
 
@@ -37,7 +37,7 @@ class RunnerTest < ActiveSupport::TestCase
       @runner.command = "lock status"
 
       cmd = mock
-      cmd.expects(:run).yields(nil, "error")
+      cmd.expects(:run).yields("output", "error")
       @runner.stubs(:cmd).returns(cmd)
 
       @runner.run!
