@@ -14,7 +14,7 @@
     </div>
 
     <div class="column is-one-third has-text-right">
-      <% if @runner.finished? %>
+      <% if runner.finished? %>
         <%= link_to "Run new command on #{@destination.display_name}", new_application_destination_runner_path(@application, @destination), class: "button is-primary" %>
       <% end %>
     </div>
