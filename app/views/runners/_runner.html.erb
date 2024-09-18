@@ -1,14 +1,27 @@
 <%= turbo_stream_from runner %>
 
 <div id="<%= dom_id runner %>"%>
-  <p class="mb-5">
-    <%= runner.finished? ? "Ran": "Running" %>
+  <div class="columns is-vcentered">
 
-    <code class="is-medium">
-      <%= runner.command %>
-    </code>
-  </p>
+    <div class="column">
+      <p class="">
+        <%= runner.finished? ? "Ran": "Running" %>
 
+        <code class="is-medium">
+          <%= runner.command %>
+        </code>
+      </p>
+    </div>
+
+    <div class="column is-one-third has-text-right">
+      <% if @runner.finished? %>
+        <%= link_to "Run new command on #{@destination.display_name}", new_application_destination_runner_path(@application, @destination), class: "button is-primary" %>
+      <% end %>
+    </div>
+
+  </div>
+
+<%- # Indentation is intentional for better output display %>
 <pre><code class="language-bash">
 <% if runner.output.present? %>
   $ <%= runner.full_command %>

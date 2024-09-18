@@ -41,7 +41,13 @@ class Destination < ApplicationRecord
 
     # config/deploy.yml
     base_recipe_path = "#{tmp_dir}/deploy.yml"
-    File.write(base_recipe_path, base_recipe)
+    base_recipe_content = YAML.load(base_recipe)
+
+    base_recipe_content["ssh"] = {} if base_recipe_content['ssh'].blank?
+    base_recipe_content["ssh"]["keys_only"] = true
+    base_recipe_content["ssh"]["key_data"] = [private_key.to_s]
+
+    File.write(base_recipe_path, base_recipe_content.to_yaml)
 
     unless default?
       # config/deploy.production.yml
@@ -88,9 +94,7 @@ class Destination < ApplicationRecord
     return unless private_key.blank? || public_key.blank?
 
     key = SSHKey.generate(
-      comment: "Shipyrd - #{application.name} - #{name}",
-      type: "ECDSA",
-      bits: 521
+      comment: "Shipyrd - #{application.name} - #{name}"
     )
 
     self.private_key = key.private_key
