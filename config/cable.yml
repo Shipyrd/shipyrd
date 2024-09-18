@@ -11,7 +11,7 @@ development:
   adapter: async
 
 test:
-  adapter: test
+  adapter: solid_cable
 
 production:
   <<: *default
