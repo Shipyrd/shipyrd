@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_18_201444) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_18_205003) do
   create_table "api_keys", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -91,15 +91,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_18_201444) do
     t.datetime "last_connected_at"
     t.index ["destination_id", "host"], name: "index_servers_on_destination_id_and_host", unique: true
     t.index ["destination_id"], name: "index_servers_on_destination_id"
-  end
-
-  create_table "solid_cable_messages", force: :cascade do |t|
-    t.text "channel"
-    t.text "payload"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["channel"], name: "index_solid_cable_messages_on_channel"
-    t.index ["created_at"], name: "index_solid_cable_messages_on_created_at"
   end
 
   create_table "users", force: :cascade do |t|
