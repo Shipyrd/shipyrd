@@ -32,7 +32,6 @@ RUN --mount=type=cache,id=gem-cache-3.3,sharing=locked,target=/srv/vendor \
     bundle config set without 'development test toolbox' && \
     bundle install --jobs 8 && \
     bundle clean && \
-    gem install foreman && \
     mkdir -p vendor && \
     bundle config set --local path vendor && \
     cp -ar /srv/vendor . && \
@@ -52,6 +51,8 @@ RUN --mount=type=cache,id=bld-assets-cache,sharing=locked,target=tmp/cache/asset
 
 # Final stage for app image
 FROM base
+
+ENV SOLID_QUEUE_IN_PUMA="1"
 
 # Install packages needed for deployment
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
@@ -82,4 +83,4 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
-CMD ["foreman", "start"]
+CMD ["./bin/rails", "server"]
