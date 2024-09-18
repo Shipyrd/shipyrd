@@ -1,4 +1,5 @@
 ENV["RAILS_ENV"] ||= "test"
+ENV["SOLID_QUEUE_IN_PUMA"] = "1"
 require_relative "../config/environment"
 require "rails/test_help"
 require "webmock/minitest"

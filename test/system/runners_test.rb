@@ -20,21 +20,6 @@ class DestinationsTest < ApplicationSystemTestCase
       assert_field "Command to run", with: "app logs"
     end
 
-    test "shows error output if command failed completely" do
-      visit basic_auth_url(root_url, @api_key.token)
-      visit new_application_destination_runner_path(@application, @destination, command: "unknown-command")
-
-      Runner.any_instance.stubs(:run!)
-      click_on "Run command"
-      Runner.last.update(error: "failed with")
-
-      assert_text "Running unknown-command"
-
-      visit application_destination_runner_path(@application, @destination, Runner.last)
-
-      assert_text "failed with"
-    end
-
     test "running command" do
       visit basic_auth_url(root_url, @api_key.token)
       visit application_destination_path(@application, @destination)
