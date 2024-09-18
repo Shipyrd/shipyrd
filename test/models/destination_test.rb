@@ -42,6 +42,26 @@ class DestinationTest < ActiveSupport::TestCase
     end
   end
 
+  describe "with_recipe" do
+    setup do
+      @destination = create(:destination, application: @application, base_recipe: {service: :shipyrd}.to_yaml)
+    end
+
+    it "writes to temp folder with SSH config" do
+      # Stubbing this to ensure the directory is removed after using
+      dir = "tmp/#{SecureRandom.stubs(:hex).returns("random")}"
+
+      @destination.with_recipe do |config_dir|
+        recipe = YAML.load_file("#{config_dir}/deploy.yml")
+
+        assert recipe["ssh"]["keys_only"]
+        assert_equal recipe["ssh"]["key_data"], [@destination.private_key]
+      end
+
+      refute File.directory?(dir)
+    end
+  end
+
   describe "process_recipe" do
     let(:destination) { create(:destination, name: "production", application: @application) }
 

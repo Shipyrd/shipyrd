@@ -24,8 +24,8 @@ class Runner < ApplicationRecord
       )
 
       cmd.run(*full_command.split(" ")) do |out, err|
-        update(output: output += out) if out
-        update(error: error += err) if err
+        update(output: output += out.force_encoding("UTF-8")) if out
+        update(error: error += err.force_encoding("UTF-8")) if err
       end
     end
   rescue TTY::Command::ExitError => e
@@ -52,6 +52,6 @@ class Runner < ApplicationRecord
   end
 
   def cmd
-    TTY::Command.new(printer: Rails.env.local? ? :pretty : :null)
+    TTY::Command.new(printer: :null)
   end
 end

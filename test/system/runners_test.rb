@@ -12,6 +12,14 @@ class DestinationsTest < ApplicationSystemTestCase
       @destination = create(:destination, application: @application)
     end
 
+    test "prefills the command field when provided" do
+      visit basic_auth_url(root_url, @api_key.token)
+
+      visit new_application_destination_runner_path(@application, @destination, command: "app logs")
+
+      assert_field "Command to run", with: "app logs"
+    end
+
     test "running command" do
       visit basic_auth_url(root_url, @api_key.token)
       visit application_destination_path(@application, @destination)

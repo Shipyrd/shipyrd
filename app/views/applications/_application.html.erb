@@ -36,6 +36,7 @@
                   <%= link_to "Edit", edit_application_destination_path(application, destination), class: "dropdown-item" %>
                   <hr class="dropdown-divider" />
                   <%= link_to "Run command", new_application_destination_runner_path(application, destination), class: "dropdown-item" %>
+                  <%= link_to "View logs", new_application_destination_runner_path(application, destination, command: "app logs"), class: "dropdown-item" %>
                 </div>
               </div>
             </div>
