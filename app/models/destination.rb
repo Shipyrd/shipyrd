@@ -31,20 +31,31 @@ class Destination < ApplicationRecord
     name.blank?
   end
 
+  def production?
+    name == "production"
+  end
+
   def with_recipe
-    tmp_dir = Rails.root.join("tmp", "#{SecureRandom.hex(10)}/config")
-    FileUtils.mkdir_p(tmp_dir)
+    tmp_dir = Rails.root.join("tmp", SecureRandom.hex(10))
+    config_dir = "#{tmp_dir}/config"
+    FileUtils.mkdir_p(config_dir)
 
     # config/deploy.yml
-    base_recipe_path = "#{tmp_dir}/deploy.yml"
-    File.write(base_recipe_path, base_recipe)
+    base_recipe_path = "#{config_dir}/deploy.yml"
+    base_recipe_content = YAML.load(base_recipe)
+
+    base_recipe_content["ssh"] = {} if base_recipe_content["ssh"].blank?
+    base_recipe_content["ssh"]["keys_only"] = true
+    base_recipe_content["ssh"]["key_data"] = [private_key.to_s]
+
+    File.write(base_recipe_path, base_recipe_content.to_yaml)
 
     unless default?
       # config/deploy.production.yml
-      File.write("#{tmp_dir}/#{recipe_name}", recipe)
+      File.write("#{config_dir}/#{recipe_name}", recipe)
     end
 
-    yield(tmp_dir)
+    yield(config_dir)
   ensure
     FileUtils.remove_dir(tmp_dir) if File.directory?(tmp_dir)
   end
@@ -84,9 +95,7 @@ class Destination < ApplicationRecord
     return unless private_key.blank? || public_key.blank?
 
     key = SSHKey.generate(
-      comment: "Shipyrd - #{application.name} - #{name}",
-      type: "ECDSA",
-      bits: 521
+      comment: "Shipyrd - #{application.name} - #{name}"
     )
 
     self.private_key = key.private_key

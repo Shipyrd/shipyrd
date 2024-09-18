@@ -13,7 +13,7 @@ gem "sqlite3", "~> 2.0.4"
 # Assets
 gem "propshaft"
 gem "importmap-rails"
-gem "turbo-rails", github: "hotwired/turbo-rails" # for broadcasts_refreshes support
+gem "turbo-rails"
 gem "stimulus-rails"
 
 # 3rd Party
@@ -45,6 +45,7 @@ group :development do
   gem "guard"
   gem "guard-minitest"
   gem "guard-standardrb"
+  gem "hotwire-livereload"
   gem "web-console"
 end
 

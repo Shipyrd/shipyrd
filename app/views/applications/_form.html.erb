@@ -1,45 +1,53 @@
 <%= form_with(model: application, class: "contents") do |form| %>
-  <% if application.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(application.errors.count, "error") %> prohibited this application from being saved:</h2>
+  <%= render "shared/errors", form: form %>
 
-      <ul>
-        <% application.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  <div class="field">
+    <%= form.label :name, class: "label" %>
+    <div class="control">
+      <%= form.text_field :name, class: "input" %>
     </div>
-  <% end %>
-
-  <div class="my-5">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: "w-full" %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :repository_url %>
-    <%= form.text_field :repository_url, class: "w-full" %>
+  <div class="field">
+    <%= form.label :repository_url, class: "label" %>
+    <div class="control">
+      <%= form.text_field :repository_url, class: "input" %>
+    </div>
   </div>
 
-  <%= form.submit "Update application" %>
+  <div class="field">
+    <div class="control">
+      <%= form.submit "Update application", class: "button is-primary" %>
+    </div>
+  </div>
 <% end %>
-  <%= button_to "Destroy application", application_path(@application), method: :delete, data: { turbo_confirm: "Are you sure?" } %>
 
-<h3>Connections</h3>
+<div class="field mt-2">
+  <%= button_to "Destroy application", application_path(@application), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "button is-danger" %>
+</div>
+
+<hr>
+
+<h3 class="is-size-3 mt-4">Connections</h3>
 
 <%= render "connections/connections" %>
 
-<h3>Destinations</h3>
+<hr>
+
+<h3 class="is-size-3 mt-4">Destinations</h3>
 
 <% application.destinations.each do |destination| %>
-  <article>
-    <kbd><%= destination.name %></kbd>
-    <%= pluralize(destination.servers.count, "server") %>
+  <div class="box">
+    <div class="columns">
+      <div class="column">
+        <%= destination_tag(destination) %>
+        <%= pluralize(destination.servers_count, "server") %>
+      </div>
 
-    <aside class="aside_naked">
-
-      <%= link_to "View", application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
-      <%= link_to "Edit", edit_application_destination_path(application, destination), class: "button", alt: "Edit #{destination.name} destination" %>
-    </aside>
-  </article>
+      <div class="column has-text-right">
+        <%= link_to "View", application_destination_path(application, destination), class: "button is-link has-text-white", alt: "View #{destination.name} destination" %>
+        <%= link_to "Edit", edit_application_destination_path(application, destination), class: "button is-link has-text-white", alt: "Edit #{destination.name} destination" %>
+      </div>
+    </div>
+  </div>
 <% end %>

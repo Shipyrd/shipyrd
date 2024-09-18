@@ -23,13 +23,14 @@ class Runner < ApplicationRecord
         full_command: "kamal #{command} #{cli_options(base_recipe_path)}"
       )
 
-      cmd.run(full_command) do |out, err|
-        update(output: output += out) if out
-        update(error: error += err) if err
+      cmd.run(*full_command.split(" ")) do |out, err|
+        update(output: output += out.force_encoding("UTF-8")) if out
+        update(error: error += err.force_encoding("UTF-8")) if err
       end
     end
   rescue TTY::Command::ExitError => e
     Rails.logger.info "Runner failed with #{e}"
+    update(error: e)
   ensure
     update(finished_at: Time.current)
   end
@@ -52,6 +53,6 @@ class Runner < ApplicationRecord
   end
 
   def cmd
-    TTY::Command.new(printer: Rails.env.local? ? :pretty : :null)
+    TTY::Command.new(printer: :null)
   end
 end

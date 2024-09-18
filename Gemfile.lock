@@ -1,12 +1,3 @@
-GIT
-  remote: https://github.com/hotwired/turbo-rails.git
-  revision: e9ed0a2d8746475d3dd643057ec6d2d793709cb8
-  specs:
-    turbo-rails (2.0.6)
-      actionpack (>= 6.0.0)
-      activejob (>= 6.0.0)
-      railties (>= 6.0.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -193,7 +184,11 @@ GEM
     hashdiff (1.1.0)
     hashie (3.6.0)
     honeybadger (5.15.6)
-    i18n (1.14.5)
+    hotwire-livereload (1.4.1)
+      actioncable (>= 6.0.0)
+      listen (>= 3.0.0)
+      railties (>= 6.0.0)
+    i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
       actionpack (>= 6.0.0)
@@ -209,7 +204,7 @@ GEM
     json (2.7.2)
     jwt (2.8.2)
       base64
-    kamal (1.8.1)
+    kamal (1.8.3)
       activesupport (>= 7.0)
       base64 (~> 0.2)
       bcrypt_pbkdf (~> 1.0)
@@ -252,7 +247,7 @@ GEM
       rails (>= 7.1)
       stimulus-rails
       turbo-rails
-    mocha (2.3.0)
+    mocha (2.4.5)
       ruby2_keywords (>= 0.0.5)
     msgpack (1.7.2)
     multi_json (1.15.0)
@@ -290,13 +285,14 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 4)
+    ostruct (0.6.0)
     parallel (1.26.3)
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
     pastel (0.8.0)
       tty-color (~> 0.5)
-    propshaft (0.9.1)
+    propshaft (1.0.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
       rack
@@ -405,11 +401,12 @@ GEM
     sqlite3 (2.0.4-arm64-darwin)
     sqlite3 (2.0.4-x86_64-linux-gnu)
     sshkey (3.0.0)
-    sshkit (1.23.0)
+    sshkit (1.23.1)
       base64
       net-scp (>= 1.1.2)
       net-sftp (>= 2.1.2)
       net-ssh (>= 2.8.0)
+      ostruct
     standard (1.40.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -434,6 +431,10 @@ GEM
     tty-color (0.6.0)
     tty-command (0.10.1)
       pastel (~> 0.8)
+    turbo-rails (2.0.7)
+      actionpack (>= 6.0.0)
+      activejob (>= 6.0.0)
+      railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
@@ -481,6 +482,7 @@ DEPENDENCIES
   guard-minitest
   guard-standardrb
   honeybadger
+  hotwire-livereload
   importmap-rails
   jbuilder
   kamal
@@ -501,7 +503,7 @@ DEPENDENCIES
   standard-rails
   stimulus-rails
   tty-command
-  turbo-rails!
+  turbo-rails
   web-console
   webdrivers
   webmock

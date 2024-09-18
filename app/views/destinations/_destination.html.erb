@@ -3,50 +3,59 @@
 <% application = destination.application %>
 
 <div id="<%= dom_id destination %>">
-  <h2>
-    <%= destination.application.name %>
-    <kbd><%= destination.name %></kbd>
+  <h2 class="mb-4 is-size-2 has-text-weight-medium">
+    <%= application.display_name %> 
+
+    <%= destination_tag(destination) %>
   </h2>
 
-  <p>
-    <strong>URL:</strong>
-    <%= link_to destination.url, destination.url, target: "_blank" %>
-  </p>
+  <div class="content">
+    <p>
+      <strong>URL:</strong>
+      <%= link_to destination.url, destination.url, target: "_blank", class: "is-link" %>
+    </p>
 
-  <p>
-    <strong>Branch:</strong>
-    <%= destination.branch %>
-  </p>
+    <p>
+      <strong>Branch:</strong>
+      <span class="tag"><%= destination.branch %></span>
+    </p>
 
-  <p>
-    <strong>Kamal recipe:</strong>
-    <% if application.github_connection.present? %>
-      <% if destination.recipe_updated_at.present? %>
-        imported 
-        <%= render 'shared/time', time: destination.recipe_updated_at %>
+    <p>
+      <strong>Kamal recipe:</strong>
+      <% if application.github_connection.present? %>
+        <% if destination.recipe_updated_at.present? %>
+          imported 
+          <%= render 'shared/time', time: destination.recipe_updated_at %>
 
-        <% if destination.recipe_last_processed_at.present? %>
-          (processed
-          <%= render 'shared/time', time: destination.recipe_last_processed_at %>)
-        <% else %>
-          (not processed yet)
+          <% if destination.recipe_last_processed_at.present? %>
+            (processed
+            <%= render 'shared/time', time: destination.recipe_last_processed_at %>)
+          <% else %>
+            (not processed yet)
+          <% end %>
+
         <% end %>
-
+      <% else %>
+        <span class="icon-text" style="margin-top: -0.2rem">
+          <%= link_to new_application_connection_path(application, provider: :github, return_to: request.path), class: "button is-dark is-small", title: "Connect GitHub" do %>
+            <span class="icon is-small">
+              <i class="fa-brands fa-github"></i>
+            </span>
+            <span>
+              Connect to GitHub
+            </span>
+          <% end %>
+        </span>
       <% end %>
-    <% else %>
-      <%= link_to "Connect GitHub", new_application_connection_path(application, provider: :github, return_to: request.path), class: "button", title: "Connect GitHub" %>
-    <% end %>
-  </p>
-
-  <div>
-    <%= link_to "Edit this destination", edit_application_destination_path(application, destination), class: "button" %>
+    </p>
   </div>
 
-  <br>
-  <details <%= destination.new_servers_available? ? "open" : "" %>>
-    <summary>
-      Connecting Shipyrd to your servers
-    </summary>
+  <%= link_to "Edit this destination", edit_application_destination_path(application, destination), class: "button is-primary my-4" %>
+
+  <hr>
+
+  <div class="box content">
+    <h4 class="is-size-4">Connecting Shipyrd to your servers</h4>
 
     <p>
       An SSH key pair is generated for each application + destination combination.
@@ -62,27 +71,35 @@
 
     <p>
       Run this command locally:
-
-      <button class="btn clipboard" data-clipboard-target="#destination_setup_<%= destination.id %>">
-        Copy to clipboard
-        <i class="fa-solid fa-copy"></i>
-      </button>
     </p>
-    <article class="notice">
-      <code id="destination_setup_<%= destination.id %>">
-        kamal server exec -d <%= destination.name %> "mkdir -p ~/.ssh && echo <%= destination.public_key %> >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
-      </code>
-    </article>
-  </details>
 
-  <h3>Servers</h3>
+<pre>
+<code class="language-bash" id="destination_setup_<%= destination.id %>">
+kamal server exec -d <%= destination.name %> "mkdir -p ~/.ssh && echo <%= destination.public_key %> >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
+</code>
+</pre>
+
+    <button class="button is-light clipboard" data-clipboard-target="#destination_setup_<%= destination.id %>">
+      <span class="icon-text">
+        <span class="icon">
+          <i class="fa-solid fa-copy"></i>
+        </span>
+        <span>
+          Copy command
+        </span>
+      </span>
+    </button>
+
+  </div>
+
+  <hr>
+
+  <h3 class="is-size-3">Servers</h3>
 
   <% if destination.servers.empty? %>
     <p>No servers deployed to for this destination.</p>
   <% else %>
-    <p>
-      <%= link_to "Run command #{destination.default? ? nil : "on #{destination.name}"}", new_application_destination_runner_path(application, destination), class: "button" %>
-    </p>
+    <%= link_to "Run command on #{destination.display_name}", new_application_destination_runner_path(application, destination), class: "button is-primary mb-4" %>
 
     <% destination.servers.each do |server| %>
       <%= render server %>

@@ -8,7 +8,7 @@ class RunnersController < ApplicationController
   end
 
   def new
-    @runner = @destination.runners.new
+    @runner = @destination.runners.new(command: params[:command])
   end
 
   def create

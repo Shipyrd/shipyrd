@@ -11,8 +11,9 @@ document.addEventListener('turbo:load', (event) => {
     timeago.render(timeago_nodes);
   }
 
+  // Copy to clipboard for key installation on servers
   const clipboard = new ClipboardJS('.clipboard');
-  clipboard.on('success', function(e) {
+  clipboard.on('success', function (e) {
     e.trigger.textContent = "Copied!";
     e.clearSelection();
   });
