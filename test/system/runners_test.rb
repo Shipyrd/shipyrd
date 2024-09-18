@@ -26,7 +26,9 @@ class DestinationsTest < ApplicationSystemTestCase
 
       click_on "Run command"
 
+      Runner.any_instance.stubs(:run!)
       assert_text "Running unknown-command"
+      Runner.last.update(error: "failed with")
 
       visit application_destination_runner_path(@application, @destination, Runner.last)
 
