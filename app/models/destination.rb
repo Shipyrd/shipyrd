@@ -36,11 +36,12 @@ class Destination < ApplicationRecord
   end
 
   def with_recipe
-    tmp_dir = Rails.root.join("tmp", "#{SecureRandom.hex(10)}/config")
-    FileUtils.mkdir_p(tmp_dir)
+    tmp_dir = Rails.root.join("tmp", SecureRandom.hex(10))
+    config_dir = "#{tmp_dir}/config"
+    FileUtils.mkdir_p(config_dir)
 
     # config/deploy.yml
-    base_recipe_path = "#{tmp_dir}/deploy.yml"
+    base_recipe_path = "#{config_dir}/deploy.yml"
     base_recipe_content = YAML.load(base_recipe)
 
     base_recipe_content["ssh"] = {} if base_recipe_content["ssh"].blank?
@@ -51,10 +52,10 @@ class Destination < ApplicationRecord
 
     unless default?
       # config/deploy.production.yml
-      File.write("#{tmp_dir}/#{recipe_name}", recipe)
+      File.write("#{config_dir}/#{recipe_name}", recipe)
     end
 
-    yield(tmp_dir)
+    yield(config_dir)
   ensure
     FileUtils.remove_dir(tmp_dir) if File.directory?(tmp_dir)
   end
