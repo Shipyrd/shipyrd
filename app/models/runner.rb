@@ -30,7 +30,6 @@ class Runner < ApplicationRecord
     end
   rescue TTY::Command::ExitError => e
     Rails.logger.info "Runner failed with #{e}"
-    update(error: e)
   ensure
     update(finished_at: Time.current)
   end
