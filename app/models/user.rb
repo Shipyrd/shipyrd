@@ -4,6 +4,8 @@ require "json"
 class User < ApplicationRecord
   has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
 
+  after_create_commit :queue_import_avatar
+
   def self.find_or_create_performer(username)
     username, github_user = if /github.com/.match?(username)
       [username.split("/").last, true]
@@ -21,7 +23,10 @@ class User < ApplicationRecord
     user
   end
 
-  # TODO: Queue this
+  def queue_import_avatar
+    AvatarImporterJob.perform_later(id)
+  end
+
   def populate_avatar_url
     url = URI("https://api.github.com/users/#{username}")
     user_info = JSON.parse(Net::HTTP.get(url))
