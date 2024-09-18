@@ -24,7 +24,9 @@ class DestinationsTest < ApplicationSystemTestCase
       visit basic_auth_url(root_url, @api_key.token)
       visit new_application_destination_runner_path(@application, @destination, command: "unknown-command")
 
+      Runner.any_instance.stubs(:run!)
       click_on "Run command"
+      Runner.last.update(error: "failed with")
 
       assert_text "Running unknown-command"
 
