@@ -15,7 +15,7 @@
 
     <div class="column is-one-third has-text-right">
       <% if runner.finished? %>
-        <%= link_to "Run new command on #{@destination.display_name}", new_application_destination_runner_path(@application, @destination), class: "button is-primary" %>
+        <%= link_to "Run new command on #{runner.destination.display_name}", new_application_destination_runner_path(runner.destination.application, runner.destination), class: "button is-primary" %>
       <% end %>
     </div>
 
@@ -24,7 +24,7 @@
 <%- # Indentation is intentional for better output display %>
 <pre><code class="language-bash">
 <% if runner.output.present? %>
-  $ <%= runner.full_command %>
+$ <%= runner.full_command %>
 <% end %>
 <%= runner.output %>
 </code></pre>
