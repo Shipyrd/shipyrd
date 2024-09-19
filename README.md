@@ -133,7 +133,7 @@ image: shipyrd/shipyrd:v4.0.4
 kamal accessory reboot shipyrd
 ```
 
-The reboot command retains your data and just stops the container, removes the container, starts the container with the new version. Rebooting will cause a short downtime while the new container boots up, usually just a few seconds.
+The reboot command retains your data and just stops the container, removes the container, and starts the container with the new version. Rebooting will cause a short downtime while the new container boots up, usually just a few seconds. You can tail the logs(`kamal accessory logs shipyrd`) to watch it come back online, you'll see a few healthchecks to /up and then it should start responding.
 
 ## Contributing
 
