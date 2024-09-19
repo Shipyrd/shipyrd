@@ -16,6 +16,16 @@ class RunnerTest < ActiveSupport::TestCase
   end
 
   describe "run!" do
+    it "fails gracefully without a deploy recipe" do
+      @destination.base_recipe = nil
+      @runner.command = "lock status"
+
+      @runner.run!
+
+      assert_equal "Missing deploy recipe, connect GitHub to automatically import config/deploy.yml", @runner.error
+      assert @runner.started_at
+      assert @runner.finished_at
+    end
     it "runs a command successfully" do
       @runner.command = "lock status"
 

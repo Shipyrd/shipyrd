@@ -14,7 +14,7 @@
           <% end %>
       <% else %>
         <span class="icon-text">
-          <%= link_to new_application_connection_path(@application, provider: :github, return_to: request.path), class: "button is-dark", title: "Connect GitHub" do %>
+          <%= link_to new_application_connection_path(@application, provider: :github, return_to: request.path), class: "button is-dark has-text-white", title: "Connect GitHub" do %>
             <span class="icon">
               <i class="fa-brands fa-github"></i>
             </span>

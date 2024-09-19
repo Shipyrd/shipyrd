@@ -10,6 +10,16 @@ class ConnectionTest < ActiveSupport::TestCase
       stub_request(:get, "https://api.github.com/repos/kevin/bacon/contents/config/deploy.yml?access_token=invalid").to_return(status: 401)
 
       refute connection.valid?
+      assert_includes connection.errors[:provider], "Github could not connect, invalid token"
+    end
+
+    it "fails if deploy.yml doesn't exist" do
+      connection = build(:connection, provider: :github, key: "valid", application: application)
+
+      stub_request(:get, "https://api.github.com/repos/kevin/bacon/contents/config/deploy.yml?access_token=valid").to_return(status: 404)
+
+      refute connection.valid?
+      assert_includes connection.errors[:provider], "Couldn't find config/deploy.yml within https://github.com/kevin/bacon"
     end
 
     it "sets last_connected_at on success" do
