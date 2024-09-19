@@ -1,4 +1,6 @@
 class Runner < ApplicationRecord
+  class DeployRecipeMissing < RuntimeError; end
+
   belongs_to :destination
 
   after_create_commit :queue_run
@@ -16,6 +18,8 @@ class Runner < ApplicationRecord
   def run!
     update(started_at: Time.current)
 
+    raise DeployRecipeMissing if destination.base_recipe.blank?
+
     output, error = "", ""
 
     destination.with_recipe do |base_recipe_path|
@@ -28,6 +32,8 @@ class Runner < ApplicationRecord
         update(error: error += err.force_encoding("UTF-8")) if err
       end
     end
+  rescue DeployRecipeMissing
+    update(error: "Missing deploy recipe, connect GitHub to automatically import config/deploy.yml")
   rescue TTY::Command::ExitError => e
     Rails.logger.info "Runner failed with #{e}"
     update(error: e)
