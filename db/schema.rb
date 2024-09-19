@@ -62,9 +62,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_18_205003) do
     t.datetime "updated_at", null: false
     t.text "public_key"
     t.text "private_key"
-    t.text "recipe"
     t.datetime "recipe_updated_at"
     t.text "base_recipe"
+    t.text "recipe"
     t.datetime "recipe_last_processed_at"
     t.integer "servers_count", default: 0
     t.index ["application_id"], name: "index_destinations_on_application_id"
