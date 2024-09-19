@@ -17,10 +17,12 @@ class Connection < ApplicationRecord
     if fetch_repository_content("config/deploy.yml").present?
       self.last_connected_at = Time.current
     else
-      errors.add(:provider, "is not supported")
+      errors.add(:provider, "Couldn't find config/deploy.yml within #{application.repository_url}")
     end
+  rescue Github::Error::Unauthorized
+    errors.add(:provider, "#{provider.humanize} could not connect, invalid token")
   rescue
-    errors.add(:provider, "#{provider} could not connect")
+    errors.add(:provider, "#{provider.humanize} could not connect")
   end
 
   def import_deploy_recipes
