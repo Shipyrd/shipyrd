@@ -12,7 +12,9 @@
   <div class="content">
     <p>
       <strong>URL:</strong>
-      <%= link_to destination.url, destination.url, target: "_blank", class: "is-link" %>
+      <% if destination.url.present? %>
+        <%= link_to destination.url, destination.url, target: "_blank", class: "is-link" %>
+      <% end %>
     </p>
 
     <p>
@@ -37,7 +39,7 @@
         <% end %>
       <% else %>
         <span class="icon-text" style="margin-top: -0.2rem">
-          <%= link_to new_application_connection_path(application, provider: :github, return_to: request.path), class: "button is-dark is-small", title: "Connect GitHub" do %>
+          <%= link_to new_application_connection_path(application, provider: :github, return_to: request.path), class: "button is-dark is-small has-text-white", title: "Connect GitHub" do %>
             <span class="icon is-small">
               <i class="fa-brands fa-github"></i>
             </span>
