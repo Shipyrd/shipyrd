@@ -36,7 +36,7 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
 
     test "should update application" do
       patch application_url(@application), params: {application: {name: @application.name, repository_url: @application.repository_url}}, headers: @auth_headers
-      assert_redirected_to applications_url
+      assert_redirected_to edit_application_url(@application)
     end
 
     test "should destroy application" do
