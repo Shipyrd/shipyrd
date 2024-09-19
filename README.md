@@ -111,7 +111,7 @@ With the triggers added to your Kamal hooks you'll now be able to see your app g
 
 ### Customizing the deploy performer
 
-Kamal sets `ENV['KAMAL_PERFORMER']` to your username on your computer via `whoami`. Shipyrd will instead fetch your GitHub username from your local configuration if it's set since this helps with linking over to GitHub and avatars. You can set your GitHub username in your local configuration via:
+Kamal sets `ENV['KAMAL_PERFORMER']` to your username on your computer via `git config user.email` or `whoami`, whichever it finds first. Shipyrd will instead fetch your GitHub username from your local configuration if it's set since this helps with linking over to GitHub and avatars. You can set your GitHub username in your local configuration via:
 
 ```
 gh config get -h github.com [USERNAME]
