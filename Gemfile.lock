@@ -184,7 +184,8 @@ GEM
       standard
     hashdiff (1.1.1)
     hashie (3.6.0)
-    honeybadger (5.15.6)
+    honeybadger (5.16.0)
+      logger
     hotwire-livereload (1.4.1)
       actioncable (>= 6.0.0)
       listen (>= 3.0.0)
