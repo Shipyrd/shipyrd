@@ -40,9 +40,12 @@ class DestinationsTest < ApplicationSystemTestCase
 
       assert_text "Connection was successfully created."
 
-      assert_text "Kamal recipe: imported just now (not processed yet)"
+      assert_text "Kamal recipe: queued for import"
 
-      @destination.update!(recipe_last_processed_at: Time.current)
+      @destination.update!(
+        recipe_last_processed_at: Time.current,
+        recipe_updated_at: Time.current
+      )
 
       visit application_destination_path(@application, @destination)
 
