@@ -16,3 +16,5 @@ git commit -m "Bump version to $VERSION"
 git push
 git tag v$VERSION
 git push --tags
+
+echo "Create a new release on GitHub with this tag: https://github.com/Shipyrd/shipyrd/releases/new"
