@@ -25,7 +25,7 @@ def create_deploy(application, destination, stage)
     service_version: "#{application.key}@7b3c0f04",
     command: "deploy",
     destination: destination,
-    hosts: "123.456.789.0,123.456.789.1,123.456.789.2",
+    hosts: application.key == ? :bacon ? nil : "123.456.789.0,123.456.789.1,123.456.789.2",
     runtime: (stage == "post-deploy") ? rand(60..119) : nil
   )
 end
