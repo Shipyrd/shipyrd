@@ -121,10 +121,10 @@ gh config get -h github.com [USERNAME]
 
 When you're ready to upgrade to a newer version of Shipyrd it's just a matter of bumping the version in your _deploy.yml_ file and then rebooting the accessory via Kamal.
 
-1. Change the version(`v0.3.5`) in the image reference line in your _deploy.yml_ file.
+1. Change the version(`v4.0.4`) in the image reference line in your _deploy.yml_ file.
 
 ```
-image: shipyrd/shipyrd:v0.3.5
+image: shipyrd/shipyrd:v4.0.4
 ```
 
 2. Reboot the accessory via Kamal.
