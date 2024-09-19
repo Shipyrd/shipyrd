@@ -10,8 +10,11 @@ class Connection < ApplicationRecord
   validates :provider, presence: true, inclusion: {in: providers.keys}
   validate :connects_successfully, on: :create
 
-  # TODO: Move this to solid_queue
-  after_create_commit :import_deploy_recipes
+  after_create_commit :queue_import_deploy_recipes
+
+  def queue_import_deploy_recipes
+    ImportDeployRecipesJob.perform_later(id)
+  end
 
   def connects_successfully
     if fetch_repository_content("config/deploy.yml").present?
