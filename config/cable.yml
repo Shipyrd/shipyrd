@@ -8,7 +8,7 @@ default: &default
       writing: cable
 
 development:
-  adapter: async
+  <<: *default
 
 test:
   adapter: test
