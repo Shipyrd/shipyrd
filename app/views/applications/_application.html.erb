@@ -75,6 +75,10 @@
             </div>
 
             <div class="column pt-1 is-two-fifths has-text-right">
+              <% if destination.on_deck_url.present? %>
+                <%= link_to "On Deck", destination.on_deck_url, target: "_blank", class: "mr-3 button is-success is-light is-small" %>
+              <% end %>
+
               <% if deploy.compare_url.present? %>
                 <%= link_to "Compare changes", deploy.compare_url, target: "_blank", class: "mr-3 button is-info is-small has-text-white" %>
               <% end %>

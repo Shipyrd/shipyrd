@@ -23,6 +23,22 @@ class Destination < ApplicationRecord
     "deploy#{name.present? ? ".#{name}" : nil}.yml"
   end
 
+  def on_deck_url
+    return nil if application.repository_url.blank?
+    return nil if latest_deployed_sha.blank?
+    return nil if branch.blank?
+
+    "#{application.repository_url}/compare/#{latest_deployed_sha}..#{branch}"
+  end
+
+  def latest_deployed_sha
+    @latest_deployed_sha ||= deploys.where(
+      destination: name,
+      command: :deploy,
+      status: "post-deploy"
+    ).last&.version
+  end
+
   def display_name
     name.presence || "default"
   end

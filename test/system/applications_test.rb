@@ -79,6 +79,7 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       # TODO: Add back in a link to the production URL
       assert_link "production", href: application_destination_path(destination.application.id, destination.id)
+      assert_link "On Deck"
 
       deploy = create(
         :deploy,
