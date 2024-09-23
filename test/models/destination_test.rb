@@ -19,6 +19,41 @@ class DestinationTest < ActiveSupport::TestCase
     end
   end
 
+  describe "on_deck_url" do
+    it "is nil if hasn't been successfully deployed" do
+      create(:deploy,
+        service_version: "shipyrd@123",
+        version: "123",
+        status: "pre-build",
+        command: :deploy)
+
+      Application.last.update(
+        repository_url: "https://github.com/shipyrd/shipyrd"
+      )
+
+      refute Destination.last.on_deck_url
+    end
+
+    it "returns a compare URL" do
+      create(:deploy,
+        service_version: "shipyrd@123",
+        version: "123",
+        status: "post-deploy",
+        command: :deploy)
+
+      Application.last.update(
+        repository_url: "https://github.com/shipyrd/shipyrd"
+      )
+
+      destination = Destination.last
+
+      assert_equal "https://github.com/shipyrd/shipyrd/compare/123..main", destination.on_deck_url
+
+      destination.update(branch: nil)
+      refute destination.on_deck_url
+    end
+  end
+
   describe "key pairs" do
     it "generates on create" do
       destination = create(:destination, application: @application, name: "test")

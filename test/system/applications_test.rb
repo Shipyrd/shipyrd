@@ -62,10 +62,12 @@ class ApplicationsTest < ApplicationSystemTestCase
       assert_content "pre-deploy"
       assert_content "by Nick"
       assert_content "Deploying the potato"
+      refute_link "On Deck"
 
       deploy = create(
         :deploy,
         service_version: "potato@123456",
+        version: "123456",
         command: :deploy,
         destination: "production",
         hosts: "867.53.0.9",
@@ -73,14 +75,16 @@ class ApplicationsTest < ApplicationSystemTestCase
       )
 
       # TODO: Test is failing to trigger a cable refresh
+      deploy.application.update!(repository_url: "https://github.com/shipyrd/shipyrd")
       visit root_url
 
       destination = deploy.application.destinations.find_by!(name: "production")
 
       # TODO: Add back in a link to the production URL
       assert_link "production", href: application_destination_path(destination.application.id, destination.id)
+      assert_link "On Deck"
 
-      deploy = create(
+      create(
         :deploy,
         service_version: "potato@123456",
         command: :deploy,
@@ -89,7 +93,6 @@ class ApplicationsTest < ApplicationSystemTestCase
         performer: "Nick",
         commit_message: "Deploying the potato #10"
       )
-      deploy.application.update!(repository_url: "https://github.com/shipyrd/shipyrd")
 
       assert_link "#10", href: "https://github.com/shipyrd/shipyrd/issues/10"
     end
