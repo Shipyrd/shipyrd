@@ -42,6 +42,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "bundle-audit"
   gem "guard"
   gem "guard-minitest"
   gem "guard-standardrb"

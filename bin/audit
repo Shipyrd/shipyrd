@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+set -eux
+
+bundle install
+bundle-audit check --update
+bundle outdated

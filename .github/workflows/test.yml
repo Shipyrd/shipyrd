@@ -25,17 +25,9 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Prepare test DB
-        run: bundle exec rails db:prepare
-
-      - name: Run tests
-        run: bundle exec rails test
-
-      - name: Run system tests
-        run: bundle exec rails test:system
-
-      - name: Run standardrb
-        run: bundle exec standardrb
-
-      - name: Run brakeman
-        run: bundle exec brakeman
+      - run: bundle exec rails db:prepare
+      - run: bundle exec rails test
+      - run: bundle exec rails test:system
+      - run: bundle exec standardrb
+      - run: bundle exec brakeman
+      - run: bin/audit
