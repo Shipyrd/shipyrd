@@ -33,6 +33,7 @@ gem "tty-command"
 group :development, :test do
   gem "brakeman"
   gem "bullet"
+  gem "bundle-audit"
   gem "debug", platforms: %i[mri windows]
   gem "factory_bot_rails"
   gem "faker"
@@ -42,7 +43,6 @@ group :development, :test do
 end
 
 group :development do
-  gem "bundle-audit"
   gem "guard"
   gem "guard-minitest"
   gem "guard-standardrb"
