@@ -18,7 +18,7 @@ class ApplicationsController < ApplicationController
   def update
     respond_to do |format|
       if @application.update(application_params)
-        format.html { redirect_to applications_url, notice: "Application was successfully updated." }
+        format.html { redirect_to edit_application_url(@application), notice: "Application was successfully updated." }
         format.json { render :show, status: :ok, location: @application }
       else
         format.html { render :edit, status: :unprocessable_entity }
