@@ -3,5 +3,5 @@
 set -eux
 
 bundle install
-bundle-audit check --update
+bundle exec bundle-audit check --update
 bundle outdated
