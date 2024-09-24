@@ -4,5 +4,3 @@ set -eux
 
 bundle install
 bundle exec bundle-audit check --update
-bundle config unset deployment
-bundle outdated
