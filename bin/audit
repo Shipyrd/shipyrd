@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+set -eux
+
+bundle install
+bundle exec bundle-audit check --update
