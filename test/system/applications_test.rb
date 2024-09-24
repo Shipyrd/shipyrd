@@ -136,7 +136,6 @@ class ApplicationsTest < ApplicationSystemTestCase
       fill_in "Repository URL", with: "https://github.com/kevin/bacon"
       click_on "Update"
 
-      click_link "Edit this application"
       click_link "Connect to GitHub"
 
       Connection.any_instance.stubs(:connects_successfully)
