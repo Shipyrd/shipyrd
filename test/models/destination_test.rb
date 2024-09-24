@@ -34,6 +34,20 @@ class DestinationTest < ActiveSupport::TestCase
       refute Destination.last.on_deck_url
     end
 
+    it "is nil if last deploy was uncommitted" do
+      create(:deploy,
+        service_version: "shipyrd@123",
+        version: "123_uncommitted",
+        status: "post-deploy",
+        command: :deploy)
+
+      Application.last.update(
+        repository_url: "https://github.com/shipyrd/shipyrd"
+      )
+
+      refute Destination.last.on_deck_url
+    end
+
     it "returns a compare URL" do
       create(:deploy,
         service_version: "shipyrd@123",

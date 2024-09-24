@@ -25,7 +25,7 @@ class Destination < ApplicationRecord
 
   def on_deck_url
     return nil if application.repository_url.blank?
-    return nil if latest_deployed_sha.blank?
+    return nil if latest_deployed_sha.blank? || latest_deployed_sha =~ /uncommitted/
     return nil if branch.blank?
 
     "#{application.repository_url}/compare/#{latest_deployed_sha}...#{branch}"
