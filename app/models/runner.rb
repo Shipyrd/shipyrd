@@ -27,6 +27,15 @@ class Runner < ApplicationRecord
         full_command: "kamal #{command} #{cli_options(base_recipe_path)}"
       )
 
+      kamal_install = "" + "
+      gem install kamal -v 2.0.0.rc3
+      kamal _2.0.0.rc3_ version
+      "
+      cmd.run(kamal_install) do |out, err|
+        update(output: output += out.force_encoding("UTF-8")) if out
+        update(error: error += err.force_encoding("UTF-8")) if err
+      end
+
       cmd.run(*full_command.split(" ")) do |out, err|
         update(output: output += out.force_encoding("UTF-8")) if out
         update(error: error += err.force_encoding("UTF-8")) if err
