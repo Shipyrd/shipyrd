@@ -47,7 +47,7 @@ class DestinationTest < ActiveSupport::TestCase
 
       destination = Destination.last
 
-      assert_equal "https://github.com/shipyrd/shipyrd/compare/123..main", destination.on_deck_url
+      assert_equal "https://github.com/shipyrd/shipyrd/compare/123...main", destination.on_deck_url
 
       destination.update(branch: nil)
       refute destination.on_deck_url

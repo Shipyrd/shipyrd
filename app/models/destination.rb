@@ -28,7 +28,7 @@ class Destination < ApplicationRecord
     return nil if latest_deployed_sha.blank?
     return nil if branch.blank?
 
-    "#{application.repository_url}/compare/#{latest_deployed_sha}..#{branch}"
+    "#{application.repository_url}/compare/#{latest_deployed_sha}...#{branch}"
   end
 
   def latest_deployed_sha
