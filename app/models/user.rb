@@ -4,6 +4,9 @@ require "json"
 class User < ApplicationRecord
   has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
 
+  # Users are initially created via deploys typically
+  has_secure_password validations: false
+
   after_create_commit :queue_import_avatar
 
   def self.find_or_create_performer(username)

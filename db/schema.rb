@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_18_205003) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_25_170348) do
   create_table "api_keys", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -98,6 +98,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_18_205003) do
     t.string "avatar_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
+    t.string "name"
+    t.string "password_digest"
   end
 
   add_foreign_key "connections", "applications"

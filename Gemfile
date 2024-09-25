@@ -3,6 +3,7 @@ source "https://rubygems.org"
 ruby file: ".ruby-version"
 
 # Core
+gem "bcrypt", "~> 3.1.7"
 gem "bootsnap", require: false
 gem "dotenv-rails"
 gem "kamal"
