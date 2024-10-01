@@ -1,0 +1,30 @@
+<%= render "invite_links" %>
+
+<div id="users">
+  <% if @users.present? %>
+    <% @users.group_by(&:role).each do |role, users| %>
+      <h4 class="is-size-4 mb-3">
+        <%= role.humanize.pluralize %>
+      </h4>
+
+      <% users.in_groups_of(10, false).each do |row| %>
+
+        <div class="box">
+          <div class="level">
+
+              <div class="level-left">
+                <% row.each do |user|%>
+                  <div class="mr-4 level-item">
+                    <%= render user %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

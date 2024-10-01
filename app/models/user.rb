@@ -2,12 +2,16 @@ require "net/http"
 require "json"
 
 class User < ApplicationRecord
+  include Role
+
   has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
 
   # Users are initially created via deploys typically
   has_secure_password validations: false
 
   after_create_commit :queue_import_avatar
+
+  scope :with_role, -> { where.not(role: nil) }
 
   def self.find_or_create_performer(username)
     username, github_user = if /github.com/.match?(username)
@@ -24,6 +28,14 @@ class User < ApplicationRecord
     user.populate_avatar_url if github_user
 
     user
+  end
+
+  def display_name
+    username || name
+  end
+
+  def first_letter
+    display_name.first
   end
 
   def queue_import_avatar

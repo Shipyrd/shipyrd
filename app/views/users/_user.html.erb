@@ -1,0 +1,13 @@
+<div id="<%= dom_id user %>">
+  <% if user.avatar_url.present? %>
+    <figure class="image is-96x96">
+      <%= image_tag user.avatar_url, width: 96, class: "is-rounded" %>
+    </figure>
+  <% else %>
+    <button class="button is-large" title="<%= user.display_name %>">
+      <span class="icon is-large">
+        <i class="fa-solid fa-<%= user.first_letter %>"></i>
+      </span>
+    </button>
+  <% end %>
+</div>
