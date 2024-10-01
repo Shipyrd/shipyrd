@@ -8,7 +8,7 @@ gem "dotenv-rails"
 gem "kamal"
 gem "puma", ">= 5.0"
 gem "rails", "~> 8.0.0.beta1"
-gem "sqlite3", "~> 2.1.0.rc3"
+gem "sqlite3", "~> 2.1.0"
 
 # Assets
 gem "propshaft"
