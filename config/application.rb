@@ -21,7 +21,7 @@ Bundler.require(*Rails.groups)
 module Shipyrd
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.1
+    config.load_defaults 8.0
 
     config.active_record.encryption.primary_key = ENV["SHIPYRD_ENCRYPTION_PRIMARY_KEY"]
     config.active_record.encryption.deterministic_key = ENV["SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY"]
@@ -30,6 +30,11 @@ module Shipyrd
     # Use a real queuing backend for Active Job (and separate queues per environment).
     config.active_job.queue_adapter = :solid_queue
     config.solid_queue.connects_to = {database: {writing: :queue}}
+
+    # Please, add to the `ignore` list any other `lib` subdirectories that do
+    # not contain `.rb` files, or that should not be reloaded or eager loaded.
+    # Common ones are `templates`, `generators`, or `middleware`, for example.
+    config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
     #
