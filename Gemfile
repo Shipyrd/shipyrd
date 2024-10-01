@@ -32,7 +32,7 @@ gem "tty-command"
 
 group :development, :test do
   gem "brakeman"
-  gem "bullet"
+  # gem "bullet" Disabled until support for Rails 8 is ready
   gem "bundle-audit"
   gem "debug", platforms: %i[mri windows]
   gem "factory_bot_rails"
