@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
       cookies.signed[:user_id] = {value: user.id}
       redirect_to root_path
     else
-      redirect_to new_session_url, alert: "Try another email address or password."
+      redirect_to new_session_url, alert: "Invalid email and/or password."
     end
   end
 
