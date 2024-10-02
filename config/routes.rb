@@ -3,7 +3,11 @@ Rails.application.routes.draw do
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
+  resources :users
+  resource :session
+  resources :invite_links
   resources :deploys
+
   resources :applications do
     resources :connections
     resources :destinations do

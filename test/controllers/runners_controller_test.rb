@@ -3,7 +3,6 @@ require "helpers/basic_auth_helpers"
 
 class RunnersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @api_key = ApiKey.create!
     @application = create(:application)
     @destination = create(:destination, application: @application)
   end
@@ -15,28 +14,53 @@ class RunnersControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "should get index" do
-    get application_destination_runners_path(@application, @destination), headers: auth_headers(@api_key.token)
-    assert_response :success
-  end
+  describe "authenticated" do
+    describe "user" do
+      setup do
+        @user = create(:user, password: "password")
+        sign_in(@user.email, "password")
+      end
 
-  test "should get new" do
-    get new_application_destination_runner_path(@application, @destination), headers: auth_headers(@api_key.token)
-    assert_response :success
-  end
+      test "should not create runner" do
+        post application_destination_runners_path(@application, @destination), params: {runner: {command: "lock status"}}
 
-  test "should get show" do
-    @runner = create(:runner, destination: @destination)
+        assert_redirected_to root_url
+      end
+    end
 
-    get application_destination_runner_path(@application, @destination, @runner), headers: auth_headers(@api_key.token)
-    assert_response :success
-  end
+    describe "admin" do
+      setup do
+        @user = create(:user, role: :admin, password: "password")
+        sign_in(@user.email, "password")
+      end
 
-  test "should create runner" do
-    post application_destination_runners_path(@application, @destination), params: {runner: {command: "lock status"}}, headers: auth_headers(@api_key.token)
+      test "should get index" do
+        get application_destination_runners_path(@application, @destination)
 
-    @runner = @destination.runners.last
+        assert_response :success
+      end
 
-    assert_redirected_to application_destination_runner_path(@application, @destination, @runner)
+      test "should get new" do
+        get new_application_destination_runner_path(@application, @destination)
+
+        assert_response :success
+      end
+
+      test "should get show" do
+        @runner = create(:runner, destination: @destination)
+
+        get application_destination_runner_path(@application, @destination, @runner)
+
+        assert_response :success
+      end
+
+      test "should create runner" do
+        post application_destination_runners_path(@application, @destination), params: {runner: {command: "lock status"}}
+
+        @runner = @destination.runners.last
+
+        assert_redirected_to application_destination_runner_path(@application, @destination, @runner)
+      end
+    end
   end
 end
