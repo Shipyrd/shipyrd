@@ -1,6 +1,8 @@
-def sign_in(email, password)
+def sign_in_as(email, password)
   visit new_session_url
+
   fill_in "Email", with: email
   fill_in "Password", with: password
-  click_on "Sign in"
+
+  click_button "Sign in"
 end

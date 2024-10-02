@@ -3,7 +3,7 @@ require "application_system_test_case"
 class InviteLinksTest < ApplicationSystemTestCase
   setup do
     @user = create(:user, role: :admin, password: "password")
-    sign_in(@user.email, "password")
+    sign_in_as(@user.email, "password")
   end
 
   test "should create invite link" do

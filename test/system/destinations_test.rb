@@ -3,7 +3,7 @@ require "application_system_test_case"
 class DestinationsTest < ApplicationSystemTestCase
   setup do
     @user = create(:user, role: :user, password: "password")
-    sign_in(@user.email, "password")
+    sign_in_as(@user.email, "password")
   end
 
   describe "with an existing destination" do
