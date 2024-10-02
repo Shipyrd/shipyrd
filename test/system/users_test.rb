@@ -13,36 +13,4 @@ class UsersTest < ApplicationSystemTestCase
     assert_selector "h4", text: "Users"
     assert_selector "h4", text: "Admins"
   end
-
-  # test "should create user" do
-  # visit users_url
-  # click_on "New user"
-  # fill_in "Avatar URL", with: @user.avatar_url
-  # fill_in "Email", with: @user.email
-  # fill_in "Name", with: @user.name
-  # fill_in "Password", with: "secret"
-  # fill_in "Password confirmation", with: "secret"
-  # fill_in "Username", with: @user.username
-  # click_on "Create User"
-  # assert_text "User was successfully created"
-  # click_on "Back"
-  # end
-  # test "should update User" do
-  # visit user_url(@user)
-  # click_on "Edit this user", match: :first
-  # fill_in "Avatar URL", with: @user.avatar_url
-  # fill_in "Email", with: @user.email
-  # fill_in "Name", with: @user.name
-  # fill_in "Password", with: "secret"
-  # fill_in "Password confirmation", with: "secret"
-  # fill_in "Username", with: @user.username
-  # click_on "Update User"
-  # assert_text "User was successfully updated"
-  # click_on "Back"
-  # end
-  # test "should destroy User" do
-  # visit user_url(@user)
-  # click_on "Destroy this user", match: :first
-  # assert_text "User was successfully destroyed"
-  # end
 end

@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if user = User.authenticate_by(params.permit(:email, :password))
+    if (user = User.authenticate_by(auth_params.slice(:email, :password)))
       cookies.signed[:user_id] = {value: user.id}
       redirect_to root_path
     else
@@ -18,5 +18,16 @@ class SessionsController < ApplicationController
     reset_session
     cookies.delete(:user_id)
     redirect_to new_session_url
+  end
+
+  private
+
+  def auth_params
+    params.permit(
+      :email,
+      :password,
+      :authenticity_token,
+      :commit
+    )
   end
 end

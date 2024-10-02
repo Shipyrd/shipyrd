@@ -1,9 +1,9 @@
 require "application_system_test_case"
-require "helpers/basic_auth_helpers"
 
 class DestinationsTest < ApplicationSystemTestCase
   setup do
-    @api_key = ApiKey.create!
+    @user = create(:user, role: :user, password: "password")
+    sign_in(@user.email, "password")
   end
 
   describe "with an existing destination" do
@@ -13,7 +13,6 @@ class DestinationsTest < ApplicationSystemTestCase
     end
 
     test "updating" do
-      visit basic_auth_url(root_url, @api_key.token)
       visit edit_application_destination_path(@application, @destination)
 
       assert_text "Editing #{@application.name}"
@@ -27,7 +26,6 @@ class DestinationsTest < ApplicationSystemTestCase
     end
 
     test "recipe status" do
-      visit basic_auth_url(root_url, @api_key.token)
       visit application_destination_path(@application, @destination)
 
       click_on "Connect to GitHub"
@@ -56,7 +54,6 @@ class DestinationsTest < ApplicationSystemTestCase
       @connected_server = @destination.servers.create!(host: "123.456.789.0", last_connected_at: 3.minutes.ago)
       @new_server = @destination.servers.create!(host: "123.456.789.1")
 
-      visit basic_auth_url(root_url, @api_key.token)
       visit application_destination_path(@application, @destination)
 
       within "#server_#{@connected_server.id}" do

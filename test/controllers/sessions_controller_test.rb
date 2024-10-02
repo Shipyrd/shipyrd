@@ -7,21 +7,28 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "with invalid credentials" do
-    user = create(:user, role: :user, password: "password")
-    post session_url, params: {email: user.email, password: "nah"}
-    assert_redirected_to new_session_url
-  end
+  describe "with user" do
+    setup do
+      @user = create(:user, role: :user, password: "password")
+    end
 
-  test "with valid credentials" do
-    user = create(:user, role: :user, password: "password")
-    post session_url, params: {email: user.email, password: "password"}
+    test "with invalid credentials" do
+      post session_url, params: {email: @user.email, password: "nah"}
 
-    assert_redirected_to root_path
-  end
+      assert_redirected_to new_session_url
+    end
 
-  test "sign out" do
-    delete session_url
-    assert_redirected_to new_session_url
+    test "with valid credentials" do
+      post session_url, params: {email: @user.email, password: "password"}
+
+      assert_redirected_to root_path
+    end
+
+    test "sign out" do
+      post session_url, params: {email: @user.email, password: "password"}
+      delete session_url
+
+      assert_redirected_to new_session_url
+    end
   end
 end

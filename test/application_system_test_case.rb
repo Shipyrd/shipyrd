@@ -1,5 +1,6 @@
 require "test_helper"
 require "capybara/minitest"
+require "helpers/system_auth"
 
 WebMock.allow_net_connect!
 

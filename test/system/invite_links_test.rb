@@ -1,10 +1,9 @@
 require "application_system_test_case"
-require "helpers/basic_auth_helpers"
 
 class InviteLinksTest < ApplicationSystemTestCase
   setup do
-    @api_key = ApiKey.create!
-    visit basic_auth_url(root_url, @api_key.token)
+    @user = create(:user, role: :admin, password: "password")
+    sign_in(@user.email, "password")
   end
 
   test "should create invite link" do

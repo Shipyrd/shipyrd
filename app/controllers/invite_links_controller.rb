@@ -1,4 +1,6 @@
 class InviteLinksController < ApplicationController
+  before_action :require_admin
+
   def create
     @invite_link = InviteLink.new(invite_link_params)
 

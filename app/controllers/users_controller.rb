@@ -4,8 +4,8 @@ class UsersController < ApplicationController
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_user_url, alert: "Try again later." }
 
   before_action :set_user, only: %i[show edit update destroy]
-  before_action :verify_self, only: %i[edit update]
-  before_action :verify_admin, only: %i[index destroy]
+  before_action :require_self, only: %i[edit update]
+  before_action :require_admin, only: %i[index destroy]
 
   def index
     @users = User.with_role
@@ -56,11 +56,7 @@ class UsersController < ApplicationController
 
   private
 
-  def verify_admin
-    redirect_to root_path unless current_user.admin?
-  end
-
-  def verify_self
+  def require_self
     redirect_to root_path unless @user.id == current_user.id
   end
 

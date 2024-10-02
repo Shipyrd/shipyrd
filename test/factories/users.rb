@@ -3,6 +3,7 @@ FactoryBot.define do
     username { "MyString" }
     email { "MyString" }
     name { "MyString" }
-    password { "" }
+    password { "password" }
+    role { :user }
   end
 end
