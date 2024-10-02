@@ -1,6 +1,6 @@
 require "application_system_test_case"
 
-class DestinationsTest < ApplicationSystemTestCase
+class RunnersTest < ApplicationSystemTestCase
   setup do
     @admin = create(:user, role: :admin, password: "password")
     sign_in_as(@admin.email, "password")

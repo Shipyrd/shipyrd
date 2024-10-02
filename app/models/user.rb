@@ -39,6 +39,8 @@ class User < ApplicationRecord
   end
 
   def queue_import_avatar
+    return false if username.blank?
+
     AvatarImporterJob.perform_later(id)
   end
 
