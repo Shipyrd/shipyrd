@@ -10,3 +10,7 @@ def basic_auth_url(url, token)
 
   url.to_s
 end
+
+def sign_in(email, password)
+  post session_url, params: {email: email, password: password}
+end

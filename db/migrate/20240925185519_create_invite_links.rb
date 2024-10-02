@@ -5,7 +5,7 @@ class CreateInviteLinks < ActiveRecord::Migration[7.2]
       t.datetime :deactivated_at
       t.integer :role
       t.string :code
-      t.references :creator, null: true, foreign_key: { to_table: :users }
+      t.references :creator, null: true, foreign_key: {to_table: :users}
 
       t.timestamps
     end

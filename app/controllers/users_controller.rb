@@ -1,8 +1,11 @@
 class UsersController < ApplicationController
   skip_before_action :authenticate, only: %i[new create]
 
+  rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_user_url, alert: "Try again later." }
+
   before_action :set_user, only: %i[show edit update destroy]
-  before_action :verify_admin, only: %i[destroy]
+  before_action :verify_self, only: %i[edit update]
+  before_action :verify_admin, only: %i[index destroy]
 
   def index
     @users = User.with_role
@@ -20,10 +23,13 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    invite_link = InviteLink.active.find_by(code: params[:code])
 
     respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: "User was successfully created." }
+      if invite_link.present? && @user.save
+        @user.update(role: invite_link.role)
+
+        format.html { redirect_to root_url, notice: "User was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }
       end
@@ -33,7 +39,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: "User was successfully updated." }
+        format.html { redirect_to user_url(@user), notice: "Account successfully updated." }
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
@@ -51,7 +57,11 @@ class UsersController < ApplicationController
   private
 
   def verify_admin
-    current_user.admin?
+    redirect_to root_path unless current_user.admin?
+  end
+
+  def verify_self
+    redirect_to root_path unless @user.id == current_user.id
   end
 
   def set_user
@@ -59,6 +69,11 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:username, :email, :name, :password, :password_confirmation)
+    params.require(:user).permit(
+      :username,
+      :email,
+      :name,
+      :password
+    )
   end
 end

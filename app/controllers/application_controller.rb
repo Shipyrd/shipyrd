@@ -1,6 +1,14 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate
 
+  helper_method :current_user
+
+  def current_user
+    return nil if cookies.signed[:user_id].blank?
+
+    User.find(cookies.signed[:user_id])
+  end
+
   private
 
   def authenticate
@@ -8,10 +16,10 @@ class ApplicationController < ActionController::Base
       session[:authenticated] = authenticate_with_http_token do |token, _options|
         ApiKey.exists?(token: token)
       end
-    elsif authenticate_with_http_basic { |u, p| p.present? && ApiKey.exists?(token: p) }
-      true
     else
-      request_http_basic_authentication
+      unless current_user.present?
+        redirect_to new_session_url
+      end
     end
   end
 end
