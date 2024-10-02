@@ -12,6 +12,7 @@ class User < ApplicationRecord
   after_create_commit :queue_import_avatar
 
   scope :with_role, -> { where.not(role: nil) }
+  scope :with_password, -> { where.not(password_digest: nil) }
 
   def self.find_or_create_performer(username)
     username, github_user = if /github.com/.match?(username)

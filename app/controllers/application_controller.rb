@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
       session[:authenticated] = authenticate_with_http_token do |token, _options|
         ApiKey.exists?(token: token)
       end
-    elsif User.count > 0
+    elsif User.with_password.count > 0
       redirect_to new_session_url if current_user.blank?
     elsif authenticate_with_http_basic { |u, p| p.present? && ApiKey.exists?(token: p) }
       true

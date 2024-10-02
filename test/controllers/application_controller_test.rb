@@ -7,8 +7,16 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     assert_response :unauthorized
   end
 
-  test "redirects to sign in after a user is created" do
-    create(:user, role: :user)
+  test "prompts for auth with just a deploy created user" do
+    create(:user, role: :user, password: nil)
+
+    get root_url
+
+    assert_response :unauthorized
+  end
+
+  test "redirects to sign in after a password-based user is created" do
+    create(:user, role: :user, password: "password")
 
     get root_url
 
