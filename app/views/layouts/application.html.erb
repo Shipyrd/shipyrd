@@ -43,13 +43,7 @@
       <% end %>
     </nav>
 
-    <% if notice.present? %>
-      <section class="container">
-        <div class="notification is-info is-light my-5">
-          <%= notice %>
-        </div>
-      </section>
-    <% end %>
+    <%= render "shared/flash" %>
 
     <main class="container">
       <%= yield %>
