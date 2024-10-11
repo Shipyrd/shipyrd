@@ -299,7 +299,7 @@ GEM
       racc
     pastel (0.8.0)
       tty-color (~> 0.5)
-    propshaft (1.0.0)
+    propshaft (1.1.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
       rack
