@@ -1,6 +1,7 @@
 <%= render "invite_links" %>
 
 <div id="users">
+
   <% if @users.present? %>
     <% @users.group_by(&:role).each do |role, users| %>
       <h4 class="is-size-4 mb-3">
@@ -25,6 +26,8 @@
         </div>
 
       <% end %>
+
     <% end %>
   <% end %>
+
 </div>

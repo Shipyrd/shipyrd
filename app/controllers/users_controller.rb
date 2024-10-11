@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   before_action :require_admin, only: %i[index destroy]
 
   def index
-    @users = User.with_role
+    @users = User.has_role
   end
 
   def show
