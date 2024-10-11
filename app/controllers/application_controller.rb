@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   def current_user
     return nil if cookies.signed[:user_id].blank?
 
-    User.find(cookies.signed[:user_id])
+    User.find_by(id: cookies.signed[:user_id])
   end
 
   def require_admin

@@ -38,6 +38,12 @@ class InviteLinksControllerTest < ActionDispatch::IntegrationTest
         end
 
         assert_redirected_to users_url
+
+        assert_difference("InviteLink.active.for_role(:admin).count") do
+          post invite_links_url, params: {invite_link: {role: :admin}}
+        end
+
+        assert_redirected_to users_url
       end
 
       test "should deactivate invite_link" do
