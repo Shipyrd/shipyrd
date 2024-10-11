@@ -1,0 +1,51 @@
+<div class="column">
+  <div class="box">
+    <% if link = InviteLink.active_for_role(role) %>
+      <p class="is-size-6 content">
+        Invite a<%= 'n' if role == :admin %>
+        <strong class="<%= 'has-text-warning' if role == :admin %>"><%= role %></strong>
+        to Shipyrd
+      </p>
+
+      <div class="field has-addons">
+        <div class="control is-expanded">
+          <%= text_field_tag "invite_link_code_#{role}", new_user_url(code: link.code), class: "input" %>
+        </div>
+
+        <div class="control">
+          <button class="button is-light clipboard <%= 'is-warning' if role == :admin %>" data-clipboard-target="#invite_link_code_<%= role %>">
+            <span class="icon">
+              <i class="fa-solid fa-copy"></i>
+            </span>
+            <span>
+              Copy
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div class="columns">
+        <div class="column">
+          <p class="is-size-7">
+            <em>
+              Expires in <%= time_ago_in_words(link.expires_at) %>
+            </em>
+          </p>
+        </div>
+
+        <div class="column has-text-right">
+          <%= button_to invite_link_path(link), method: :delete, title: "Deactivate #{role} invite link" do %>
+            <span class="icon">
+              <i class="fa-solid fa-trash"></i>
+            </span>
+          <% end %>
+        </div>
+      </div>
+
+    <% else %>
+      <div class="has-text-centered">
+      <%= button_to "Invite a#{role == :admin ? :n : nil} #{role} to Shipyrd", invite_links_path(invite_link: { role: role }), method: :post, class: "button is-#{role == :admin ? :warning : :light}" %>
+      </div>
+    <% end %>
+  </div>
+</div>

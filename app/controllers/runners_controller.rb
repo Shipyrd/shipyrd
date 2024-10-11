@@ -1,4 +1,5 @@
 class RunnersController < ApplicationController
+  before_action :require_admin, only: [:create]
   before_action :set_application
   before_action :set_destination
   before_action :set_runner, only: [:show]
