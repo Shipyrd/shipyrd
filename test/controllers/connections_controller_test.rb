@@ -8,29 +8,39 @@ class ConnectionsControllerTest < ActionDispatch::IntegrationTest
     Connection.any_instance.stubs(:import_deploy_recipes)
   end
 
+  test "requires authentication" do
+    get application_connections_url(@application)
+
+    assert_response :unauthorized
+  end
+
   describe "authenticated" do
     before do
-      @api_key = ApiKey.create!
-      @auth_headers = auth_headers(@api_key.token)
+      @user = create(:user)
+      sign_in(@user.email, @user.password)
     end
 
     test "should get index" do
-      get application_connections_url(@application), headers: @auth_headers
+      get application_connections_url(@application)
+
       assert_response :success
     end
 
     test "should get new" do
-      get new_application_connection_url(@application, provider: :github), headers: @auth_headers
+      get new_application_connection_url(@application, provider: :github)
+
       assert_response :success
     end
 
     test "should create" do
-      post application_connections_url(@application), params: {connection: {provider: "github", key: "123456"}}, headers: @auth_headers
+      post application_connections_url(@application), params: {connection: {provider: "github", key: "123456"}}
+
       assert_redirected_to edit_application_url(@application)
     end
 
     test "should only create with valid provider" do
-      post application_connections_url(@application), params: {connection: {provider: "bezos", key: "123456"}}, headers: @auth_headers
+      post application_connections_url(@application), params: {connection: {provider: "bezos", key: "123456"}}
+
       assert_redirected_to edit_application_url(@application)
     end
 
@@ -38,7 +48,7 @@ class ConnectionsControllerTest < ActionDispatch::IntegrationTest
       @connection = @application.connections.create!(provider: :github)
 
       assert_difference("Connection.count", -1) do
-        delete application_connection_url(@application, @connection), headers: @auth_headers
+        delete application_connection_url(@application, @connection)
       end
 
       assert_redirected_to edit_application_url(@application)

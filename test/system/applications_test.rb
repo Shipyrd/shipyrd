@@ -1,14 +1,13 @@
 require "application_system_test_case"
-require "helpers/basic_auth_helpers"
 
 class ApplicationsTest < ApplicationSystemTestCase
   setup do
-    @api_key = ApiKey.create!
+    @user = create(:user)
+    sign_in_as(@user.email, @user.password)
   end
 
   describe "initial setup" do
     it "points to setup instructions" do
-      visit basic_auth_url(root_url, @api_key.token)
       visit root_url
 
       assert_text "Waiting for a deploy to start..."
@@ -24,6 +23,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato"
       )
 
+      sleep(1)
       assert_text "potato"
       assert_text "pre-deploy"
       assert_text "by Nick"
@@ -41,7 +41,6 @@ class ApplicationsTest < ApplicationSystemTestCase
         version: "123456"
       )
 
-      visit basic_auth_url(root_url, @api_key.token)
       visit root_url
 
       assert_selector "h2", text: "potato"
@@ -59,6 +58,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato"
       )
 
+      sleep(1)
       assert_content "pre-deploy"
       assert_content "by Nick"
       assert_content "Deploying the potato"
@@ -94,6 +94,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato #10"
       )
 
+      sleep(1)
       assert_link "#10", href: "https://github.com/shipyrd/shipyrd/issues/10"
     end
 
@@ -107,7 +108,6 @@ class ApplicationsTest < ApplicationSystemTestCase
         hosts: "867.53.0.9"
       ).application
 
-      visit basic_auth_url(root_url, @api_key.token)
       visit root_url
       sleep(1) # TODO: Turbo page navigation isn't refreshing properly with Capybara state
 
@@ -133,12 +133,14 @@ class ApplicationsTest < ApplicationSystemTestCase
         hosts: "867.53.0.9"
       ).application
 
-      visit basic_auth_url(root_url, @api_key.token)
       visit edit_application_url(@application)
 
+      # TODO: How does Capybara detect state change? And would some other browser work better?
+      sleep(1)
       fill_in "Repository URL", with: "https://github.com/kevin/bacon"
       click_on "Update"
 
+      sleep(1)
       click_link "Connect to GitHub"
 
       Connection.any_instance.stubs(:connects_successfully)
@@ -162,7 +164,6 @@ class ApplicationsTest < ApplicationSystemTestCase
         service_version: "potato@123456"
       ).application
 
-      visit basic_auth_url(root_url, @api_key.token)
       visit edit_application_url(@application)
 
       accept_confirm do
