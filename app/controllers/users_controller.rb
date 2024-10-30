@@ -28,13 +28,15 @@ class UsersController < ApplicationController
     invite_link = InviteLink.active.find_by(code: params[:code])
 
     respond_to do |format|
-      if invite_link.present? && @user.save
+      if invite_link.present? && @user.password.present? && @user.save
         @user.update(role: invite_link.role)
 
         cookies.signed[:user_id] = @user.id
 
         format.html { redirect_to root_url, notice: "User was successfully created." }
       else
+        @user.errors.add(:base, "Invalid invite link") unless invite_link.present?
+        @user.errors.add(:password, "can't be blank") if @user.password.blank?
         format.html { render :new, status: :unprocessable_entity }
       end
     end

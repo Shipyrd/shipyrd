@@ -35,6 +35,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       invite_link = InviteLink.create!(role: :user)
       user = build(:user)
 
+      assert_no_difference("User.count") do
+        post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, username: user.username}}
+      end
+
+      assert_response :unprocessable_entity
+
       assert_difference("User.count") do
         post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
       end
