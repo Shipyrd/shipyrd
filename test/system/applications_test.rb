@@ -132,9 +132,12 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       visit edit_application_url(@application)
 
+      # TODO: How does Capybara detect state change? And would some other browser work better?
+      sleep(1)
       fill_in "Repository URL", with: "https://github.com/kevin/bacon"
       click_on "Update"
 
+      sleep(1)
       click_link "Connect to GitHub"
 
       Connection.any_instance.stubs(:connects_successfully)
