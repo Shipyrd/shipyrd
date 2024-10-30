@@ -35,7 +35,7 @@ class UsersController < ApplicationController
 
         format.html { redirect_to root_url, notice: "User was successfully created." }
       else
-        @user.errors.add(:base, "Invalid invite link") unless invite_link.present?
+        @user.errors.add(:base, "Invalid invite link") if invite_link.blank?
         @user.errors.add(:password, "can't be blank") if @user.password.blank?
         format.html { render :new, status: :unprocessable_entity }
       end
