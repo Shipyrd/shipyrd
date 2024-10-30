@@ -5,6 +5,7 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
   describe "with api key" do
     setup do
       @api_key = ApiKey.create!
+      create(:admin)
     end
 
     test "should create deploy with minimal information" do
