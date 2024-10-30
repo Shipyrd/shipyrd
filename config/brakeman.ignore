@@ -37,6 +37,29 @@
     {
       "warning_type": "Mass Assignment",
       "warning_code": 105,
+      "fingerprint": "90e4b947487d878a0beac70b81c04207fea6073f4e3101fb2e9a10b3a75aac79",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/invite_links_controller.rb",
+      "line": 28,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:invite_link).permit(:role)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "InviteLinksController",
+        "method": "invite_link_params"
+      },
+      "user_input": ":role",
+      "confidence": "Medium",
+      "cwe_id": [
+        915
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
       "fingerprint": "a530199ab745c10ef46d9af6485a3b454957b6774e4134ffa61bbdab36ded5ae",
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
@@ -64,7 +87,7 @@
       "check_name": "Render",
       "message": "Render path contains parameter value",
       "file": "app/views/runners/show.html.erb",
-      "line": 13,
+      "line": 14,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
       "code": "render(action => Application.find(params[:application_id]).destinations.find(params[:destination_id]).runners.find(params[:id]), {})",
       "render_path": [
@@ -72,7 +95,7 @@
           "type": "controller",
           "class": "RunnersController",
           "method": "show",
-          "line": 29,
+          "line": 30,
           "file": "app/controllers/runners_controller.rb",
           "rendered": {
             "name": "runners/show",
@@ -92,6 +115,6 @@
       "note": ""
     }
   ],
-  "updated": "2024-09-12 17:31:02 -0700",
+  "updated": "2024-10-30 15:10:04 -0700",
   "brakeman_version": "6.2.1"
 }
