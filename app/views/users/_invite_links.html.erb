@@ -1,5 +1,5 @@
 <div class="columns">
-  <% User.roles.keys.each do |role| %>
+  <% User.invitable_roles.each do |role| %>
     <%= render "invite_link", role: role.intern %>
   <% end %>
 </div>

@@ -1,6 +1,17 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  describe "invitable_roles" do
+    it "adminless" do
+      assert_equal [:admin], User.invitable_roles
+    end
+
+    it "with password-based users" do
+      create(:admin, password: "secret")
+      assert_equal User.roles.keys, User.invitable_roles
+    end
+  end
+
   describe "populate_avatar_url" do
     it "with github username" do
       stub_request(:get, "https://api.github.com/users/nickhammond")

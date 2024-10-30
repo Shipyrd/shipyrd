@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate
 
-  helper_method :current_user, :require_admin
+  helper_method :current_user, :require_admin, :adminless?
 
   def current_user
     return nil if cookies.signed[:user_id].blank?
@@ -10,7 +10,11 @@ class ApplicationController < ActionController::Base
   end
 
   def require_admin
-    redirect_to root_path unless current_user.admin?
+    redirect_to root_path unless adminless? || current_user.admin?
+  end
+
+  def adminless?
+    User.has_password.count.zero?
   end
 
   private

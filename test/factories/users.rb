@@ -4,4 +4,8 @@ FactoryBot.define do
     name { "MyString" }
     password { "password" }
   end
+
+  factory :admin, parent: :user do
+    role { :admin }
+  end
 end

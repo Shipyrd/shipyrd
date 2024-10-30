@@ -31,6 +31,10 @@ class User < ApplicationRecord
     user
   end
 
+  def self.invitable_roles
+    has_password.count.zero? ? [:admin] : roles.keys
+  end
+
   def display_name
     username || name
   end
