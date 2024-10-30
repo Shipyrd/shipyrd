@@ -29,6 +29,8 @@ class UsersController < ApplicationController
       if invite_link.present? && @user.save
         @user.update(role: invite_link.role)
 
+        cookies.signed[:user_id] = @user.id
+
         format.html { redirect_to root_url, notice: "User was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }

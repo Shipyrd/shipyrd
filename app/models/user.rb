@@ -45,7 +45,7 @@ class User < ApplicationRecord
   end
 
   def queue_import_avatar
-    return false if username.blank?
+    return false if Rails.env.test? || username.blank?
 
     AvatarImporterJob.perform_later(id)
   end
