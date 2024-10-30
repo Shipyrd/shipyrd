@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_secure_password validations: false
   validates :password, length: {minimum: 10, maximum: 72}, if: -> { password.present? }
 
+  validates :username, presence: true, uniqueness: true
+
   after_create_commit :queue_import_avatar
 
   scope :has_role, -> { where.not(role: nil) }

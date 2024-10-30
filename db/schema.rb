@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_25_214929) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_30_224628) do
   create_table "api_keys", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -114,6 +114,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_25_214929) do
     t.string "name"
     t.string "password_digest"
     t.integer "role"
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "connections", "applications"

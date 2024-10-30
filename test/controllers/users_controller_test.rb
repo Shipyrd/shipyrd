@@ -18,6 +18,19 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       assert_response :unprocessable_entity
     end
 
+    test "should create with existing deploy user" do
+      invite_link = InviteLink.create!(role: :admin)
+      user = create(:user, password: nil, username: "nickhammond")
+
+      assert_no_difference("User.count") do
+        post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+      end
+
+      assert_redirected_to root_url
+      assert_equal user, User.last
+      assert User.last.admin?
+    end
+
     test "should create user" do
       invite_link = InviteLink.create!(role: :user)
       user = build(:user)

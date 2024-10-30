@@ -22,7 +22,9 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.find_or_initialize_by(username: user_params[:username])
+    @user.assign_attributes(user_params)
+
     invite_link = InviteLink.active.find_by(code: params[:code])
 
     respond_to do |format|
