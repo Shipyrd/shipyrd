@@ -6,11 +6,6 @@ require "factory_bot_rails"
 include FactoryBot::Syntax::Methods # standard:disable Style/MixinUsage
 require "mocha/minitest"
 
-WebMock.disable_net_connect!(
-  allow_localhost: true,
-  allow: "googlechromelabs.github.io"
-)
-
 module ActiveSupport
   class TestCase
     parallelize(workers: 1)
