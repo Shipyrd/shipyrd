@@ -13,8 +13,8 @@ class InviteLinksControllerTest < ActionDispatch::IntegrationTest
   describe "authenticated" do
     describe "user" do
       setup do
-        @user = create(:user, password: "password")
-        sign_in(@user.email, "password")
+        @user = create(:user)
+        sign_in(@user.email, @user.password)
       end
 
       it "can't create invite link" do
@@ -29,7 +29,7 @@ class InviteLinksControllerTest < ActionDispatch::IntegrationTest
     describe "admin" do
       setup do
         @user = create(:user, role: :admin)
-        sign_in(@user.email, "password")
+        sign_in(@user.email, @user.password)
       end
 
       test "should create invite_link with role" do

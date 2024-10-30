@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   # Users are initially created via deploys typically
   has_secure_password validations: false
+  validates :password, length: {minimum: 10, maximum: 72}, if: -> { password.present? }
 
   after_create_commit :queue_import_avatar
 

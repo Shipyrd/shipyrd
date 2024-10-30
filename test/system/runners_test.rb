@@ -2,8 +2,8 @@ require "application_system_test_case"
 
 class RunnersTest < ApplicationSystemTestCase
   setup do
-    @admin = create(:user, role: :admin, password: "password")
-    sign_in_as(@admin.email, "password")
+    @admin = create(:user, role: :admin)
+    sign_in_as(@admin.email, @admin.password)
   end
 
   describe "with an existing destination" do

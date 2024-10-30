@@ -15,8 +15,8 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
 
   describe "authenticated" do
     before do
-      @user = create(:user, password: "password")
-      sign_in(@user.email, "password")
+      @user = create(:user)
+      sign_in(@user.email, @user.password)
     end
 
     test "should get index" do

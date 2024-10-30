@@ -12,7 +12,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       user = build(:user)
 
       assert_no_difference("User.count") do
-        post users_url, params: {code: "heyo", user: {email: user.email, name: user.name, password: "secret", username: user.username}}
+        post users_url, params: {code: "heyo", user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
       end
 
       assert_response :unprocessable_entity
@@ -23,7 +23,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       user = build(:user)
 
       assert_difference("User.count") do
-        post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secret", username: user.username}}
+        post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
       end
 
       assert_redirected_to root_url
@@ -35,7 +35,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       user = build(:user)
 
       assert_difference("User.count") do
-        post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secret", username: user.username}}
+        post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
       end
 
       assert_redirected_to root_url
@@ -45,8 +45,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   describe "admin" do
     setup do
-      @admin = create(:user, role: :admin, password: "password")
-      sign_in(@admin.email, "password")
+      @admin = create(:user, role: :admin)
+      sign_in(@admin.email, @admin.password)
     end
 
     test "should get index" do
@@ -67,8 +67,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   describe "user" do
     setup do
-      @user = create(:user, role: :user, password: "password")
-      sign_in(@user.email, "password")
+      @user = create(:user, role: :user)
+      sign_in(@user.email, @user.password)
     end
 
     test "should not get index" do
@@ -96,7 +96,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     test "should not update someone else" do
       other_user = create(:user, role: :user)
-      patch user_url(other_user), params: {user: {email: @user.email, name: @user.name, password: "secret", username: @user.username}}
+      patch user_url(other_user), params: {user: {email: @user.email, name: @user.name, password: "secretsecret", username: @user.username}}
 
       assert_redirected_to root_url
     end
@@ -107,7 +107,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "should update current user" do
-      patch user_url(@user), params: {user: {email: @user.email, name: @user.name, password: "secret", username: @user.username}}
+      patch user_url(@user), params: {user: {email: @user.email, name: @user.name, password: "secretsecret", username: @user.username}}
       assert_redirected_to user_url(@user)
     end
   end

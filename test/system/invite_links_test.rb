@@ -20,8 +20,8 @@ class InviteLinksTest < ApplicationSystemTestCase
     assert_text "Invite link was successfully created"
     assert_field "invite_link_code_admin", with: new_user_url(code: InviteLink.active_for_role(:admin).code)
 
-    @user = create(:user, role: :admin, password: "password")
-    sign_in_as(@user.email, "password")
+    @user = create(:user, role: :admin)
+    sign_in_as(@user.email, @user.password)
 
     # Now that an admin has logged in, we can invite regular users
     visit users_url

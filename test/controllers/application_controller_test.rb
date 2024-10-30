@@ -16,7 +16,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "redirects to sign in after a password-based user is created" do
-    create(:user, role: :user, password: "password")
+    create(:user, role: :user, password: "secretsecret")
 
     get root_url
 

@@ -2,8 +2,8 @@ require "application_system_test_case"
 
 class ApplicationsTest < ApplicationSystemTestCase
   setup do
-    @user = create(:user, password: "password")
-    sign_in_as(@user.email, "password")
+    @user = create(:user)
+    sign_in_as(@user.email, @user.password)
   end
 
   describe "initial setup" do

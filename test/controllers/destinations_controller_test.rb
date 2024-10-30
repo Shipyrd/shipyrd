@@ -17,8 +17,8 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
 
   describe "authenticated" do
     setup do
-      @user = create(:user, password: "password")
-      sign_in(@user.email, "password")
+      @user = create(:user)
+      sign_in(@user.email, @user.password)
     end
 
     test "should get edit" do

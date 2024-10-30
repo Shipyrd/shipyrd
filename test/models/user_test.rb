@@ -7,7 +7,7 @@ class UserTest < ActiveSupport::TestCase
     end
 
     it "with password-based users" do
-      create(:admin, password: "secret")
+      create(:admin, password: "secretsecret")
       assert_equal User.roles.keys, User.invitable_roles
     end
   end

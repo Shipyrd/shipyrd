@@ -17,8 +17,8 @@ class RunnersControllerTest < ActionDispatch::IntegrationTest
   describe "authenticated" do
     describe "user" do
       setup do
-        @user = create(:user, password: "password")
-        sign_in(@user.email, "password")
+        @user = create(:user)
+        sign_in(@user.email, @user.password)
       end
 
       test "should not create runner" do
@@ -30,8 +30,8 @@ class RunnersControllerTest < ActionDispatch::IntegrationTest
 
     describe "admin" do
       setup do
-        @user = create(:user, role: :admin, password: "password")
-        sign_in(@user.email, "password")
+        @user = create(:user, role: :admin)
+        sign_in(@user.email, @user.password)
       end
 
       test "should get index" do
