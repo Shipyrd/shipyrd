@@ -23,6 +23,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato"
       )
 
+      sleep(1)
       assert_text "potato"
       assert_text "pre-deploy"
       assert_text "by Nick"
@@ -57,6 +58,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato"
       )
 
+      sleep(1)
       assert_content "pre-deploy"
       assert_content "by Nick"
       assert_content "Deploying the potato"
@@ -92,6 +94,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato #10"
       )
 
+      sleep(1)
       assert_link "#10", href: "https://github.com/shipyrd/shipyrd/issues/10"
     end
 

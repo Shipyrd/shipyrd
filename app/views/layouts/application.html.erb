@@ -23,7 +23,7 @@
     <nav class="navbar py-5" role="navigation" aria-label="main navigation">
       <%= link_to image_tag("logo.png", width: 125), root_url %>
 
-      <% if adminless? || current_user.admin? %>
+      <% if current_user&.admin? || adminless? %>
         <div class="navbar-end is-transparent is-hoverable">
           <div class="navbar-item has-dropdown is-hoverable">
 

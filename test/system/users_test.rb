@@ -9,9 +9,7 @@ class UsersTest < ApplicationSystemTestCase
   end
 
   test "visiting the index" do
-    sleep(1)
     visit users_url
-    sleep(1)
     assert_selector "h4", text: "Users"
     assert_selector "h4", text: "Admins"
   end
