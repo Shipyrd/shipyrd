@@ -1,4 +1,5 @@
 #!/bin/bash -eu
+# Usage bin/release 4.0.7
 
 [[ -n $(git status -s) ]] && echo 'Dirty tree, commit everything else first :)' && exit 1
 
