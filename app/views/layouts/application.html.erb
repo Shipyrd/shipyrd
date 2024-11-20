@@ -23,7 +23,7 @@
     <nav class="navbar py-5" role="navigation" aria-label="main navigation">
       <%= link_to image_tag("logo.png", width: 125), root_url %>
 
-      <% if current_user&.admin? || adminless? %>
+      <% if current_user&.admin? || (current_user && adminless?) %>
         <div class="navbar-end is-transparent is-hoverable">
           <div class="navbar-item has-dropdown is-hoverable">
 
@@ -48,5 +48,15 @@
     <main class="container">
       <%= yield %>
     </main>
+
+    <% if current_user %>
+      <footer>
+        <div class="has-text-centered">
+          <p>
+            <%= button_to "Sign out", session_path, method: :delete, class:"is-clickable is-underlined" %>
+          </p>
+        </div>
+      </footer>
+    <% end %>
   </body>
 </html>
