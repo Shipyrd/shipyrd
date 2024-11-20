@@ -9,6 +9,7 @@ gem "dotenv-rails"
 gem "kamal"
 gem "puma", ">= 5.0"
 gem "rails", "~> 7.2.1"
+gem "mysql2", "~> 0.5.6"
 gem "sqlite3", "~> 2.1.0"
 
 # Assets

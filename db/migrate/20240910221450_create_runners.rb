@@ -1,8 +1,8 @@
 class CreateRunners < ActiveRecord::Migration[7.1]
   def change
     create_table :runners do |t|
-      t.integer :server_id
-      t.integer :destination_id
+      t.bigint :server_id
+      t.bigint :destination_id
       t.string :command
       t.string :full_command
       t.text :output
