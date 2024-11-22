@@ -1,4 +1,5 @@
 class Application < ApplicationRecord
+  belongs_to :organization
   has_many :deploys, dependent: :destroy, foreign_key: :service, primary_key: :key, inverse_of: "application"
   has_many :connections, dependent: :destroy
   has_many :destinations, dependent: :destroy do

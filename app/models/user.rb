@@ -4,6 +4,7 @@ require "json"
 class User < ApplicationRecord
   include Role
 
+  has_many :memberships
   has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
 
   # Users are initially created via deploys typically

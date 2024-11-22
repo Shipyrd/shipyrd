@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_30_224628) do
-  create_table "api_keys", force: :cascade do |t|
+ActiveRecord::Schema[7.2].define(version: 2024_11_20_144434) do
+  create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "applications", force: :cascade do |t|
+  create_table "applications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "repository_url"
     t.datetime "created_at", null: false
@@ -25,7 +25,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_30_224628) do
     t.string "key"
   end
 
-  create_table "connections", force: :cascade do |t|
+  create_table "connections", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "provider"
     t.text "key"
     t.datetime "last_connected_at"
@@ -35,7 +35,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_30_224628) do
     t.index ["application_id"], name: "index_connections_on_application_id"
   end
 
-  create_table "deploys", force: :cascade do |t|
+  create_table "deploys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "recorded_at"
     t.string "status"
     t.string "performer"
@@ -53,7 +53,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_30_224628) do
     t.string "commit_message"
   end
 
-  create_table "destinations", force: :cascade do |t|
+  create_table "destinations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "url"
     t.string "name"
     t.string "branch", default: "main"
@@ -70,7 +70,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_30_224628) do
     t.index ["application_id"], name: "index_destinations_on_application_id"
   end
 
-  create_table "invite_links", force: :cascade do |t|
+  create_table "invite_links", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "expires_at"
     t.datetime "deactivated_at"
     t.integer "role"
@@ -82,7 +82,25 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_30_224628) do
     t.index ["creator_id"], name: "index_invite_links_on_creator_id"
   end
 
-  create_table "runners", force: :cascade do |t|
+  create_table "memberships", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_memberships_on_organization_id"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "organizations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "token"
+    t.integer "applications_count", default: 0
+    t.integer "memberships_count", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "runners", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "server_id"
     t.bigint "destination_id"
     t.string "command"
@@ -95,7 +113,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_30_224628) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "servers", force: :cascade do |t|
+  create_table "servers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "destination_id", null: false
     t.string "host"
     t.datetime "created_at", null: false
@@ -105,7 +123,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_30_224628) do
     t.index ["destination_id"], name: "index_servers_on_destination_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "username"
     t.string "avatar_url"
     t.datetime "created_at", null: false
@@ -120,5 +138,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_30_224628) do
   add_foreign_key "connections", "applications"
   add_foreign_key "destinations", "applications"
   add_foreign_key "invite_links", "users", column: "creator_id"
+  add_foreign_key "memberships", "organizations"
+  add_foreign_key "memberships", "users"
   add_foreign_key "servers", "destinations"
 end
