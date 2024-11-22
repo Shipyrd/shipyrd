@@ -19,6 +19,8 @@ class User < ApplicationRecord
   scope :has_role, -> { where.not(role: nil) }
   scope :has_password, -> { where.not(password_digest: nil) }
 
+  attr_accessor :organization_name
+
   def self.find_or_create_performer(username)
     username, github_user = if /github.com/.match?(username)
       [username.split("/").last, true]

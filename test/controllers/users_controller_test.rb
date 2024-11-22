@@ -23,6 +23,21 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         assert_response :unprocessable_entity
       end
 
+      test "should create user without invite link" do
+        user = build(:user)
+
+        assert_difference("User.count") do
+          post users_url, params: {user: {organization_name: "Initech", email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+        end
+
+        user = User.last
+
+        assert_redirected_to root_url
+        assert user
+        assert_equal "Initech", user.organizations.last.name
+        assert user.admin?
+      end
+
       test "should create user" do
         invite_link = InviteLink.create!(role: :user, organization: @organization)
         user = build(:user)
