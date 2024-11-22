@@ -1,6 +1,4 @@
-ApiKey.find_or_create_by!(
-  token: ENV["SHIPYRD_API_KEY"]
-)
+organization = Organization.find_or_create_by!(name: "Initech")
 
 @ai_commit_messages = [
   "Fixed the thing that broke the other thing",
@@ -30,7 +28,7 @@ def create_deploy(application, destination, stage)
   )
 end
 
-bacon = Application.find_or_create_by!(key: :bacon)
+bacon = organization.applications.find_or_create_by!(key: :bacon)
 
 bacon.update!(
   name: "Bacon",
@@ -38,7 +36,7 @@ bacon.update!(
   repository_url: "https://github.com/nickhammond/bacon"
 )
 
-eggs = Application.find_or_create_by!(key: :eggs)
+eggs = organization.applications.find_or_create_by!(key: :eggs)
 
 eggs.update!(
   name: "Eggs",
@@ -46,7 +44,7 @@ eggs.update!(
   repository_url: "https://github.com/nickhammond/eggs"
 )
 
-ham = Application.find_or_create_by!(key: :ham)
+ham = organization.applications.find_or_create_by!(key: :ham)
 
 ham.update!(
   name: "Ham",

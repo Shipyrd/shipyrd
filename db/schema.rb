@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_20_144434) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_22_002933) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -23,6 +23,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_20_144434) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "key"
+    t.string "token"
+    t.bigint "organization_id"
   end
 
   create_table "connections", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -78,6 +80,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_20_144434) do
     t.bigint "creator_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "organization_id"
     t.index ["code"], name: "index_invite_links_on_code", unique: true
     t.index ["creator_id"], name: "index_invite_links_on_creator_id"
   end

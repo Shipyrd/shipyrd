@@ -1,5 +1,7 @@
 class Application < ApplicationRecord
-  belongs_to :organization
+  has_secure_token
+
+  belongs_to :organization, counter_cache: true
   has_many :deploys, dependent: :destroy, foreign_key: :service, primary_key: :key, inverse_of: "application"
   has_many :connections, dependent: :destroy
   has_many :destinations, dependent: :destroy do
