@@ -4,8 +4,8 @@ require "helpers/basic_auth_helpers"
 class DeploysControllerTest < ActionDispatch::IntegrationTest
   describe "with api key" do
     setup do
-      @api_key = ApiKey.create!
-      create(:admin)
+      @application = create(:application, organization: create(:organization))
+      @token = @application.token
     end
 
     test "should create deploy with minimal information" do
@@ -23,10 +23,11 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
             }
 
           },
-          headers: auth_headers(@api_key.token)
+          headers: auth_headers(@token)
       end
 
       assert_response :created
+      assert_equal @application, Deploy.last.application
     end
 
     test "should create deploy with full information" do
@@ -50,10 +51,11 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
             }
 
           },
-          headers: auth_headers(@api_key.token)
+          headers: auth_headers(@token)
       end
 
       assert_response :created
+      assert_equal @application, Deploy.last.application
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_22_002933) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_22_030541) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -25,6 +25,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_22_002933) do
     t.string "key"
     t.string "token"
     t.bigint "organization_id"
+    t.index ["organization_id"], name: "index_applications_on_organization_id"
+    t.index ["token"], name: "index_applications_on_token", unique: true
   end
 
   create_table "connections", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -53,6 +55,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_22_002933) do
     t.datetime "updated_at", null: false
     t.string "service"
     t.string "commit_message"
+    t.bigint "application_id", null: false
+    t.index ["application_id"], name: "index_deploys_on_application_id"
   end
 
   create_table "destinations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

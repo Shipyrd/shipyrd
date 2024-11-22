@@ -1,16 +1,19 @@
 require "test_helper"
 
 class DeployTest < ActiveSupport::TestCase
+  let(:organization) { create(:organization) }
+  let(:application) { create(:application, organization: organization) }
+
   describe "set_service_name" do
     it "split service_version" do
-      assert_equal "app", create(:deploy, service_version: "app@123").service
+      assert_equal "app", create(:deploy, service_version: "app@123", application: application).service
     end
   end
 
   describe "compare_url" do
-    let(:application) { create(:application, key: "heyo", repository_url: "https://github.com/nickhammond/shipyrd") }
-
     it "crafts a github link" do
+      application.update!(repository_url: "https://github.com/nickhammond/shipyrd")
+
       create(
         :deploy,
         application: application,
@@ -41,76 +44,18 @@ class DeployTest < ActiveSupport::TestCase
     end
   end
 
-  describe "find_or_create_user" do
-    describe "without a known user" do
-      it "creates a basic user" do
-        assert_difference("User.count") do
-          create(:deploy, performer: "greta")
-        end
-      end
-
-      it "creates a github user" do
-        User.any_instance.stubs(:populate_avatar_url)
-
-        assert_difference("User.count") do
-          create(:deploy, performer: "https:github.com/nickhammond")
-        end
-      end
-    end
-
-    describe "with a known user" do
-      it "points to existing user" do
-        user = create(:user, username: "greta")
-
-        deploy = create(:deploy, performer: "greta")
-
-        assert_equal user, deploy.user
-      end
-
-      it "points to an existing github user" do
-        User.any_instance.stubs(:populate_avatar_url)
-
-        user = create(:user, username: "nickhammond")
-
-        deploy = create(:deploy, performer: "https://github.com/nickhammond")
-
-        assert_equal user, deploy.user
-      end
-    end
-  end
-
-  describe "find_or_create_application" do
-    describe "without a known app" do
-      it "creates a basic app with creation" do
-        assert_difference("Application.where(key: 'heyo').count") do
-          create(:deploy, service_version: "heyo@abcdef12")
-        end
-      end
-    end
-
-    describe "with a known app" do
-      it "points to existing app" do
-        application = create(:application, key: "heyo")
-
-        deploy = create(:deploy, service_version: "heyo@abcdef12")
-
-        assert_equal application, deploy.application
-      end
-    end
-  end
-
   describe "find or create destination" do
     it "creates a default destination" do
-      deploy = create(:deploy, service_version: "heyo@abcdef12")
+      deploy = create(:deploy, service_version: "heyo@abcdef12", application: application)
 
       assert_nil deploy.application.destinations.first.name
     end
 
     it "uses existing destination" do
-      create(:deploy, service_version: "heyo@abcdef12", destination: :production)
+      create(:deploy, service_version: "heyo@abcdef12", destination: :production, application: application)
 
       assert_no_difference("Destination.count") do
-        assert create(:deploy, service_version: "heyo@abcdef12", destination: :production)
+        assert create(:deploy, service_version: "heyo@abcdef12", destination: :production, application: application)
       end
     end
   end
@@ -119,6 +64,7 @@ class DeployTest < ActiveSupport::TestCase
     it "creates the servers" do
       deploy = create(
         :deploy,
+        application: application,
         service_version: "heyo@abcdef12",
         destination: :production,
         hosts: "123.456.789.0,867.53.0.9"
@@ -132,6 +78,7 @@ class DeployTest < ActiveSupport::TestCase
       assert_no_difference("Server.count") do
         create(
           :deploy,
+          application: application,
           service_version: "heyo@abcdef12",
           destination: :production,
           hosts: "123.456.789.0,867.53.0.9"

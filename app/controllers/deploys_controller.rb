@@ -3,7 +3,7 @@ class DeploysController < ApplicationController
 
   # POST /deploys or /deploys.json
   def create
-    @deploy = Deploy.new(deploy_params)
+    @deploy = @application.deploys.new(deploy_params)
 
     respond_to do |format|
       if @deploy.save

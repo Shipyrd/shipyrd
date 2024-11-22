@@ -2,7 +2,7 @@ require "test_helper"
 
 class DestinationTest < ActiveSupport::TestCase
   setup do
-    @application = create(:application)
+    @application = create(:application, organization: create(:organization))
   end
 
   describe "display_name" do
@@ -23,6 +23,7 @@ class DestinationTest < ActiveSupport::TestCase
     it "is nil if hasn't been successfully deployed" do
       create(:deploy,
         service_version: "shipyrd@123",
+        application: @application,
         version: "123",
         status: "pre-build",
         command: :deploy)
@@ -37,11 +38,12 @@ class DestinationTest < ActiveSupport::TestCase
     it "is nil if last deploy was uncommitted" do
       create(:deploy,
         service_version: "shipyrd@123",
+        application: @application,
         version: "123_uncommitted",
         status: "post-deploy",
         command: :deploy)
 
-      Application.last.update(
+      @application.update(
         repository_url: "https://github.com/shipyrd/shipyrd"
       )
 
@@ -50,12 +52,13 @@ class DestinationTest < ActiveSupport::TestCase
 
     it "returns a compare URL" do
       create(:deploy,
+        application: @application,
         service_version: "shipyrd@123",
         version: "123",
         status: "post-deploy",
         command: :deploy)
 
-      Application.last.update(
+      @application.update(
         repository_url: "https://github.com/shipyrd/shipyrd"
       )
 

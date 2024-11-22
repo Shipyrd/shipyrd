@@ -2,7 +2,7 @@ class Application < ApplicationRecord
   has_secure_token
 
   belongs_to :organization, counter_cache: true
-  has_many :deploys, dependent: :destroy, foreign_key: :service, primary_key: :key, inverse_of: "application"
+  has_many :deploys, dependent: :destroy, inverse_of: "application"
   has_many :connections, dependent: :destroy
   has_many :destinations, dependent: :destroy do
     def find_or_create_with_hosts(hosts_string:, name:)

@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   def authenticate
     if request.headers["Authorization"] && request.headers["Authorization"] =~ /^bearer/i
       session[:authenticated] = authenticate_with_http_token do |token, _options|
-        ApiKey.exists?(token: token)
+        @application = Application.find_by(token: token)
       end
     elsif User.has_password.count > 0
       redirect_to new_session_url if current_user.blank?

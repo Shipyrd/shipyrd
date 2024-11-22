@@ -8,57 +8,53 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
     end
 
-    test "create with invalid invite link" do
-      user = build(:user)
-
-      assert_no_difference("User.count") do
-        post users_url, params: {code: "heyo", user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+    describe "creating a user" do
+      setup do
+        @organization = create(:organization)
       end
 
-      assert_response :unprocessable_entity
-    end
+      test "with invalid invite link" do
+        user = build(:user)
 
-    test "should create with existing deploy user" do
-      invite_link = InviteLink.create!(role: :admin)
-      user = create(:user, password: nil, username: "nickhammond")
+        assert_no_difference("User.count") do
+          post users_url, params: {code: "heyo", user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+        end
 
-      assert_no_difference("User.count") do
-        post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+        assert_response :unprocessable_entity
       end
 
-      assert_redirected_to root_url
-      assert_equal user, User.last
-      assert User.last.admin?
-    end
+      test "should create user" do
+        invite_link = InviteLink.create!(role: :user, organization: @organization)
+        user = build(:user)
 
-    test "should create user" do
-      invite_link = InviteLink.create!(role: :user)
-      user = build(:user)
+        assert_no_difference("User.count") do
+          post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, username: user.username}}
+        end
 
-      assert_no_difference("User.count") do
-        post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, username: user.username}}
+        assert_response :unprocessable_entity
+
+        assert_difference("User.count") do
+          post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+        end
+
+        user = User.last
+
+        assert_redirected_to root_url
+        assert user
+        assert_equal user.organizations.last, @organization
       end
 
-      assert_response :unprocessable_entity
+      test "should create an admin" do
+        invite_link = InviteLink.create!(role: :admin, organization: @organization)
+        user = build(:user)
 
-      assert_difference("User.count") do
-        post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+        assert_difference("User.count") do
+          post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+        end
+
+        assert_redirected_to root_url
+        assert User.last.admin?
       end
-
-      assert_redirected_to root_url
-      assert User.last.user?
-    end
-
-    test "should create an admin" do
-      invite_link = InviteLink.create!(role: :admin)
-      user = build(:user)
-
-      assert_difference("User.count") do
-        post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
-      end
-
-      assert_redirected_to root_url
-      assert User.last.admin?
     end
   end
 

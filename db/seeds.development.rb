@@ -15,6 +15,7 @@ organization = Organization.find_or_create_by!(name: "Initech")
 
 def create_deploy(application, destination, stage)
   Deploy.create!(
+    application: application,
     recorded_at: Time.zone.now,
     status: stage,
     performer: "nickhammond",

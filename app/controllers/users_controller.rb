@@ -22,17 +22,14 @@ class UsersController < ApplicationController
   end
 
   def create
-    # TODO: This will need to be removed so that you can't hijack a deploy created user
-    # We might just have to remove the deploy created user and have the user create a project
-    # grab the API key for that project and then use that to configure
-    @user = User.find_or_initialize_by(username: user_params[:username])
-    @user.assign_attributes(user_params)
-
     invite_link = InviteLink.active.find_by(code: params[:code])
+
+    @user = User.new(user_params)
 
     respond_to do |format|
       if invite_link.present? && @user.password.present? && @user.save
         @user.update(role: invite_link.role)
+        @user.memberships.create!(organization: invite_link.organization)
 
         cookies.signed[:user_id] = @user.id
 
