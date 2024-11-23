@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   before_action :require_admin, only: %i[index destroy]
 
   def index
-    @users = User.has_role
+    @users = current_organization.users
   end
 
   def show
@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     respond_to do |format|
-      if params[:code] && invite_link.nil?
+      if params[:code] && invite_link.blank?
         @user.errors.add(:base, "Invalid invite link")
 
         format.html { render :new, status: :unprocessable_entity }
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
         organization = invite_link&.organization || Organization.create!(name: @user.organization_name)
 
         @user.update(role: invite_link ? invite_link.role : :admin)
-        @user.memberships.create!(organization: organization)
+        organization.users << @user
 
         cookies.signed[:user_id] = @user.id
 
@@ -73,7 +73,7 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    @user = User.find(params[:id])
+    @user = current_organization.users.find(params[:id])
   end
 
   def user_params
