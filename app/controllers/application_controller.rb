@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate
 
-  helper_method :current_user, :current_organization, :require_admin, :adminless?
+  helper_method :current_user, :current_organization, :require_admin
 
   def current_user
     return nil if cookies.signed[:user_id].blank?
@@ -14,11 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_admin
-    redirect_to root_path unless adminless? || current_user.admin?
-  end
-
-  def adminless?
-    User.has_password.count.zero?
+    redirect_to root_path unless current_user.admin?
   end
 
   private
@@ -28,8 +24,8 @@ class ApplicationController < ActionController::Base
       session[:authenticated] = authenticate_with_http_token do |token, _options|
         @application = Application.find_by(token: token)
       end
-    else
-      redirect_to new_session_url if current_user.blank?
+    elsif current_user.blank?
+      redirect_to new_session_url
     end
   end
 end

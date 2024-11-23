@@ -19,8 +19,10 @@ class UsersTest < ApplicationSystemTestCase
 
     test "groups" do
       visit users_url
-      refute_selector(:xpath, ".//button[@title='#{@other_user.name}']")
-      assert_selector(:xpath, ".//button[@title='#{@user.name}']")
+
+      refute_selector(:xpath, ".//button[@title='#{@other_user.display_name}']")
+      assert_selector(:xpath, ".//button[@title='#{@user.display_name}']")
+      assert_selector(:xpath, ".//button[@title='#{@admin.display_name}']")
       assert_selector "h4", text: "Users"
       assert_selector "h4", text: "Admins"
     end
@@ -36,6 +38,9 @@ class UsersTest < ApplicationSystemTestCase
       fill_in "Organization name", with: "Initech"
       fill_in "GitHub username", with: @user.username
       fill_in "Email", with: @user.email
+      fill_in "Password", with: "secretsecret"
+
+      click_on "Create User"
 
       assert_text "Create your first application"
     end
@@ -62,7 +67,6 @@ class UsersTest < ApplicationSystemTestCase
 
       assert_text "User was successfully created"
       assert_text "Create your first application"
-      assert_text "Waiting for a deploy to start..."
 
       visit users_url
       assert_text "Create your first application"
