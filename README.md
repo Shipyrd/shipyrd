@@ -12,7 +12,7 @@ For a more detailed project and concept overview check out the [initial announce
 
 There's two main steps to getting started with Shipyrd.
 
-1. Running Shipyrd as an accessory within your existing Kamal setup. 
+1. Running Shipyrd as an accessory within your existing Kamal setup.
 2. Enable the various hooks that Kamal supports to update the deploy state in Shipyrd.
 
 ### Add shipyrd as an accessory
@@ -41,16 +41,17 @@ accessories:
         - SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY
         - SHIPYRD_ENCRYPTION_PRIMARY_KEY
         - SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT
+        - SHIPYRD_DATABASE_URL
+        - SHIPYRD_QUEUE_DATABASE_URL
+        - SHIPYRD_CABLE_DATABASE_URL
     labels:
       traefik.http.routers.YOURKAMALSERVICE-shipyrd.rule: Host(`shipyrd.myapp.com`)
-    volumes:
-      - shipyrd:/rails/db/production
 
 ```
 
 *Make sure you update the traefik router in the configuration above to match the name of your service so that it's "#{service}-shipyrd"*
 
-The `volumes` map is where the sqlite database will be stored which contains basic deploy information. For an overview of the information that's automatically collected with the Kamal hooks take a look at the documentation for the [shipyrd gem](https://github.com/shipyrd/shipyrd-gem).
+For an overview of the information that's automatically collected with the Kamal hooks take a look at the documentation for the [shipyrd gem](https://github.com/shipyrd/shipyrd-gem).
 
 With your accessory added and the `SHIPYRD_*` secrets set in your `.env` file for Kamal you should be able to push up your environment settings and then boot the Shipyrd accessory.
 
@@ -109,7 +110,7 @@ Shipyrd::Client.new.trigger('post-deploy')
 
 ### Deploy
 
-With the triggers added to your Kamal hooks you'll now be able to see your app go through the deploy process in Shipyrd. Once a deploy completes you'll then be able to see the changes that went out with a deploy, who deployed it, when it was last deployed, how long the deploy took. 
+With the triggers added to your Kamal hooks you'll now be able to see your app go through the deploy process in Shipyrd. Once a deploy completes you'll then be able to see the changes that went out with a deploy, who deployed it, when it was last deployed, how long the deploy took.
 
 ### Customizing the deploy performer
 

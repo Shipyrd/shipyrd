@@ -1,37 +1,13 @@
-adapter_default: &adapter_default
-  adapter: <%= ENV.fetch("SHIPYRD_DATABASE_ADAPTER") { "sqlite3" } %>
+primary_default: &primary_default
+  url: <%= ENV["SHIPYRD_DATABASE_URL"] %>
 
-<% if ENV["SHIPYRD_DATABASE_ADAPTER"] == "mysql2" %>
-  primary_default: &primary_default
-    <<: *adapter_default
-    url: <%= ENV["SHIPYRD_DATABASE_URL"] %>
+queue_default: &queue_default
+  url: <%= ENV.fetch("SHIPYRD_QUEUE_DATABASE_URL") %>
+  migrations_paths: db/queue_migrate
 
-  queue_default: &queue_default
-    <<: *adapter_default
-    url: <%= ENV.fetch("SHIPYRD_QUEUE_DATABASE_URL") %>
-    migrations_paths: db/queue_migrate
-
-  cable_default: &cable_default
-    <<: *adapter_default
-    url: <%= ENV.fetch("SHIPYRD_CABLE_DATABASE_URL") %>
-    migrations_paths: db/cable_migrate
-<% else %>
-  primary_default: &primary_default
-    <<: *adapter_default
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-    idle_timeout: 0
-    database: db/<%= Rails.env %>/data.sqlite3
-
-  queue_default: &queue_default
-    <<: *adapter_default
-    database: db/<%= Rails.env %>/queue.sqlite3
-    migrations_paths: db/queue_migrate
-
-  cable_default: &cable_default
-    <<: *adapter_default
-    database: db/<%= Rails.env %>/cable.sqlite3
-    migrations_paths: db/cable_migrate
-<% end %>
+cable_default: &cable_default
+  url: <%= ENV.fetch("SHIPYRD_CABLE_DATABASE_URL") %>
+  migrations_paths: db/cable_migrate
 
 development:
   primary:
