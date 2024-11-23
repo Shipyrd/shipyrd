@@ -4,6 +4,7 @@ require "helpers/basic_auth_helpers"
 class ConnectionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @application = create(:application_with_repository_url)
+    @organization = @application.organization
     Connection.any_instance.stubs(:connects_successfully)
     Connection.any_instance.stubs(:import_deploy_recipes)
   end
@@ -11,12 +12,13 @@ class ConnectionsControllerTest < ActionDispatch::IntegrationTest
   test "requires authentication" do
     get application_connections_url(@application)
 
-    assert_response :unauthorized
+    assert_redirected_to new_session_path
   end
 
   describe "authenticated" do
     before do
       @user = create(:user)
+      @organization.users << @user
       sign_in(@user.email, @user.password)
     end
 

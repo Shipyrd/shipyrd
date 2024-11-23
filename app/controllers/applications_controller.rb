@@ -3,7 +3,7 @@ class ApplicationsController < ApplicationController
 
   # GET /applications or /applications.json
   def index
-    @applications = Application.order(:created_at)
+    @applications = current_organization.applications.order(:created_at)
   end
 
   # GET /applications/1 or /applications/1.json
@@ -41,7 +41,7 @@ class ApplicationsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_application
-    @application = Application.find(params[:id])
+    @application = current_organization.applications.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.

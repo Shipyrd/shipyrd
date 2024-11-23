@@ -1,8 +1,7 @@
 require "test_helper"
 
 class DeployTest < ActiveSupport::TestCase
-  let(:organization) { create(:organization) }
-  let(:application) { create(:application, organization: organization) }
+  let(:application) { create(:application) }
 
   describe "set_service_name" do
     it "split service_version" do

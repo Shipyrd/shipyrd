@@ -4,6 +4,7 @@ require "helpers/basic_auth_helpers"
 class DestinationsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @application = create(:application)
+    @organization = @application.organization
     @destination = create(:destination, application: @application)
   end
 
@@ -11,13 +12,14 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
     it "denies access" do
       get application_destination_path(@application, @destination)
 
-      assert_response :unauthorized
+      assert_redirected_to new_session_path
     end
   end
 
   describe "authenticated" do
     setup do
       @user = create(:user)
+      @organization.users << @user
       sign_in(@user.email, @user.password)
     end
 

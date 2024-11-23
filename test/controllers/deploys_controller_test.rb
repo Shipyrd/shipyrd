@@ -4,7 +4,7 @@ require "helpers/basic_auth_helpers"
 class DeploysControllerTest < ActionDispatch::IntegrationTest
   describe "with api key" do
     setup do
-      @application = create(:application, organization: create(:organization))
+      @application = create(:application)
       @token = @application.token
     end
 

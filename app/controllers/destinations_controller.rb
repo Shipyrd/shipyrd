@@ -25,7 +25,7 @@ class DestinationsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_application
-    @application = Application.find(params[:application_id])
+    @application = current_organization.applications.find(params[:application_id])
   end
 
   def set_destination

@@ -4,18 +4,20 @@ require "helpers/basic_auth_helpers"
 class ApplicationsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @application = create(:application)
+    @organization = @application.organization
   end
 
   describe "anonymous" do
     it "denies access" do
       get applications_url
-      assert_response :unauthorized
+      assert_redirected_to new_session_path
     end
   end
 
   describe "authenticated" do
     before do
       @user = create(:user)
+      @organization.users << @user
       sign_in(@user.email, @user.password)
     end
 

@@ -2,7 +2,7 @@ require "test_helper"
 
 class ConnectionTest < ActiveSupport::TestCase
   let(:application) do
-    build(:application_with_repository_url, organization: build(:organization))
+    build(:application_with_repository_url)
   end
 
   describe "connects_successfully" do

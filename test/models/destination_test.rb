@@ -2,7 +2,7 @@ require "test_helper"
 
 class DestinationTest < ActiveSupport::TestCase
   setup do
-    @application = create(:application, organization: create(:organization))
+    @application = create(:application)
   end
 
   describe "display_name" do

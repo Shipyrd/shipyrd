@@ -6,13 +6,13 @@ class UsersTest < ApplicationSystemTestCase
       @organization = create(:organization)
 
       @user = create(:user, role: :user)
-      @user.memberships.create!(organization: @organization)
+      @organization.users << @user
 
       @admin = create(:user, role: :admin)
-      @admin.memberships.create!(organization: @organization)
+      @organization.users << @admin
 
       @other_user = create(:user, role: :user)
-      @other_user.memberships.create!(organization: create(:organization))
+      create(:organization).users << @other_user
 
       sign_in_as(@admin.email, @admin.password)
     end
