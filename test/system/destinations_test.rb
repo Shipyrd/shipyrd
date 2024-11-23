@@ -1,15 +1,14 @@
 require "application_system_test_case"
 
 class DestinationsTest < ApplicationSystemTestCase
-  setup do
-    @user = create(:user, role: :user)
-    sign_in_as(@user.email, @user.password)
-  end
-
   describe "with an existing destination" do
     setup do
       @application = create(:application_with_repository_url)
       @destination = create(:destination, application: @application)
+      @user = create(:user, role: :user)
+      @application.organization.users << @user
+
+      sign_in_as(@user.email, @user.password)
     end
 
     test "updating" do

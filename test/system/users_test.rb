@@ -34,6 +34,8 @@ class UsersTest < ApplicationSystemTestCase
 
       visit new_user_url
 
+      assert_link "Sign in", href: new_session_path
+
       fill_in "Name", with: @user.name
       fill_in "Organization name", with: "Initech"
       fill_in "GitHub username", with: @user.username

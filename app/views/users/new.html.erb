@@ -1,5 +1,7 @@
 <div class="columns is-centered">
   <div class="column is-half">
     <%= render "form", user: @user %>
+    <div class="mt-4 field">
+      <%= link_to "Sign in", new_session_path, class: "is-clickable is-underlined" %>
   </div>
 </div>
