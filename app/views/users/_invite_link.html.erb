@@ -1,6 +1,6 @@
 <div class="column">
   <div class="box">
-    <% if link = InviteLink.active_for_role(role) %>
+    <% if link = current_organization.invite_links.active_for_role(role) %>
       <p class="is-size-6 content">
         Invite a<%= 'n' if role == :admin %>
         <strong class="<%= 'has-text-warning' if role == :admin %>"><%= role %></strong>
