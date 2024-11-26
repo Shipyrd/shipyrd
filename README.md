@@ -8,8 +8,6 @@ For a more detailed project and concept overview check out the [initial announce
 
 ## Setup
 
-**This currently only supports pre-2.0 Kamal until accessories are able to be connected to the proxy again, there's an [open PR for it here](https://github.com/basecamp/kamal/pull/981).**
-
 There's two main steps to getting started with Shipyrd.
 
 1. Running Shipyrd as an accessory within your existing Kamal setup.
@@ -17,12 +15,12 @@ There's two main steps to getting started with Shipyrd.
 
 ### Add shipyrd as an accessory
 
-Within your Kamal accessories deploy configuration you'll need to add a new accessory for Shipyrd. Swap out the host IP address as well as the traefik host rule in the example below. You'll also want to point DNS towards this server unless you already have a wildcard record pointing to your host.
+Within your Kamal accessories deploy configuration you'll need to add a new accessory for Shipyrd. Swap out the host IP address as well as the host in the example below. You'll also want to point DNS towards this server unless you already have a wildcard record pointing to your host.
 
 The accessory configuration requires a few secrets:
 
-- `SHIPYRD_API_KEY` - Use `rails secret` or `openssl rand -hex 64` to generate one.
 - `SHIPYRD_HOST` - Host where Shipyrd will live.
+- `SHIPYRD_DATABASE_HOST` - If just the MySQL host is set then Shipyrd will attempt to connect to a primary, queue, and cable database on the same host, e.g. `mysql2://root:password@hey-db/primary`. If you have separate MySQL databases then you can set the full host for each of these via `SHIPYRD_DATABASE_URL`, `SHIPYRD_QUEUE_DATABASE_URL`, and `SHIPYRD_CABLE_DATABASE_URL`.
 - `SHIPYRD_SECRET_KEY_BASE` - Use `rails secret` or `openssl rand -hex 64` to generate one.
 - `SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY` - Use `rails db:encryption:init` or `openssl rand -base64 32` to generate one.
 - `SHIPYRD_ENCRYPTION_PRIMARY_KEY`- Use `rails db:encryption:init` or `openssl rand -base64 32` to generate one.
@@ -33,9 +31,10 @@ accessories:
   shipyrd:
     image: shipyrd/shipyrd:v0.3.5
     host: 867.530.9
+    proxy:
+      host: shipyrd.myapp.com
     env:
       secret:
-        - SHIPYRD_API_KEY
         - SHIPYRD_HOST
         - SHIPYRD_SECRET_KEY_BASE
         - SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY
@@ -44,12 +43,7 @@ accessories:
         - SHIPYRD_DATABASE_URL
         - SHIPYRD_QUEUE_DATABASE_URL
         - SHIPYRD_CABLE_DATABASE_URL
-    labels:
-      traefik.http.routers.YOURKAMALSERVICE-shipyrd.rule: Host(`shipyrd.myapp.com`)
-
 ```
-
-*Make sure you update the traefik router in the configuration above to match the name of your service so that it's "#{service}-shipyrd"*
 
 For an overview of the information that's automatically collected with the Kamal hooks take a look at the documentation for the [shipyrd gem](https://github.com/shipyrd/shipyrd-gem).
 
