@@ -20,7 +20,7 @@
 </section>
 
 <section class="block content">
-  <h4 class="is-size-4">1. Install the Shipyrd gem.</h4>
+  <h4 class="is-size-4">1. Install the Shipyrd gem</h4>
 
 <pre>
 <code id="gem_install">gem install shipyrd</code>
@@ -32,7 +32,7 @@
 </section>
 
 <section class="block content">
-  <h4 class="is-size-4">2. Add Shipyrd triggers to your <code>.kamal/hooks</code> files.</h4>
+  <h4 class="is-size-4">2. Add Shipyrd triggers to your <code>.kamal/hooks</code> files</h4>
 
   <p>
   The Shipyrd gem by default tries to load your API key from <code>ENV['SHIPYRD_API_KEY']</code>. If you're not using <code>ENV</code> for your configuration then you can set the API key directly when calling <code>Shipyrd::Client.new</code>.
@@ -44,6 +44,10 @@
 <pre class="mb-4">
 <code>Shipyrd::Client.new(api_key: Rails.application.credentials.shipyrd_api_key)</code>
 </pre>
+
+<p>
+  Add the following code to your <code>.kamal/hooks</code> files to trigger Shipyrd hooks during the deploy process.
+</p>
 
 <% Deploy::KNOWN_HOOKS.each do |hook| %>
 <div class="block">
