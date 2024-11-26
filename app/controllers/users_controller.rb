@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   before_action :require_admin, only: %i[index destroy]
 
   def index
-    @users = current_organization.users
+    @memberships = current_organization.memberships.includes(:user)
   end
 
   def show

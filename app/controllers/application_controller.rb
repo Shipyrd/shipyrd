@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate
 
-  helper_method :current_user, :current_organization, :require_admin
+  helper_method :current_user, :current_organization, :require_admin, :current_admin?
 
   def current_user
     return nil if cookies.signed[:user_id].blank?
@@ -9,12 +9,18 @@ class ApplicationController < ActionController::Base
     User.find_by(id: cookies.signed[:user_id])
   end
 
+  def current_admin?
+    return false if current_user.blank?
+
+    current_organization.admin?(current_user)
+  end
+
   def current_organization
     current_user.organizations.first
   end
 
   def require_admin
-    redirect_to root_path unless current_user.admin?
+    redirect_to root_path unless current_admin?
   end
 
   private

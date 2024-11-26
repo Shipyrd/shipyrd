@@ -21,7 +21,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         assert_redirected_to root_url
         assert user
         assert_equal "Initech", user.organizations.last.name
-        assert user.admin?
+        assert user.organizations.last.admin?(user)
       end
 
       describe "via invite link" do
@@ -71,7 +71,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
           user = User.last
 
           assert_redirected_to root_url
-          assert user.admin?
+          assert user.organizations.last.admin?(user)
           assert_equal user.organizations.last, @organization
         end
       end
