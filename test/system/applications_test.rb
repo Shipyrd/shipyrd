@@ -4,7 +4,7 @@ class ApplicationsTest < ApplicationSystemTestCase
   setup do
     @organization = create(:organization)
     @user = create(:user)
-    @organization.users << @user
+    @organization.memberships.create!(user: @user)
 
     sign_in_as(@user.email, @user.password)
   end
