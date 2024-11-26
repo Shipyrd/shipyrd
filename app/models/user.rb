@@ -2,10 +2,8 @@ require "net/http"
 require "json"
 
 class User < ApplicationRecord
-  include Role
-
   has_many :memberships, dependent: :destroy
-  has_many :organizations, through: :memberships
+  has_many :organizations, through: :memberships, counter_cache: true
   has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
 
   has_secure_password validations: false
@@ -15,7 +13,6 @@ class User < ApplicationRecord
 
   after_create_commit :queue_populate_avatar
 
-  scope :has_role, -> { where.not(role: nil) }
   scope :has_password, -> { where.not(password_digest: nil) }
 
   attr_accessor :organization_name

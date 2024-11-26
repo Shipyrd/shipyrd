@@ -19,7 +19,7 @@ class RunnersControllerTest < ActionDispatch::IntegrationTest
     describe "user" do
       setup do
         @user = create(:user)
-        @organization.users << @user
+        @organization.memberships.create(user: @user)
         sign_in(@user.email, @user.password)
       end
 
@@ -32,8 +32,8 @@ class RunnersControllerTest < ActionDispatch::IntegrationTest
 
     describe "admin" do
       setup do
-        @user = create(:user, role: :admin)
-        @organization.users << @user
+        @user = create(:user)
+        @organization.memberships.create(user: @user, role: :admin)
         sign_in(@user.email, @user.password)
       end
 

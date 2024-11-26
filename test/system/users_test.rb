@@ -5,14 +5,15 @@ class UsersTest < ApplicationSystemTestCase
     setup do
       @organization = create(:organization)
 
-      @user = create(:user, role: :user)
-      @organization.users << @user
+      @user = create(:user)
+      @organization.memberships.create(user: @user)
 
-      @admin = create(:user, role: :admin)
-      @organization.users << @admin
+      @admin = create(:user)
+      @organization.memberships.create(user: @admin, role: :admin)
 
-      @other_user = create(:user, role: :user)
-      create(:organization).users << @other_user
+
+      @other_user = create(:user)
+      create(:organization).memberships.create(user: @other_user)
 
       sign_in_as(@admin.email, @admin.password)
     end

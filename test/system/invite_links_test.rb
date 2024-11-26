@@ -2,9 +2,9 @@ require "application_system_test_case"
 
 class InviteLinksTest < ApplicationSystemTestCase
   test "should create and destroy invite link" do
-    @user = create(:user, role: :admin)
+    @user = create(:user)
     @organization = create(:organization)
-    @organization.users << @user
+    @organization.memberships.create(user: @user, role: :admin)
 
     sign_in_as(@user.email, @user.password)
 

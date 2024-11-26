@@ -85,8 +85,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     describe "admin" do
       setup do
-        @admin = create(:user, role: :admin)
-        @organization.users << @admin
+        @admin = create(:user)
+        @organization.memberships.create!(user: @admin, role: :admin)
         sign_in(@admin.email, @admin.password)
       end
 
@@ -107,8 +107,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       end
 
       test "should only destroy organization users" do
-        @other_user = create(:user, role: :user)
-        create(:organization).users << @other_user
+        @other_user = create(:user)
+        create(:organization).memberships.create!(user: @other_user)
 
         assert_no_difference("User.count") do
           delete user_url(@other_user)
@@ -120,8 +120,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     describe "user" do
       setup do
-        @user = create(:user, role: :user)
-        @organization.users << @user
+        @user = create(:user)
+        @organization.memberships.create!(user: @user)
         sign_in(@user.email, @user.password)
       end
 
@@ -144,12 +144,12 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       end
 
       test "should not edit someone else" do
-        get edit_user_url(create(:user, role: :user))
+        get edit_user_url(create(:user))
         assert_response :not_found
       end
 
       test "should not update someone else" do
-        other_user = create(:user, role: :user)
+        other_user = create(:user)
         patch user_url(other_user), params: {user: {email: @user.email, name: @user.name, password: "secretsecret", username: @user.username}}
 
         assert_response :not_found

@@ -4,9 +4,10 @@ class DestinationsTest < ApplicationSystemTestCase
   describe "with an existing destination" do
     setup do
       @application = create(:application_with_repository_url)
+      @organization = @application.organization
       @destination = create(:destination, application: @application)
-      @user = create(:user, role: :user)
-      @application.organization.users << @user
+      @user = create(:user)
+      @organization.memberships.create(user: @user)
 
       sign_in_as(@user.email, @user.password)
     end

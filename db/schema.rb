@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_22_030541) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_26_203916) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -94,6 +94,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_22_030541) do
     t.bigint "organization_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "role"
     t.index ["organization_id"], name: "index_memberships_on_organization_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
@@ -102,7 +103,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_22_030541) do
     t.string "name"
     t.string "token"
     t.integer "applications_count", default: 0
-    t.integer "memberships_count", default: 0
+    t.integer "users_count", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -138,7 +139,6 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_22_030541) do
     t.string "email"
     t.string "name"
     t.string "password_digest"
-    t.integer "role"
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 

@@ -33,9 +33,10 @@ class UsersController < ApplicationController
         format.html { render :new, status: :unprocessable_entity }
       elsif @user.password.present? && @user.save
         organization = invite_link&.organization || Organization.create!(name: @user.organization_name)
-
-        @user.update(role: invite_link ? invite_link.role : :admin)
-        organization.users << @user
+        organization.memberships.create(
+          user: @user,
+          role: invite_link ? invite_link.role : :admin
+        )
 
         cookies.signed[:user_id] = @user.id
 
