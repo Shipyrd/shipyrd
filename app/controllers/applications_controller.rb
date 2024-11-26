@@ -10,6 +10,24 @@ class ApplicationsController < ApplicationController
   def show
   end
 
+  def new
+    @application = current_organization.applications.new
+  end
+
+  def create
+    @application = current_organization.applications.new(application_params)
+
+    respond_to do |format|
+      if @application.save
+        format.html { redirect_to application_url(@application), notice: "Application was successfully created." }
+        format.json { render :show, status: :created, location: @application }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @application.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # GET /applications/1/edit
   def edit
   end

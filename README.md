@@ -64,7 +64,13 @@ kamal accessory boot shipyrd
 
 ### Configure your Kamal hooks
 
-Setup the `shipyrd` gem in your Rails application by adding `shipyrd` to your *Gemfile* and then configure the various hooks.
+Install the Shipyrd gem:
+
+```
+gem install shipyrd
+```
+
+Next, you'll need to add the Shipyrd trigger to each hook in your Kamal setup.
 
 If you're already using any of these hooks just place the below code in the hook at the point of success within the hook. If you're creating new hooks for all of these make sure that you make them all executable with `chmod +x .kamal/hooks/pre-connect` for example.
 
@@ -72,7 +78,6 @@ If you're already using any of these hooks just place the below code in the hook
 ``` ruby
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
 require 'shipyrd'
 
 Shipyrd::Client.new.trigger('pre-connect')
@@ -82,7 +87,6 @@ Shipyrd::Client.new.trigger('pre-connect')
 ``` ruby
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
 require 'shipyrd'
 
 Shipyrd::Client.new.trigger('pre-build')
@@ -92,7 +96,6 @@ Shipyrd::Client.new.trigger('pre-build')
 ``` ruby
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
 require 'shipyrd'
 
 Shipyrd::Client.new.trigger('pre-deploy')
@@ -102,7 +105,6 @@ Shipyrd::Client.new.trigger('pre-deploy')
 ``` ruby
 #!/usr/bin/env ruby
 
-require 'bundler/setup'
 require 'shipyrd'
 
 Shipyrd::Client.new.trigger('post-deploy')

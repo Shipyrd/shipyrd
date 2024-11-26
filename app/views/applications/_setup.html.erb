@@ -1,0 +1,68 @@
+<h2 class="is-size-2">Setup <%= application.name %></h2>
+
+<section class="content block">
+  <p>
+    API key for <%= application.name %>:
+    <code id="application_token">
+    <%= application.token %>
+    </code>
+
+    <button class="button is-small is-white clipboard" data-clipboard-target="#application_token">
+      <span class="icon-text">
+        <span class="icon">
+          <i class="fa-solid fa-copy"></i>
+        </span>
+        <span>
+        </span>
+      </span>
+    </button>
+  </p>
+</section>
+
+<section class="block content">
+  <h4 class="is-size-4">1. Install the Shipyrd gem.</h4>
+
+<pre>
+<code id="gem_install">gem install shipyrd</code>
+</pre>
+
+  <p class="mt-1">
+    <%= render "shared/copy_to_clipboard", target: "#gem_install" %>
+  </p>
+</section>
+
+<section class="block content">
+  <h4 class="is-size-4">2. Add Shipyrd triggers to your <code>.kamal/hooks</code> files.</h4>
+
+  <p>
+  The Shipyrd gem by default tries to load your API key from <code>ENV['SHIPYRD_API_KEY']</code>. If you're not using <code>ENV</code> for your configuration then you can set the API key directly when calling <code>Shipyrd::Client.new</code>.
+  </p>
+  <p class="mt-4">
+    For example, here's how you'd load the API key from Rails credentials:
+  </p>
+
+<pre class="mb-4">
+<code>Shipyrd::Client.new(api_key: Rails.application.credentials.shipyrd_api_key)</code>
+</pre>
+
+<% Deploy::KNOWN_HOOKS.each do |hook| %>
+<div class="block">
+<code>.kamal/hooks/<%= hook %></code>
+<pre class="mb-2"><code id="hook_<%= hook %>">#!/usr/bin/env ruby
+
+require 'shipyrd'
+
+Shipyrd::Client.new.trigger('<%= hook %>')</code></pre>
+<%= render "shared/copy_to_clipboard", target: "#hook_#{hook}" %>
+</div>
+<% end %>
+
+</section>
+
+<section class="block content">
+  <h4 class="is-size-4">3. Deploy!</h4>
+
+  When you deploy via Kamal it'll ping Shipyrd throughout the deploy
+  process via hooks. This updates Shipyrd with the current deploy state
+  of your application for each destination.
+</section>

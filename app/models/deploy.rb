@@ -8,6 +8,8 @@ class Deploy < ApplicationRecord
   validates :recorded_at, :performer, :service_version, :command, presence: true
   validate :service_version_is_valid
 
+  KNOWN_HOOKS = %w[pre-connect pre-build pre-deploy post-deploy].freeze
+
   def full_command
     "#{command} #{subcommand}"
   end

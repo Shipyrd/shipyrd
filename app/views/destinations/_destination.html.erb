@@ -26,7 +26,7 @@
       <strong>Kamal recipe:</strong>
       <% if application.github_connection.present? %>
         <% if destination.recipe_updated_at.present? %>
-          imported 
+          imported
           <%= render 'shared/time', time: destination.recipe_updated_at %>
 
           <% if destination.recipe_last_processed_at.present? %>
@@ -65,7 +65,7 @@
     </p>
 
     <p>
-      To give Shipyrd access to your servers you'll need to add the generated public key to the <code>~/.ssh/authorized_keys</code> file. Shipyrd uses this connection to run various Kamal commands like <kbd>logs</kbd>, <kbd>app exec</kbd>, <kbd>server exec</kbd>, etc. when you request it to. 
+      To give Shipyrd access to your servers you'll need to add the generated public key to the <code>~/.ssh/authorized_keys</code> file. Shipyrd uses this connection to run various Kamal commands like <kbd>logs</kbd>, <kbd>app exec</kbd>, <kbd>server exec</kbd>, etc. when you request it to.
     </p>
 
     <p>
@@ -82,17 +82,7 @@ kamal server exec -d <%= destination.name %> "mkdir -p ~/.ssh && echo <%= destin
 </code>
 </pre>
 
-    <button class="button is-light clipboard" data-clipboard-target="#destination_setup_<%= destination.id %>">
-      <span class="icon-text">
-        <span class="icon">
-          <i class="fa-solid fa-copy"></i>
-        </span>
-        <span>
-          Copy command
-        </span>
-      </span>
-    </button>
-
+    <%= render "shared/copy_to_clipboard", target: "#destination_setup_#{destination.id}", label: "command" %>
   </div>
 
   <hr>

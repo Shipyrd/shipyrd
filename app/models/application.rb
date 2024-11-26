@@ -25,8 +25,6 @@ class Application < ApplicationRecord
   broadcasts_refreshes # For broadcasting on the index before there's an application record
   broadcasts # For broadcasting deploys as they come in
 
-  validates :key, presence: true
-
   accepts_nested_attributes_for :destinations, allow_destroy: true
 
   def destination_names

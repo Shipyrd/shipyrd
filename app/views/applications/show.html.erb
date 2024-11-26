@@ -1,1 +1,5 @@
-<%= render @application %>
+<% if @application.deploys.empty? %>
+  <%= render "setup", application: @application %>
+<% else %>
+  <%= render @application %>
+<% end %>

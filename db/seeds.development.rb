@@ -70,3 +70,19 @@ applications[0..1].each do |application|
 end
 
 create_deploy(applications[2], nil, "pre-deploy")
+
+username = `whoami`.strip
+
+user = User.find_or_create_by(email: "#{username}@example.com") do |u|
+  u.role = :admin
+  u.username = username
+  u.password = "password00!"
+  u.organizations << organization
+end
+
+user = User.find_or_create_by(email: "new@example.com") do |u|
+  u.role = :admin
+  u.username = "newguy"
+  u.password = "password00!"
+  u.organizations << Organization.find_or_create_by(name: "Fry's Electronics")
+end

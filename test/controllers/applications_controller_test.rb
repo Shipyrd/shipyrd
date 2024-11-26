@@ -27,6 +27,17 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
     end
 
+    test "should get new" do
+      get new_application_url
+      assert_response :success
+    end
+
+    test "should create" do
+      assert_difference("Application.count") do
+        post applications_url, params: {application: {name: "New App", repository_url: "https://github.com/user/repo"}}
+      end
+    end
+
     test "should show application" do
       get application_url(@application)
 

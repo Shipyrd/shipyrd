@@ -2,7 +2,10 @@ require "application_system_test_case"
 
 class ApplicationsTest < ApplicationSystemTestCase
   setup do
+    @organization = create(:organization)
     @user = create(:user)
+    @organization.users << @user
+
     sign_in_as(@user.email, @user.password)
   end
 
@@ -10,11 +13,15 @@ class ApplicationsTest < ApplicationSystemTestCase
     it "points to setup instructions" do
       visit root_url
 
-      assert_text "Waiting for a deploy to start..."
-      assert_link "Setup instructions", href: "https://github.com/shipyrd/shipyrd"
+      click_link "Create your first application"
+
+      fill_in "Name", with: "potato"
+      fill_in "Repository URL", with: "https://github.com/user/repo"
+      click_on "Create Application"
 
       create(
         :deploy,
+        application: create(:application, organization: @organization),
         service_version: "potato@123456",
         command: :deploy,
         status: "pre-deploy",
@@ -32,9 +39,14 @@ class ApplicationsTest < ApplicationSystemTestCase
   end
 
   describe "with an application available" do
+    setup do
+      @application = create(:application, organization: @organization)
+    end
+
     test "visiting the index" do
       deploy = create(
         :deploy,
+        application: @application,
         service_version: "potato@123456",
         command: :deploy,
         status: "pre-build",
@@ -50,6 +62,7 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       create(
         :deploy,
+        application: @application,
         service_version: "potato@123456",
         command: :deploy,
         status: "pre-deploy",
@@ -66,6 +79,7 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       deploy = create(
         :deploy,
+        application: @application,
         service_version: "potato@123456",
         version: "123456",
         command: :deploy,
@@ -86,6 +100,7 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       create(
         :deploy,
+        application: @application,
         service_version: "potato@123456",
         command: :deploy,
         status: "pre-deploy",
@@ -99,21 +114,9 @@ class ApplicationsTest < ApplicationSystemTestCase
     end
 
     test "should update Application" do
-      @application = create(
-        :deploy,
-        service_version: "potato@123456",
-        command: :deploy,
-        destination: "production",
-        status: "pre-connect",
-        hosts: "867.53.0.9"
-      ).application
-
       visit root_url
-      sleep(1) # TODO: Turbo page navigation isn't refreshing properly with Capybara state
 
       click_link "Edit this application"
-
-      assert_text "1 server"
 
       fill_in "Name", with: "Potato"
       fill_in "Repository URL", with: "https://github.com/shipyrd/shipyrd"
@@ -124,23 +127,11 @@ class ApplicationsTest < ApplicationSystemTestCase
     end
 
     test "connecting GitHub" do
-      @application = create(
-        :deploy,
-        service_version: "potato@123456",
-        command: :deploy,
-        destination: "production",
-        status: "pre-connect",
-        hosts: "867.53.0.9"
-      ).application
-
       visit edit_application_url(@application)
 
-      # TODO: How does Capybara detect state change? And would some other browser work better?
-      sleep(1)
       fill_in "Repository URL", with: "https://github.com/kevin/bacon"
       click_on "Update"
 
-      sleep(1)
       click_link "Connect to GitHub"
 
       Connection.any_instance.stubs(:connects_successfully)
@@ -159,11 +150,6 @@ class ApplicationsTest < ApplicationSystemTestCase
     end
 
     test "should destroy Application" do
-      @application = create(
-        :deploy,
-        service_version: "potato@123456"
-      ).application
-
       visit edit_application_url(@application)
 
       accept_confirm do
