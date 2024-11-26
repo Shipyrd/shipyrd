@@ -18,13 +18,14 @@ jobs:
       SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY: 823676323609aa7429ad867c12e77d1a4e2af3
       SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT: 823676323609aa7429ad867c12e77d1a4e2af3
 
-    mysql:
-      image: mysql:8
-      env:
-        MYSQL_DATABASE: shipyrd_test
-        MYSQL_ROOT_PASSWORD: root
-      ports:
-        - 3306:3306
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_DATABASE: shipyrd_test
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
 
     steps:
       - uses: actions/checkout@v3
