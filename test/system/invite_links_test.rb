@@ -10,7 +10,7 @@ class InviteLinksTest < ApplicationSystemTestCase
 
     visit users_url
 
-    click_on "Invite a user to Shipyrd"
+    click_on "Invite a user to #{@organization.name}"
 
     assert_text "Invite link was successfully created"
     assert_field "invite_link_code_user", with: new_user_url(code: @organization.invite_links.active_for_role(:user).code)
@@ -18,7 +18,7 @@ class InviteLinksTest < ApplicationSystemTestCase
     click_on "Deactivate user invite link"
     assert_text "Invite link was successfully deactivated"
 
-    click_on "Invite an admin to Shipyrd"
+    click_on "Invite an admin to #{@organization.name}"
     assert_text "Invite link was successfully created"
     assert_field "invite_link_code_admin", with: new_user_url(code: @organization.invite_links.active_for_role(:admin).code)
 
