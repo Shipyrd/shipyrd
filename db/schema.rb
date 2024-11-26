@@ -94,7 +94,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_26_203916) do
     t.bigint "organization_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "role"
+    t.integer "role", default: 0
     t.index ["organization_id"], name: "index_memberships_on_organization_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
