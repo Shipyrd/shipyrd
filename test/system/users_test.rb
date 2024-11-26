@@ -11,7 +11,6 @@ class UsersTest < ApplicationSystemTestCase
       @admin = create(:user)
       @organization.memberships.create(user: @admin, role: :admin)
 
-
       @other_user = create(:user)
       create(:organization).memberships.create(user: @other_user)
 
@@ -91,7 +90,7 @@ class UsersTest < ApplicationSystemTestCase
       assert_text "Create your first application"
 
       visit users_url
-      assert_text "Invite a user to Shipyrd"
+      assert_text "Invite a user to #{@organization.name}"
     end
   end
 end
