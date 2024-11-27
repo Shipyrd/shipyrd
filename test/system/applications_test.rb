@@ -20,9 +20,11 @@ class ApplicationsTest < ApplicationSystemTestCase
       fill_in "Repository URL", with: "https://github.com/user/repo"
       click_on "Create Application"
 
+      @application = Application.find_by(name: "potato")
+
       create(
         :deploy,
-        application: create(:application, organization: @organization),
+        application: @application,
         service_version: "potato@123456",
         command: :deploy,
         status: "pre-deploy",
@@ -30,6 +32,8 @@ class ApplicationsTest < ApplicationSystemTestCase
         performer: "Nick",
         commit_message: "Deploying the potato"
       )
+
+      sleep(1)
 
       assert_text "potato"
       assert_text "pre-deploy"
@@ -71,6 +75,8 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato"
       )
 
+      sleep(1)
+
       assert_content "by Nick"
       assert_content "Deploying the potato"
       refute_link "On Deck"
@@ -110,14 +116,14 @@ class ApplicationsTest < ApplicationSystemTestCase
     end
 
     test "should update Application" do
-      visit root_url
-
-      click_link "Edit this application"
+      visit edit_application_url(@application)
 
       fill_in "Name", with: "Potato"
       fill_in "Repository URL", with: "https://github.com/shipyrd/shipyrd"
 
       click_on "Update"
+
+      sleep(1)
 
       assert_text "Application was successfully updated"
     end
