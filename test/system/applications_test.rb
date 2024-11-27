@@ -16,7 +16,7 @@ class ApplicationsTest < ApplicationSystemTestCase
       assert_text "Configure your first application"
       click_link "Create your first application"
 
-      sleep(1)
+      assert_text "Create an application"
 
       fill_in "Name", with: "potato"
       fill_in "Repository URL", with: "https://github.com/user/repo"
