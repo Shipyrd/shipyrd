@@ -14,7 +14,7 @@ gem "rails", "~> 8.0.0"
 # Assets
 gem "propshaft"
 gem "importmap-rails"
-gem "turbo-rails", "= 2.0.7"
+gem "turbo-rails"
 gem "stimulus-rails"
 
 # 3rd Party

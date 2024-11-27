@@ -22,7 +22,7 @@ class Application < ApplicationRecord
     end
   end
 
-  broadcasts_refreshes # For broadcasting on the index before there's an application record
+  broadcasts_refreshes # When an application is created, updated, or destroyed a refresh is streamed to "applications"
   broadcasts # For broadcasting deploys as they come in
 
   accepts_nested_attributes_for :destinations, allow_destroy: true

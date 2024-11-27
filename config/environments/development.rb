@@ -9,6 +9,10 @@ Rails.application.configure do
     Bullet.add_footer = true
   end
 
+  # Highlight code that enqueued background job in logs.
+  config.active_job.verbose_enqueue_logs = true
+  config.active_job.queue_adapter = :async
+
   # Settings specified here will take precedence over those in config/application.rb.
   config.action_controller.action_on_unpermitted_parameters = :raise
 

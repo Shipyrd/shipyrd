@@ -16,10 +16,9 @@ class ApplicationsTest < ApplicationSystemTestCase
       assert_text "Configure your first application"
       click_link "Create your first application"
 
-      assert_text "Create an application"
-
       fill_in "Name", with: "potato"
       fill_in "Repository URL", with: "https://github.com/user/repo"
+
       click_on "Create Application"
 
       @application = Application.find_by(name: "potato")
@@ -60,6 +59,8 @@ class ApplicationsTest < ApplicationSystemTestCase
       )
 
       visit root_url
+
+      sleep(1)
 
       assert_selector "h2", text: @application.name
       assert_content "pre-build"

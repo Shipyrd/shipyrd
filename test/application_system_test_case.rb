@@ -8,7 +8,6 @@ WebMock.allow_net_connect!
 Capybara.disable_animation = true
 Capybara.default_max_wait_time = 10
 Capybara.server = :puma, {Silent: true}
-Capybara.default_normalize_ws = true
 Capybara.reuse_server = true
 
 Capybara.register_driver(:better_cuprite) do |app|
