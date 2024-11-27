@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_18_205003) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_30_224628) do
   create_table "api_keys", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -70,6 +70,18 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_18_205003) do
     t.index ["application_id"], name: "index_destinations_on_application_id"
   end
 
+  create_table "invite_links", force: :cascade do |t|
+    t.datetime "expires_at"
+    t.datetime "deactivated_at"
+    t.integer "role"
+    t.string "code"
+    t.integer "creator_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_invite_links_on_code", unique: true
+    t.index ["creator_id"], name: "index_invite_links_on_creator_id"
+  end
+
   create_table "runners", force: :cascade do |t|
     t.integer "server_id"
     t.integer "destination_id"
@@ -98,9 +110,15 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_18_205003) do
     t.string "avatar_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email"
+    t.string "name"
+    t.string "password_digest"
+    t.integer "role"
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "connections", "applications"
   add_foreign_key "destinations", "applications"
+  add_foreign_key "invite_links", "users", column: "creator_id"
   add_foreign_key "servers", "destinations"
 end

@@ -1,5 +1,5 @@
 ENV["RAILS_ENV"] ||= "test"
-ENV["SOLID_QUEUE_IN_PUMA"] = "1"
+ENV["RUNNERS_ENABLED"] = "true"
 require_relative "../config/environment"
 require "rails/test_help"
 require "webmock/minitest"
@@ -9,6 +9,6 @@ require "mocha/minitest"
 
 module ActiveSupport
   class TestCase
-    parallelize(workers: :number_of_processors)
+    parallelize(workers: 1)
   end
 end

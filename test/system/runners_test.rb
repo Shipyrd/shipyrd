@@ -1,9 +1,9 @@
 require "application_system_test_case"
-require "helpers/basic_auth_helpers"
 
-class DestinationsTest < ApplicationSystemTestCase
+class RunnersTest < ApplicationSystemTestCase
   setup do
-    @api_key = ApiKey.create!
+    @admin = create(:user, role: :admin)
+    sign_in_as(@admin.email, @admin.password)
   end
 
   describe "with an existing destination" do
@@ -13,15 +13,12 @@ class DestinationsTest < ApplicationSystemTestCase
     end
 
     test "prefills the command field when provided" do
-      visit basic_auth_url(root_url, @api_key.token)
-
       visit new_application_destination_runner_path(@application, @destination, command: "app logs")
 
       assert_field "Command to run", with: "app logs"
     end
 
     test "shows error output if command failed completely" do
-      visit basic_auth_url(root_url, @api_key.token)
       visit new_application_destination_runner_path(@application, @destination, command: "unknown-command")
 
       click_on "Run command"
@@ -36,7 +33,6 @@ class DestinationsTest < ApplicationSystemTestCase
     end
 
     test "running command" do
-      visit basic_auth_url(root_url, @api_key.token)
       visit application_destination_path(@application, @destination)
 
       refute_text "Run command on default"

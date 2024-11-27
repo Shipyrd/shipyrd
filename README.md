@@ -8,6 +8,8 @@ For a more detailed project and concept overview check out the [initial announce
 
 ## Setup
 
+**This currently only supports pre-2.0 Kamal until accessories are able to be connected to the proxy again, there's an [open PR for it here](https://github.com/basecamp/kamal/pull/981).**
+
 There's two main steps to getting started with Shipyrd.
 
 1. Running Shipyrd as an accessory within your existing Kamal setup. 

@@ -1,6 +1,6 @@
-def auth_headers(password)
+def auth_headers(token)
   {
-    Authorization: ActionController::HttpAuthentication::Basic.encode_credentials(nil, password)
+    Authorization: "Bearer #{token}"
   }
 end
 
@@ -9,4 +9,8 @@ def basic_auth_url(url, token)
   url.userinfo = ":#{token}"
 
   url.to_s
+end
+
+def sign_in(email, password)
+  post session_url, params: {email: email, password: password}
 end
