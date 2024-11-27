@@ -13,6 +13,7 @@ class ApplicationsTest < ApplicationSystemTestCase
     it "points to setup instructions" do
       visit root_url
 
+      assert_text "Configure your first application"
       click_link "Create your first application"
 
       fill_in "Name", with: "potato"
@@ -30,7 +31,6 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato"
       )
 
-      sleep(1)
       assert_text "potato"
       assert_text "pre-deploy"
       assert_text "by Nick"
@@ -55,7 +55,7 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       visit root_url
 
-      assert_selector "h2", text: "potato"
+      assert_selector "h2", text: @application.name
       assert_content "pre-build"
       assert_content "just now"
       assert_content "by #{deploy.performer}"
@@ -71,8 +71,6 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato"
       )
 
-      sleep(1)
-      assert_content "pre-deploy"
       assert_content "by Nick"
       assert_content "Deploying the potato"
       refute_link "On Deck"
@@ -88,7 +86,6 @@ class ApplicationsTest < ApplicationSystemTestCase
         status: "post-deploy"
       )
 
-      # TODO: Test is failing to trigger a cable refresh
       deploy.application.update!(repository_url: "https://github.com/shipyrd/shipyrd")
       visit root_url
 
@@ -109,7 +106,6 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato #10"
       )
 
-      sleep(1)
       assert_link "#10", href: "https://github.com/shipyrd/shipyrd/issues/10"
     end
 

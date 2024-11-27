@@ -19,7 +19,7 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
   describe "authenticated" do
     setup do
       @user = create(:user)
-      @organization.users << @user
+      @organization.memberships.create(user: @user)
       sign_in(@user.email, @user.password)
     end
 

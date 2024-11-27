@@ -10,6 +10,8 @@ Rails.application.configure do
     Bullet.raise = true # raise an error if n+1 query occurs
   end
 
+  config.active_job.queue_adapter = :async
+
   # Settings specified here will take precedence over those in config/application.rb.
   config.action_controller.action_on_unpermitted_parameters = :raise
 

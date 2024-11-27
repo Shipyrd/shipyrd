@@ -53,10 +53,9 @@ end
 
 group :test do
   gem "capybara"
+  gem "cuprite"
   gem "launchy"
   gem "minitest-spec-rails"
   gem "mocha"
-  gem "selenium-webdriver"
-  gem "webdrivers"
   gem "webmock"
 end

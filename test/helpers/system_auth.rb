@@ -5,5 +5,4 @@ def sign_in_as(email, password)
   fill_in "Password", with: password
 
   click_button "Sign in"
-  sleep(1)
 end
