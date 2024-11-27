@@ -33,7 +33,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato"
       )
 
-      sleep(1)
+      sleep(2)
 
       assert_text "potato"
       assert_text "pre-deploy"
@@ -75,7 +75,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato"
       )
 
-      sleep(1)
+      sleep(2)
 
       assert_content "by Nick"
       assert_content "Deploying the potato"

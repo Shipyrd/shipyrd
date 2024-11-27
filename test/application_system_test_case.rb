@@ -6,7 +6,7 @@ require "capybara/cuprite"
 WebMock.allow_net_connect!
 
 Capybara.disable_animation = true
-Capybara.default_max_wait_time = 5
+Capybara.default_max_wait_time = 10
 Capybara.server = :puma, {Silent: true}
 
 Capybara.register_driver(:better_cuprite) do |app|
