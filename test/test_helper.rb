@@ -1,4 +1,5 @@
 ENV["RAILS_ENV"] ||= "test"
+ENV["RUNNERS_ENABLED"] = "true"
 require_relative "../config/environment"
 require "rails/test_help"
 require "webmock/minitest"

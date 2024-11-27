@@ -9,7 +9,7 @@
         <div class="columns is-mobile">
 
           <div class="column pb-0">
-            <%= destination_tag(destination) %> 
+            <%= destination_tag(destination) %>
 
             <% if destination.new_servers_available? %>
               <span class="icon is-small ml-1">
@@ -34,9 +34,11 @@
                 <div class="dropdown-content has-text-left">
                   <%= link_to "View", application_destination_path(application, destination), class: "dropdown-item" %>
                   <%= link_to "Edit", edit_application_destination_path(application, destination), class: "dropdown-item" %>
-                  <hr class="dropdown-divider" />
-                  <%= link_to "Run command", new_application_destination_runner_path(application, destination), class: "dropdown-item" %>
-                  <%= link_to "View logs", new_application_destination_runner_path(application, destination, command: "app logs"), class: "dropdown-item" %>
+                  <% if ENV["RUNNERS_ENABLED"] %>
+                    <hr class="dropdown-divider" />
+                    <%= link_to "Run command", new_application_destination_runner_path(application, destination), class: "dropdown-item" %>
+                    <%= link_to "View logs", new_application_destination_runner_path(application, destination, command: "app logs"), class: "dropdown-item" %>
+                  <% end %>
                 </div>
               </div>
             </div>
