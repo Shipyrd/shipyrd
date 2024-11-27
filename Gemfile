@@ -8,8 +8,8 @@ gem "bootsnap", require: false
 gem "dotenv-rails"
 gem "kamal"
 gem "puma", ">= 5.0"
-gem "rails", "~> 7.2.1"
 gem "mysql2", "~> 0.5.6"
+gem "rails", "~> 8.0.0"
 
 # Assets
 gem "propshaft"

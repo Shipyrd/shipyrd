@@ -57,6 +57,7 @@
 
   <hr>
 
+<% if ENV["RUNNERS_ENABLED"] %>
   <div class="box content">
     <h4 class="is-size-4">Connecting Shipyrd to your servers</h4>
 
@@ -86,13 +87,16 @@ kamal server exec -d <%= destination.name %> "mkdir -p ~/.ssh && echo <%= destin
   </div>
 
   <hr>
+<% end %>
 
   <h3 class="is-size-3">Servers</h3>
 
   <% if destination.servers.empty? %>
     <p>No servers deployed to for this destination.</p>
   <% else %>
-    <%= link_to "Run command on #{destination.display_name}", new_application_destination_runner_path(application, destination), class: "button is-primary mb-4" %>
+    <% if ENV["RUNNERS_ENABLED"] %>
+      <%= link_to "Run command on #{destination.display_name}", new_application_destination_runner_path(application, destination), class: "button is-primary mb-4" %>
+    <% end %>
 
     <% destination.servers.each do |server| %>
       <%= render server %>
