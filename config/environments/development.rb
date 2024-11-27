@@ -1,14 +1,13 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  # Disabled until Rails 8 support is released
-  # config.after_initialize do
-  #   Bullet.enable = true
-  #   Bullet.bullet_logger = true
-  #   Bullet.console = true
-  #   Bullet.rails_logger = true
-  #   Bullet.add_footer = true
-  # end
+  config.after_initialize do
+    Bullet.enable = true
+    Bullet.bullet_logger = true
+    Bullet.console = true
+    Bullet.rails_logger = true
+    Bullet.add_footer = true
+  end
 
   # Settings specified here will take precedence over those in config/application.rb.
   config.action_controller.action_on_unpermitted_parameters = :raise

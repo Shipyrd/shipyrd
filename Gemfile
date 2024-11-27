@@ -7,7 +7,7 @@ gem "bootsnap", require: false
 gem "dotenv-rails"
 gem "kamal"
 gem "puma", ">= 5.0"
-gem "rails", "~> 8.0.0.beta1"
+gem "rails", "~> 8.0.0"
 gem "sqlite3", "~> 2.1.0"
 
 # Assets
@@ -32,7 +32,7 @@ gem "tty-command"
 
 group :development, :test do
   gem "brakeman"
-  # gem "bullet" Disabled until support for Rails 8 is ready
+  gem "bullet"
   gem "bundle-audit"
   gem "debug", platforms: %i[mri windows]
   gem "factory_bot_rails"
