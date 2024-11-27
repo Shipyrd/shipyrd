@@ -60,8 +60,6 @@ class ApplicationsTest < ApplicationSystemTestCase
 
       visit root_url
 
-      sleep(1)
-
       assert_selector "h2", text: @application.name
       assert_content "pre-build"
       assert_content "just now"
@@ -78,7 +76,7 @@ class ApplicationsTest < ApplicationSystemTestCase
         commit_message: "Deploying the potato"
       )
 
-      sleep(2)
+      sleep(3)
 
       assert_content "by Nick"
       assert_content "Deploying the potato"
