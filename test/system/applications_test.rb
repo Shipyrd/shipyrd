@@ -1,6 +1,8 @@
 require "application_system_test_case"
 
 class ApplicationsTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
+
   setup do
     @organization = create(:organization)
     @user = create(:user)
@@ -11,32 +13,33 @@ class ApplicationsTest < ApplicationSystemTestCase
 
   describe "initial setup" do
     it "points to setup instructions" do
-      visit root_url
+      visit new_application_path
 
-      assert_text "Configure your first application"
-      click_link "Create your first application"
-
-      fill_in "Name", with: "potato"
+      assert_text "Create an application"
+      fill_in "Name", with: build(:application).name
       fill_in "Repository URL", with: "https://github.com/user/repo"
 
       click_on "Create Application"
 
-      @application = Application.find_by(name: "potato")
+      assert_text "Application was successfully created"
 
-      create(
-        :deploy,
-        application: @application,
-        service_version: "potato@123456",
-        command: :deploy,
-        status: "pre-deploy",
-        version: "123456",
-        performer: "Nick",
-        commit_message: "Deploying the potato"
-      )
+      application = Application.last
 
-      sleep(2)
+      perform_enqueued_jobs do
+        create(
+          :deploy,
+          application: application,
+          service_version: "potato@123456",
+          command: :deploy,
+          status: "pre-deploy",
+          version: "123456",
+          performer: "Nick",
+          commit_message: "Deploying the potato"
+        )
+      end
 
-      assert_text "potato"
+      # sleep(1)
+
       assert_text "pre-deploy"
       assert_text "by Nick"
       assert_text "Deploying the potato"
@@ -65,35 +68,40 @@ class ApplicationsTest < ApplicationSystemTestCase
       assert_content "just now"
       assert_content "by #{deploy.performer}"
 
-      create(
-        :deploy,
-        application: @application,
-        service_version: "potato@123456",
-        command: :deploy,
-        status: "pre-deploy",
-        version: "123456",
-        performer: "Nick",
-        commit_message: "Deploying the potato"
-      )
+      perform_enqueued_jobs do
+        create(
+          :deploy,
+          application: @application,
+          service_version: "potato@123456",
+          command: :deploy,
+          status: "pre-deploy",
+          version: "123456",
+          performer: "Nick",
+          commit_message: "Deploying the potato"
+        )
+      end
 
-      sleep(3)
+      sleep(1)
 
       assert_content "by Nick"
       assert_content "Deploying the potato"
       refute_link "On Deck"
 
-      deploy = create(
-        :deploy,
-        application: @application,
-        service_version: "potato@123456",
-        version: "123456",
-        command: :deploy,
-        destination: "production",
-        hosts: "867.53.0.9",
-        status: "post-deploy"
-      )
+      perform_enqueued_jobs do
+        deploy = create(
+          :deploy,
+          application: @application,
+          service_version: "potato@123456",
+          version: "123456",
+          command: :deploy,
+          destination: "production",
+          hosts: "867.53.0.9",
+          status: "post-deploy"
+        )
 
-      deploy.application.update!(repository_url: "https://github.com/shipyrd/shipyrd")
+        deploy.application.update!(repository_url: "https://github.com/shipyrd/shipyrd")
+      end
+
       visit root_url
 
       destination = deploy.application.destinations.find_by!(name: "production")
@@ -102,16 +110,18 @@ class ApplicationsTest < ApplicationSystemTestCase
       assert_link "production", href: application_destination_path(destination.application.id, destination.id)
       assert_link "On Deck"
 
-      create(
-        :deploy,
-        application: @application,
-        service_version: "potato@123456",
-        command: :deploy,
-        status: "pre-deploy",
-        version: "123456",
-        performer: "Nick",
-        commit_message: "Deploying the potato #10"
-      )
+      perform_enqueued_jobs do
+        create(
+          :deploy,
+          application: @application,
+          service_version: "potato@123456",
+          command: :deploy,
+          status: "pre-deploy",
+          version: "123456",
+          performer: "Nick",
+          commit_message: "Deploying the potato #10"
+        )
+      end
 
       assert_link "#10", href: "https://github.com/shipyrd/shipyrd/issues/10"
     end

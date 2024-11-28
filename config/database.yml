@@ -1,12 +1,12 @@
 primary_default: &primary_default
-  url: <%= ENV.fetch("SHIPYRD_DATABASE_URL") { "#{ENV['SHIPYRD_DATABASE_HOST']}/shipyrd_primary" } %>
+  url: <%= ENV.fetch("SHIPYRD_DATABASE_URL") { "#{ENV['SHIPYRD_DATABASE_HOST']}/shipyrd_#{ENV.fetch('RAILS_ENV') { 'development' }}_primary" } %>
 
 queue_default: &queue_default
-  url: <%= ENV.fetch("SHIPYRD_QUEUE_DATABASE_URL") { "#{ENV['SHIPYRD_DATABASE_HOST']}/shipyrd_queue" } %>
+  url: <%= ENV.fetch("SHIPYRD_QUEUE_DATABASE_URL") { "#{ENV['SHIPYRD_DATABASE_HOST']}/shipyrd_#{ENV.fetch('RAILS_ENV') { 'development' }}_queue" } %>
   migrations_paths: db/queue_migrate
 
 cable_default: &cable_default
-  url: <%= ENV.fetch("SHIPYRD_CABLE_DATABASE_URL") { "#{ENV['SHIPYRD_DATABASE_HOST']}/shipyrd_cable" } %>
+  url: <%= ENV.fetch("SHIPYRD_CABLE_DATABASE_URL") { "#{ENV['SHIPYRD_DATABASE_HOST']}/shipyrd_#{ENV.fetch('RAILS_ENV') { 'development' }}_cable" } %>
   migrations_paths: db/cable_migrate
 
 development:
