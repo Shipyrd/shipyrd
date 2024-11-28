@@ -51,3 +51,4 @@ Procfile.dev
 /db/test
 tmp/local_secret.txt
 /doc
+/deploy
