@@ -22,6 +22,8 @@ class Application < ApplicationRecord
     end
   end
 
+  validates :repository_url, url: {allow_blank: true, no_local: true}
+
   broadcasts_refreshes # When an application is created, updated, or destroyed a refresh is streamed to "applications"
   broadcasts # For broadcasting deploys as they come in
 

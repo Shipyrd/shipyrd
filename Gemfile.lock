@@ -447,6 +447,9 @@ GEM
     uniform_notifier (1.16.0)
     uri (1.0.2)
     useragent (0.16.10)
+    validate_url (1.0.15)
+      activemodel (>= 3.0.0)
+      public_suffix
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -512,6 +515,7 @@ DEPENDENCIES
   stimulus-rails
   tty-command
   turbo-rails
+  validate_url
   web-console
   webdrivers
   webmock

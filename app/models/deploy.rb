@@ -7,6 +7,7 @@ class Deploy < ApplicationRecord
 
   validates :recorded_at, :performer, :service_version, :command, presence: true
   validate :service_version_is_valid
+  validate :version_is_valid
 
   KNOWN_HOOKS = %w[pre-connect pre-build pre-deploy post-deploy].freeze
 
@@ -49,6 +50,10 @@ class Deploy < ApplicationRecord
   end
 
   private
+
+  def version_is_valid
+    version =~ /\w+/
+  end
 
   def service_version_is_valid
     # service@sha

@@ -30,6 +30,7 @@ gem "solid_queue"
 gem "jbuilder"
 gem "sshkey"
 gem "tty-command"
+gem "validate_url"
 
 group :development, :test do
   gem "brakeman"

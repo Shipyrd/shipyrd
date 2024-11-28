@@ -25,31 +25,6 @@ class DestinationsTest < ApplicationSystemTestCase
       assert_text "Destination was successfully updated"
     end
 
-    test "recipe status" do
-      visit application_destination_path(@application, @destination)
-
-      click_on "Connect to GitHub"
-
-      Connection.any_instance.stubs(:connects_successfully)
-      Connection.any_instance.stubs(:fetch_repository_content).returns("recipe")
-
-      fill_in "connection_key", with: "key-from-github"
-      click_on "Connect to GitHub"
-
-      assert_text "Connection was successfully created."
-
-      assert_text "Kamal recipe: queued for import"
-
-      @destination.update!(
-        recipe_last_processed_at: Time.current,
-        recipe_updated_at: Time.current
-      )
-
-      visit application_destination_path(@application, @destination)
-
-      assert_text "Kamal recipe: imported just now (processed just now)"
-    end
-
     test "with servers" do
       @connected_server = @destination.servers.create!(host: "123.456.789.0", last_connected_at: 3.minutes.ago)
       @new_server = @destination.servers.create!(host: "123.456.789.1")

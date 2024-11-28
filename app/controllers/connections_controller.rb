@@ -11,18 +11,11 @@ class ConnectionsController < ApplicationController
   end
 
   def create
-    redirect_path = case connection_params[:return_to]
-    when /destinations/
-      application_destination_url(@application, connection_params[:return_to].split("/").last)
-    else
-      edit_application_url(@application)
-    end
-
-    @connection = @application.connections.new(connection_params.except(:return_to))
+    @connection = @application.connections.new(connection_params)
 
     if @connection.save
       respond_to do |format|
-        format.html { redirect_to redirect_path, notice: "Connection was successfully created." }
+        format.html { redirect_to edit_application_url(@application), notice: "Connection was successfully created." }
       end
     else
       respond_to do |format|
@@ -62,8 +55,7 @@ class ConnectionsController < ApplicationController
   def connection_params
     params.require(:connection).permit(
       :provider,
-      :key,
-      :return_to
+      :key
     )
   end
 end
