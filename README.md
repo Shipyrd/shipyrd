@@ -20,6 +20,7 @@ Within your Kamal accessories deploy configuration you'll need to add a new acce
 The accessory configuration requires a few secrets:
 
 - `SHIPYRD_HOST` - Host where Shipyrd will live.
+- `SHIPYRD_HOOKS_HOST` - Host where Shipyrd will listen for hooks, this can be the same as `SHIPYRD_HOST`.
 - `SHIPYRD_DATABASE_URL` - The MySQL database URL, in for the format of `mysql2://user:password@host:port/database`.
 - `SHIPYRD_QUEUE_DATABASE_URL` - The MySQL database URL for job queue, in for the format of `mysql2://user:password@host:port/database`.
 - `SHIPYRD_CABLE_DATABASE_URL` - The MySQL database URL for the websocket backend, in for the format of `mysql2://user:password@host:port/database`.
