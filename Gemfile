@@ -19,7 +19,7 @@ gem "stimulus-rails"
 
 # 3rd Party
 gem "github_api"
-gem "honeybadger", require: false
+gem "honeybadger"
 
 # Jobs/Cable
 gem "mission_control-jobs"
