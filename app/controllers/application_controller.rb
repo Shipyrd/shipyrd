@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
         @application = Application.find_by(token: token)
       end
     elsif current_user.blank?
-      redirect_to new_session_url
+      redirect_to main_app.new_session_url
     end
   end
 end

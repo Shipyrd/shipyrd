@@ -21,7 +21,7 @@ development:
     <<: *cable_default
 
 test:
-  <<: *primary_default
+  url: <%= ENV["SHIPYRD_DATABASE_URL"] %>
 
 production:
   primary:

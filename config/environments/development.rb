@@ -11,7 +11,10 @@ Rails.application.configure do
 
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
-  config.active_job.queue_adapter = :async
+
+  # Use a real queuing backend for Active Job (and separate queues per environment).
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = {database: {writing: :queue}}
 
   # Settings specified here will take precedence over those in config/application.rb.
   config.action_controller.action_on_unpermitted_parameters = :raise
