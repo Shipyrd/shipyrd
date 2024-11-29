@@ -20,7 +20,9 @@ Within your Kamal accessories deploy configuration you'll need to add a new acce
 The accessory configuration requires a few secrets:
 
 - `SHIPYRD_HOST` - Host where Shipyrd will live.
-- `SHIPYRD_DATABASE_HOST` - If just the MySQL host is set then Shipyrd will attempt to connect to a primary, queue, and cable database on the same host, e.g. `mysql2://root:password@hey-db/primary`. If you have separate MySQL databases then you can set the full host for each of these via `SHIPYRD_DATABASE_URL`, `SHIPYRD_QUEUE_DATABASE_URL`, and `SHIPYRD_CABLE_DATABASE_URL`.
+- `SHIPYRD_DATABASE_URL` - The MySQL database URL, in for the format of `mysql2://user:password@host:port/database`.
+- `SHIPYRD_QUEUE_DATABASE_URL` - The MySQL database URL for job queue, in for the format of `mysql2://user:password@host:port/database`.
+- `SHIPYRD_CABLE_DATABASE_URL` - The MySQL database URL for the websocket backend, in for the format of `mysql2://user:password@host:port/database`.
 - `SHIPYRD_SECRET_KEY_BASE` - Use `rails secret` or `openssl rand -hex 64` to generate one.
 - `SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY` - Use `rails db:encryption:init` or `openssl rand -base64 32` to generate one.
 - `SHIPYRD_ENCRYPTION_PRIMARY_KEY`- Use `rails db:encryption:init` or `openssl rand -base64 32` to generate one.

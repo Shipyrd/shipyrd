@@ -2,7 +2,7 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.3.1
-FROM --platform=linux/amd64 ruby:$RUBY_VERSION-slim AS base
+FROM ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
 WORKDIR /rails
@@ -47,12 +47,13 @@ RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN --mount=type=cache,id=bld-assets-cache,sharing=locked,target=tmp/cache/assets \
-    SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+    SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile --trace
 
 # Final stage for app image
 FROM base
 
-ENV SOLID_QUEUE_IN_PUMA="1"
+ARG SOLID_QUEUE_IN_PUMA=1
+ENV SOLID_QUEUE_IN_PUMA=$SOLID_QUEUE_IN_PUMA
 
 # Install packages needed for deployment
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
@@ -74,9 +75,6 @@ RUN mkdir /shipyrd && chown rails:rails /shipyrd
 VOLUME /shipyrd
 
 USER rails:rails
-
-HEALTHCHECK --timeout=10s \
-    CMD curl -f http://localhost:3000/up || exit 1
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
