@@ -2,6 +2,10 @@ require "test_helper"
 require "helpers/basic_auth_helpers"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    ENV["COMMUNITY_EDITION"] = "0"
+  end
+
   describe "unauthenticated" do
     test "should get new" do
       get new_user_url

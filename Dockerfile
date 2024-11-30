@@ -55,6 +55,9 @@ FROM base
 ARG SOLID_QUEUE_IN_PUMA=1
 ENV SOLID_QUEUE_IN_PUMA=$SOLID_QUEUE_IN_PUMA
 
+ARG COMMUNITY_EDITION=1
+ENV COMMUNITY_EDITION=$COMMUNITY_EDITION
+
 # Install packages needed for deployment
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \

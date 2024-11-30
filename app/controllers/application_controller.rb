@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate
 
-  helper_method :current_user, :current_organization, :require_admin, :current_admin?
+  helper_method :current_user, :current_organization, :require_admin, :current_admin?, :community_edition?
 
   def current_user
     return nil if cookies.signed[:user_id].blank?
@@ -21,6 +21,10 @@ class ApplicationController < ActionController::Base
 
   def require_admin
     redirect_to root_path unless current_admin?
+  end
+
+  def community_edition?
+    ENV["COMMUNITY_EDITION"] != "0"
   end
 
   private

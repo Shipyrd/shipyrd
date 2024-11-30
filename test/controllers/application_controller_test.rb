@@ -13,4 +13,12 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_path
   end
+
+  test "community_edition?" do
+    ENV["COMMUNITY_EDITION"] = "1"
+    assert ApplicationController.new.community_edition?
+
+    ENV["COMMUNITY_EDITION"] = "0"
+    refute ApplicationController.new.community_edition?
+  end
 end
