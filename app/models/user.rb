@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_secure_password validations: false
   validates :password, length: {minimum: 10, maximum: 72}, if: -> { password.present? }
 
-  validates :username, presence: true, uniqueness: true
+  validates :username, allow_blank: true, uniqueness: true, url: {no_local: true}
 
   after_create_commit :queue_populate_avatar
 
@@ -25,14 +25,22 @@ class User < ApplicationRecord
     display_name.first
   end
 
+  def github_user?
+    username =~ /github\.com/
+  end
+
+  def github_username
+    username.split("/").last
+  end
+
   def queue_populate_avatar
-    return false if Rails.env.test? || username.blank?
+    return false if Rails.env.test? || !github_user?
 
     AvatarImporterJob.perform_later(id)
   end
 
   def populate_avatar_url
-    url = URI("https://api.github.com/users/#{username}")
+    url = URI("https://api.github.com/users/#{github_username}")
     user_info = JSON.parse(Net::HTTP.get(url))
 
     return if user_info["avatar_url"].blank?

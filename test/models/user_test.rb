@@ -12,11 +12,28 @@ class UserTest < ActiveSupport::TestCase
     assert_equal "Nick", user.display_name
   end
 
+  it "github_user?" do
+    user = build(:user, username: "https://gitlab.com/nick")
+    refute user.github_user?
+
+    user.username = "https://github.com/nick"
+    assert user.github_user?
+  end
+
+  it "github_username" do
+    user = build(:user, username: "https://github.com/nick")
+
+    assert_equal "nick", user.github_username
+  end
+
   describe "populate_avatar_url" do
     it "with github username" do
-      user = build(:user)
+      user = build(
+        :user,
+        username: "https://github.com/nick"
+      )
 
-      stub_request(:get, "https://api.github.com/users/#{user.username}")
+      stub_request(:get, "https://api.github.com/users/nick")
         .to_return(
           body: {avatar_url: "https://avatars.githubusercontent.com/u/17698?v=4"}.to_json
         )
