@@ -59,6 +59,7 @@
 <code>.kamal/hooks/<%= hook %></code>
 <pre class="mb-2"><code id="hook_<%= hook %>">#!/usr/bin/env ruby
 
+require 'dotenv/load'
 require 'shipyrd'
 
 Shipyrd::Client.new.trigger('<%= hook %>')</code></pre>
