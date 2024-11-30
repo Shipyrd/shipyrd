@@ -21,6 +21,7 @@ development:
     <<: *cable_default
 
 test:
+  adapter: mysql2
   url: <%= ENV["SHIPYRD_DATABASE_URL"] %>
 
 production:
