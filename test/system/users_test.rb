@@ -51,6 +51,7 @@ class UsersTest < ApplicationSystemTestCase
   describe "invite links" do
     setup do
       @organization = create(:organization)
+      @user = build(:user)
     end
 
     test "creating via user invite link" do
@@ -60,9 +61,9 @@ class UsersTest < ApplicationSystemTestCase
 
       assert_no_field "Organization name"
 
-      fill_in "Name", with: "New User"
-      fill_in "GitHub username", with: "newuser"
-      fill_in "Email", with: "new@example.com"
+      fill_in "Name", with: @user.name
+      fill_in "GitHub username", with: @user.username
+      fill_in "Email", with: @user.email
       fill_in "Password", with: "secretsecret"
 
       click_on "Create User"
@@ -79,9 +80,9 @@ class UsersTest < ApplicationSystemTestCase
 
       visit new_user_url(code: code)
 
-      fill_in "Name", with: "New User"
-      fill_in "GitHub username", with: "newuser"
-      fill_in "Email", with: "new@example.com"
+      fill_in "Name", with: @user.name
+      fill_in "GitHub username", with: @user.username
+      fill_in "Email", with: @user.email
       fill_in "Password", with: "secretsecret"
 
       click_on "Create User"
