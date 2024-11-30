@@ -8,6 +8,27 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
       @token = @application.token
     end
 
+    test "with invalid API key" do
+      assert_no_difference("Deploy.count") do
+        post deploys_url,
+          params: {
+            format: :json,
+            deploy: {
+              command: "deploy",
+              recorded_at: Time.zone.now,
+              performer: "nick",
+              version: "123456",
+              service_version: "potato@123456",
+              status: "pre-build"
+            }
+
+          },
+          headers: auth_headers("invalid")
+
+        assert_response :not_found
+      end
+    end
+
     test "should create deploy with minimal information" do
       assert_difference("Deploy.count") do
         post deploys_url,
