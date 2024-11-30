@@ -20,5 +20,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
 
     ENV["COMMUNITY_EDITION"] = "0"
     refute ApplicationController.new.community_edition?
+
+    ENV.delete("COMMUNITY_EDITION")
   end
 end
