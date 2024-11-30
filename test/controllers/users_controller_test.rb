@@ -3,7 +3,7 @@ require "helpers/basic_auth_helpers"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    ENV["COMMUNITY_EDITION"] = "0"
+    ApplicationController.any_instance.stubs(:community_edition?).returns(false)
   end
 
   describe "unauthenticated" do

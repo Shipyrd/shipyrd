@@ -2,12 +2,12 @@ require "test_helper"
 require "helpers/basic_auth_helpers"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
+  setup do
+    ApplicationController.any_instance.stubs(:community_edition?).returns(true)
+  end
+
   describe "unauthenticated" do
     describe "community edition" do
-      setup do
-        ENV["COMMUNITY_EDITION"] = "1"
-      end
-
       it "allows first user creation without invite" do
         user = build(:user)
 
