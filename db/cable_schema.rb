@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_18_204939) do
+ActiveRecord::Schema[8.0].define(version: 2024_09_18_204939) do
   create_table "solid_cable_messages", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.binary "channel", limit: 1024, null: false
     t.binary "payload", size: :long, null: false
