@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  rate_limit to: 30, within: 1.minute
+
   before_action :authenticate
 
   helper_method :current_user, :current_organization, :require_admin, :current_admin?, :community_edition?
