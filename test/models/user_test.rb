@@ -1,48 +1,51 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
-  describe "invitable_roles" do
-    it "adminless" do
-      assert_equal [:admin], User.invitable_roles
-    end
+  it "display_name" do
+    user = build(:user, username: "username")
 
-    it "with password-based users" do
-      create(:admin, password: "secretsecret")
-      assert_equal User.roles.keys, User.invitable_roles
-    end
+    assert_equal "username", user.display_name
+
+    user.username = nil
+    user.name = "Nick"
+
+    assert_equal "Nick", user.display_name
+  end
+
+  it "github_user?" do
+    user = build(:user, username: "https://gitlab.com/nick")
+    refute user.github_user?
+
+    user.username = "https://github.com/nick"
+    assert user.github_user?
+  end
+
+  it "github_username" do
+    user = build(:user, username: "https://gitlab.com/nick")
+
+    refute user.github_username
+
+    user.username = "https://github.com/nick"
+
+    assert_equal "nick", user.github_username
   end
 
   describe "populate_avatar_url" do
     it "with github username" do
-      stub_request(:get, "https://api.github.com/users/nickhammond")
+      user = build(
+        :user,
+        username: "https://github.com/nick"
+      )
+
+      stub_request(:get, "https://api.github.com/users/nick")
         .to_return(
           body: {avatar_url: "https://avatars.githubusercontent.com/u/17698?v=4"}.to_json
         )
 
-      user = User.find_or_create_performer("https://github.com/nickhammond")
+      user.populate_avatar_url
       user.reload
 
       assert_equal "https://avatars.githubusercontent.com/u/17698?v=4&s=100", user.avatar_url
-    end
-  end
-
-  describe "find_or_create_performer" do
-    it "with new user" do
-      assert_difference("User.count") do
-        assert User.find_or_create_performer("greta")
-      end
-
-      assert_difference("User.count") do
-        User.any_instance.expects(:populate_avatar_url)
-        assert User.find_or_create_performer("https://github.com/nick")
-      end
-    end
-
-    it "with existing user" do
-      user = User.find_or_create_performer("greta")
-
-      assert_equal user, User.find_or_create_performer("greta")
-      assert_equal user, User.find_or_create_performer("https://github.com/greta")
     end
   end
 end

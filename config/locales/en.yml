@@ -2,3 +2,10 @@ en:
   helpers:
     submit:
       update: "Update"
+
+  activerecord:
+    attributes:
+      application:
+        repository_url: "Repository URL"
+      destination:
+        url: "URL"

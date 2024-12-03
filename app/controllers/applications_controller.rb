@@ -3,11 +3,29 @@ class ApplicationsController < ApplicationController
 
   # GET /applications or /applications.json
   def index
-    @applications = Application.order(:created_at)
+    @applications = current_organization.applications.includes([:destinations]).order(:created_at)
   end
 
   # GET /applications/1 or /applications/1.json
   def show
+  end
+
+  def new
+    @application = current_organization.applications.new
+  end
+
+  def create
+    @application = current_organization.applications.new(application_params)
+
+    respond_to do |format|
+      if @application.save
+        format.html { redirect_to application_url(@application), notice: "Application was successfully created." }
+        format.json { render :show, status: :created, location: @application }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @application.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # GET /applications/1/edit
@@ -41,7 +59,7 @@ class ApplicationsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_application
-    @application = Application.find(params[:id])
+    @application = current_organization.applications.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.

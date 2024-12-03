@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate
 
-  helper_method :current_user, :require_admin, :adminless?
+  helper_method :current_user, :current_organization, :require_admin, :current_admin?, :community_edition?
 
   def current_user
     return nil if cookies.signed[:user_id].blank?
@@ -9,12 +9,22 @@ class ApplicationController < ActionController::Base
     User.find_by(id: cookies.signed[:user_id])
   end
 
-  def require_admin
-    redirect_to root_path unless adminless? || current_user.admin?
+  def current_admin?
+    return false if current_user.blank?
+
+    current_organization.admin?(current_user)
   end
 
-  def adminless?
-    User.has_password.count.zero?
+  def current_organization
+    current_user.organizations.first
+  end
+
+  def require_admin
+    redirect_to root_path unless current_admin?
+  end
+
+  def community_edition?
+    ENV["COMMUNITY_EDITION"] != "0"
   end
 
   private
@@ -22,14 +32,10 @@ class ApplicationController < ActionController::Base
   def authenticate
     if request.headers["Authorization"] && request.headers["Authorization"] =~ /^bearer/i
       session[:authenticated] = authenticate_with_http_token do |token, _options|
-        ApiKey.exists?(token: token)
+        @application = Application.find_by!(token: token)
       end
-    elsif User.has_password.count > 0
-      redirect_to new_session_url if current_user.blank?
-    elsif authenticate_with_http_basic { |u, p| p.present? && ApiKey.exists?(token: p) }
-      true
-    else
-      request_http_basic_authentication
+    elsif current_user.blank?
+      redirect_to main_app.new_session_url
     end
   end
 end

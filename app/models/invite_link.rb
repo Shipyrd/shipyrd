@@ -2,6 +2,7 @@ class InviteLink < ApplicationRecord
   include Role
 
   belongs_to :creator, class_name: "User", optional: true
+  belongs_to :organization
   has_secure_token :code, length: 64
 
   validates :role, inclusion: {in: roles.keys}
@@ -26,6 +27,6 @@ class InviteLink < ApplicationRecord
   private
 
   def set_expiration
-    self.expires_at = 2.hours.from_now
+    self.expires_at = 3.hours.from_now
   end
 end

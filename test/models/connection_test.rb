@@ -1,7 +1,9 @@
 require "test_helper"
 
 class ConnectionTest < ActiveSupport::TestCase
-  let(:application) { build(:application_with_repository_url) }
+  let(:application) do
+    build(:application_with_repository_url)
+  end
 
   describe "connects_successfully" do
     it "fails if invalid token" do

@@ -1,8 +1,38 @@
 <div>
   <h2 class="mb-4 is-size-2 has-text-weight-medium">
     Editing
-    <%= @application.display_name %> 
+    <%= @application.display_name %>
   </h2>
 
   <%= render "form", application: @application %>
+
+  <div class="field mt-2">
+    <%= button_to "Destroy application", application_path(@application), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "button is-danger" %>
+  </div>
+
+  <hr>
+
+  <h3 class="is-size-3 mt-4">Connections</h3>
+
+  <%= render "connections/connections" %>
+
+  <hr>
+
+  <h3 class="is-size-3 mt-4">Destinations</h3>
+
+  <% @application.destinations.each do |destination| %>
+    <div class="box">
+      <div class="columns">
+        <div class="column">
+          <%= destination_tag(destination) %>
+          <%= pluralize(destination.servers_count, "server") %>
+        </div>
+
+        <div class="column has-text-right">
+          <%= link_to "View", application_destination_path(@application, destination), class: "button is-link has-text-white", alt: "View #{destination.name} destination" %>
+          <%= link_to "Edit", edit_application_destination_path(@application, destination), class: "button is-link has-text-white", alt: "Edit #{destination.name} destination" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>

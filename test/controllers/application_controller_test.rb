@@ -1,25 +1,26 @@
 require "test_helper"
 
 class ApplicationControllerTest < ActionDispatch::IntegrationTest
-  test "prompt for http basic auth when no users yet" do
+  test "redirects to sign in when not authenticated" do
     get root_url
-
-    assert_response :unauthorized
-  end
-
-  test "prompts for auth with just a deploy created user" do
-    create(:user, role: :user, password: nil)
-
-    get root_url
-
-    assert_response :unauthorized
-  end
-
-  test "redirects to sign in after a password-based user is created" do
-    create(:user, role: :user, password: "secretsecret")
-
-    get root_url
-
     assert_redirected_to new_session_url
+  end
+
+  test "renders when signed in" do
+    @user = create(:user)
+
+    post session_url, params: {email: @user.email, password: @user.password}
+
+    assert_redirected_to root_path
+  end
+
+  test "community_edition?" do
+    ENV["COMMUNITY_EDITION"] = "1"
+    assert ApplicationController.new.community_edition?
+
+    ENV["COMMUNITY_EDITION"] = "0"
+    refute ApplicationController.new.community_edition?
+
+    ENV.delete("COMMUNITY_EDITION")
   end
 end

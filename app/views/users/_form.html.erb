@@ -8,8 +8,17 @@
     </div>
   </div>
 
+  <% unless params[:code] %>
+    <div class="field">
+      <%= form.label :organization_name, class: "label" %>
+      <div class="control">
+        <%= form.text_field :organization_name, class: "input" %>
+      </div>
+    </div>
+  <% end %>
+
   <div class="field">
-    <%= form.label :username, "GitHub username", class: "label" %>
+    <%= form.label :username, "GitHub username URL", class: "label" %>
     <div class="control">
       <%= form.text_field :username, class: "input" %>
     </div>

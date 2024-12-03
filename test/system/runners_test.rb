@@ -1,15 +1,15 @@
 require "application_system_test_case"
 
 class RunnersTest < ApplicationSystemTestCase
-  setup do
-    @admin = create(:user, role: :admin)
-    sign_in_as(@admin.email, @admin.password)
-  end
-
   describe "with an existing destination" do
     setup do
       @application = create(:application_with_repository_url)
+      @organization = @application.organization
       @destination = create(:destination, application: @application)
+      @admin = create(:user)
+      @organization.memberships.create!(user: @admin, role: :admin)
+
+      sign_in_as(@admin.email, @admin.password)
     end
 
     test "prefills the command field when provided" do

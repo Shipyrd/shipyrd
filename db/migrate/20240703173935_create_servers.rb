@@ -1,7 +1,7 @@
 class CreateServers < ActiveRecord::Migration[7.1]
   def change
     create_table :servers do |t|
-      t.references :destination, null: false, foreign_key: true
+      t.references :destination, null: false, foreign_key: true, type: :bigint
       t.string :ip
 
       t.timestamps

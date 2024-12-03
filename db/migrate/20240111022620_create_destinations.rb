@@ -8,7 +8,7 @@ class CreateDestinations < ActiveRecord::Migration[7.1]
       t.string :url
       t.string :name
       t.string :branch, default: "main"
-      t.references :application, null: false, foreign_key: true
+      t.references :application, null: false, foreign_key: true, type: :bigint
 
       t.timestamps
     end

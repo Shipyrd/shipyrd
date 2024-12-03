@@ -2,7 +2,7 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.3.1
-FROM --platform=linux/amd64 ruby:$RUBY_VERSION-slim AS base
+FROM ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
 WORKDIR /rails
@@ -19,7 +19,7 @@ FROM base AS build
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
     apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git
+    apt-get install --no-install-recommends -y build-essential git default-libmysqlclient-dev
 
 # Install application gems
 COPY Gemfile Gemfile.lock .ruby-version ./
@@ -47,18 +47,25 @@ RUN bundle exec bootsnap precompile app/ lib/
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN --mount=type=cache,id=bld-assets-cache,sharing=locked,target=tmp/cache/assets \
-    SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+    SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile --trace
 
 # Final stage for app image
 FROM base
 
-ENV SOLID_QUEUE_IN_PUMA="1"
+ARG SOLID_QUEUE_IN_PUMA=1
+ENV SOLID_QUEUE_IN_PUMA=$SOLID_QUEUE_IN_PUMA
+
+ARG COMMUNITY_EDITION=1
+ENV COMMUNITY_EDITION=$COMMUNITY_EDITION
+
+ARG PORT=80
+ENV PORT=$PORT
 
 # Install packages needed for deployment
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
     apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl && \
+    apt-get install --no-install-recommends -y curl default-mysql-client && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Copy built artifacts: gems, application
@@ -75,12 +82,9 @@ VOLUME /shipyrd
 
 USER rails:rails
 
-HEALTHCHECK --timeout=10s \
-    CMD curl -f http://localhost:3000/up || exit 1
-
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
+EXPOSE $PORT
 CMD ["./bin/rails", "server"]

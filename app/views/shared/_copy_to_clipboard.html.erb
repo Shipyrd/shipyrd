@@ -1,0 +1,12 @@
+<% label ||= nil %>
+
+<button class="button is-light clipboard" data-clipboard-target="<%= target %>">
+  <span class="icon-text">
+    <span class="icon">
+      <i class="fa-solid fa-copy"></i>
+    </span>
+    <span>
+      Copy <%= label %>
+    </span>
+  </span>
+</button>

@@ -3,8 +3,6 @@
 if [ "${*}" == "./bin/rails server" ]; then
   # Create and prepare the database
   ./bin/rails db:prepare
-  # Create the configured SHIPYRD_API_KEY
-  ./bin/rails db:seed
 fi
 
 exec "${@}"

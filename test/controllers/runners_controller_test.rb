@@ -4,13 +4,14 @@ require "helpers/basic_auth_helpers"
 class RunnersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @application = create(:application)
+    @organization = @application.organization
     @destination = create(:destination, application: @application)
   end
 
   describe "anonymous" do
     it "denies access" do
       get application_destination_runners_path(@application, @destination)
-      assert_response :unauthorized
+      assert_redirected_to new_session_path
     end
   end
 
@@ -18,6 +19,7 @@ class RunnersControllerTest < ActionDispatch::IntegrationTest
     describe "user" do
       setup do
         @user = create(:user)
+        @organization.memberships.create(user: @user)
         sign_in(@user.email, @user.password)
       end
 
@@ -30,7 +32,8 @@ class RunnersControllerTest < ActionDispatch::IntegrationTest
 
     describe "admin" do
       setup do
-        @user = create(:user, role: :admin)
+        @user = create(:user)
+        @organization.memberships.create(user: @user, role: :admin)
         sign_in(@user.email, @user.password)
       end
 

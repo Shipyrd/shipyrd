@@ -23,7 +23,7 @@
     <nav class="navbar py-5" role="navigation" aria-label="main navigation">
       <%= link_to image_tag("logo.png", width: 125), root_url %>
 
-      <% if current_user&.admin? || adminless? %>
+      <% if current_admin? %>
         <div class="navbar-end is-transparent is-hoverable">
           <div class="navbar-item has-dropdown is-hoverable">
 
@@ -34,6 +34,7 @@
             </a>
 
             <div class="navbar-dropdown is-boxed">
+              <%= link_to "Create application", new_application_path, class: "navbar-item" %>
               <%= link_to "Invite someone to Shipyrd", users_path, class: "navbar-item" %>
               <hr class="navbar-divider">
               <%= link_to "Users", users_path, class: "navbar-item" %>
@@ -48,5 +49,15 @@
     <main class="container">
       <%= yield %>
     </main>
+
+    <% if current_user %>
+      <footer class="mt-4">
+        <div class="has-text-centered">
+          <p>
+            <%= button_to "Sign out", session_path, method: :delete, class:"is-clickable is-underlined" %>
+          </p>
+        </div>
+      </footer>
+    <% end %>
   </body>
 </html>

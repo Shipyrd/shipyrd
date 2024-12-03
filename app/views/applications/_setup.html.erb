@@ -1,0 +1,103 @@
+<h2 class="is-size-2">Setup <%= application.name %></h2>
+
+<section class="content block">
+  <p>
+    Application API key:
+    <code id="application_token">
+    <%= application.token %>
+    </code>
+
+    <button class="button is-small is-white clipboard" data-clipboard-target="#application_token">
+      <span class="icon-text">
+        <span class="icon">
+          <i class="fa-solid fa-copy"></i>
+        </span>
+        <span>
+        </span>
+      </span>
+    </button>
+  </p>
+</section>
+
+<section class="block content">
+  <h4 class="is-size-4">1. Install the Shipyrd gem</h4>
+
+<pre>
+<code id="gem_install">gem install shipyrd</code>
+</pre>
+<p class="mt-1">
+  <%= render "shared/copy_to_clipboard", target: "#gem_install" %>
+</p>
+
+</section>
+
+<section class="block content">
+  <h4 class="is-size-4">2. Configure the Shipyrd API key</h4>
+  <p>
+    The Shipyrd gem loads your API key from <code>ENV['SHIPYRD_API_KEY']</code> automatically. You can make this available to your
+    current shell process or use something like the <code>dotenv</code> gem to automatically load the value from your <code>.env</code> file. You'll
+    need to install the <code>dotenv</code> gem and create a <code>.env</code> file in your project root with the following content:
+
+<pre>
+<code id="dotenv_file">SHIPYRD_API_KEY=<%= application.token %></code>
+</pre>
+<p class="mt-1">
+  <%= render "shared/copy_to_clipboard", target: "#dotenv_file" %>
+</p>
+
+</section>
+
+<section class="block content">
+  <h4 class="is-size-4">3. Add Shipyrd's triggers to your <code>.kamal/hooks</code> files</h4>
+
+<p>
+  Add the following code to your <code>.kamal/hooks</code> files to ping Shipyrd hooks during the deploy process.
+</p>
+
+<% Deploy::KNOWN_HOOKS.each do |hook| %>
+<div class="block">
+<code>.kamal/hooks/<%= hook %></code>
+<pre class="mb-2"><code id="hook_<%= hook %>">#!/usr/bin/env ruby
+
+require 'dotenv/load'
+require 'shipyrd'
+
+Shipyrd::Client.new.trigger('<%= hook %>')</code></pre>
+<%= render "shared/copy_to_clipboard", target: "#hook_#{hook}" %>
+</div>
+<% end %>
+
+<p>
+  <em>Don't forget to make the hooks executable:</em>
+<pre>
+<code id="hooks_executable">chmod +x .kamal/hooks/*</code>
+</pre>
+  <p class="mt-1">
+    <%= render "shared/copy_to_clipboard", target: "#hooks_executable" %>
+  </p>
+</p>
+
+</section>
+
+<section class="block content">
+  <h4 class="is-size-4">4. Deploy!</h4>
+
+  <p>
+    When you deploy via Kamal it'll ping Shipyrd throughout the deploy
+    process via Kamal's hooks. This updates Shipyrd with the current deploy state
+    of your application for each destination.
+  </p>
+
+  <p>
+    For the first deploy, add the <code>--verbose</code> flag so you can confirm
+    that Shipyrd is configured properly and the triggers are firing.
+    Subsequent deploys can be deployed without the <code>--verbose</code> flag.
+  <p>
+
+<pre>
+<code id="deploy">kamal deploy --verbose</code>
+</pre>
+  <p class="mt-1">
+    <%= render "shared/copy_to_clipboard", target: "#deploy" %>
+  </p>
+</section>

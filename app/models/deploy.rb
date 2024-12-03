@@ -1,14 +1,15 @@
 class Deploy < ApplicationRecord
   before_validation :set_service_name
-  before_validation :find_or_create_application
-  before_validation :find_or_create_user
   before_create :find_or_create_destination
 
-  belongs_to :application, foreign_key: "service", primary_key: "key", optional: true, touch: true, inverse_of: "deploys"
-  belongs_to :user, foreign_key: :performer, primary_key: :username, inverse_of: "deploys"
+  belongs_to :application, optional: true, touch: true, inverse_of: "deploys"
+  belongs_to :user, foreign_key: :performer, primary_key: :username, optional: true, inverse_of: "deploys"
 
   validates :recorded_at, :performer, :service_version, :command, presence: true
   validate :service_version_is_valid
+  validate :version_is_valid
+
+  KNOWN_HOOKS = %w[pre-connect pre-build pre-deploy post-deploy].freeze
 
   def full_command
     "#{command} #{subcommand}"
@@ -50,6 +51,10 @@ class Deploy < ApplicationRecord
 
   private
 
+  def version_is_valid
+    version =~ /\w+/
+  end
+
   def service_version_is_valid
     # service@sha
     service_version =~ /\w+@\w+/
@@ -59,20 +64,6 @@ class Deploy < ApplicationRecord
     return false if service.present? || service_version.blank?
 
     self.service = service_version.split("@").first
-  end
-
-  def find_or_create_application
-    return true if application
-
-    create_application!(
-      # This is automatically handled in the association but leaving
-      # this here to highlight the magic.
-      key: service
-    )
-  end
-
-  def find_or_create_user
-    self.user = User.find_or_create_performer(performer)
   end
 
   def find_or_create_destination

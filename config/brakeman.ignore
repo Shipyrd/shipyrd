@@ -3,13 +3,47 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
-      "fingerprint": "73d449bce5b506287a814219d0496b63b5e473a70de90f337264b95cb9e8bc8a",
+      "fingerprint": "1fe444e8c3a06f70eb836167ee46644ac10d4af4b16144f70dc3be3dd42123ac",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/connections/new.html.erb",
+      "line": 10,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => current_organization.applications.find(params[:application_id]).connections.new(connection_params).provider, { :form => form })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "ConnectionsController",
+          "method": "create",
+          "line": 22,
+          "file": "app/controllers/connections_controller.rb",
+          "rendered": {
+            "name": "connections/new",
+            "file": "app/views/connections/new.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "connections/new"
+      },
+      "user_input": "params[:application_id]",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "37a67def8218211b457898c7e7ab6be71b31daf36cf4aade1be2b3dbaeac57d4",
       "check_name": "Render",
       "message": "Render path contains parameter value",
       "file": "app/views/destinations/show.html.erb",
       "line": 1,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => Application.find(params[:application_id]).destinations.find(params[:id]), {})",
+      "code": "render(action => current_organization.applications.find(params[:application_id]).destinations.find(params[:id]), {})",
       "render_path": [
         {
           "type": "controller",
@@ -26,6 +60,73 @@
       "location": {
         "type": "template",
         "template": "destinations/show"
+      },
+      "user_input": "params[:id]",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "5efcd4ebcd19b735aff88540908e3cb1ceac71ed33b3c720c42a45666916c874",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in `link_to` href",
+      "file": "app/views/applications/_destination.html.erb",
+      "line": 75,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(\"On Deck\", (Unresolved Model).new.on_deck_url, :target => \"_blank\", :class => \"mr-3 button is-success is-light is-small\")",
+      "render_path": [
+        {
+          "type": "template",
+          "name": "applications/_application",
+          "line": 6,
+          "file": "app/views/applications/_application.html.erb",
+          "rendered": {
+            "name": "applications/_destination",
+            "file": "app/views/applications/_destination.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "applications/_destination"
+      },
+      "user_input": "(Unresolved Model).new.on_deck_url",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "8679097e89373fcd91de2b3751ecfb3e5c76de91290da0944222b8c836330c51",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/runners/show.html.erb",
+      "line": 14,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => current_organization.applications.find(params[:application_id]).destinations.find(params[:destination_id]).runners.find(params[:id]), {})",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "RunnersController",
+          "method": "show",
+          "line": 30,
+          "file": "app/controllers/runners_controller.rb",
+          "rendered": {
+            "name": "runners/show",
+            "file": "app/views/runners/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "runners/show"
       },
       "user_input": "params[:id]",
       "confidence": "Weak",
@@ -83,29 +184,29 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
-      "fingerprint": "aa2ff7a7b2434d3ce722fd68c00f847c03e0f95edcf22e2bdb39086519b1b4e8",
+      "fingerprint": "a5d1d97d274df67db0a977280ae2565c5b8d5d19dac80f6453449adcaca57e38",
       "check_name": "Render",
       "message": "Render path contains parameter value",
-      "file": "app/views/runners/show.html.erb",
-      "line": 14,
+      "file": "app/views/users/show.html.erb",
+      "line": 3,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => Application.find(params[:application_id]).destinations.find(params[:destination_id]).runners.find(params[:id]), {})",
+      "code": "render(action => current_organization.users.find(params[:id]), {})",
       "render_path": [
         {
           "type": "controller",
-          "class": "RunnersController",
+          "class": "UsersController",
           "method": "show",
-          "line": 30,
-          "file": "app/controllers/runners_controller.rb",
+          "line": 15,
+          "file": "app/controllers/users_controller.rb",
           "rendered": {
-            "name": "runners/show",
-            "file": "app/views/runners/show.html.erb"
+            "name": "users/show",
+            "file": "app/views/users/show.html.erb"
           }
         }
       ],
       "location": {
         "type": "template",
-        "template": "runners/show"
+        "template": "users/show"
       },
       "user_input": "params[:id]",
       "confidence": "Weak",
@@ -115,6 +216,6 @@
       "note": ""
     }
   ],
-  "updated": "2024-10-30 15:10:04 -0700",
+  "updated": "2024-11-28 10:44:12 -0700",
   "brakeman_version": "6.2.1"
 }

@@ -1,1 +1,9 @@
-<%= render @application %>
+<%= turbo_stream_from @application %>
+
+<div id="<%= dom_id @application %>">
+  <% if @application.deploys.empty? %>
+    <%= render "setup", application: @application %>
+  <% else %>
+    <%= render @application %>
+  <% end %>
+</div>

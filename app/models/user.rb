@@ -2,41 +2,20 @@ require "net/http"
 require "json"
 
 class User < ApplicationRecord
-  include Role
-
+  has_many :memberships, dependent: :destroy
+  has_many :organizations, through: :memberships, counter_cache: true
   has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
 
-  # Users are initially created via deploys typically
   has_secure_password validations: false
   validates :password, length: {minimum: 10, maximum: 72}, if: -> { password.present? }
 
-  validates :username, presence: true, uniqueness: true
+  validates :username, allow_blank: true, uniqueness: true, url: {no_local: true}
 
-  after_create_commit :queue_import_avatar
+  after_create_commit :queue_populate_avatar
 
-  scope :has_role, -> { where.not(role: nil) }
   scope :has_password, -> { where.not(password_digest: nil) }
 
-  def self.find_or_create_performer(username)
-    username, github_user = if /github.com/.match?(username)
-      [username.split("/").last, true]
-    else
-      [username, false]
-    end
-
-    user = find_by(username: username)
-
-    return user if user.present?
-
-    user = User.create!(username: username)
-    user.populate_avatar_url if github_user
-
-    user
-  end
-
-  def self.invitable_roles
-    has_password.count.zero? ? [:admin] : roles.keys
-  end
+  attr_accessor :organization_name
 
   def display_name
     username || name
@@ -46,14 +25,24 @@ class User < ApplicationRecord
     display_name.first
   end
 
-  def queue_import_avatar
-    return false if Rails.env.test? || username.blank?
+  def github_user?
+    username =~ /github\.com/
+  end
+
+  def github_username
+    return unless github_user?
+
+    username.split("/").last
+  end
+
+  def queue_populate_avatar
+    return false if Rails.env.test? || !github_user?
 
     AvatarImporterJob.perform_later(id)
   end
 
   def populate_avatar_url
-    url = URI("https://api.github.com/users/#{username}")
+    url = URI("https://api.github.com/users/#{github_username}")
     user_info = JSON.parse(Net::HTTP.get(url))
 
     return if user_info["avatar_url"].blank?

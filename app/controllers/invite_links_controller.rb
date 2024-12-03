@@ -2,7 +2,7 @@ class InviteLinksController < ApplicationController
   before_action :require_admin
 
   def create
-    @invite_link = InviteLink.new(invite_link_params)
+    @invite_link = current_organization.invite_links.new(invite_link_params)
 
     respond_to do |format|
       if @invite_link.save
@@ -14,7 +14,7 @@ class InviteLinksController < ApplicationController
   end
 
   def destroy
-    @invite_link = InviteLink.find(params[:id])
+    @invite_link = current_organization.invite_links.find(params[:id])
     @invite_link.deactivate!
 
     respond_to do |format|

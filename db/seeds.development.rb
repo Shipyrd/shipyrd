@@ -1,6 +1,4 @@
-ApiKey.find_or_create_by!(
-  token: ENV["SHIPYRD_API_KEY"]
-)
+organization = Organization.find_or_create_by!(name: "Initech")
 
 @ai_commit_messages = [
   "Fixed the thing that broke the other thing",
@@ -17,6 +15,7 @@ ApiKey.find_or_create_by!(
 
 def create_deploy(application, destination, stage)
   Deploy.create!(
+    application: application,
     recorded_at: Time.zone.now,
     status: stage,
     performer: "nickhammond",
@@ -30,7 +29,7 @@ def create_deploy(application, destination, stage)
   )
 end
 
-bacon = Application.find_or_create_by!(key: :bacon)
+bacon = organization.applications.find_or_create_by!(key: :bacon)
 
 bacon.update!(
   name: "Bacon",
@@ -38,7 +37,7 @@ bacon.update!(
   repository_url: "https://github.com/nickhammond/bacon"
 )
 
-eggs = Application.find_or_create_by!(key: :eggs)
+eggs = organization.applications.find_or_create_by!(key: :eggs)
 
 eggs.update!(
   name: "Eggs",
@@ -46,7 +45,7 @@ eggs.update!(
   repository_url: "https://github.com/nickhammond/eggs"
 )
 
-ham = Application.find_or_create_by!(key: :ham)
+ham = organization.applications.find_or_create_by!(key: :ham)
 
 ham.update!(
   name: "Ham",
@@ -71,3 +70,17 @@ applications[0..1].each do |application|
 end
 
 create_deploy(applications[2], nil, "pre-deploy")
+
+username = `whoami`.strip
+
+User.find_or_create_by(email: "#{username}@example.com") do |u|
+  u.username = username
+  u.password = "password00!"
+  organization.memberships.create(user: u, role: :admin)
+end
+
+User.find_or_create_by(email: "new@example.com") do |u|
+  u.username = "newguy"
+  u.password = "password00!"
+  Organization.find_or_create_by(name: "Fry's Electronics").memberships.create!(user: u, role: :admin)
+end

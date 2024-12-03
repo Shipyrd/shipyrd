@@ -32,15 +32,15 @@ class ApplicationTest < ActiveSupport::TestCase
     let(:service_version) { "#{application.key}@123" }
 
     it "fetches destinations from known deploys" do
-      create(:deploy, service_version: service_version, destination: :production)
-      create(:deploy, service_version: service_version, destination: :staging)
+      create(:deploy, service_version: service_version, destination: :production, application: application)
+      create(:deploy, service_version: service_version, destination: :staging, application: application)
 
       assert_equal ["production", "staging"], application.reload.destination_names
     end
 
     it "adds in a default destination name" do
-      create(:deploy, service_version: service_version)
-      create(:deploy, service_version: service_version, destination: :production)
+      create(:deploy, service_version: service_version, application: application)
+      create(:deploy, service_version: service_version, destination: :production, application: application)
 
       assert_equal [nil, "production"], application.reload.destination_names
     end

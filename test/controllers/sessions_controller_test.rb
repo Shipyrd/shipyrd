@@ -9,7 +9,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   describe "with user" do
     setup do
-      @user = create(:user, role: :user)
+      @user = create(:user)
     end
 
     test "with invalid credentials" do

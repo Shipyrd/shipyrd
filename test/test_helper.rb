@@ -9,6 +9,6 @@ require "mocha/minitest"
 
 module ActiveSupport
   class TestCase
-    parallelize(workers: 1)
+    parallelize(workers: :number_of_processors)
   end
 end

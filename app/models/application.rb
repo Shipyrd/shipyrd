@@ -1,5 +1,8 @@
 class Application < ApplicationRecord
-  has_many :deploys, dependent: :destroy, foreign_key: :service, primary_key: :key, inverse_of: "application"
+  has_secure_token length: 64
+
+  belongs_to :organization, counter_cache: true
+  has_many :deploys, dependent: :destroy, inverse_of: "application"
   has_many :connections, dependent: :destroy
   has_many :destinations, dependent: :destroy do
     def find_or_create_with_hosts(hosts_string:, name:)
@@ -19,10 +22,10 @@ class Application < ApplicationRecord
     end
   end
 
-  broadcasts_refreshes # For broadcasting on the index before there's an application record
-  broadcasts # For broadcasting deploys as they come in
+  validates :repository_url, url: {allow_blank: true, no_local: true}
 
-  validates :key, presence: true
+  broadcasts_refreshes # When an application is created, updated, or destroyed a refresh is streamed to "applications"
+  broadcasts # For broadcasting deploys as they come in
 
   accepts_nested_attributes_for :destinations, allow_destroy: true
 

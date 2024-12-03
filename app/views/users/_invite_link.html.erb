@@ -1,10 +1,10 @@
 <div class="column">
   <div class="box">
-    <% if link = InviteLink.active_for_role(role) %>
+    <% if link = current_organization.invite_links.active_for_role(role) %>
       <p class="is-size-6 content">
         Invite a<%= 'n' if role == :admin %>
         <strong class="<%= 'has-text-warning' if role == :admin %>"><%= role %></strong>
-        to Shipyrd
+        to <%= current_organization.name %>
       </p>
 
       <div class="field has-addons">
@@ -44,7 +44,7 @@
 
     <% else %>
       <div class="has-text-centered">
-      <%= button_to "Invite a#{role == :admin ? :n : nil} #{role} to Shipyrd", invite_links_path(invite_link: { role: role }), method: :post, class: "button is-#{role == :admin ? :warning : :light}" %>
+        <%= button_to "Invite a#{role == :admin ? :n : nil} #{role} to #{current_organization.name}", invite_links_path(invite_link: { role: role }), method: :post, class: "button is-#{role == :admin ? :warning : :light}" %>
       </div>
     <% end %>
   </div>

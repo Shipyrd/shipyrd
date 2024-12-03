@@ -1,0 +1,95 @@
+<% application = destination.application %>
+<% deploy = application.latest_deploy(destination: destination.name) %>
+
+<article class="box mb-4">
+  <div class="columns is-mobile">
+
+    <div class="column pb-0">
+      <%= destination_tag(destination) %>
+
+      <% if destination.new_servers_available? %>
+        <span class="icon is-small ml-1">
+          <%= link_to application_destination_path(application, destination), alt: "New servers available!" do %>
+            <i class="fa-solid fa-server <%= destination.new_servers_available? ? "has-text-warning" : nil %>"></i>
+          <% end %>
+        </span>
+      <% end %>
+    </div>
+
+    <div class="column py-0 pr-0 has-text-right">
+
+      <div class="dropdown is-right is-hoverable">
+        <div class="dropdown-trigger">
+          <button class="button is-small" aria-haspopup="true" aria-controls="dropdown-menu">
+            <span class="icon is-small">
+              <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+          <div class="dropdown-content has-text-left">
+            <%= link_to "View", application_destination_path(application, destination), class: "dropdown-item" %>
+            <%= link_to "Edit", edit_application_destination_path(application, destination), class: "dropdown-item" %>
+            <hr class="dropdown-divider" />
+            <%= link_to "Run command", new_application_destination_runner_path(application, destination), class: "dropdown-item" %>
+            <%= link_to "View logs", new_application_destination_runner_path(application, destination, command: "app logs"), class: "dropdown-item" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <% if deploy %>
+
+    <div class="mt-3 p-0 columns is-mobile">
+
+      <div class="column py-0">
+        <em><%= deploy.status%></em>
+      </div>
+
+      <div class="column py-0 has-text-right">
+        <time class="timeago" datetime="<%= deploy.recorded_at %>">
+          <%= time_ago_in_words(deploy.recorded_at) %> ago
+        </time>
+        <% if deploy.runtime.present? %>
+          /
+          <%= deploy.runtime %>s
+        <% end %>
+      </div>
+
+    </div>
+
+    <progress class="mb-2 progress <%= application_status_color(deploy.status) %>" id="status" max="4" value="<%= deploy.progress_value %>"></progress>
+
+    <div class="mt-2 columns">
+
+      <div class="column pt-1 is-three-fifths">
+        <small>
+          <em><%= sanitize display_commit_message(deploy.commit_message, application), tags: %w(a), attributes: %w(href) %></em>
+        </small>
+      </div>
+
+      <div class="column pt-1 is-two-fifths has-text-right">
+        <% if destination.on_deck_url.present? %>
+          <%= link_to "On Deck", destination.on_deck_url, target: "_blank", class: "mr-3 button is-success is-light is-small" %>
+        <% end %>
+
+        <% if deploy.compare_url.present? %>
+          <%= link_to "Compare changes", deploy.compare_url, target: "_blank", class: "mr-3 button is-info is-small has-text-white" %>
+        <% end %>
+
+        <% if deploy.performer_avatar %>
+          <figure class="image is-32x32 is-pulled-right">
+            <%= image_tag deploy.performer_avatar, width: 32, class: "is-rounded" %>
+          </figure>
+        <% else %>
+          <small>by <%= deploy.performer %></small>
+        <% end %>
+      </div>
+
+    </div>
+
+  <% end %>
+</article>
+

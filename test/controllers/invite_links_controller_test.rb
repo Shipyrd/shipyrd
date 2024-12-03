@@ -6,14 +6,20 @@ class InviteLinksControllerTest < ActionDispatch::IntegrationTest
     it "denies access" do
       post invite_links_url, params: {invite_link: {role: :user}}
 
-      assert_response :unauthorized
+      assert_response 302
     end
   end
 
   describe "authenticated" do
+    setup do
+      @organization = create(:organization)
+    end
+
     describe "user" do
       setup do
         @user = create(:user)
+        @organization.memberships.create(user: @user)
+
         sign_in(@user.email, @user.password)
       end
 
@@ -28,7 +34,8 @@ class InviteLinksControllerTest < ActionDispatch::IntegrationTest
 
     describe "admin" do
       setup do
-        @user = create(:user, role: :admin)
+        @user = create(:user)
+        @organization.memberships.create(user: @user, role: :admin)
         sign_in(@user.email, @user.password)
       end
 
@@ -47,7 +54,7 @@ class InviteLinksControllerTest < ActionDispatch::IntegrationTest
       end
 
       test "should deactivate invite_link" do
-        @invite_link = create(:invite_link)
+        @invite_link = create(:invite_link, organization: @organization)
         delete invite_link_url(@invite_link)
 
         assert @invite_link.reload.deactivated?

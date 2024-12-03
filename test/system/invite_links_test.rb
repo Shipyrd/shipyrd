@@ -2,36 +2,25 @@ require "application_system_test_case"
 
 class InviteLinksTest < ApplicationSystemTestCase
   test "should create and destroy invite link" do
-    # First login is via API key
-    ApiKey.create!
+    @user = create(:user)
+    @organization = create(:organization)
+    @organization.memberships.create(user: @user, role: :admin)
 
-    url = URI.parse(root_url)
-    url.userinfo = ":#{ApiKey.first.token}"
-
-    visit url
-
-    find(".navbar-item.has-dropdown").hover
-    click_on "Users"
-
-    # First invite should go to an admin
-    refute_text "Invite a user to Shipyrd"
-    click_on "Invite an admin to Shipyrd"
-
-    assert_text "Invite link was successfully created"
-    assert_field "invite_link_code_admin", with: new_user_url(code: InviteLink.active_for_role(:admin).code)
-
-    @user = create(:user, role: :admin)
     sign_in_as(@user.email, @user.password)
 
-    # Now that an admin has logged in, we can invite regular users
     visit users_url
-    click_on "Invite a user to Shipyrd"
+
+    click_on "Invite a user to #{@organization.name}"
 
     assert_text "Invite link was successfully created"
-    assert_field "invite_link_code_user", with: new_user_url(code: InviteLink.active_for_role(:user).code)
+    assert_field "invite_link_code_user", with: new_user_url(code: @organization.invite_links.active_for_role(:user).code)
 
     click_on "Deactivate user invite link"
     assert_text "Invite link was successfully deactivated"
+
+    click_on "Invite an admin to #{@organization.name}"
+    assert_text "Invite link was successfully created"
+    assert_field "invite_link_code_admin", with: new_user_url(code: @organization.invite_links.active_for_role(:admin).code)
 
     click_on "Deactivate admin invite link"
     assert_text "Invite link was successfully deactivated"

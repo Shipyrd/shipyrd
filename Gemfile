@@ -8,18 +8,19 @@ gem "bootsnap", require: false
 gem "dotenv-rails"
 gem "kamal"
 gem "puma", ">= 5.0"
+gem "mysql2", "~> 0.5.6"
 gem "rails", "~> 8.0.0"
-gem "sqlite3", "~> 2.1.0"
+gem "rails_semantic_logger"
 
 # Assets
 gem "propshaft"
 gem "importmap-rails"
-gem "turbo-rails", "= 2.0.7"
+gem "turbo-rails"
 gem "stimulus-rails"
 
 # 3rd Party
 gem "github_api"
-gem "honeybadger", require: false
+gem "honeybadger"
 
 # Jobs/Cable
 gem "mission_control-jobs"
@@ -30,6 +31,7 @@ gem "solid_queue"
 gem "jbuilder"
 gem "sshkey"
 gem "tty-command"
+gem "validate_url"
 
 group :development, :test do
   gem "brakeman"
@@ -53,10 +55,10 @@ end
 
 group :test do
   gem "capybara"
+  gem "selenium-webdriver"
+  gem "webdrivers"
   gem "launchy"
   gem "minitest-spec-rails"
   gem "mocha"
-  gem "selenium-webdriver"
-  gem "webdrivers"
   gem "webmock"
 end
