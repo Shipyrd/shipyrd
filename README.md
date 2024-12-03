@@ -71,10 +71,13 @@ Next, you'll need to add the Shipyrd trigger to each hook in your Kamal setup.
 
 If you're already using any of these hooks just place the below code in the hook at the point of success within the hook. If you're creating new hooks for all of these make sure that you make them all executable with `chmod +x .kamal/hooks/pre-connect` for example.
 
+The Shipyrd gem loads your API key from <code>ENV['SHIPYRD_API_KEY']</code> automatically. You can make this available to your current shell process or use something like the <code>dotenv</code> gem to automatically load the value from your <code>.env</code> file.
+
 *.kamal/hooks/pre-connect*
 ``` ruby
 #!/usr/bin/env ruby
 
+require 'dotenv/load'
 require 'shipyrd'
 
 Shipyrd::Client.new.trigger('pre-connect')
@@ -84,6 +87,7 @@ Shipyrd::Client.new.trigger('pre-connect')
 ``` ruby
 #!/usr/bin/env ruby
 
+require 'dotenv/load'
 require 'shipyrd'
 
 Shipyrd::Client.new.trigger('pre-build')
@@ -93,6 +97,7 @@ Shipyrd::Client.new.trigger('pre-build')
 ``` ruby
 #!/usr/bin/env ruby
 
+require 'dotenv/load'
 require 'shipyrd'
 
 Shipyrd::Client.new.trigger('pre-deploy')
@@ -102,6 +107,7 @@ Shipyrd::Client.new.trigger('pre-deploy')
 ``` ruby
 #!/usr/bin/env ruby
 
+require 'dotenv/load'
 require 'shipyrd'
 
 Shipyrd::Client.new.trigger('post-deploy')
