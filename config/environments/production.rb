@@ -43,7 +43,6 @@ Rails.application.configure do
   $stdout.sync = true
   config.rails_semantic_logger.add_file_appender = false
   config.semantic_logger.add_appender(io: $stdout, formatter: config.rails_semantic_logger.format)
-  config.logger = ActiveSupport::TaggedLogging.logger($stdout)
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
