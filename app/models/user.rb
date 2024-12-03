@@ -9,7 +9,8 @@ class User < ApplicationRecord
   has_secure_password validations: false
   validates :password, length: {minimum: 10, maximum: 72}, if: -> { password.present? }
 
-  validates :username, allow_blank: true, uniqueness: true, url: {no_local: true}
+  validates :username, allow_blank: true, url: {no_local: true}
+  validates :email, uniqueness: true, presence: true, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i}
 
   after_create_commit :queue_populate_avatar
 
