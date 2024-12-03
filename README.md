@@ -36,6 +36,7 @@ accessories:
     host: 867.530.9
     proxy:
       host: shipyrd.myapp.com
+      ssl: true
     env:
       secret:
         - SHIPYRD_HOST

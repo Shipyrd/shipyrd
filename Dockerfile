@@ -58,6 +58,9 @@ ENV SOLID_QUEUE_IN_PUMA=$SOLID_QUEUE_IN_PUMA
 ARG COMMUNITY_EDITION=1
 ENV COMMUNITY_EDITION=$COMMUNITY_EDITION
 
+ARG PORT=80
+ENV PORT=$PORT
+
 # Install packages needed for deployment
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
@@ -83,5 +86,5 @@ USER rails:rails
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
+EXPOSE $PORT
 CMD ["./bin/rails", "server"]
