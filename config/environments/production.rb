@@ -70,9 +70,9 @@ Rails.application.configure do
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   config.hosts = [
-    ENV["SHIPYRD_HOST"], # Allow requests from the configured host
-    ENV["SHIPYRD_HOOKS_HOST"]
+    ENV["SHIPYRD_HOST"] # Allow requests from the configured host
   ]
+  config.hosts += [ENV["SHIPYRD_HOOKS_HOST"]] if ENV["SHIPYRD_HOOKS_HOST"]
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   config.host_authorization = {exclude: ->(request) { request.path == "/up" }}
