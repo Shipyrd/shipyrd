@@ -21,7 +21,11 @@ class UserTest < ActiveSupport::TestCase
   end
 
   it "github_username" do
-    user = build(:user, username: "https://github.com/nick")
+    user = build(:user, username: "https://gitlab.com/nick")
+
+    refute user.github_username
+
+    user.username = "https://github.com/nick"
 
     assert_equal "nick", user.github_username
   end

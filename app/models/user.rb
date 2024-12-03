@@ -30,6 +30,8 @@ class User < ApplicationRecord
   end
 
   def github_username
+    return unless github_user?
+
     username.split("/").last
   end
 
