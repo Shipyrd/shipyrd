@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   before_action :authenticate
 
-  helper_method :current_user, :current_organization, :require_admin, :current_admin?, :community_edition?
+  helper_method :current_user, :current_organization, :require_admin, :current_admin?, :community_edition?, :runners_enabled?
 
   def current_user
     return nil if cookies.signed[:user_id].blank?
@@ -27,6 +27,10 @@ class ApplicationController < ActionController::Base
 
   def community_edition?
     ENV["COMMUNITY_EDITION"] != "0"
+  end
+
+  def runners_enabled?
+    ENV["RUNNERS_ENABLED"] == "1"
   end
 
   private
