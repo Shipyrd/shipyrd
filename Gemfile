@@ -10,6 +10,7 @@ gem "kamal"
 gem "puma", ">= 5.0"
 gem "mysql2", "~> 0.5.6"
 gem "rails", "~> 8.0.0"
+gem "rails_semantic_logger"
 
 # Assets
 gem "propshaft"
