@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_03_170410) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_03_174316) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -141,7 +141,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_03_170410) do
     t.string "password_digest"
     t.boolean "system_admin"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["username"], name: "index_users_on_username", unique: true
+    t.index ["username"], name: "index_users_on_username"
   end
 
   add_foreign_key "connections", "applications"
