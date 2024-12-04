@@ -21,6 +21,22 @@ class DestinationsController < ApplicationController
     end
   end
 
+  def lock
+    @destination.lock!(current_user)
+
+    respond_to do |format|
+      format.html { redirect_to root_path }
+    end
+  end
+
+  def unlock
+    @destination.unlock!
+
+    respond_to do |format|
+      format.html { redirect_to root_path }
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

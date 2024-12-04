@@ -49,3 +49,7 @@ progress.green {
     color: #303030;
   }
 }
+
+#destination-buttons.buttons {
+  gap: 0.5rem;
+}

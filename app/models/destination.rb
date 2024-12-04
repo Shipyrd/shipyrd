@@ -1,5 +1,6 @@
 class Destination < ApplicationRecord
   belongs_to :application, optional: true, touch: true
+  belongs_to :locker, class_name: "User", optional: true, foreign_key: :locked_by_user_id
   has_many :deploys, through: :application
   has_many :servers, dependent: :destroy
   has_many :runners, dependent: :destroy
@@ -21,6 +22,24 @@ class Destination < ApplicationRecord
 
   def recipe_name
     "deploy#{name.present? ? ".#{name}" : nil}.yml"
+  end
+
+  def locked?
+    locked_at.present?
+  end
+
+  def lock!(user)
+    update!(
+      locked_at: Time.current,
+      locker: user
+    )
+  end
+
+  def unlock!
+    update!(
+      locked_at: nil,
+      locker: nil
+    )
   end
 
   def on_deck_url

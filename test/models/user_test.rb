@@ -2,7 +2,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   it "display_name" do
-    user = build(:user, username: "username")
+    user = build(:user, username: "https://github.com/username")
 
     assert_equal "username", user.display_name
 
