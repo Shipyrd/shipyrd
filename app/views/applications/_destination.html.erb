@@ -17,27 +17,45 @@
     </div>
 
     <div class="column py-0 pr-0 has-text-right">
+      <div id="destination-buttons" class="buttons is-pulled-right is-0">
 
-      <div class="dropdown is-right is-hoverable">
-        <div class="dropdown-trigger">
-          <button class="button is-small" aria-haspopup="true" aria-controls="dropdown-menu">
+        <% if destination.locked? %>
+          <small class="is-size-7">Locked by <strong><%= destination.locker.display_name %></strong> <%= time_ago_in_words(destination.locked_at) %> ago</small>
+          <%= button_to unlock_application_destination_path(application, destination), method: :patch, title: "Unlock", class: "button is-small is-warning" do %>
             <span class="icon is-small">
-              <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+              <i class="fa-solid fa-lock" aria-hidden="true"></i>
             </span>
-          </button>
-        </div>
-        <div class="dropdown-menu" id="dropdown-menu" role="menu">
-          <div class="dropdown-content has-text-left">
-            <%= link_to "View", application_destination_path(application, destination), class: "dropdown-item" %>
-            <%= link_to "Edit", edit_application_destination_path(application, destination), class: "dropdown-item" %>
+          <% end %>
+        <% else %>
+          <%= button_to lock_application_destination_path(application, destination), method: :patch, title: "Lock", class: "button is-small" do %>
+            <span class="icon is-small">
+              <i class="fa-solid fa-lock-open" aria-hidden="true"></i>
+            </span>
+          <% end %>
+        <% end %>
 
-            <% if runners_enabled? %>
-              <hr class="dropdown-divider" />
-              <%= link_to "Run command", new_application_destination_runner_path(application, destination), class: "dropdown-item" %>
-              <%= link_to "View logs", new_application_destination_runner_path(application, destination, command: "app logs"), class: "dropdown-item" %>
-            <% end %>
+        <div class="dropdown is-right is-hoverable">
+          <div class="dropdown-trigger">
+            <button class="button is-small" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span class="icon is-small">
+                <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content has-text-left">
+              <%= link_to "View", application_destination_path(application, destination), class: "dropdown-item" %>
+              <%= link_to "Edit", edit_application_destination_path(application, destination), class: "dropdown-item" %>
+
+              <% if runners_enabled? %>
+                <hr class="dropdown-divider" />
+                <%= link_to "Run command", new_application_destination_runner_path(application, destination), class: "dropdown-item" %>
+                <%= link_to "View logs", new_application_destination_runner_path(application, destination, command: "app logs"), class: "dropdown-item" %>
+              <% end %>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
 

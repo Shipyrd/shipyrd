@@ -19,11 +19,17 @@ class User < ApplicationRecord
   attr_accessor :organization_name
 
   def display_name
-    username || name
+    display_username || name
   end
 
   def first_letter
     display_name.first
+  end
+
+  def display_username
+    return github_username if github_user?
+
+    username
   end
 
   def github_user?

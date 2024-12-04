@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   resources :applications do
     resources :connections
     resources :destinations do
+      member do
+        patch 'lock'
+        patch 'unlock'
+      end
       resources :runners
     end
   end

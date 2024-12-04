@@ -19,6 +19,23 @@ class DestinationTest < ActiveSupport::TestCase
     end
   end
 
+  it "lock/unlock" do
+    destination = create(:destination, application: @application)
+    user = create(:user)
+
+    destination.lock!(user)
+
+    assert destination.locked?
+    assert_equal user, destination.locker
+    assert destination.locked_at
+
+    destination.unlock!
+
+    refute destination.locked?
+    refute destination.locker
+    refute destination.locked_at
+  end
+
   describe "on_deck_url" do
     it "is nil if hasn't been successfully deployed" do
       create(:deploy,

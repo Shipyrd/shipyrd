@@ -50,5 +50,26 @@ class DestinationsTest < ApplicationSystemTestCase
         assert_text "Last connected 2 minutes ago"
       end
     end
+
+    test "locking/unlocking a destination" do
+      create(
+        :deploy,
+        application: @application,
+        service_version: "potato@123456",
+        command: :deploy,
+        status: "post-deploy",
+        version: "123456"
+      )
+
+      visit root_url
+
+      click_on "Lock"
+
+      assert_text "Locked by #{@user.display_username}"
+
+      click_on "Unlock"
+
+      refute_text "Locked by"
+    end
   end
 end
