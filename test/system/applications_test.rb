@@ -15,11 +15,11 @@ class ApplicationsTest < ApplicationSystemTestCase
     it "points to setup instructions" do
       visit new_application_path
 
-      assert_text "Create an application"
+      assert_text "Add an application"
       fill_in "Name", with: build(:application).name
       fill_in "Repository URL", with: "https://github.com/user/repo"
 
-      click_on "Create Application"
+      click_on "Add application"
 
       assert_text "Application was successfully created"
 
