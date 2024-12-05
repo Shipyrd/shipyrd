@@ -34,16 +34,26 @@
 <section class="block content">
   <h4 class="is-size-4">2. Configure the Shipyrd API key</h4>
   <p>
-    The Shipyrd gem loads your API key from <code>ENV['SHIPYRD_API_KEY']</code> automatically. You can make this available to your
-    current shell process or use something like the <code>dotenv</code> gem to automatically load the value from your <code>.env</code> file. You'll
-    need to install the <code>dotenv</code> gem and create a <code>.env</code> file in your project root with the following content:
+    The Shipyrd gem loads your API key from <code>ENV['SHIPYRD_API_KEY']</code>.
 
-<pre>
-<code id="dotenv_file">SHIPYRD_API_KEY=<%= application.token %></code>
-</pre>
+    With Kamal 2 you can fetch your API key with the secrets helper commands. Create a helper
+    script that'll fetch your API key from your secret store and set it as an environment variable.
+
+<div class="block">
+<code>.kamal/hooks/helpers/shipyrd_api_key.rb</code>
+<pre class="mb-2"><code id="helper_shipyrd_api_key">#!/usr/bin/env ruby
+
+secrets = %x(kamal secrets fetch --adapter 1password --account my.1password.com --from VaultName/common SHIPYRD_API_KEY).strip
+
+ENV['SHIPYRD_API_KEY'] = %x(kamal secrets extract SHIPYRD_API_KEY #{secrets})
+</code></pre>
 <p class="mt-1">
-  <%= render "shared/copy_to_clipboard", target: "#dotenv_file" %>
+  <%= render "shared/copy_to_clipboard", target: "#helper_shipyrd_api_key" %>
 </p>
+
+<p><em>This example utilizes 1Password and assumes you stored your Shipyrd API key(<code><%= application.token %></code>) in a 1Password vault named <code>VaultName</code> within an entry named <code>common</code>. Adjust the <code>kamal secrets fetch</code> command to match your secret store and vault details.</em></p>
+
+</div>
 
 </section>
 
@@ -59,8 +69,8 @@
 <code>.kamal/hooks/<%= hook %></code>
 <pre class="mb-2"><code id="hook_<%= hook %>">#!/usr/bin/env ruby
 
-require 'dotenv/load'
 require 'shipyrd'
+require_relative 'helpers/shipyrd_api_key'
 
 Shipyrd::Client.new.trigger('<%= hook %>')</code></pre>
 <%= render "shared/copy_to_clipboard", target: "#hook_#{hook}" %>
