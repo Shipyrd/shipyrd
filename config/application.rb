@@ -28,6 +28,7 @@ module Shipyrd
     config.active_record.encryption.key_derivation_salt = ENV["SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT"]
 
     config.mission_control.jobs.base_controller_class = "SystemAdminController"
+    config.mission_control.jobs.http_basic_auth_enabled = false
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
