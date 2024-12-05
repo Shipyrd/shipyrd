@@ -405,7 +405,7 @@ GEM
     semantic_logger (4.16.1)
       concurrent-ruby (~> 1.0)
     shellany (0.0.1)
-    solid_cable (3.0.2)
+    solid_cable (3.0.3)
       actioncable (>= 7.2)
       activejob (>= 7.2)
       activerecord (>= 7.2)
