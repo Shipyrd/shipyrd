@@ -53,7 +53,11 @@
       <footer class="mt-4">
         <div class="has-text-centered">
           <p>
-            <%= button_to "Sign out", session_path, method: :delete, class:"is-clickable is-underlined" %>
+            <%= button_to "Sign out", session_path, method: :delete, form_class: "is-inline", class:"has-text-info is-clickable is-underlined" %>
+            <% unless community_edition? %>
+              <span class="has-text-info">&bull;</span>
+              <%= link_to "Contact", "mailto:nick@shipyrd.io", class:"is-inline is-clickable is-underlined has-text-info" %>
+            <% end %>
           </p>
         </div>
       </footer>

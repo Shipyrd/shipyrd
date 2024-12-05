@@ -18,7 +18,11 @@
       <%= form.submit "Sign in", class: "button is-primary" %>
     <% end %>
     <div class="mt-4 field">
-      <%= link_to "Sign up", new_user_path, class: "is-clickable is-underlined" %>
+      <%= link_to "Sign up", new_user_path, class: "is-clickable is-underlined has-text-info" %>
+      <% unless community_edition? %>
+        <span class="has-text-info">&bull;</span>
+        <%= link_to "Contact", "mailto:nick@shipyrd.io", class:"is-inline is-clickable is-underlined has-text-info" %>
+      <% end %>
     </div>
   <div>
 </div>
