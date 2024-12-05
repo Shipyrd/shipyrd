@@ -2,6 +2,8 @@ en:
   helpers:
     submit:
       update: "Update"
+      application:
+        create: "Add application"
 
   activerecord:
     attributes:
