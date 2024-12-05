@@ -43,9 +43,9 @@
 <code>.kamal/hooks/helpers/shipyrd_api_key.rb</code>
 <pre class="mb-2"><code id="helper_shipyrd_api_key">#!/usr/bin/env ruby
 
-secrets = %x(kamal secrets fetch --adapter 1password --account my.1password.com --from VaultName/common SHIPYRD_API_KEY).strip
+secrets = `kamal secrets fetch --adapter 1password --account my.1password.com --from VaultName/common SHIPYRD_API_KEY`.strip
 
-ENV['SHIPYRD_API_KEY'] = %x(kamal secrets extract SHIPYRD_API_KEY #{secrets})
+ENV["SHIPYRD_API_KEY"] = `kamal secrets extract SHIPYRD_API_KEY #{secrets}`
 </code></pre>
 <p class="mt-1">
   <%= render "shared/copy_to_clipboard", target: "#helper_shipyrd_api_key" %>
