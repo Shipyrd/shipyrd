@@ -3,7 +3,9 @@
     <%= render "form", user: @user %>
     <div class="mt-4 field">
       <%= link_to "Sign in", new_session_path, class: "has-text-info is-clickable is-underlined" %>
-      <span class="has-text-info">&bull;</span>
-      <%= link_to "Contact", "mailto:nick@shipyrd.io", class:"is-inline is-clickable is-underlined has-text-info" %>
+      <% unless community_edition? %>
+        <span class="has-text-info">&bull;</span>
+        <%= link_to "Contact", "mailto:nick@shipyrd.io", class:"is-inline is-clickable is-underlined has-text-info" %>
+      <% end %>
   </div>
 </div>
