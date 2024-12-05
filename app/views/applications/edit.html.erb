@@ -1,7 +1,7 @@
 <div>
   <h2 class="mb-4 is-size-2 has-text-weight-medium">
     Editing
-    <%= @application.display_name %>
+    <%= link_to @application.display_name, @application, class: "is-underlined is-clickable" %>
   </h2>
 
   <%= render "form", application: @application %>
