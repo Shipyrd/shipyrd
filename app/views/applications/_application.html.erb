@@ -1,7 +1,7 @@
 <%= turbo_stream_from application %>
 
 <div id="<%= dom_id application %>" class="mb-6">
-  <h2 class="is-size-2 has-text-weight-medium"><%= link_to application.display_name, edit_application_path(application), title: 'Edit this application' %></h2>
+  <h2 class="is-size-2 has-text-weight-medium"><%= link_to application.display_name, application_path(application), title: 'View this application' %></h2>
 
   <%= render partial: "applications/destination", collection: application.destinations %>
 </div>
