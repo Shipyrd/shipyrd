@@ -512,6 +512,7 @@ DEPENDENCIES
   mission_control-jobs
   mocha
   mysql2 (~> 0.5.6)
+  oauth2
   propshaft
   pry
   puma (>= 5.0)

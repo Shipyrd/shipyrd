@@ -10,7 +10,7 @@ gem "kamal"
 gem "puma", ">= 5.0"
 gem "mysql2", "~> 0.5.6"
 gem "rails", "~> 8.0.0"
-gem "rails_semantic_logger"
+gem "rails_semantic_logger", require: false
 
 # Assets
 gem "propshaft"
@@ -21,6 +21,7 @@ gem "stimulus-rails"
 # 3rd Party
 gem "github_api"
 gem "honeybadger"
+gem "oauth2"
 
 # Jobs/Cable
 gem "mission_control-jobs"
