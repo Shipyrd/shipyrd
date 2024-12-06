@@ -27,6 +27,6 @@ class InviteLink < ApplicationRecord
   private
 
   def set_expiration
-    self.expires_at = 3.hours.from_now
+    self.expires_at = 24.hours.from_now
   end
 end

@@ -192,7 +192,7 @@ GEM
       standard
     hashdiff (1.1.2)
     hashie (3.6.0)
-    honeybadger (5.16.0)
+    honeybadger (5.26.0)
       logger
     hotwire-livereload (1.4.1)
       actioncable (>= 6.0.0)
@@ -248,7 +248,7 @@ GEM
     method_source (1.1.0)
     mini_mime (1.1.5)
     minitest (5.25.4)
-    minitest-spec-rails (7.3.0)
+    minitest-spec-rails (7.4.1)
       minitest (>= 5.0)
       railties (>= 4.1)
     mission_control-jobs (1.0.1)
@@ -405,7 +405,7 @@ GEM
     semantic_logger (4.16.1)
       concurrent-ruby (~> 1.0)
     shellany (0.0.1)
-    solid_cable (3.0.2)
+    solid_cable (3.0.3)
       actioncable (>= 7.2)
       activejob (>= 7.2)
       activerecord (>= 7.2)

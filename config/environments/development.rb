@@ -24,7 +24,11 @@ Rails.application.configure do
   # since you don't have to restart the web server when you make code changes.
   config.enable_reloading = true
 
-  config.hosts << "shipyrd.test"
+  # Enable DNS rebinding protection and other `Host` header attacks.
+  config.hosts = [
+    ENV["SHIPYRD_HOST"] # Allow requests from the configured host
+  ]
+  config.hosts += [ENV["SHIPYRD_HOOKS_HOST"]] if ENV["SHIPYRD_HOOKS_HOST"]
 
   # Do not eager load code on boot.
   config.eager_load = false

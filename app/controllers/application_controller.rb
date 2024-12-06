@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  rate_limit to: 30, within: 1.minute
+  rate_limit to: 60, within: 1.minute
 
   before_action :authenticate
 
