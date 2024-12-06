@@ -8,6 +8,11 @@ Rails.application.routes.draw do
   resources :invite_links
   resources :deploys
 
+  namespace :oauth do
+    get "authorize/:provider", action: :authorize, as: :authorize
+    get "callback"
+  end
+
   resources :applications do
     resources :connections
     resources :destinations do

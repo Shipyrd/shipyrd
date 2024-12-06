@@ -19,6 +19,8 @@
   </head>
 
   <body class="container is-max-desktop pb-6 px-4">
+    <%= link_to "Connect Slack", oauth_authorize_path(:slack), class: "button is-primary is-small is-pulled-right" %>
+
     <nav class="navbar py-5" role="navigation" aria-label="main navigation">
       <%= link_to image_tag("logo.png", width: 125), root_url %>
 

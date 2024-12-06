@@ -21,6 +21,7 @@ gem "stimulus-rails"
 # 3rd Party
 gem "github_api"
 gem "honeybadger"
+gem "oauth2"
 
 # Jobs/Cable
 gem "mission_control-jobs"
