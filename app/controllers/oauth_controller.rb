@@ -1,11 +1,12 @@
 class OauthController < ApplicationController
+  before_action :verify_provider, only: %i[authorize callback]
   before_action :set_current_application_id, only: %i[authorize]
 
   def authorize
     auth_url = client.auth_code.authorize_url(
-      scope: OauthToken::SCOPES[params[:provider]],
+      scope: OauthToken::SCOPES[params[:provider].intern],
       state: oauth_session_state,
-      redirect_uri: oauth_callback_url(provider: params[:provider], host: ENV["SHIPYRD_HOST"], protocol: :https)
+      redirect_uri: redirect_uri
     )
 
     redirect_to auth_url, allow_other_host: true
@@ -18,7 +19,8 @@ class OauthController < ApplicationController
       provider: params[:provider],
       code: params[:code],
       application: current_application,
-      user: current_user
+      user: current_user,
+      redirect_uri: redirect_uri
     )
 
     session[:current_application_id] = nil
@@ -26,7 +28,21 @@ class OauthController < ApplicationController
     redirect_to edit_application_url(auth.application)
   end
 
+  def destroy
+    current_organization.oauth_tokens.find(params[:id]).destroy!
+
+    redirect_to edit_application_url(current_application)
+  end
+
   private
+
+  def redirect_uri
+    oauth_callback_url(provider: params[:provider], host: ENV["SHIPYRD_HOST"], protocol: :https)
+  end
+
+  def verify_provider
+    raise "Invalid provider" unless OauthToken.providers.key?(params[:provider])
+  end
 
   def oauth_session_state
     session[:oauth_state] ||= SecureRandom.hex(32)

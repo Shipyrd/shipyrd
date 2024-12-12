@@ -1,28 +1,27 @@
-<article>
-    <% github = @application.connections.find_by(provider: :github) %>
+<% OauthToken.providers.keys.each do |provider| %>
+  <% connection = @application.oauth_tokens.find_by(provider: provider) %>
 
-    <aside class="aside_naked">
-      <% if github %>
-        <span class="icon-text">
-          <%= button_to application_connection_path(@application, github), method: :delete, class: "button is-danger", title: "Disconnect GitHub", data: { turbo_confirm: "Are you sure?" } do %>
-            <span class="icon">
-              <i class="fa-brands fa-github"></i>
-            </span>
-            <span>
-              Disconnect
-            </span>
-          <% end %>
-      <% else %>
-        <span class="icon-text">
-          <%= link_to new_application_connection_path(@application, provider: :github), class: "button is-dark has-text-white", title: "Connect GitHub" do %>
-            <span class="icon">
-              <i class="fa-brands fa-github"></i>
-            </span>
-            <span>
-              Connect to GitHub
-            </span>
-          <% end %>
-        </span>
-      <% end %>
-    </aside>
-</article>
+    <% if connection %>
+      <span class="icon-text">
+        <%= button_to oauth_destroy_url(connection), method: :delete, class: "button is-danger", title: "Disconnect #{provider.to_s.titleize}", data: { turbo_confirm: "Are you sure?" } do %>
+          <span class="icon">
+            <i class="fa-brands fa-<%= provider %>"></i>
+          </span>
+          <span>
+            Disconnect <%= provider.to_s.titleize %>
+          </span>
+        <% end %>
+      </span>
+    <% else %>
+      <span class="icon-text">
+        <%= link_to oauth_authorize_url(provider, application_id: @application.id), class: "button is-dark has-text-white", title: "Connect #{provider}" do %>
+          <span class="icon">
+            <i class="fa-brands fa-<%= provider %>"></i>
+          </span>
+          <span>
+            Connect to <%= provider.to_s.titleize %>
+          </span>
+        <% end %>
+      </span>
+    <% end %>
+<% end %>

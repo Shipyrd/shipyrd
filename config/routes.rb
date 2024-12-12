@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   namespace :oauth do
     get "authorize/:provider", action: :authorize, as: :authorize
     get "callback/:provider", action: :callback, as: :callback
+    delete "destroy/:id", action: :destroy, as: :destroy
   end
 
   resources :applications do

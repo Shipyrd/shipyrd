@@ -30,10 +30,14 @@ class OauthToken < ApplicationRecord
     )
   end
 
-  def self.create_from_oauth_token(provider:, code:, application:, user:)
-    token = oauth2_client(provider).auth_code.get_token(code)
+  def self.create_from_oauth_token(provider:, code:, application:, user:, redirect_uri:)
+    token = oauth2_client(provider).auth_code.get_token(
+      code,
+      redirect_uri: redirect_uri
+    )
 
-    application.create_oauth_token!(
+    application.oauth_tokens.create!(
+      provider: provider,
       organization: application.organization,
       application: application,
       user: user,

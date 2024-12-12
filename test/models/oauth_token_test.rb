@@ -30,7 +30,8 @@ class OauthTokensTest < ActiveSupport::TestCase
       provider: "slack",
       code: "123",
       application: @application,
-      user: @user
+      user: @user,
+      redirect_uri: "https://example.com"
     )
 
     assert_equal @user, authentication.user
