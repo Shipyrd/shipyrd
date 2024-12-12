@@ -1,4 +1,4 @@
-<% OauthToken.providers.keys.each do |provider| %>
+<% OauthToken.configured_providers.each do |provider| %>
   <% connection = @application.oauth_tokens.find_by(provider: provider) %>
 
     <% if connection %>

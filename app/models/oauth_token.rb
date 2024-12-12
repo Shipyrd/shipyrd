@@ -19,6 +19,16 @@ class OauthToken < ApplicationRecord
     slack: "incoming-webhook"
   }
 
+  def self.configured_providers
+    providers.keys.select do |provider|
+      config = provider_configuration(provider)
+
+      next unless config
+
+      config[:client_id].present? && config[:client_secret].present?
+    end
+  end
+
   def self.oauth2_client(provider)
     config = provider_configuration(provider)
 
