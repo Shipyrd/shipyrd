@@ -10,7 +10,7 @@ Rails.application.routes.draw do
 
   namespace :oauth do
     get "authorize/:provider", action: :authorize, as: :authorize
-    get "callback"
+    get "callback/:provider", action: :callback, as: :callback
   end
 
   resources :applications do

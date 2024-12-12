@@ -19,6 +19,7 @@ gem "turbo-rails"
 gem "stimulus-rails"
 
 # 3rd Party
+gem "faraday" # Already required by oauth2 and github_api but using it directly
 gem "github_api"
 gem "honeybadger"
 gem "oauth2"

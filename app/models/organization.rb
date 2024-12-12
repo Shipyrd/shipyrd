@@ -5,6 +5,7 @@ class Organization < ApplicationRecord
   has_many :applications, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
+  has_many :oauth_tokens, dependent: :destroy
 
   def admin?(user)
     memberships.exists?(user: user, role: :admin)

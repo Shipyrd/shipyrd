@@ -1,37 +1,46 @@
 class OauthController < ApplicationController
+  before_action :set_current_application_id, only: %i[authorize]
+
   def authorize
-    client ||= OAuth2::Client.new(
-      ENV["SHIPYRD_SLACK_CLIENT_ID"],
-      ENV["SHIPYRD_SLACK_SECRET"],
-      site: "https://slack.com",
-      token_url: "/api/oauth.access"
+    auth_url = client.auth_code.authorize_url(
+      scope: OauthToken::SCOPES[params[:provider]],
+      state: oauth_session_state,
+      redirect_uri: oauth_callback_url(provider: params[:provider], host: ENV["SHIPYRD_HOST"], protocol: :https)
     )
 
-    # TODO: Store state param, pass that with setup and verify on
-    # callback
-    params = {
-      scope: "incoming-webhook",
-      # bot_scope: 'chat:write,channels:join,chat:write.public',
-      state: "this-is-state", # Store this on the org
-      redirect_uri: oauth_callback_url(host: ENV["SHIPYRD_HOST"], protocol: :https)
-    }
-
-    redirect_to client.auth_code.authorize_url(params), allow_other_host: true
+    redirect_to auth_url, allow_other_host: true
   end
 
   def callback
-    client ||= OAuth2::Client.new(
-      ENV["SHIPYRD_SLACK_CLIENT_ID"],
-      ENV["SHIPYRD_SLACK_SECRET"],
-      site: "https://slack.com",
-      token_url: "/api/oauth.access"
+    raise "Invalid state" if oauth_session_state != params[:state]
+
+    auth = OauthToken.create_from_oauth_token(
+      provider: params[:provider],
+      code: params[:code],
+      application: current_application,
+      user: current_user
     )
 
-    client.auth_code.get_token(
-      params[:code],
-      redirect_uri: oauth_callback_url(host: ENV["SHIPYRD_HOST"], protocol: :https)
-    )
+    session[:current_application_id] = nil
 
-    redirect_to root_url
+    redirect_to edit_application_url(auth.application)
+  end
+
+  private
+
+  def oauth_session_state
+    session[:oauth_state] ||= SecureRandom.hex(32)
+  end
+
+  def set_current_application_id
+    session[:current_application_id] ||= current_organization.applications.find(params[:application_id]).id
+  end
+
+  def current_application
+    current_organization.applications.find(session[:current_application_id])
+  end
+
+  def client
+    OauthToken.oauth2_client(params[:provider])
   end
 end
