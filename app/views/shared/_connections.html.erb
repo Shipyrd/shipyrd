@@ -1,6 +1,8 @@
-<% if @application.channels.present? %>
+<% owner_type = owner.class.to_s %>
 
-  <% @application.channels.each do |channel| %>
+<% if channels.present? %>
+
+  <% channels.each do |channel| %>
     <% icon = channel_icon(channel.channel_type) %>
 
     <div class="box">
@@ -36,7 +38,7 @@
             <% end %>
           </span>
 
-          <%= link_to "Edit", edit_application_channel_path(@application, channel), class: "button is-link has-text-white", alt: "Edit #{channel.channel_type} channel" %>
+          <%= link_to "Edit", edit_channel_path(channel), class: "button is-link has-text-white", alt: "Edit #{channel.channel_type} channel"%>
 
         </div>
 
@@ -48,10 +50,10 @@
 
 <h5 class="is-size-5">Add a connection</h5>
 
-<% Channel.available_channels.each do |provider| %>
+<% Channel.available_channels(owner_type).each do |provider| %>
 
   <span class="icon-text">
-    <%= link_to oauth_authorize_url(provider, application_id: @application.id), class: "button is-dark has-text-white", title: "Connect #{provider}" do %>
+    <%= link_to oauth_authorize_url(provider, application_id: (owner.id if owner_type == "Application")), class: "button is-dark has-text-white", title: "Connect #{provider}" do %>
       <span class="icon">
         <i class="<%= channel_icon(provider) %>"></i>
       </span>

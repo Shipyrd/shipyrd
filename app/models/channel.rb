@@ -1,6 +1,9 @@
 class Channel < ApplicationRecord
+  belongs_to :organization
   belongs_to :owner, polymorphic: true
   belongs_to :oauth_token, optional: true, dependent: :destroy
+
+  scope :ownerless, -> { where(owner: nil) }
 
   enum :channel_type, {
     github: 1,
@@ -16,14 +19,21 @@ class Channel < ApplicationRecord
     organization: %w[user_joins admin_joins]
   }
 
-  def self.available_channels
+  def self.available_channels(owner_type)
     channels = []
 
-    channels << :github if OauthToken.configured_providers.include?("github")
-    channels << :slack if OauthToken.configured_providers.include?("slack")
-    # channels << :webhook TODO
+    channels << :webhook
+
+    if owner_type == "Application"
+      channels << :github if OauthToken.configured_providers.include?("github")
+      channels << :slack if OauthToken.configured_providers.include?("slack")
+    end
 
     channels
+  end
+
+  def event_scope
+    owner_type.underscore.intern
   end
 
   def display_name

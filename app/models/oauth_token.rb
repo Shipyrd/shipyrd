@@ -5,7 +5,7 @@ class OauthToken < ApplicationRecord
 
   belongs_to :user
   belongs_to :organization
-  belongs_to :application
+  belongs_to :application, optional: true
   has_many :channels, dependent: :destroy
 
   enum :provider, {
@@ -24,9 +24,10 @@ class OauthToken < ApplicationRecord
 
   def create_channel
     channels.create!(
+      organization: organization,
       owner: application,
       channel_type: provider,
-      events: Channel::EVENTS[:application]
+      events: Channel::EVENTS[application.present? ? :application : :organization]
     )
   end
 

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resource :session
   resources :invite_links
   resources :deploys
+  resources :channels, only: %i[edit update]
 
   namespace :oauth do
     get "authorize/:provider", action: :authorize, as: :authorize
@@ -17,7 +18,6 @@ Rails.application.routes.draw do
 
   resources :applications do
     resources :connections
-    resources :channels
     resources :destinations do
       member do
         patch "lock"

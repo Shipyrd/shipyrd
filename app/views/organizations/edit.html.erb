@@ -8,10 +8,9 @@
     </div>
   </div>
 
-  # TODO
   <h3 class="is-size-3 mt-4">Connections</h3>
 
-  <%= render "connections" %>
+  <%= render "shared/connections", channels: @organization.channels.ownerless, owner: @organization  %>
 
   <hr>
 
