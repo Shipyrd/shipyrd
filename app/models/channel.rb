@@ -9,7 +9,7 @@ class Channel < ApplicationRecord
   }
 
   serialize :events, coder: JSON
-  normalizes :events, with: ->(events) { events.reject(&:blank?) }
+  normalizes :events, with: ->(events) { events.compact_blank }
 
   EVENTS = {
     application: %w[deploy lock],
