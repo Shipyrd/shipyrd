@@ -14,7 +14,7 @@
 
   <h3 class="is-size-3 mt-4">Connections</h3>
 
-  <%= render "connections/connections" %>
+  <%= render "connections" %>
 
   <hr>
 
@@ -22,7 +22,7 @@
 
   <% @application.destinations.each do |destination| %>
     <div class="box">
-      <div class="columns">
+      <div class="columns is-vcentered">
         <div class="column">
           <%= destination_tag(destination) %>
           <%= pluralize(destination.servers_count, "server") %>

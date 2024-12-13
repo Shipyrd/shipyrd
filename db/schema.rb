@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_06_223135) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_12_181913) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -27,6 +27,18 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_06_223135) do
     t.bigint "organization_id"
     t.index ["organization_id"], name: "index_applications_on_organization_id"
     t.index ["token"], name: "index_applications_on_token", unique: true
+  end
+
+  create_table "channels", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "channel_type"
+    t.text "events"
+    t.string "owner_type"
+    t.integer "owner_id"
+    t.integer "oauth_token_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["oauth_token_id"], name: "index_channels_on_oauth_token_id"
+    t.index ["owner_type", "owner_id"], name: "index_channels_on_owner_type_and_owner_id"
   end
 
   create_table "connections", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

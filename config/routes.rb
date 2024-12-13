@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   resources :applications do
     resources :connections
+    resources :channels
     resources :destinations do
       member do
         patch "lock"

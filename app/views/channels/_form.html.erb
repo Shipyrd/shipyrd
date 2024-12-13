@@ -1,0 +1,17 @@
+<%= form_with(model: [channel.owner, channel], class: "contents") do |form| %>
+  <%= render "shared/errors", form: form %>
+
+  <%= form.collection_check_boxes :events, Channel::EVENTS[:application].map { |e| [e.to_s, label_for_channel_event_type(channel.owner_type, e.intern)] }, :first, :second do |b| %>
+    <div class="field">
+      <%= b.label(class: "checkbox") do %>
+        <%= b.checkbox(class: "mr-2") + b.text %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="field mt-5">
+    <div class="control">
+      <%= form.submit class: "button is-primary" %>
+    </div>
+  </div>
+<% end %>

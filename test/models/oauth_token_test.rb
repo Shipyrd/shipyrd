@@ -7,6 +7,21 @@ class OauthTokensTest < ActiveSupport::TestCase
     @user = create(:user)
   end
 
+  test "creates a channel" do
+    token = OauthToken.create!(
+      organization: @organization,
+      user: @user,
+      application: @application,
+      provider: :slack
+    )
+
+    channel = token.channels.first
+
+    assert_equal @application, channel.owner
+    assert_equal "slack", channel.channel_type
+    assert_equal Channel::EVENTS[:application], channel.events
+  end
+
   test "creates an oauth token" do
     token = OAuth2::AccessToken.from_hash(
       OauthToken.oauth2_client("slack"),

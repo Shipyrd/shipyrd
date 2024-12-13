@@ -6,6 +6,7 @@ class OauthToken < ApplicationRecord
   belongs_to :user
   belongs_to :organization
   belongs_to :application
+  has_many :channels, dependent: :destroy
 
   enum :provider, {
     github: 0,
@@ -14,10 +15,20 @@ class OauthToken < ApplicationRecord
 
   serialize :extra_data, coder: JSON
 
+  after_create :create_channel
+
   SCOPES = {
     # incoming-webhook => "identify,incoming-webhook,chat:write:bot"
     slack: "incoming-webhook"
   }
+
+  def create_channel
+    channels.create!(
+      owner: application,
+      channel_type: provider,
+      events: Channel::EVENTS[:application]
+    )
+  end
 
   def self.configured_providers
     providers.keys.select do |provider|
