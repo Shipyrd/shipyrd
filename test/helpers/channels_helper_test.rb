@@ -1,4 +1,4 @@
-require 'test_helper'
+require "test_helper"
 
 class ChannelsHelperTest < ActionView::TestCase
   test "channel_icon returns correct icon for webhook" do

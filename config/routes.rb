@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
   resources :users
+  resources :organizations, only: %i[edit update]
   resource :session
   resources :invite_links
   resources :deploys
