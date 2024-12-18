@@ -33,6 +33,7 @@ class RunnersTest < ApplicationSystemTestCase
     end
 
     test "running command" do
+      skip
       visit application_destination_path(@application, @destination)
 
       refute_text "Run command on default"

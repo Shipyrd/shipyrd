@@ -1,3 +1,9 @@
+<h2 class="mb-4 is-size-2 has-text-weight-medium">
+  Adding a webhook to
+  <%= link_to @application.display_name, @application, class: "is-underlined is-clickable" %>
+</h2>
+
+
 <%= form_with(model: [@application, @webhook], class: "contents") do |form| %>
   <%= render "shared/errors", form: form %>
 
