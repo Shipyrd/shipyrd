@@ -139,29 +139,6 @@ class ApplicationsTest < ApplicationSystemTestCase
       assert_text "Application was successfully updated"
     end
 
-    test "connecting GitHub" do
-      visit edit_application_url(@application)
-
-      fill_in "Repository URL", with: "https://github.com/kevin/bacon"
-      click_on "Update"
-
-      click_link "Connect to GitHub"
-
-      Connection.any_instance.stubs(:connects_successfully)
-      Connection.any_instance.stubs(:import_deploy_recipes)
-
-      fill_in "connection_key", with: "key-from-github"
-      click_on "Connect to GitHub"
-
-      assert_text "Connection was successfully created."
-
-      accept_confirm do
-        click_on "Disconnect GitHub"
-      end
-
-      assert_text "Connection was successfully destroyed."
-    end
-
     test "should destroy Application" do
       visit edit_application_url(@application)
 

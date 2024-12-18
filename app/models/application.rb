@@ -3,7 +3,6 @@ class Application < ApplicationRecord
 
   belongs_to :organization, counter_cache: true
   has_many :deploys, dependent: :destroy, inverse_of: "application"
-  has_many :connections, dependent: :destroy
   has_many :oauth_tokens, dependent: :destroy
   has_many :channels, dependent: :destroy
   has_many :webhooks, dependent: :destroy
@@ -54,9 +53,5 @@ class Application < ApplicationRecord
 
   def repository_username
     repository_url.split("/").slice(-2)
-  end
-
-  def github_connection
-    connections.find_by(provider: "github")
   end
 end

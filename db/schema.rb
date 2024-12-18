@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_13_050348) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_18_113602) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -39,16 +39,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_13_050348) do
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_channels_on_application_id"
     t.index ["owner_type", "owner_id"], name: "index_channels_on_owner"
-  end
-
-  create_table "connections", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "provider"
-    t.text "key"
-    t.datetime "last_connected_at"
-    t.bigint "application_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["application_id"], name: "index_connections_on_application_id"
   end
 
   create_table "deploys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -184,7 +174,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_13_050348) do
   end
 
   add_foreign_key "channels", "applications"
-  add_foreign_key "connections", "applications"
   add_foreign_key "destinations", "applications"
   add_foreign_key "invite_links", "users", column: "creator_id"
   add_foreign_key "memberships", "organizations"

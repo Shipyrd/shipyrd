@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   resources :applications do
     resources :channels, only: %i[edit update destroy]
     resources :webhooks, only: %i[new create]
-    resources :connections
     resources :destinations do
       member do
         patch "lock"
