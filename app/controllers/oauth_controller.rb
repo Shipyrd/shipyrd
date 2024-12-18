@@ -28,12 +28,6 @@ class OauthController < ApplicationController
     redirect_to edit_application_url(auth.application)
   end
 
-  def destroy
-    current_organization.oauth_tokens.find(params[:id]).destroy!
-
-    redirect_to edit_application_url(current_application)
-  end
-
   private
 
   def redirect_uri

@@ -1,5 +1,4 @@
 class Channel < ApplicationRecord
-  belongs_to :organization
   belongs_to :application
   belongs_to :owner, polymorphic: true, dependent: :destroy
 
@@ -15,8 +14,7 @@ class Channel < ApplicationRecord
   normalizes :events, with: ->(events) { events.compact_blank }
 
   EVENTS = {
-    application: %w[deploy lock],
-    organization: %w[user_joins admin_joins]
+    application: %w[deploy lock]
   }
 
   def self.available_channels(owner_type)

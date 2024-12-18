@@ -28,7 +28,7 @@
         <div class="column has-text-right">
 
           <span class="icon-text">
-            <%= button_to channel_url(channel), method: :delete, class: "button is-danger", title: "Disconnect #{channel.display_name}", data: { turbo_confirm: "Are you sure?" } do %>
+            <%= button_to application_channel_url(owner, channel), method: :delete, class: "button is-danger", title: "Disconnect #{channel.display_name}", data: { turbo_confirm: "Are you sure?" } do %>
               <span class="icon">
                 <i class="<%= icon %>"></i>
               </span>
@@ -38,7 +38,7 @@
             <% end %>
           </span>
 
-          <%= link_to "Edit", edit_channel_path(channel), class: "button is-link has-text-white", alt: "Edit #{channel.channel_type} channel"%>
+          <%= link_to "Edit", edit_application_channel_path(owner, channel), class: "button is-link has-text-white", alt: "Edit #{channel.channel_type} channel"%>
 
         </div>
 

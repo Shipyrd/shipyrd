@@ -4,7 +4,6 @@ class OauthToken < ApplicationRecord
   encrypts :extra_data
 
   belongs_to :user
-  belongs_to :organization
   belongs_to :application
   has_one :channel, as: :owner, dependent: :destroy
 
@@ -24,10 +23,9 @@ class OauthToken < ApplicationRecord
 
   def create_channel
     create_channel!(
-      organization: organization,
       application: application,
       channel_type: provider,
-      events: Channel::EVENTS[application.present? ? :application : :organization]
+      events: Channel::EVENTS[:application]
     )
   end
 
@@ -60,7 +58,6 @@ class OauthToken < ApplicationRecord
 
     application.oauth_tokens.create!(
       provider: provider,
-      organization: application.organization,
       application: application,
       user: user,
       token: token.token,

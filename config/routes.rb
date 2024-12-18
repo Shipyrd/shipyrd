@@ -8,15 +8,14 @@ Rails.application.routes.draw do
   resource :session
   resources :invite_links
   resources :deploys
-  resources :channels, only: %i[edit update destroy]
 
   namespace :oauth do
     get "authorize/:provider", action: :authorize, as: :authorize
     get "callback/:provider", action: :callback, as: :callback
-    delete "destroy/:id", action: :destroy, as: :destroy
   end
 
   resources :applications do
+    resources :channels, only: %i[edit update destroy]
     resources :webhooks
     resources :connections
     resources :destinations do

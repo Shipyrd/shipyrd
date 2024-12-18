@@ -7,7 +7,6 @@ class WebhooksController < ApplicationController
 
   def create
     @webhook = @application.webhooks.new(webhook_params)
-    @webhook.organization = current_organization
     @webhook.user = current_user
 
     if @webhook.save

@@ -1,4 +1,5 @@
 class ChannelsController < ApplicationController
+  before_action :set_application
   before_action :set_channel
 
   def edit
@@ -23,9 +24,12 @@ class ChannelsController < ApplicationController
   end
 
   private
+  def set_application
+    @application = current_organization.applications.find(params[:application_id])
+  end
 
   def set_channel
-    @channel = current_organization.channels.find(params[:id])
+    @channel = @application.channels.find(params[:id])
   end
 
   def channel_params

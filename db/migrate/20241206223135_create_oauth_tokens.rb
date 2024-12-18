@@ -1,7 +1,6 @@
 class CreateOauthTokens < ActiveRecord::Migration[8.0]
   def change
     create_table :oauth_tokens do |t|
-      t.references :organization, null: false, foreign_key: true
       t.references :user, null: false, foreign_key: true
       t.references :application, null: false, foreign_key: true
       t.integer :provider
