@@ -1,6 +1,27 @@
 <%= form_with(model: channel, class: "contents") do |form| %>
   <%= render "shared/errors", form: form %>
 
+  <p class="mb-4">
+    <% if channel.webhook? %>
+      URL:
+      <span class="tag is-light">
+        <%= channel.owner.url %>
+      </span>
+    <% end %>
+
+    <% if channel.slack? %>
+      <% data = channel.owner.extra_data %>
+      Connected to
+      <span class="tag is-light">
+        <%= data['team_name']%>
+      </span>
+      in
+      <span class="tag is-light">
+        <%= data['channel_name'] %>
+      </span>
+    <% end %>
+  </p>
+
   <%= form.collection_check_boxes :events, Channel::EVENTS[:application].map { |e| [e.to_s, label_for_channel_event_type("Application", e.intern)] }, :first, :second do |b| %>
     <div class="field">
       <%= b.label(class: "checkbox") do %>

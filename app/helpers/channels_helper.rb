@@ -8,7 +8,7 @@ module ChannelsHelper
   end
 
   def channel_icon(channel_type)
-    case channel_type
+    case channel_type.intern
     when :webhook
       "fa-solid fa-bolt"
     else
