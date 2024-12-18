@@ -45,8 +45,7 @@ class OauthToken < ApplicationRecord
     OAuth2::Client.new(
       config[:client_id],
       config[:client_secret],
-      site: config[:url],
-      token_url: config[:token_url]
+      config.slice(:site, :authorize_url, :token_url)
     )
   end
 
@@ -72,7 +71,7 @@ class OauthToken < ApplicationRecord
       {
         client_id: ENV["SHIPYRD_SLACK_CLIENT_ID"],
         client_secret: ENV["SHIPYRD_SLACK_SECRET"],
-        url: "https://slack.com",
+        site: "https://slack.com",
         token_url: "/api/oauth.access"
       }
     end
