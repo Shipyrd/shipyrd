@@ -1,0 +1,16 @@
+<%= form_with(model: @organization, class: "contents") do |form| %>
+  <%= render "shared/errors", form: form %>
+
+  <div class="field">
+    <%= form.label :name, class: "label" %>
+    <div class="control">
+      <%= form.text_field :name, class: "input" %>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <%= form.submit class: "button is-primary" %>
+    </div>
+  </div>
+<% end %>

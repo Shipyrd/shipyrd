@@ -73,14 +73,16 @@ create_deploy(applications[2], nil, "pre-deploy")
 
 username = `whoami`.strip
 
-User.find_or_create_by(email: "#{username}@example.com") do |u|
-  u.username = username
+admin = User.find_or_create_by!(email: "#{username}@example.com") do |u|
+  u.username = "https://github.com/username"
   u.password = "password00!"
-  organization.memberships.create(user: u, role: :admin)
 end
 
-User.find_or_create_by(email: "new@example.com") do |u|
-  u.username = "newguy"
+organization.memberships.create(user: admin, role: :admin)
+
+user = User.find_or_create_by!(email: "new@example.com") do |u|
+  u.username = "https://github.com/newguy"
   u.password = "password00!"
-  Organization.find_or_create_by(name: "Fry's Electronics").memberships.create!(user: u, role: :admin)
 end
+
+Organization.find_or_create_by(name: "Fry's Electronics").memberships.create!(user: user, role: :admin)

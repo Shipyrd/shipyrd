@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_04_231104) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_18_113602) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -29,14 +29,16 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_04_231104) do
     t.index ["token"], name: "index_applications_on_token", unique: true
   end
 
-  create_table "connections", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.integer "provider"
-    t.text "key"
-    t.datetime "last_connected_at"
+  create_table "channels", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "channel_type"
+    t.text "events"
+    t.string "owner_type"
+    t.bigint "owner_id"
     t.bigint "application_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["application_id"], name: "index_connections_on_application_id"
+    t.index ["application_id"], name: "index_channels_on_application_id"
+    t.index ["owner_type", "owner_id"], name: "index_channels_on_owner"
   end
 
   create_table "deploys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -101,6 +103,21 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_04_231104) do
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
+  create_table "oauth_tokens", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "application_id", null: false
+    t.integer "provider"
+    t.text "token"
+    t.text "refresh_token"
+    t.datetime "expires_at"
+    t.string "scope"
+    t.text "extra_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_id"], name: "index_oauth_tokens_on_application_id"
+    t.index ["user_id"], name: "index_oauth_tokens_on_user_id"
+  end
+
   create_table "organizations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "token"
@@ -146,10 +163,24 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_04_231104) do
     t.index ["username"], name: "index_users_on_username"
   end
 
-  add_foreign_key "connections", "applications"
+  create_table "webhooks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "url"
+    t.bigint "user_id", null: false
+    t.bigint "application_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_id"], name: "index_webhooks_on_application_id"
+    t.index ["user_id"], name: "index_webhooks_on_user_id"
+  end
+
+  add_foreign_key "channels", "applications"
   add_foreign_key "destinations", "applications"
   add_foreign_key "invite_links", "users", column: "creator_id"
   add_foreign_key "memberships", "organizations"
   add_foreign_key "memberships", "users"
+  add_foreign_key "oauth_tokens", "applications"
+  add_foreign_key "oauth_tokens", "users"
   add_foreign_key "servers", "destinations"
+  add_foreign_key "webhooks", "applications"
+  add_foreign_key "webhooks", "users"
 end

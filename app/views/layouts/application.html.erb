@@ -19,6 +19,7 @@
   </head>
 
   <body class="container is-max-desktop pb-6 px-4">
+
     <nav class="navbar py-5" role="navigation" aria-label="main navigation">
       <%= link_to image_tag("logo.png", width: 125), root_url %>
 
@@ -37,6 +38,7 @@
               <%= link_to "Invite someone to Shipyrd", users_path, class: "navbar-item" %>
               <hr class="navbar-divider">
               <%= link_to "Users", users_path, class: "navbar-item" %>
+              <%= link_to "Organization settings", edit_organization_path(current_organization), class: "navbar-item" %>
             </div>
           </div>
         </div>

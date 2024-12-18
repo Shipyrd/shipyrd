@@ -9,6 +9,7 @@ default: &default
 
 development:
   <<: *default
+  autotrim: false
 
 test:
   adapter: test

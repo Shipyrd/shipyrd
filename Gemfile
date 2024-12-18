@@ -9,7 +9,7 @@ gem "dotenv-rails"
 gem "kamal"
 gem "puma", ">= 5.0"
 gem "mysql2", "~> 0.5.6"
-gem "rails", "~> 8.0.0"
+gem "rails", "~> 8.0.1"
 gem "rails_semantic_logger", require: false
 
 # Assets
@@ -19,8 +19,10 @@ gem "turbo-rails"
 gem "stimulus-rails"
 
 # 3rd Party
+gem "faraday" # Already required by oauth2 and github_api but using it directly
 gem "github_api"
 gem "honeybadger"
+gem "oauth2"
 
 # Jobs/Cable
 gem "mission_control-jobs"
