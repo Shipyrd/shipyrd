@@ -2,22 +2,21 @@ require "test_helper"
 
 class OauthTokensTest < ActiveSupport::TestCase
   setup do
-    @organization = create(:organization)
-    @application = create(:application, organization: @organization)
+    @application = create(:application)
     @user = create(:user)
   end
 
   test "creates a channel" do
     token = OauthToken.create!(
-      organization: @organization,
       user: @user,
       application: @application,
       provider: :slack
     )
 
-    channel = token.channels.first
+    channel = token.channel
 
-    assert_equal @application, channel.owner
+    assert_equal @application, channel.application
+    assert_equal token, channel.owner
     assert_equal "slack", channel.channel_type
     assert_equal Channel::EVENTS, channel.events
   end
@@ -51,7 +50,6 @@ class OauthTokensTest < ActiveSupport::TestCase
 
     assert_equal @user, authentication.user
     assert_equal @application, authentication.application
-    assert_equal @organization, authentication.organization
     assert_equal "slack-token", authentication.token
     assert_equal authentication.extra_data, {
       "channel_id" => "C123456",

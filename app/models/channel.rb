@@ -13,7 +13,7 @@ class Channel < ApplicationRecord
 
   EVENTS = %w[deploy lock]
 
-  def self.available_channels(owner_type)
+  def self.available_channels
     channels = []
 
     channels << :webhook

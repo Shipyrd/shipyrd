@@ -5,7 +5,10 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @application = create(:application)
     @organization = @application.organization
-    @channel = create(:channel, owner: @application)
+    @user = create(:user)
+    @organization.memberships.create(user: @user, role: :admin)
+    @webhook = create(:webhook, user: @user, application: @application)
+    @channel = create(:channel, channel_type: :webhook, owner: @webhook, application: @application)
   end
 
   describe "anonymous" do
@@ -18,8 +21,6 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
 
   describe "authenticated" do
     setup do
-      @user = create(:user)
-      @organization.memberships.create(user: @user, role: :admin)
       sign_in(@user.email, @user.password)
     end
 

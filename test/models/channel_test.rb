@@ -4,8 +4,8 @@ class ChannelTest < ActiveSupport::TestCase
   setup do
     @application = create(:application)
     @user = create(:user)
-    @oauth_token = create(:oauth_token, user: @user, organization: @application.organization, application: @application)
-    @channel = create(:channel, owner: @application, oauth_token: @oauth_token, organization: @application.organization)
+    @oauth_token = create(:oauth_token, user: @user, application: @application)
+    @channel = create(:channel, owner: @oauth_token, application: @application)
   end
 
   test "should normalize events" do
@@ -16,7 +16,7 @@ class ChannelTest < ActiveSupport::TestCase
 
   test "should return available channels" do
     OauthToken.stub :configured_providers, ["github", "slack"] do
-      assert_equal [:github, :slack], Channel.available_channels
+      assert_equal [:webhook, :github, :slack], Channel.available_channels
     end
   end
 

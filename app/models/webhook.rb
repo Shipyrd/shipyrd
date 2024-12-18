@@ -3,6 +3,8 @@ class Webhook < ApplicationRecord
   belongs_to :application
   has_one :channel, as: :owner, dependent: :destroy
 
+  validates :url, presence: true, url: {no_local: true}
+
   after_create :create_channel
 
   def create_channel

@@ -24,6 +24,7 @@ class ChannelsController < ApplicationController
   end
 
   private
+
   def set_application
     @application = current_organization.applications.find(params[:application_id])
   end

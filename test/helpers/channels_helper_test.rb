@@ -1,6 +1,19 @@
 require "test_helper"
 
 class ChannelsHelperTest < ActionView::TestCase
+  test "connect_channel_url returns correct URL for webhook provider" do
+    application_id = 123
+    expected_url = new_application_webhook_url(application_id)
+    assert_equal expected_url, connect_channel_url(:webhook, application_id: application_id)
+  end
+
+  test "connect_channel_url returns correct URL for oauth provider" do
+    application_id = 123
+    provider = :slack
+    expected_url = oauth_authorize_url(provider, application_id: application_id)
+    assert_equal expected_url, connect_channel_url(provider, application_id: application_id)
+  end
+
   test "channel_icon returns correct icon for webhook" do
     assert_equal "fa-solid fa-bolt", channel_icon("webhook")
   end
