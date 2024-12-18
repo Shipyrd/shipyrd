@@ -47,7 +47,7 @@ class Destination < ApplicationRecord
       locker: user
     )
 
-    dispatch_notifications(:lock, {locked_at: Time.current, locked_by_user_id: user.id})
+    dispatch_notifications(:lock, {locked_at: Time.current, user_id: user.id})
   end
 
   def unlock!(user)
@@ -56,7 +56,7 @@ class Destination < ApplicationRecord
       locker: nil
     )
 
-    dispatch_notifications(:unlock, {unlocked_by_user_id: user.id})
+    dispatch_notifications(:unlock, {user_id: user.id})
   end
 
   def on_deck_url

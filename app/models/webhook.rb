@@ -15,7 +15,7 @@ class Webhook < ApplicationRecord
     )
   end
 
-  def notify(event, destination:, details:)
+  def notify(event, details)
     logger.debug "Notifying #{url} of #{event} with #{details}"
 
     Faraday.new do |f|
@@ -24,9 +24,7 @@ class Webhook < ApplicationRecord
     end.post(url) do |r|
       r.headers["Content-Type"] = "application/json"
       r.body = {
-        event: event,
-        application: application.name,
-        destination: destination.name
+        event: event
       }.merge(details).to_json
     end
   end

@@ -35,10 +35,13 @@ class WebhookTest < ActiveSupport::TestCase
     @destination = create(:destination, name: "production", application: @application)
 
     stub_request = stub_request(:post, @webhook.url)
-      .with(body: {event: :test, application: @application.name, destination: @destination.name, test: "test"}.to_json)
+      .with(body: {
+        event: :lock,
+        test: "true"
+      }.to_json)
       .to_return(status: 200)
 
-    @webhook.notify(:test, destination: @destination, details: {test: "test"})
+    @webhook.notify(:lock, {test: "true"})
 
     assert_requested(stub_request)
   end

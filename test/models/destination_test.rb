@@ -24,7 +24,7 @@ class DestinationTest < ActiveSupport::TestCase
     user = create(:user)
 
     freeze_time do
-      destination.expects(:dispatch_notifications).with(:lock, {locked_at: Time.current, locked_by_user_id: user.id})
+      destination.expects(:dispatch_notifications).with(:lock, {locked_at: Time.current, user_id: user.id})
 
       destination.lock!(user)
     end
@@ -33,7 +33,7 @@ class DestinationTest < ActiveSupport::TestCase
     assert_equal user, destination.locker
     assert destination.locked_at
 
-    destination.expects(:dispatch_notifications).with(:unlock, {unlocked_by_user_id: user.id})
+    destination.expects(:dispatch_notifications).with(:unlock, {user_id: user.id})
 
     destination.unlock!(user)
 
