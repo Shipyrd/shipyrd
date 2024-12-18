@@ -8,7 +8,7 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
     @user = create(:user)
     @organization.memberships.create(user: @user, role: :admin)
     @webhook = create(:webhook, user: @user, application: @application)
-    @channel = create(:channel, channel_type: :webhook, owner: @webhook, application: @application)
+    @channel = @webhook.channel
   end
 
   describe "anonymous" do
@@ -33,6 +33,14 @@ class ChannelsControllerTest < ActionDispatch::IntegrationTest
       patch application_channel_url(@application, @channel), params: {channel: {events: ["event1", "event2"]}}
       assert_redirected_to edit_application_path(@application)
       assert_equal "#{@channel.display_name} connection was successfully updated.", flash[:notice]
+    end
+
+    test "should destroy channel" do
+      assert_difference("Channel.count", -1) do
+        delete application_channel_url(@application, @channel)
+      end
+
+      assert_redirected_to edit_application_path(@application)
     end
   end
 end

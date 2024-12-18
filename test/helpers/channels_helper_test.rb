@@ -20,7 +20,7 @@ class ChannelsHelperTest < ActionView::TestCase
 
   test "channel_icon returns correct icon for other channel types" do
     assert_equal "fa-brands fa-slack", channel_icon("slack")
-    assert_equal "fa-brands fa-twitter", channel_icon("twitter")
+    assert_equal "fa-brands fa-github", channel_icon("github")
   end
 
   test "label_for_channel_event_type returns correct label for Application deploy" do
