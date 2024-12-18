@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resource :session
   resources :invite_links
   resources :deploys
-  resources :channels, only: %i[edit update]
+  resources :channels, only: %i[edit update destroy]
 
   namespace :oauth do
     get "authorize/:provider", action: :authorize, as: :authorize
@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   end
 
   resources :applications do
+    resources :webhooks
     resources :connections
     resources :destinations do
       member do

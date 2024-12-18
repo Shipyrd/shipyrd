@@ -7,11 +7,19 @@ class ChannelsController < ApplicationController
   def update
     respond_to do |format|
       if @channel.update(channel_params)
-        format.html { redirect_to edit_channel_path(@channel), notice: "#{@channel.display_name} connection was successfully updated." }
+        flash[:notice] = "#{@channel.display_name} connection was successfully updated."
+        format.html { redirect_to edit_application_path(@channel.application) }
       else
         format.html { render :edit, status: :unprocessable_entity }
       end
     end
+  end
+
+  def destroy
+    @application = @channel.application
+    @channel.destroy!
+
+    redirect_to edit_application_path(@application)
   end
 
   private

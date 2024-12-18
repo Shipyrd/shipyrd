@@ -5,8 +5,8 @@ class OauthToken < ApplicationRecord
 
   belongs_to :user
   belongs_to :organization
-  belongs_to :application, optional: true
-  has_many :channels, dependent: :destroy
+  belongs_to :application
+  has_one :channel, as: :owner, dependent: :destroy
 
   enum :provider, {
     github: 0,
@@ -23,9 +23,9 @@ class OauthToken < ApplicationRecord
   }
 
   def create_channel
-    channels.create!(
+    create_channel!(
       organization: organization,
-      owner: application,
+      application: application,
       channel_type: provider,
       events: Channel::EVENTS[application.present? ? :application : :organization]
     )

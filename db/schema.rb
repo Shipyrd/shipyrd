@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_13_042942) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_13_050348) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -35,9 +35,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_13_042942) do
     t.string "owner_type"
     t.integer "owner_id"
     t.integer "oauth_token_id"
+    t.bigint "application_id", null: false
+    t.bigint "organization_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "organization_id", null: false
+    t.index ["application_id"], name: "index_channels_on_application_id"
     t.index ["oauth_token_id"], name: "index_channels_on_oauth_token_id"
     t.index ["organization_id"], name: "index_channels_on_organization_id"
     t.index ["owner_type", "owner_id"], name: "index_channels_on_owner_type_and_owner_id"
@@ -177,6 +179,19 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_13_042942) do
     t.index ["username"], name: "index_users_on_username"
   end
 
+  create_table "webhooks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "url"
+    t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "application_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_id"], name: "index_webhooks_on_application_id"
+    t.index ["organization_id"], name: "index_webhooks_on_organization_id"
+    t.index ["user_id"], name: "index_webhooks_on_user_id"
+  end
+
+  add_foreign_key "channels", "applications"
   add_foreign_key "channels", "organizations"
   add_foreign_key "connections", "applications"
   add_foreign_key "destinations", "applications"
@@ -187,4 +202,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_13_042942) do
   add_foreign_key "oauth_tokens", "organizations"
   add_foreign_key "oauth_tokens", "users"
   add_foreign_key "servers", "destinations"
+  add_foreign_key "webhooks", "applications"
+  add_foreign_key "webhooks", "organizations"
+  add_foreign_key "webhooks", "users"
 end

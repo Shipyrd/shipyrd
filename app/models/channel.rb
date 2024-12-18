@@ -1,7 +1,7 @@
 class Channel < ApplicationRecord
   belongs_to :organization
-  belongs_to :owner, polymorphic: true
-  belongs_to :oauth_token, optional: true, dependent: :destroy
+  belongs_to :application
+  belongs_to :owner, polymorphic: true, dependent: :destroy
 
   scope :ownerless, -> { where(owner: nil) }
 

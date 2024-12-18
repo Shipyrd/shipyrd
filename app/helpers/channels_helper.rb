@@ -1,4 +1,12 @@
 module ChannelsHelper
+  def connect_channel_url(provider, application_id:)
+    if provider == :webhook
+      new_application_webhook_url(application_id)
+    else
+      oauth_authorize_url(provider, application_id: application_id)
+    end
+  end
+
   def channel_icon(channel_type)
     case channel_type
     when :webhook

@@ -5,7 +5,8 @@ class Application < ApplicationRecord
   has_many :oauth_tokens, dependent: :destroy
   has_many :deploys, dependent: :destroy, inverse_of: "application"
   has_many :connections, dependent: :destroy
-  has_many :channels, dependent: :destroy, as: :owner
+  has_many :channels, dependent: :destroy
+  has_many :webhooks, dependent: :destroy
   has_many :destinations, dependent: :destroy do
     def find_or_create_with_hosts(hosts_string:, name:)
       destination = find_or_create_by!(name: name)

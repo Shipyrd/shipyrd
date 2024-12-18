@@ -1,0 +1,16 @@
+<%= form_with(model: [@application, @webhook], class: "contents") do |form| %>
+  <%= render "shared/errors", form: form %>
+
+  <div class="field">
+    <%= form.label :url, "URL", class: "label" %>
+    <div class="control">
+      <%= form.text_field :url, class: "input" %>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <%= form.submit class: "button is-primary" %>
+    </div>
+  </div>
+<% end %>

@@ -6,6 +6,8 @@ class CreateChannels < ActiveRecord::Migration[8.0]
       t.string :owner_type
       t.integer :owner_id
       t.integer :oauth_token_id
+      t.references :application, null: false, foreign_key: true
+      t.references :organization, null: false, foreign_key: true
 
       t.timestamps
     end
