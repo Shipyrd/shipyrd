@@ -9,7 +9,7 @@ class Webhook < ApplicationRecord
     create_channel!(
       application: application,
       channel_type: :webhook,
-      events: Channel::EVENTS[:application]
+      events: Channel::EVENTS
     )
   end
 end

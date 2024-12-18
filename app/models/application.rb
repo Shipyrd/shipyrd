@@ -2,9 +2,9 @@ class Application < ApplicationRecord
   has_secure_token length: 64
 
   belongs_to :organization, counter_cache: true
-  has_many :oauth_tokens, dependent: :destroy
   has_many :deploys, dependent: :destroy, inverse_of: "application"
   has_many :connections, dependent: :destroy
+  has_many :oauth_tokens, dependent: :destroy
   has_many :channels, dependent: :destroy
   has_many :webhooks, dependent: :destroy
   has_many :destinations, dependent: :destroy do

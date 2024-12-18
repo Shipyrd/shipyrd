@@ -19,7 +19,7 @@ class OauthTokensTest < ActiveSupport::TestCase
 
     assert_equal @application, channel.owner
     assert_equal "slack", channel.channel_type
-    assert_equal Channel::EVENTS[:application], channel.events
+    assert_equal Channel::EVENTS, channel.events
   end
 
   test "creates an oauth token" do

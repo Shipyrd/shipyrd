@@ -25,7 +25,7 @@ class OauthToken < ApplicationRecord
     create_channel!(
       application: application,
       channel_type: provider,
-      events: Channel::EVENTS[:application]
+      events: Channel::EVENTS
     )
   end
 
