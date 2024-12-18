@@ -14,4 +14,20 @@ class Webhook < ApplicationRecord
       events: Channel::EVENTS
     )
   end
+
+  def notify(event, destination:, details:)
+    logger.debug "Notifying #{url} of #{event} with #{details}"
+
+    Faraday.new do |f|
+      f.request :json
+      f.response :logger, Rails.logger if Rails.env.development?
+    end.post(url) do |r|
+      r.headers["Content-Type"] = "application/json"
+      r.body = {
+        event: event,
+        application: application.name,
+        destination: destination.name
+      }.merge(details).to_json
+    end
+  end
 end

@@ -4,6 +4,7 @@ class Destination < ApplicationRecord
   has_many :deploys, through: :application
   has_many :servers, dependent: :destroy
   has_many :runners, dependent: :destroy
+  has_many :channels, through: :application
 
   encrypts :private_key
 
@@ -24,6 +25,18 @@ class Destination < ApplicationRecord
     "deploy#{name.present? ? ".#{name}" : nil}.yml"
   end
 
+  def dispatch_notifications(event, details)
+    channels.each do |channel|
+      next unless channel.events.include?(event.to_s)
+
+      channel.notifications.create!(
+        event: event,
+        destination: self,
+        details: details
+      )
+    end
+  end
+
   def locked?
     locked_at.present?
   end
@@ -33,13 +46,17 @@ class Destination < ApplicationRecord
       locked_at: Time.current,
       locker: user
     )
+
+    dispatch_notifications(:lock, {locked_at: Time.current, locked_by_user_id: user.id})
   end
 
-  def unlock!
+  def unlock!(user)
     update!(
       locked_at: nil,
       locker: nil
     )
+
+    dispatch_notifications(:unlock, {unlocked_by_user_id: user.id})
   end
 
   def on_deck_url

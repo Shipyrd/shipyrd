@@ -29,4 +29,17 @@ class WebhookTest < ActiveSupport::TestCase
     assert_equal @application, @webhook.channel.application
     assert_equal "webhook", @webhook.channel.channel_type
   end
+
+  test "notifies the url via post" do
+    @webhook.url = "https://example.com"
+    @destination = create(:destination, name: "production", application: @application)
+
+    stub_request = stub_request(:post, @webhook.url)
+      .with(body: {event: :test, application: @application.name, destination: @destination.name, test: "test"}.to_json)
+      .to_return(status: 200)
+
+    @webhook.notify(:test, destination: @destination, details: {test: "test"})
+
+    assert_requested(stub_request)
+  end
 end
