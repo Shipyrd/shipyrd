@@ -33,14 +33,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_13_050348) do
     t.integer "channel_type"
     t.text "events"
     t.string "owner_type"
-    t.integer "owner_id"
-    t.integer "oauth_token_id"
+    t.bigint "owner_id"
     t.bigint "application_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["application_id"], name: "index_channels_on_application_id"
-    t.index ["oauth_token_id"], name: "index_channels_on_oauth_token_id"
-    t.index ["owner_type", "owner_id"], name: "index_channels_on_owner_type_and_owner_id"
+    t.index ["owner_type", "owner_id"], name: "index_channels_on_owner"
   end
 
   create_table "connections", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
