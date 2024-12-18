@@ -23,8 +23,15 @@ class ChannelsTest < ApplicationSystemTestCase
       click_on "Create Webhook"
 
       assert_text "Webhook notifications are enabled for Deploys, Locks"
+    end
 
-      click_on "Edit webhook channel"
+    test "changing webhook settings" do
+      webhook = create(:webhook, application: @application, user: @user)
+      webhook.channel.update(events: ["deploy", "lock"])
+
+      visit edit_application_path(@application)
+
+      click_on "Edit"
 
       uncheck "Locks"
 

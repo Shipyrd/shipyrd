@@ -61,7 +61,6 @@ class OauthToken < ApplicationRecord
       user: user,
       token: token.token,
       refresh_token: token.refresh_token,
-      expires_at: token.expires_at.present? ? Time.at(token.expires_at) : nil,
       scope: token.params["scope"],
       extra_data: provider_extra_data(provider, token.params)
     )
