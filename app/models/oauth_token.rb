@@ -60,6 +60,8 @@ class OauthToken < ApplicationRecord
       application: application,
       user: user,
       token: token.token,
+      refresh_token: token.refresh_token,
+      expires_at: token.expires_at.present? ? Time.at(token.expires_at) : nil,
       scope: token.params["scope"],
       extra_data: provider_extra_data(provider, token.params)
     )
@@ -73,6 +75,14 @@ class OauthToken < ApplicationRecord
         client_secret: ENV["SHIPYRD_SLACK_SECRET"],
         site: "https://slack.com",
         token_url: "/api/oauth.access"
+      }
+    when "github"
+      {
+        client_id: ENV["SHIPYRD_GITHUB_CLIENT_ID"],
+        client_secret: ENV["SHIPYRD_GITHUB_SECRET"],
+        site: "https://github.com",
+        authorize_url: "/login/oauth/authorize",
+        token_url: "/login/oauth/access_token"
       }
     end
   end
