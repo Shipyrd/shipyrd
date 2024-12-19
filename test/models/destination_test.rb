@@ -55,7 +55,7 @@ class DestinationTest < ActiveSupport::TestCase
 
     notification = channel.notifications.last
 
-    assert_equal event.to_s, notification.event
+    assert_equal event, notification.event
     assert_equal({"test" => "test"}, notification.details)
   end
 

@@ -43,6 +43,49 @@ class DeployTest < ActiveSupport::TestCase
     end
   end
 
+  describe "dispatches_notifications" do
+    it "only for post-deploy events" do
+      assert_no_difference("Notification.count") do
+        create(:deploy, application: application, service_version: "heyo@abcdef12", status: "pre-deploy")
+      end
+    end
+
+    it "only when a channel is available" do
+      assert_no_difference("Notification.count") do
+        create(:destination, application: application, name: "production")
+
+        create(:deploy, application: application, service_version: "heyo@abcdef12", status: "post-deploy", destination: "production")
+      end
+    end
+
+    it "successfully" do
+      assert_difference("Notification.count") do
+        create(:destination, application: application, name: "production")
+        create(:webhook, application: application)
+
+        create(:deploy, application: application, service_version: "heyo@abcdef12", status: "post-deploy", destination: "production")
+      end
+
+      details = Deploy.last.slice(
+        :performer,
+        :status,
+        :version,
+        :service_version,
+        :hosts,
+        :command,
+        :subcommand,
+        :role,
+        :runtime,
+        :service,
+        :commit_message,
+        :compare_url
+      )
+
+      assert_equal :deploy, Notification.last.event
+      assert_equal details, Notification.last.details.except("recorded_at")
+    end
+  end
+
   describe "find or create destination" do
     it "creates a default destination" do
       deploy = create(:deploy, service_version: "heyo@abcdef12", application: application)

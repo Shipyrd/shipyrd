@@ -25,7 +25,7 @@ class Notification < ApplicationRecord
         application_name: destination.application.name,
         application_id: destination.application.id,
         user_name: user_name
-      )
+      ).symbolize_keys
     )
 
     update!(notified_at: Time.current)

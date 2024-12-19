@@ -45,7 +45,8 @@ class Deploy < ApplicationRecord
         :role,
         :runtime,
         :service,
-        :commit_message
+        :commit_message,
+        :compare_url
       )
     )
   end
