@@ -1,6 +1,7 @@
 class Deploy < ApplicationRecord
   before_validation :set_service_name
   before_create :find_or_create_destination
+  after_create :dispatch_notifications
 
   belongs_to :application, optional: true, touch: true, inverse_of: "deploys"
   belongs_to :user, foreign_key: :performer, primary_key: :username, optional: true, inverse_of: "deploys"
@@ -21,6 +22,33 @@ class Deploy < ApplicationRecord
     return nil if !previous_deploy
 
     "#{application.repository_url}/compare/#{previous_deploy.version}...#{version}"
+  end
+
+  def dispatch_notifications
+    return false unless status == "post-deploy"
+
+    destination_record = application.destinations.find_by(name: destination)
+
+    return false unless destination_record
+
+    destination_record.dispatch_notifications(
+      :deploy,
+      slice(
+        :performer,
+        :recorded_at,
+        :status,
+        :version,
+        :service_version,
+        :hosts,
+        :command,
+        :subcommand,
+        :role,
+        :runtime,
+        :service,
+        :commit_message,
+        :compare_url
+      )
+    )
   end
 
   def previous_deploy

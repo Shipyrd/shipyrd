@@ -1,6 +1,7 @@
 class Channel < ApplicationRecord
   belongs_to :application
   belongs_to :owner, polymorphic: true, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   enum :channel_type, {
     github: 1,
@@ -11,7 +12,7 @@ class Channel < ApplicationRecord
   serialize :events, coder: JSON
   normalizes :events, with: ->(events) { events.compact_blank }
 
-  EVENTS = %w[deploy lock]
+  EVENTS = %w[deploy lock unlock]
 
   def self.available_channels
     channels = []

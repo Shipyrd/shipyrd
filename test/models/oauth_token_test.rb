@@ -60,4 +60,15 @@ class OauthTokensTest < ActiveSupport::TestCase
       "team_name" => "team-name"
     }
   end
+
+  test "notifies the slack channel" do
+    token = create(:oauth_token, user: @user, application: @application, provider: :slack, extra_data: {channel_id: "C123456"})
+    details = {test: "test"}
+
+    notify = stub(notify: nil)
+    notify.expects(:notify).with(:lock, details.merge(channel_id: token.extra_data["channel_id"]))
+    Slack.expects(:new).with(token.token).returns(notify)
+
+    token.notify(:lock, details)
+  end
 end

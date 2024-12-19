@@ -23,17 +23,40 @@ class DestinationTest < ActiveSupport::TestCase
     destination = create(:destination, application: @application)
     user = create(:user)
 
-    destination.lock!(user)
+    freeze_time do
+      destination.expects(:dispatch_notifications).with(:lock, {locked_at: Time.current, user_id: user.id})
+
+      destination.lock!(user)
+    end
 
     assert destination.locked?
     assert_equal user, destination.locker
     assert destination.locked_at
 
-    destination.unlock!
+    destination.expects(:dispatch_notifications).with(:unlock, {user_id: user.id})
+
+    destination.unlock!(user)
 
     refute destination.locked?
     refute destination.locker
     refute destination.locked_at
+  end
+
+  it "dispatch_notifications" do
+    destination = create(:destination, application: @application)
+    user = create(:user)
+    webhook = @application.webhooks.create!(user: user, url: "http://example.com")
+    channel = webhook.channel
+    event = :lock
+
+    assert_difference -> { channel.notifications.count }, 1 do
+      destination.dispatch_notifications(event, {test: "test"})
+    end
+
+    notification = channel.notifications.last
+
+    assert_equal event, notification.event
+    assert_equal({"test" => "test"}, notification.details)
   end
 
   describe "on_deck_url" do

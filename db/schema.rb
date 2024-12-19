@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_18_113602) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_19_151957) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "token"
     t.datetime "created_at", null: false
@@ -77,6 +77,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_18_113602) do
     t.integer "servers_count", default: 0
     t.datetime "locked_at"
     t.integer "locked_by_user_id"
+    t.index ["application_id", "name"], name: "index_destinations_on_application_id_and_name"
     t.index ["application_id"], name: "index_destinations_on_application_id"
   end
 
@@ -101,6 +102,18 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_18_113602) do
     t.integer "role", default: 0
     t.index ["organization_id"], name: "index_memberships_on_organization_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "notifications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "event"
+    t.bigint "destination_id", null: false
+    t.text "details"
+    t.bigint "channel_id", null: false
+    t.datetime "notified_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["channel_id"], name: "index_notifications_on_channel_id"
+    t.index ["destination_id"], name: "index_notifications_on_destination_id"
   end
 
   create_table "oauth_tokens", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -178,6 +191,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_18_113602) do
   add_foreign_key "invite_links", "users", column: "creator_id"
   add_foreign_key "memberships", "organizations"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "channels"
+  add_foreign_key "notifications", "destinations"
   add_foreign_key "oauth_tokens", "applications"
   add_foreign_key "oauth_tokens", "users"
   add_foreign_key "servers", "destinations"

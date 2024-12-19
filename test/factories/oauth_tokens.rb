@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :oauth_token do
-    token { "MyText" }
-    scope { "MyString" }
+    application
+    user
   end
 end

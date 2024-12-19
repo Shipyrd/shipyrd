@@ -29,6 +29,17 @@ class OauthToken < ApplicationRecord
     )
   end
 
+  def notify(event, details)
+    if provider == "slack"
+      Slack.new(token).notify(
+        event,
+        details.merge(
+          channel_id: extra_data["channel_id"]
+        )
+      )
+    end
+  end
+
   def self.configured_providers
     providers.keys.select do |provider|
       config = provider_configuration(provider)

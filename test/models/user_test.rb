@@ -30,6 +30,28 @@ class UserTest < ActiveSupport::TestCase
     assert_equal "nick", user.github_username
   end
 
+  describe "lookup_performer" do
+    let(:organization) { create(:organization) }
+
+    it "with an unknown user" do
+      user = build(:user)
+
+      lookup = User.lookup_performer(organization.id, user.username)
+      name = user.username.split("/").last
+
+      assert_equal name, lookup
+    end
+
+    it "with a known user" do
+      user = build(:user)
+      organization.users << user
+
+      lookup = User.lookup_performer(organization.id, user.github_username)
+
+      assert_equal user.display_name, lookup
+    end
+  end
+
   describe "populate_avatar_url" do
     it "with github username" do
       user = build(

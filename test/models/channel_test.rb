@@ -2,10 +2,8 @@ require "test_helper"
 
 class ChannelTest < ActiveSupport::TestCase
   setup do
-    @application = create(:application)
-    @user = create(:user)
-    @oauth_token = create(:oauth_token, user: @user, application: @application)
-    @channel = create(:channel, owner: @oauth_token, application: @application)
+    @oauth_token = create(:oauth_token)
+    @channel = @oauth_token.channel
   end
 
   test "should normalize events" do
