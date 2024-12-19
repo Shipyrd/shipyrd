@@ -17,8 +17,7 @@ class OauthToken < ApplicationRecord
   after_create :create_channel
 
   SCOPES = {
-    # incoming-webhook => "identify,incoming-webhook,chat:write:bot"
-    slack: "incoming-webhook"
+    slack: "identify,incoming-webhook,chat:write:bot"
   }
 
   def create_channel
