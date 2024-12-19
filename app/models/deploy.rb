@@ -46,9 +46,6 @@ class Deploy < ApplicationRecord
         :runtime,
         :service,
         :commit_message
-      ).merge(
-        application_name: application.name,
-        destination_name: destination
       )
     )
   end
