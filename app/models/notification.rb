@@ -20,10 +20,21 @@ class Notification < ApplicationRecord
         destination_id: destination.id,
         application_name: destination.application.name,
         application_id: destination.application.id,
-        user_name: details["user_id"].present? ? User.find(details["user_id"]).display_name : nil
+        user_name: user_name
       )
     )
 
     update!(notified_at: Time.current)
+  end
+
+  def user_name
+    if details["performer"].present?
+      User.lookup_performer(
+        destination.application.organization.id,
+        details["performer"]
+      )
+    elsif details["user_id"].present?
+      User.find(details["user_id"]).display_name
+    end
   end
 end
