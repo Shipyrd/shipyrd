@@ -6,7 +6,7 @@ class Slack
   end
 
   def notify(event, details)
-    raise ArgumentError, "Invalid event" unless %i[deploy lock unlock].include?(event.intern)
+    raise ArgumentError, "Invalid event" unless %i[deploy lock unlock].include?(event)
 
     emoji = case event
     when :lock
@@ -17,7 +17,7 @@ class Slack
       ":rocket:"
     end
 
-    message = "#{emoji} #{details[:user_name]} #{event}ed #{details[:application_name]}"
+    message = "#{emoji} #{details[:user_name]} #{event}ed to #{details[:application_name]}"
     message += "(#{details[:destination_name]})" if details[:destination_name].present?
 
     send_message(

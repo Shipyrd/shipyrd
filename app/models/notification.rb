@@ -6,6 +6,10 @@ class Notification < ApplicationRecord
 
   serialize :details, coder: JSON
 
+  def event
+    super&.to_sym
+  end
+
   def notify_later
     NotificationJob.perform_later(id)
   end
