@@ -3,12 +3,11 @@ require "helpers/basic_auth_helpers"
 
 class ChannelsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @application = create(:application)
-    @organization = @application.organization
-    @user = create(:user)
-    @organization.memberships.create(user: @user, role: :admin)
-    @webhook = create(:webhook, user: @user, application: @application)
+    @webhook = create(:webhook)
     @channel = @webhook.channel
+    @application = @webhook.application
+    @user = create(:user)
+    @application.organization.memberships.create(user: @user, role: :admin)
   end
 
   describe "anonymous" do

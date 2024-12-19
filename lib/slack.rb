@@ -9,13 +9,13 @@ class Slack
     raise ArgumentError, "Invalid event" unless %i[deploy lock unlock].include?(event.intern)
 
     emoji = case event
-            when :lock
-              ":lock:"
-            when :unlock
-              ":unlock:"
-            when :deploy
-              ":rocket:"
-            end
+    when :lock
+      ":lock:"
+    when :unlock
+      ":unlock:"
+    when :deploy
+      ":rocket:"
+    end
 
     message = "#{emoji} #{details[:user_name]} #{event}ed #{details[:application_name]}"
     message += "(#{details[:destination_name]})" if details[:destination_name].present?

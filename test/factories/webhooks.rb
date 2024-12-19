@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :webhook do
+    user
+    application
     url { "https://hook.example.com" }
-    user { nil }
   end
 end

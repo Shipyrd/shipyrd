@@ -37,7 +37,7 @@ class User < ApplicationRecord
 
     return user.display_name if user
 
-    performer =~ /github\.com/ ? performer.split("/").last : performer
+    /github\.com/.match?(performer) ? performer.split("/").last : performer
   end
 
   def github_user?

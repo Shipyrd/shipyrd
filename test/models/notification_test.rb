@@ -2,12 +2,15 @@ require "test_helper"
 
 class NotificationTest < ActiveSupport::TestCase
   setup do
-    @application = create(:application)
-    @webhook = @application.webhooks.create!(user: create(:user), url: "http://example.com")
+    @webhook = create(:webhook)
     @channel = @webhook.channel
-    @destination = create(:destination, application: @application)
     @user = create(:user)
-    @notification = create(:notification, channel: @channel, destination: @destination, details: {user_id: @user.id})
+    @notification = create(
+      :notification,
+      channel: @channel,
+      details: {user_id: @user.id}
+    )
+    @destination = @notification.destination
   end
 
   it "notifies the channel owner" do

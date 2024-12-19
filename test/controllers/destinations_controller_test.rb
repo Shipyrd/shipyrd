@@ -3,9 +3,9 @@ require "helpers/basic_auth_helpers"
 
 class DestinationsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @application = create(:application)
+    @destination = create(:destination)
+    @application = @destination.application
     @organization = @application.organization
-    @destination = create(:destination, application: @application)
   end
 
   describe "anonymous" do

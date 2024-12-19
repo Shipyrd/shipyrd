@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :organization do
     name { "MyString" }
-    token { "MyString" }
+    token { SecureRandom.hex }
   end
 end
