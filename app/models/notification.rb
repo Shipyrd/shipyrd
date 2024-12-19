@@ -2,11 +2,11 @@ class Notification < ApplicationRecord
   belongs_to :destination
   belongs_to :channel
 
-  after_create :queue_notify
+  after_create :notify_later
 
   serialize :details, coder: JSON
 
-  def queue_notify
+  def notify_later
     NotificationJob.perform_later(id)
   end
 
