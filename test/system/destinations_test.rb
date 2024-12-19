@@ -3,9 +3,10 @@ require "application_system_test_case"
 class DestinationsTest < ApplicationSystemTestCase
   describe "with an existing destination" do
     setup do
-      @application = create(:application_with_repository_url)
+      @destination = create(:destination)
+      @application = @destination.application
       @organization = @application.organization
-      @destination = create(:destination, application: @application)
+
       @user = create(:user)
       @organization.memberships.create(user: @user)
 

@@ -32,6 +32,14 @@ class User < ApplicationRecord
     username
   end
 
+  def self.lookup_performer(organization_id, performer)
+    user = Organization.find(organization_id).users.find_by(username: performer)
+
+    return user.display_name if user
+
+    /github\.com/.match?(performer) ? performer.split("/").last : performer
+  end
+
   def github_user?
     username =~ /github\.com/
   end

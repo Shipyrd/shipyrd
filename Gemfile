@@ -41,7 +41,6 @@ group :development, :test do
   gem "bundle-audit"
   gem "debug", platforms: %i[mri windows]
   gem "factory_bot_rails"
-  gem "faker"
   gem "pry"
   gem "standard"
   gem "standard-rails"

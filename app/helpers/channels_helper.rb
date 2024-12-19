@@ -21,7 +21,9 @@ module ChannelsHelper
     when ["Application", :deploy]
       "Deploys - Send a notification when a deploy completes"
     when ["Application", :lock]
-      "Locks - Send a notification when a destination is locked/unlocked"
+      "Lock - Send a notification when a destination is locked"
+    when ["Application", :unlock]
+      "Unlock - Send a notification when a destination is unlocked"
     end
   end
 end

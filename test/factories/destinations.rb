@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :destination do
-    application { nil }
+    application
   end
 end

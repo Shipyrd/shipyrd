@@ -3,8 +3,9 @@ require "helpers/basic_auth_helpers"
 
 class WebhooksControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @organization = create(:organization)
-    @application = create(:application, organization: @organization)
+    @application = create(:application)
+    @organization = @application.organization
+
     @user = create(:user)
     @organization.memberships.create(user: @user, role: :admin)
     sign_in @user.email, @user.password

@@ -33,7 +33,7 @@ class ChannelsTest < ApplicationSystemTestCase
 
       click_on "Edit"
 
-      uncheck "Locks"
+      uncheck "Lock"
 
       click_on "Update"
 

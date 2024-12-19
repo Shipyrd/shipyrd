@@ -28,7 +28,11 @@ class ChannelsHelperTest < ActionView::TestCase
   end
 
   test "label_for_channel_event_type returns correct label for Application lock" do
-    assert_equal "Locks - Send a notification when a destination is locked/unlocked", label_for_channel_event_type("Application", :lock)
+    assert_equal "Lock - Send a notification when a destination is locked", label_for_channel_event_type("Application", :lock)
+  end
+
+  test "label_for_channel_event_type returns correct label for Application unlock" do
+    assert_equal "Unlock - Send a notification when a destination is unlocked", label_for_channel_event_type("Application", :unlock)
   end
 
   test "label_for_channel_event_type returns nil for unknown event types" do

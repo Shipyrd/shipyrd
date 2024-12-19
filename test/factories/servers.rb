@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :server do
-    destination { nil }
+    destination
     host { "MyString" }
   end
 end

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :application do
-    name { Faker::App.name }
+    sequence(:name) { |n| "Application #{n}" }
     key { "bacon" }
     organization
   end

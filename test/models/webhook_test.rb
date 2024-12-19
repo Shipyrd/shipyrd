@@ -2,9 +2,7 @@ require "test_helper"
 
 class WebhookTest < ActiveSupport::TestCase
   setup do
-    @user = create(:user)
-    @application = create(:application)
-    @webhook = build(:webhook, user: @user, application: @application)
+    @webhook = build(:webhook)
   end
 
   test "should be invalid without a url" do
@@ -26,7 +24,23 @@ class WebhookTest < ActiveSupport::TestCase
     end
 
     assert_equal @webhook, @webhook.channel.owner
-    assert_equal @application, @webhook.channel.application
+    assert_equal @webhook.application, @webhook.channel.application
     assert_equal "webhook", @webhook.channel.channel_type
+  end
+
+  test "notifies the url via post" do
+    @webhook.url = "https://example.com"
+    @destination = create(:destination, application: @webhook.application)
+
+    stub_request = stub_request(:post, @webhook.url)
+      .with(body: {
+        event: :lock,
+        test: "true"
+      }.to_json)
+      .to_return(status: 200)
+
+    @webhook.notify(:lock, {test: "true"})
+
+    assert_requested(stub_request)
   end
 end

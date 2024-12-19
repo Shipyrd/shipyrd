@@ -30,7 +30,7 @@ class DestinationsController < ApplicationController
   end
 
   def unlock
-    @destination.unlock!
+    @destination.unlock!(current_user)
 
     respond_to do |format|
       format.html { redirect_to root_path }
