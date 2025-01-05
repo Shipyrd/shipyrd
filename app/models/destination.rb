@@ -11,6 +11,8 @@ class Destination < ApplicationRecord
   before_save :generate_key_pair
   after_update_commit :process_recipe, if: -> { saved_change_to_recipe? }
 
+  scope :latest, -> { order(created_at: :desc) }
+
   broadcasts
 
   def new_servers_available?

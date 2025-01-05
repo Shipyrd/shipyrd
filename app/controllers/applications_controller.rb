@@ -3,7 +3,7 @@ class ApplicationsController < ApplicationController
 
   # GET /applications or /applications.json
   def index
-    @applications = current_organization.applications.includes([:destinations]).order(:created_at)
+    @applications = current_organization.applications.includes([:destinations]).order(created_at: :desc)
   end
 
   # GET /applications/1 or /applications/1.json
