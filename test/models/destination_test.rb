@@ -161,6 +161,7 @@ class DestinationTest < ActiveSupport::TestCase
       base_recipe = {
         service: "shipyrd",
         image: "shipyrd/shipyrd",
+        builder: {arch: "amd64"},
         registry: {
           username: "shipyrd",
           password: "KAMAL_REGISTRY_PASSWORD"
