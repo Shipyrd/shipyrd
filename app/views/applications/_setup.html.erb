@@ -35,23 +35,30 @@
   <h4 class="is-size-4">2. Configure the Shipyrd API key</h4>
   <p>
     The Shipyrd gem loads your API key from <code>ENV['SHIPYRD_API_KEY']</code>.
+  </p>
 
-    With Kamal 2 you can fetch your API key with the secrets helper commands. Create a helper
+  <p>
+    With Kamal 2 you can fetch your API key with the <code>kamal secrets</code> commands. Add your API
+    key to the relevant secrets file(, <code>.kamal/secrets</code>, <code>.kamal/secrets-common</code>, <code>.kamal/secrets.production</code>, etc.).
+  </p>
+
+  <p>
+    Create a helper
     script that'll fetch your API key from your secret store and set it as an environment variable.
-
+  </p>
 <div class="block">
 <code>.kamal/hooks/helpers/shipyrd_api_key.rb</code>
 <pre class="mb-2"><code id="helper_shipyrd_api_key">#!/usr/bin/env ruby
 
-secrets = `kamal secrets fetch --adapter 1password --account my.1password.com --from VaultName/common SHIPYRD_API_KEY`.strip
+# If you're NOT using destinations:
+ENV["SHIPYRD_API_KEY"] = `kamal secrets print | grep SHIPYRD_API_KEY`.split("=").last.strip
 
-ENV["SHIPYRD_API_KEY"] = `kamal secrets extract SHIPYRD_API_KEY #{secrets}`
+# If you're using destinations:
+# ENV["SHIPYRD_API_KEY"] = `kamal secrets print -d #{ENV['KAMAL_DESTINATION']} | grep SHIPYRD_API_KEY`.split("=").last.strip
 </code></pre>
 <p class="mt-1">
   <%= render "shared/copy_to_clipboard", target: "#helper_shipyrd_api_key" %>
 </p>
-
-<p><em>This example utilizes 1Password and assumes you stored your Shipyrd API key(<code><%= application.token %></code>) in a 1Password vault named <code>VaultName</code> within an entry named <code>common</code>. Adjust the <code>kamal secrets fetch</code> command to match your secret store and vault details.</em></p>
 
 </div>
 
