@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :organizations, through: :memberships, counter_cache: true
   has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
 
+  has_secure_token length: 64
   has_secure_password validations: false
   validates :password, length: {minimum: 10, maximum: 72}, if: -> { password.present? }
 
