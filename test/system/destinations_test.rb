@@ -37,9 +37,6 @@ class DestinationsTest < ApplicationSystemTestCase
         assert_text "Last connected 3 minutes ago"
       end
 
-      assert_text "Connecting Shipyrd to your servers"
-      assert_text "An SSH key pair is generated"
-
       within "#server_#{@new_server.id}" do
         assert_text "123.456.789.1"
       end

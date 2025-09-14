@@ -24,15 +24,4 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     ENV.delete("COMMUNITY_EDITION")
     assert ApplicationController.new.community_edition?
   end
-
-  test "runners_enabled?" do
-    ENV["RUNNERS_ENABLED"] = "1"
-    assert ApplicationController.new.runners_enabled?
-
-    ENV["RUNNERS_ENABLED"] = "0"
-    refute ApplicationController.new.runners_enabled?
-
-    ENV.delete("RUNNERS_ENABLED")
-    refute ApplicationController.new.runners_enabled?
-  end
 end

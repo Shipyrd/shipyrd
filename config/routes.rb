@@ -22,7 +22,6 @@ Rails.application.routes.draw do
         patch "lock"
         patch "unlock"
       end
-      resources :runners
     end
   end
 
