@@ -24,7 +24,7 @@ class Destination < ApplicationRecord
   end
 
   def recipe_name
-    "deploy#{name.present? ? ".#{name}" : nil}.yml"
+    "deploy#{".#{name}" if name.present?}.yml"
   end
 
   def dispatch_notifications(event, details)
