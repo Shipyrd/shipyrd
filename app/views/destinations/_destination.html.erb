@@ -27,47 +27,11 @@
 
   <hr>
 
-<% if runners_enabled? %>
-  <div class="box content">
-    <h4 class="is-size-4">Connecting Shipyrd to your servers</h4>
-
-    <p>
-      An SSH key pair is generated for each application + destination combination.
-    </p>
-
-    <p>
-      To give Shipyrd access to your servers you'll need to add the generated public key to the <code>~/.ssh/authorized_keys</code> file. Shipyrd uses this connection to run various Kamal commands like <kbd>logs</kbd>, <kbd>app exec</kbd>, <kbd>server exec</kbd>, etc. when you request it to.
-    </p>
-
-    <p>
-      The following command will add the public key to the authorized_keys file on your server via the <code>kamal server exec</code> command.
-    </p>
-
-    <p>
-      Run this command locally:
-    </p>
-
-<pre>
-<code class="language-bash" id="destination_setup_<%= destination.id %>">
-kamal server exec -d <%= destination.name %> "mkdir -p ~/.ssh && echo <%= destination.public_key %> >> ~/.ssh/authorized_keys && chmod 700 ~/.ssh && chmod 600 ~/.ssh/authorized_keys"
-</code>
-</pre>
-
-    <%= render "shared/copy_to_clipboard", target: "#destination_setup_#{destination.id}", label: "command" %>
-  </div>
-
-  <hr>
-<% end %>
-
   <h3 class="is-size-3">Servers</h3>
 
   <% if destination.servers.empty? %>
     <p>No servers deployed to for this destination.</p>
   <% else %>
-    <% if runners_enabled? %>
-      <%= link_to "Run command on #{destination.display_name}", new_application_destination_runner_path(application, destination), class: "button is-primary mb-4" %>
-    <% end %>
-
     <% destination.servers.each do |server| %>
       <%= render server %>
     <% end %>

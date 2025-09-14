@@ -46,12 +46,6 @@
             <div class="dropdown-content has-text-left">
               <%= link_to "View", application_destination_path(application, destination), class: "dropdown-item" %>
               <%= link_to "Edit", edit_application_destination_path(application, destination), class: "dropdown-item" %>
-
-              <% if runners_enabled? %>
-                <hr class="dropdown-divider" />
-                <%= link_to "Run command", new_application_destination_runner_path(application, destination), class: "dropdown-item" %>
-                <%= link_to "View logs", new_application_destination_runner_path(application, destination, command: "app logs"), class: "dropdown-item" %>
-              <% end %>
             </div>
           </div>
         </div>

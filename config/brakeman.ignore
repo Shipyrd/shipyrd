@@ -3,63 +3,29 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
-      "fingerprint": "1fe444e8c3a06f70eb836167ee46644ac10d4af4b16144f70dc3be3dd42123ac",
+      "fingerprint": "38cce42fc701a0c7e7f1413acfefe22a0dc7b9ece31350ffe31825fefbc498ec",
       "check_name": "Render",
       "message": "Render path contains parameter value",
-      "file": "app/views/connections/new.html.erb",
-      "line": 10,
+      "file": "app/views/users/show.html.erb",
+      "line": 3,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => current_organization.applications.find(params[:application_id]).connections.new(connection_params).provider, { :form => form })",
+      "code": "render(action => current_organization.users.find(params[:id]), { :locals => ({ :brakemanunresolvedmodel => current_organization.users.find(params[:id]) }) })",
       "render_path": [
         {
           "type": "controller",
-          "class": "ConnectionsController",
-          "method": "create",
-          "line": 22,
-          "file": "app/controllers/connections_controller.rb",
-          "rendered": {
-            "name": "connections/new",
-            "file": "app/views/connections/new.html.erb"
-          }
-        }
-      ],
-      "location": {
-        "type": "template",
-        "template": "connections/new"
-      },
-      "user_input": "params[:application_id]",
-      "confidence": "Weak",
-      "cwe_id": [
-        22
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Dynamic Render Path",
-      "warning_code": 15,
-      "fingerprint": "37a67def8218211b457898c7e7ab6be71b31daf36cf4aade1be2b3dbaeac57d4",
-      "check_name": "Render",
-      "message": "Render path contains parameter value",
-      "file": "app/views/destinations/show.html.erb",
-      "line": 1,
-      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => current_organization.applications.find(params[:application_id]).destinations.find(params[:id]), {})",
-      "render_path": [
-        {
-          "type": "controller",
-          "class": "DestinationsController",
+          "class": "UsersController",
           "method": "show",
-          "line": 11,
-          "file": "app/controllers/destinations_controller.rb",
+          "line": 16,
+          "file": "app/controllers/users_controller.rb",
           "rendered": {
-            "name": "destinations/show",
-            "file": "app/views/destinations/show.html.erb"
+            "name": "users/show",
+            "file": "app/views/users/show.html.erb"
           }
         }
       ],
       "location": {
         "type": "template",
-        "template": "destinations/show"
+        "template": "users/show"
       },
       "user_input": "params[:id]",
       "confidence": "Weak",
@@ -75,14 +41,14 @@
       "check_name": "LinkToHref",
       "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/applications/_destination.html.erb",
-      "line": 75,
+      "line": 90,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to(\"On Deck\", (Unresolved Model).new.on_deck_url, :target => \"_blank\", :class => \"mr-3 button is-success is-light is-small\")",
       "render_path": [
         {
           "type": "template",
           "name": "applications/_application",
-          "line": 6,
+          "line": 16,
           "file": "app/views/applications/_application.html.erb",
           "rendered": {
             "name": "applications/_destination",
@@ -98,40 +64,6 @@
       "confidence": "Weak",
       "cwe_id": [
         79
-      ],
-      "note": ""
-    },
-    {
-      "warning_type": "Dynamic Render Path",
-      "warning_code": 15,
-      "fingerprint": "8679097e89373fcd91de2b3751ecfb3e5c76de91290da0944222b8c836330c51",
-      "check_name": "Render",
-      "message": "Render path contains parameter value",
-      "file": "app/views/runners/show.html.erb",
-      "line": 14,
-      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => current_organization.applications.find(params[:application_id]).destinations.find(params[:destination_id]).runners.find(params[:id]), {})",
-      "render_path": [
-        {
-          "type": "controller",
-          "class": "RunnersController",
-          "method": "show",
-          "line": 30,
-          "file": "app/controllers/runners_controller.rb",
-          "rendered": {
-            "name": "runners/show",
-            "file": "app/views/runners/show.html.erb"
-          }
-        }
-      ],
-      "location": {
-        "type": "template",
-        "template": "runners/show"
-      },
-      "user_input": "params[:id]",
-      "confidence": "Weak",
-      "cwe_id": [
-        22
       ],
       "note": ""
     },
@@ -184,29 +116,29 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
-      "fingerprint": "a5d1d97d274df67db0a977280ae2565c5b8d5d19dac80f6453449adcaca57e38",
+      "fingerprint": "c243b1acde20950875690ba9b7f2c22a3ba6841b083c4564303d5775e5081179",
       "check_name": "Render",
       "message": "Render path contains parameter value",
-      "file": "app/views/users/show.html.erb",
-      "line": 3,
+      "file": "app/views/destinations/show.html.erb",
+      "line": 1,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => current_organization.users.find(params[:id]), {})",
+      "code": "render(action => current_organization.applications.find(params[:application_id]).destinations.find(params[:id]), { :locals => ({ :brakemanunresolvedmodel => current_organization.applications.find(params[:application_id]).destinations.find(params[:id]) }) })",
       "render_path": [
         {
           "type": "controller",
-          "class": "UsersController",
+          "class": "DestinationsController",
           "method": "show",
-          "line": 15,
-          "file": "app/controllers/users_controller.rb",
+          "line": 11,
+          "file": "app/controllers/destinations_controller.rb",
           "rendered": {
-            "name": "users/show",
-            "file": "app/views/users/show.html.erb"
+            "name": "destinations/show",
+            "file": "app/views/destinations/show.html.erb"
           }
         }
       ],
       "location": {
         "type": "template",
-        "template": "users/show"
+        "template": "destinations/show"
       },
       "user_input": "params[:id]",
       "confidence": "Weak",
@@ -216,6 +148,5 @@
       "note": ""
     }
   ],
-  "updated": "2024-11-28 10:44:12 -0700",
-  "brakeman_version": "6.2.1"
+  "brakeman_version": "7.1.0"
 }

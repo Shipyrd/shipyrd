@@ -3,7 +3,6 @@ class Destination < ApplicationRecord
   belongs_to :locker, class_name: "User", optional: true, foreign_key: :locked_by_user_id
   has_many :deploys, through: :application
   has_many :servers, dependent: :destroy
-  has_many :runners, dependent: :destroy
   has_many :channels, through: :application
 
   encrypts :private_key
