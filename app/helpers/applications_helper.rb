@@ -16,13 +16,14 @@ module ApplicationsHelper
     return nil if commit_message.blank?
     return commit_message if application.repository_url.blank? || application.repository_url !~ /github/
 
+    display_message = commit_message.dup
     commit_message.scan(/#(\d+)/).flatten.each do |issue_number|
-      commit_message.gsub!(
+      display_message.gsub!(
         "##{issue_number}",
         "<a href='#{application.repository_url}/issues/#{issue_number}'>##{issue_number}</a>"
       )
     end
 
-    commit_message
+    display_message
   end
 end
