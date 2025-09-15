@@ -1,1 +1,1 @@
-json.extract! @destination, :name, :locked_at, :locked_by
+json.extract! @destination, :name, :application_name, :locked_at, :locked_by

@@ -72,6 +72,7 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :ok
       response_data = JSON.parse(response.body)
+      assert_equal @application.name, response_data["application_name"]
       assert_equal @destination.name, response_data["name"]
       assert_not_nil response_data["locked_at"]
       assert_equal @user.display_name, response_data["locked_by"]

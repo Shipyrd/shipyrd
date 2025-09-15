@@ -9,6 +9,10 @@ class Destination < ApplicationRecord
 
   broadcasts
 
+  def application_name
+    application.name
+  end
+
   def new_servers_available?
     servers.where(last_connected_at: nil).any?
   end

@@ -7,7 +7,7 @@ class DeploysController < ApplicationController
     @deploy = @application.deploys.new(deploy_params)
 
     if @deploy.save
-      render :show, status: :created, location: @deploy
+      render :show, status: :created
     else
       render json: @deploy.errors, status: :unprocessable_content
     end
