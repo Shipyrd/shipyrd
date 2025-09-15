@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.3.1
+ARG RUBY_VERSION=3.4.5
 FROM ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
@@ -19,13 +19,13 @@ FROM base AS build
 RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
     --mount=type=cache,id=dev-apt-lib,sharing=locked,target=/var/lib/apt \
     apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git default-libmysqlclient-dev
+    apt-get install --no-install-recommends -y build-essential git default-libmysqlclient-dev libyaml-dev
 
 # Install application gems
 COPY Gemfile Gemfile.lock .ruby-version ./
 
-RUN --mount=type=cache,id=gem-cache-3.3,sharing=locked,target=/srv/vendor \
-    find /srv/vendor -type d -wholename 'ruby/3.3.0' -delete && \
+RUN --mount=type=cache,id=gem-cache-3.4,sharing=locked,target=/srv/vendor \
+    find /srv/vendor -type d -wholename 'ruby/3.4.0' -delete && \
     bundle config set app_config .bundle && \
     bundle config set path /srv/vendor && \
     bundle config set deployment 'true' && \
