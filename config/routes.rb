@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     resources :destinations do
       member do
         patch "lock"
-        patch "unlock"
+        delete "unlock"
       end
     end
   end

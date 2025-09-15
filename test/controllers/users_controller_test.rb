@@ -44,7 +44,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
             post users_url, params: {code: "heyo", user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
           end
 
-          assert_response :unprocessable_entity
+          assert_response :unprocessable_content
         end
 
         test "should create user" do
@@ -55,7 +55,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
             post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, username: user.username}}
           end
 
-          assert_response :unprocessable_entity
+          assert_response :unprocessable_content
 
           assert_difference("User.count") do
             post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}

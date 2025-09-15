@@ -29,7 +29,7 @@ class UsersController < ApplicationController
       if params[:code] && @invite_link.blank?
         @user.errors.add(:base, "Invalid invite link")
 
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
       elsif @user.password.present? && @user.save
         organization = @invite_link&.organization || Organization.create!(name: @user.organization_name)
         organization.memberships.create(
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
       else
         @user.errors.add(:password, "can't be blank") if @user.password.blank?
 
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
       end
     end
   end
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
       if @user.update(user_params)
         format.html { redirect_to user_url(@user), notice: "Account successfully updated." }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
       end
     end
   end

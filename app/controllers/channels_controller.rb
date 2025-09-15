@@ -11,7 +11,7 @@ class ChannelsController < ApplicationController
         flash[:notice] = "#{@channel.display_name} connection was successfully updated."
         format.html { redirect_to edit_application_path(@channel.application) }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
       end
     end
   end

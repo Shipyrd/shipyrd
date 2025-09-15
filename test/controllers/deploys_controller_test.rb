@@ -25,7 +25,7 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
           },
           headers: auth_headers("invalid")
 
-        assert_response :not_found
+        assert_response :unauthorized
       end
     end
 
@@ -77,6 +77,25 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :created
       assert_equal @application, Deploy.last.application
+    end
+
+    test "should reject non-JSON requests" do
+      post deploys_url,
+        params: {
+          deploy: {
+            command: "deploy",
+            recorded_at: Time.zone.now,
+            performer: "test",
+            version: "123456",
+            service_version: "test@123456",
+            status: "pre-build"
+          }
+        },
+        headers: auth_headers(@token)
+
+      assert_response :not_acceptable
+      response_data = JSON.parse(response.body)
+      assert_equal "Only JSON format is supported", response_data["error"]
     end
   end
 end

@@ -29,6 +29,6 @@ class WebhooksControllerTest < ActionDispatch::IntegrationTest
       post application_webhooks_url(@application), params: {webhook: {url: ""}}
     end
 
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
   end
 end

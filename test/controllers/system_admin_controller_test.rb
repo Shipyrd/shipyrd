@@ -6,15 +6,4 @@ class SystemAdminControllerTest < ActionDispatch::IntegrationTest
     get mission_control_jobs_path
     assert_redirected_to "/session/new"
   end
-
-  test "renders when signed in" do
-    skip "Bug in MissionControl when using the test adapter"
-
-    @user = create(:user, system_admin: true)
-    sign_in(@user.email, @user.password)
-
-    get mission_control_jobs_path
-
-    assert_response :success
-  end
 end

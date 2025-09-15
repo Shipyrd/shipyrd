@@ -1,20 +1,25 @@
 class DeploysController < ApplicationController
   skip_before_action :verify_authenticity_token, if: proc { |c| c.action_name == "create" && request.format.json? }
+  before_action :ensure_json_format
 
   # POST /deploys or /deploys.json
   def create
     @deploy = @application.deploys.new(deploy_params)
 
-    respond_to do |format|
-      if @deploy.save
-        format.json { render :show, status: :created, location: @deploy }
-      else
-        format.json { render json: @deploy.errors, status: :unprocessable_entity }
-      end
+    if @deploy.save
+      render :show, status: :created
+    else
+      render json: @deploy.errors, status: :unprocessable_content
     end
   end
 
   private
+
+  def ensure_json_format
+    unless request.format.json?
+      render json: {error: "Only JSON format is supported"}, status: :not_acceptable
+    end
+  end
 
   def deploy_params
     params.require(:deploy).permit(

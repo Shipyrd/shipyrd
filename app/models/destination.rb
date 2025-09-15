@@ -9,6 +9,10 @@ class Destination < ApplicationRecord
 
   broadcasts
 
+  def application_name
+    application.name
+  end
+
   def new_servers_available?
     servers.where(last_connected_at: nil).any?
   end
@@ -35,6 +39,10 @@ class Destination < ApplicationRecord
 
   def locked?
     locked_at.present?
+  end
+
+  def locked_by
+    locker&.display_name
   end
 
   def lock!(user)
