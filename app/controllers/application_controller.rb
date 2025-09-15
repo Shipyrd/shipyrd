@@ -55,29 +55,14 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_with_application_token(token)
-    application = Application.find_by(token: token)
-    if application
-      @application = application
-      true
-    else
-      render json: {error: "Invalid application token"}, status: :unauthorized
-      false
-    end
+    @application = Application.find_by!(token: token)
+  rescue ActiveRecord::RecordNotFound
+    render json: {error: "Invalid token"}, status: :unauthorized
   end
 
   def authenticate_with_user_token(token)
-    if request.format.json?
-      user = User.find_by(token: token)
-      if user
-        @current_api_user = user
-        true
-      else
-        render json: {error: "Invalid user token"}, status: :unauthorized
-        false
-      end
-    else
-      render json: {error: "Invalid token"}, status: :unauthorized
-      false
-    end
+    @current_api_user = User.find_by!(token: token)
+  rescue ActiveRecord::RecordNotFound
+    render json: {error: "Invalid token"}, status: :unauthorized
   end
 end

@@ -64,6 +64,19 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
       @organization.memberships.create(user: @user)
     end
 
+    test "should get show with destination name via API" do
+      @destination.lock!(@user)
+
+      get application_destination_path(@application, @destination.name),
+        headers: {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
+
+      assert_response :ok
+      response_data = JSON.parse(response.body)
+      assert_equal @destination.name, response_data["name"]
+      assert_not_nil response_data["locked_at"]
+      assert_equal @user.display_name, response_data["locked_by"]
+    end
+
     test "should lock destination with destination name via API" do
       patch lock_application_destination_path(@application, @destination.name),
         headers: {Authorization: "Bearer #{@user.token}", Accept: "application/json"}

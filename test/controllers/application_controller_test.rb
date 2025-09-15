@@ -56,7 +56,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :unauthorized
       response_data = JSON.parse(response.body)
-      assert_equal "Invalid user token", response_data["error"]
+      assert_equal "Invalid token", response_data["error"]
     end
 
     test "should not allow access to applications from other organizations" do
@@ -113,7 +113,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :unauthorized
       response_data = JSON.parse(response.body)
-      assert_equal "Invalid application token", response_data["error"]
+      assert_equal "Invalid token", response_data["error"]
     end
 
     test "should reject user token for deploys controller" do
@@ -135,7 +135,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :unauthorized
       response_data = JSON.parse(response.body)
-      assert_equal "Invalid application token", response_data["error"]
+      assert_equal "Invalid token", response_data["error"]
     end
   end
 end
