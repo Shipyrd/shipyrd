@@ -21,7 +21,7 @@
 
         <% if destination.locked? %>
           <small class="is-size-7">Locked by <strong><%= destination.locker.display_name %></strong> <%= time_ago_in_words(destination.locked_at) %> ago</small>
-          <%= button_to unlock_application_destination_path(application, destination), method: :patch, title: "Unlock #{destination.name}", class: "button is-small is-warning" do %>
+          <%= button_to unlock_application_destination_path(application, destination), method: :delete, title: "Unlock #{destination.name}", class: "button is-small is-warning" do %>
             <span class="icon is-small">
               <i class="fa-solid fa-lock" aria-hidden="true"></i>
             </span>
