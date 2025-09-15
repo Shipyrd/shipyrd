@@ -17,14 +17,6 @@ class Destination < ApplicationRecord
     servers.where(last_connected_at: nil).any?
   end
 
-  def recipe_path
-    "config/#{recipe_name}"
-  end
-
-  def recipe_name
-    "deploy#{".#{name}" if name.present?}.yml"
-  end
-
   def dispatch_notifications(event, details)
     channels.each do |channel|
       next unless channel.events.include?(event.to_s)
