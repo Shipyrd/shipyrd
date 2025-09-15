@@ -42,6 +42,30 @@ class DestinationTest < ActiveSupport::TestCase
     refute destination.locked_at
   end
 
+  describe "locked_by" do
+    it "returns display_name of locker when locked" do
+      destination = create(:destination, application: @application)
+      user = create(:user, name: "John Doe", username: "https://github.com/johndoe")
+
+      destination.lock!(user)
+
+      assert_equal user.display_name, destination.locked_by
+    end
+
+    it "returns nil when not locked" do
+      destination = create(:destination, application: @application)
+
+      assert_nil destination.locked_by
+    end
+
+    it "returns nil when locker is nil" do
+      destination = create(:destination, application: @application)
+      destination.update!(locked_at: Time.current, locker: nil)
+
+      assert_nil destination.locked_by
+    end
+  end
+
   it "dispatch_notifications" do
     destination = create(:destination, application: @application)
     user = create(:user)

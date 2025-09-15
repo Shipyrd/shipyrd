@@ -3,7 +3,7 @@ require "helpers/basic_auth_helpers"
 
 class DestinationsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @destination = create(:destination)
+    @destination = create(:destination, name: "production")
     @application = @destination.application
     @organization = @application.organization
   end
@@ -51,10 +51,57 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
     test "unlock" do
       @destination.lock!(@user)
 
-      patch unlock_application_destination_path(@application, @destination)
+      delete unlock_application_destination_path(@application, @destination)
 
       assert_not @destination.reload.locked?
       assert_redirected_to root_path
+    end
+  end
+
+  describe "API functionality" do
+    setup do
+      @user = create(:user)
+      @organization.memberships.create(user: @user)
+    end
+
+    test "should lock destination with destination name via API" do
+      patch lock_application_destination_path(@application, @destination.name),
+        headers: {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
+
+      assert_response :ok
+      response_data = JSON.parse(response.body)
+      assert_equal @destination.name, response_data["name"]
+      assert_not_nil response_data["locked_at"]
+      assert_equal @user.display_name, response_data["locked_by"]
+
+      @destination.reload
+      assert @destination.locked?
+      assert_equal @user, @destination.locker
+    end
+
+    test "should unlock destination with destination name via API" do
+      @destination.lock!(@user)
+
+      delete unlock_application_destination_path(@application, @destination.name),
+        headers: {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
+
+      assert_response :ok
+      response_data = JSON.parse(response.body)
+      assert_equal @destination.name, response_data["name"]
+      assert_nil response_data["locked_at"]
+      assert_nil response_data["locked_by"]
+
+      @destination.reload
+      assert_not @destination.locked?
+    end
+
+    test "should return 404 for non-existent destination name" do
+      patch lock_application_destination_path(@application, "nonexistent"),
+        headers: {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
+
+      assert_response :not_found
+      response_data = JSON.parse(response.body)
+      assert_equal "Not found", response_data["error"]
     end
   end
 end

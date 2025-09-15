@@ -8,7 +8,7 @@ class InviteLinksController < ApplicationController
       if @invite_link.save
         format.html { redirect_to users_path, notice: "Invite link was successfully created." }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
       end
     end
   end

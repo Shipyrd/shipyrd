@@ -37,6 +37,10 @@ class Destination < ApplicationRecord
     locked_at.present?
   end
 
+  def locked_by
+    locker&.display_name
+  end
+
   def lock!(user)
     update!(
       locked_at: Time.current,
