@@ -66,6 +66,7 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
 
     test "should get show with destination name via API" do
       @destination.lock!(@user)
+      create(:deploy, application: @application, destination: @destination.name, status: "post-deploy", performer: @user.username, version: "123456", role: "web", runtime: 120, commit_message: "Test commit")
 
       get application_destination_path(@application, @destination.name),
         headers: {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
@@ -76,6 +77,14 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal @destination.name, response_data["name"]
       assert_not_nil response_data["locked_at"]
       assert_equal @user.display_name, response_data["locked_by"]
+
+      latest_deploy = response_data["latest_deploy"]
+      assert_equal @destination.latest_deploy.status, latest_deploy["status"]
+      assert_equal @destination.latest_deploy.performer, latest_deploy["performer"]
+      assert_equal @destination.latest_deploy.version, latest_deploy["version"]
+      assert_equal @destination.latest_deploy.role, latest_deploy["role"]
+      assert_equal @destination.latest_deploy.runtime, latest_deploy["runtime"]
+      assert_equal @destination.latest_deploy.commit_message, latest_deploy["commit_message"]
     end
 
     test "should lock destination with destination name via API" do
