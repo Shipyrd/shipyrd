@@ -12,7 +12,7 @@ class Destination < ApplicationRecord
 
   validates :url, url: {allow_blank: true, no_local: true}
 
-  before_save :fetch_favicon_if_url_changed
+  before_save :schedule_favicon_fetch_if_url_changed
 
   broadcasts
 
@@ -100,10 +100,11 @@ class Destination < ApplicationRecord
 
   private
 
-  def fetch_favicon_if_url_changed
+  def schedule_favicon_fetch_if_url_changed
     return unless url_changed? && url.present?
 
-    self.favicon_url = fetch_favicon
+    # Schedule favicon fetch in background after save
+    after_commit { FaviconFetchJob.perform_later(id) }
   end
 
   def fetch_favicon
@@ -111,10 +112,13 @@ class Destination < ApplicationRecord
 
     begin
       uri = URI.parse(url)
+      # Only process HTTP and HTTPS URLs
+      return nil unless %w[http https].include?(uri.scheme)
+      
       base_url = "#{uri.scheme}://#{uri.host}"
       base_url += ":#{uri.port}" if uri.port && ![80, 443].include?(uri.port)
 
-      # Try common favicon locations
+      # Try common favicon locations first
       favicon_urls = [
         "#{base_url}/favicon.ico",
         "#{base_url}/apple-touch-icon.png",
@@ -129,7 +133,7 @@ class Destination < ApplicationRecord
 
       # If no common favicon found, try to parse HTML for favicon link
       parse_favicon_from_html(base_url)
-    rescue URI::InvalidURIError, StandardError => e
+    rescue URI::InvalidURIError, SocketError, Net::OpenTimeout, Net::ReadTimeout, StandardError => e
       Rails.logger.warn "Failed to fetch favicon for URL #{url}: #{e.message}"
       nil
     end
@@ -137,7 +141,7 @@ class Destination < ApplicationRecord
 
   def favicon_exists?(favicon_url)
     begin
-      response = Net::HTTP.get_response(URI(favicon_url))
+      response = http_get_with_timeout(favicon_url)
       response.code == "200" && response.content_type&.start_with?("image/")
     rescue StandardError
       false
@@ -146,12 +150,12 @@ class Destination < ApplicationRecord
 
   def parse_favicon_from_html(base_url)
     begin
-      response = Net::HTTP.get_response(URI(base_url))
+      response = http_get_with_timeout(base_url)
       return nil unless response.code == "200"
 
       html = response.body
-      # Look for favicon link in HTML
-      favicon_match = html.match(/<link[^>]*rel=["'](?:icon|shortcut icon)["'][^>]*href=["']([^"']+)["']/i)
+      # Look for favicon link in HTML - support multiple variations
+      favicon_match = html.match(/<link[^>]*rel=["'](?:icon|shortcut icon|apple-touch-icon)["'][^>]*href=["']([^"']+)["']/i)
       
       if favicon_match
         favicon_path = favicon_match[1]
@@ -170,6 +174,17 @@ class Destination < ApplicationRecord
     rescue StandardError => e
       Rails.logger.warn "Failed to parse favicon from HTML for #{base_url}: #{e.message}"
       nil
+    end
+  end
+
+  def http_get_with_timeout(url_string, timeout_seconds = 5)
+    uri = URI(url_string)
+    
+    Net::HTTP.start(uri.host, uri.port, 
+                   use_ssl: uri.scheme == 'https',
+                   open_timeout: timeout_seconds,
+                   read_timeout: timeout_seconds) do |http|
+      http.get(uri.path.empty? ? '/' : uri.path)
     end
   end
 end

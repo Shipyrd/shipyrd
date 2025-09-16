@@ -136,39 +136,66 @@ class DestinationTest < ActiveSupport::TestCase
   end
 
   describe "favicon functionality" do
-    it "fetches favicon when URL is provided" do
+    it "schedules favicon fetch when URL is provided" do
       application = create(:application)
       destination = build(:destination, application: application, url: "https://example.com")
       
-      # Mock the favicon fetching to avoid actual HTTP calls
-      destination.expects(:fetch_favicon).returns("https://example.com/favicon.ico")
-      
-      destination.save!
-      
-      assert_equal "https://example.com/favicon.ico", destination.favicon_url
+      # Should schedule the background job
+      assert_enqueued_with(job: FaviconFetchJob) do
+        destination.save!
+      end
     end
 
-    it "does not fetch favicon when URL is blank" do
+    it "does not schedule favicon fetch when URL is blank" do
       application = create(:application)
       destination = build(:destination, application: application, url: "")
       
-      destination.expects(:fetch_favicon).never
-      
-      destination.save!
-      
-      assert_nil destination.favicon_url
+      # Should not schedule any job
+      assert_no_enqueued_jobs do
+        destination.save!
+      end
     end
 
-    it "updates favicon when URL changes" do
+    it "schedules favicon fetch when URL changes" do
       application = create(:application)
       destination = create(:destination, application: application, url: "https://example.com")
       
-      # Mock the favicon fetching for the update
-      destination.expects(:fetch_favicon).returns("https://newsite.com/favicon.ico")
+      # Should schedule job when URL changes
+      assert_enqueued_with(job: FaviconFetchJob) do
+        destination.update!(url: "https://newsite.com")
+      end
+    end
+
+    it "does not schedule favicon fetch when URL doesn't change" do
+      application = create(:application)
+      destination = create(:destination, application: application, url: "https://example.com", favicon_url: "https://example.com/favicon.ico")
       
-      destination.update!(url: "https://newsite.com")
+      # Should not schedule job if URL hasn't changed
+      assert_no_enqueued_jobs do
+        destination.update!(name: "updated-name")
+      end
+    end
+
+    it "handles invalid URLs gracefully" do
+      application = create(:application)
+      destination = build(:destination, application: application, url: "not-a-valid-url")
       
-      assert_equal "https://newsite.com/favicon.ico", destination.favicon_url
+      # This should not raise an error and should return nil
+      result = destination.send(:fetch_favicon)
+      
+      assert_nil result
+    end
+
+    it "handles network errors gracefully" do
+      application = create(:application)
+      destination = build(:destination, application: application, url: "https://nonexistent-domain.example")
+      
+      # Mock network error
+      destination.stubs(:http_get_with_timeout).raises(SocketError.new("Network error"))
+      
+      result = destination.send(:fetch_favicon)
+      
+      assert_nil result
     end
   end
 

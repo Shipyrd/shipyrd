@@ -14,7 +14,11 @@
       <strong>URL:</strong>
       <% if destination.url.present? %>
         <% if destination.favicon_url.present? %>
-          <%= image_tag destination.favicon_url, alt: "Favicon", class: "favicon", style: "width: 16px; height: 16px; margin-right: 8px; vertical-align: middle;" %>
+          <%= image_tag destination.favicon_url, 
+                        alt: "Favicon", 
+                        class: "favicon", 
+                        style: "width: 16px; height: 16px; margin-right: 8px; vertical-align: middle;",
+                        onerror: "this.style.display='none'" %>
         <% end %>
         <%= link_to destination.url, destination.url, target: "_blank", class: "is-link" %>
       <% end %>
