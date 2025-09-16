@@ -187,7 +187,7 @@ GEM
       standard
     hashdiff (1.1.2)
     hashie (3.6.0)
-    honeybadger (5.27.1)
+    honeybadger (6.1.0)
       logger
       ostruct
     hotwire-livereload (2.0.0)
@@ -281,7 +281,7 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 4)
-    ostruct (0.6.0)
+    ostruct (0.6.3)
     parallel (1.27.0)
     parser (3.3.9.0)
       ast (~> 2.4.1)
