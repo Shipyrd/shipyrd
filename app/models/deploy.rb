@@ -63,7 +63,6 @@ class Deploy < ApplicationRecord
     user&.avatar_url
   end
 
-  # TODO: Just replace the status with an enum? What about custom statuses?
   def progress_value
     case status
     when "pre-connect"
