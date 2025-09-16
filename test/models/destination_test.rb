@@ -135,6 +135,43 @@ class DestinationTest < ActiveSupport::TestCase
     end
   end
 
+  describe "favicon functionality" do
+    it "fetches favicon when URL is provided" do
+      application = create(:application)
+      destination = build(:destination, application: application, url: "https://example.com")
+      
+      # Mock the favicon fetching to avoid actual HTTP calls
+      destination.expects(:fetch_favicon).returns("https://example.com/favicon.ico")
+      
+      destination.save!
+      
+      assert_equal "https://example.com/favicon.ico", destination.favicon_url
+    end
+
+    it "does not fetch favicon when URL is blank" do
+      application = create(:application)
+      destination = build(:destination, application: application, url: "")
+      
+      destination.expects(:fetch_favicon).never
+      
+      destination.save!
+      
+      assert_nil destination.favicon_url
+    end
+
+    it "updates favicon when URL changes" do
+      application = create(:application)
+      destination = create(:destination, application: application, url: "https://example.com")
+      
+      # Mock the favicon fetching for the update
+      destination.expects(:fetch_favicon).returns("https://newsite.com/favicon.ico")
+      
+      destination.update!(url: "https://newsite.com")
+      
+      assert_equal "https://newsite.com/favicon.ico", destination.favicon_url
+    end
+  end
+
   it "new_servers_available?" do
     destination = create(:destination, application: @application)
 

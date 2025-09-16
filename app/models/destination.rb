@@ -1,3 +1,6 @@
+require "net/http"
+require "uri"
+
 class Destination < ApplicationRecord
   belongs_to :application, optional: true, touch: true
   belongs_to :locker, class_name: "User", optional: true, foreign_key: :locked_by_user_id
@@ -6,6 +9,10 @@ class Destination < ApplicationRecord
   has_many :channels, through: :application
 
   scope :latest, -> { order(created_at: :desc) }
+
+  validates :url, url: {allow_blank: true, no_local: true}
+
+  before_save :fetch_favicon_if_url_changed
 
   broadcasts
 
@@ -89,5 +96,80 @@ class Destination < ApplicationRecord
 
   def production?
     name == "production"
+  end
+
+  private
+
+  def fetch_favicon_if_url_changed
+    return unless url_changed? && url.present?
+
+    self.favicon_url = fetch_favicon
+  end
+
+  def fetch_favicon
+    return nil unless url.present?
+
+    begin
+      uri = URI.parse(url)
+      base_url = "#{uri.scheme}://#{uri.host}"
+      base_url += ":#{uri.port}" if uri.port && ![80, 443].include?(uri.port)
+
+      # Try common favicon locations
+      favicon_urls = [
+        "#{base_url}/favicon.ico",
+        "#{base_url}/apple-touch-icon.png",
+        "#{base_url}/apple-touch-icon-precomposed.png"
+      ]
+
+      favicon_urls.each do |favicon_url|
+        if favicon_exists?(favicon_url)
+          return favicon_url
+        end
+      end
+
+      # If no common favicon found, try to parse HTML for favicon link
+      parse_favicon_from_html(base_url)
+    rescue URI::InvalidURIError, StandardError => e
+      Rails.logger.warn "Failed to fetch favicon for URL #{url}: #{e.message}"
+      nil
+    end
+  end
+
+  def favicon_exists?(favicon_url)
+    begin
+      response = Net::HTTP.get_response(URI(favicon_url))
+      response.code == "200" && response.content_type&.start_with?("image/")
+    rescue StandardError
+      false
+    end
+  end
+
+  def parse_favicon_from_html(base_url)
+    begin
+      response = Net::HTTP.get_response(URI(base_url))
+      return nil unless response.code == "200"
+
+      html = response.body
+      # Look for favicon link in HTML
+      favicon_match = html.match(/<link[^>]*rel=["'](?:icon|shortcut icon)["'][^>]*href=["']([^"']+)["']/i)
+      
+      if favicon_match
+        favicon_path = favicon_match[1]
+        # Convert relative URLs to absolute
+        if favicon_path.start_with?("//")
+          uri = URI.parse(base_url)
+          "#{uri.scheme}:#{favicon_path}"
+        elsif favicon_path.start_with?("/")
+          "#{base_url}#{favicon_path}"
+        elsif favicon_path.start_with?("http")
+          favicon_path
+        else
+          "#{base_url}/#{favicon_path}"
+        end
+      end
+    rescue StandardError => e
+      Rails.logger.warn "Failed to parse favicon from HTML for #{base_url}: #{e.message}"
+      nil
+    end
   end
 end

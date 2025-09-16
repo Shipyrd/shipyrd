@@ -67,7 +67,7 @@ class ApplicationsController < ApplicationController
     params.require(:application).permit(
       :name,
       :repository_url,
-      destinations_attributes: %i[id name branch url _destroy]
+      destinations_attributes: %i[id name branch url favicon_url _destroy]
     )
   end
 end
