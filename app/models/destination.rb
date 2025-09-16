@@ -71,6 +71,13 @@ class Destination < ApplicationRecord
     "#{application.repository_url}/compare/#{latest_deployed_sha}...#{branch}"
   end
 
+  def latest_deploy
+    deploys.where(
+      destination: name,
+      command: :deploy
+    ).last
+  end
+
   def latest_deployed_sha
     @latest_deployed_sha ||= deploys.where(
       destination: name,
