@@ -3,29 +3,29 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
-      "fingerprint": "37a67def8218211b457898c7e7ab6be71b31daf36cf4aade1be2b3dbaeac57d4",
+      "fingerprint": "38cce42fc701a0c7e7f1413acfefe22a0dc7b9ece31350ffe31825fefbc498ec",
       "check_name": "Render",
       "message": "Render path contains parameter value",
-      "file": "app/views/destinations/show.html.erb",
-      "line": 1,
+      "file": "app/views/users/show.html.erb",
+      "line": 3,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => current_organization.applications.find(params[:application_id]).destinations.find(params[:id]), {})",
+      "code": "render(action => current_organization.users.find(params[:id]), { :locals => ({ :brakemanunresolvedmodel => current_organization.users.find(params[:id]) }) })",
       "render_path": [
         {
           "type": "controller",
-          "class": "DestinationsController",
+          "class": "UsersController",
           "method": "show",
-          "line": 11,
-          "file": "app/controllers/destinations_controller.rb",
+          "line": 16,
+          "file": "app/controllers/users_controller.rb",
           "rendered": {
-            "name": "destinations/show",
-            "file": "app/views/destinations/show.html.erb"
+            "name": "users/show",
+            "file": "app/views/users/show.html.erb"
           }
         }
       ],
       "location": {
         "type": "template",
-        "template": "destinations/show"
+        "template": "users/show"
       },
       "user_input": "params[:id]",
       "confidence": "Weak",
@@ -68,6 +68,40 @@
       "note": ""
     },
     {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "6a532ab2316e19086fcabb751d01305ab3f0f6c24c8f24202d11440d1894d28b",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/destinations/show.html.erb",
+      "line": 1,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => (current_organization.applications.find(params[:application_id]).destinations.find_by!(:name => params[:id]) or current_organization.applications.find(params[:application_id]).destinations.find(params[:id])), {})",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "DestinationsController",
+          "method": "show",
+          "line": 13,
+          "file": "app/controllers/destinations_controller.rb",
+          "rendered": {
+            "name": "destinations/show",
+            "file": "app/views/destinations/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "destinations/show"
+      },
+      "user_input": "params[:id]",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "Mass Assignment",
       "warning_code": 105,
       "fingerprint": "90e4b947487d878a0beac70b81c04207fea6073f4e3101fb2e9a10b3a75aac79",
@@ -97,7 +131,7 @@
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
       "file": "app/controllers/deploys_controller.rb",
-      "line": 32,
+      "line": 37,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:deploy).permit(:recorded_at, :status, :performer, :commit_message, :version, :service_version, :service, :hosts, :command, :subcommand, :destination, :role, :runtime)",
       "render_path": null,
@@ -112,41 +146,7 @@
         915
       ],
       "note": ""
-    },
-    {
-      "warning_type": "Dynamic Render Path",
-      "warning_code": 15,
-      "fingerprint": "a5d1d97d274df67db0a977280ae2565c5b8d5d19dac80f6453449adcaca57e38",
-      "check_name": "Render",
-      "message": "Render path contains parameter value",
-      "file": "app/views/users/show.html.erb",
-      "line": 3,
-      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => current_organization.users.find(params[:id]), {})",
-      "render_path": [
-        {
-          "type": "controller",
-          "class": "UsersController",
-          "method": "show",
-          "line": 16,
-          "file": "app/controllers/users_controller.rb",
-          "rendered": {
-            "name": "users/show",
-            "file": "app/views/users/show.html.erb"
-          }
-        }
-      ],
-      "location": {
-        "type": "template",
-        "template": "users/show"
-      },
-      "user_input": "params[:id]",
-      "confidence": "Weak",
-      "cwe_id": [
-        22
-      ],
-      "note": ""
     }
   ],
-  "brakeman_version": "7.0.2"
+  "brakeman_version": "7.1.0"
 }
