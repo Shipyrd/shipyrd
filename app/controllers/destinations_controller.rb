@@ -49,15 +49,12 @@ class DestinationsController < ApplicationController
   end
 
   def set_destination
-    respond_to do |format|
-      format.html do
-        # Web usage - treat 'id' parameter as actual ID
-        @destination = @application.destinations.find(params[:id])
-      end
-      format.json do
-        # API usage - treat 'id' parameter as destination name
-        @destination = @application.destinations.find_by!(name: params[:id])
-      end
+    @destination = if request.format.json?
+      # API usage - treat 'id' parameter as destination name
+      @application.destinations.find_by!(name: params[:id])
+    else
+      # Web usage - treat 'id' parameter as actual ID
+      @application.destinations.find(params[:id])
     end
   end
 
