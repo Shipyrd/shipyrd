@@ -254,7 +254,8 @@ GEM
     multi_xml (0.7.1)
       bigdecimal (~> 3.1)
     multipart-post (2.4.1)
-    mysql2 (0.5.6)
+    mysql2 (0.5.7)
+      bigdecimal
     nenv (0.3.0)
     net-imap (0.5.10)
       date
@@ -498,7 +499,7 @@ DEPENDENCIES
   minitest-spec-rails
   mission_control-jobs
   mocha
-  mysql2 (~> 0.5.6)
+  mysql2 (~> 0.5.7)
   oauth2
   propshaft
   pry
