@@ -1,2 +1,2 @@
-json.extract! application, :id, :name, :url, :environment, :repository_url, :created_at, :updated_at
-json.url application_url(application, format: :json)
+json.extract! application, :id, :name, :repository_url, :created_at, :updated_at
+json.destinations application.destination_names
