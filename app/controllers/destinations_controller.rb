@@ -2,8 +2,6 @@ class DestinationsController < ApplicationController
   before_action :set_application
   before_action :set_destination
 
-  rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
-
   # GET /destinations/1/edit
   def edit
   end
@@ -55,13 +53,6 @@ class DestinationsController < ApplicationController
     else
       # Web usage - treat 'id' parameter as actual ID
       @application.destinations.find(params[:id])
-    end
-  end
-
-  def handle_not_found(exception)
-    respond_to do |format|
-      format.html { raise exception }
-      format.json { render json: {error: "Not found"}, status: :not_found }
     end
   end
 

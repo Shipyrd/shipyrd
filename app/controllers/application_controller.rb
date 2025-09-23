@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   rate_limit to: 60, within: 1.minute
 
   before_action :authenticate
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
 
   helper_method :current_user, :current_organization, :require_admin, :current_admin?, :community_edition?
 
@@ -64,5 +65,12 @@ class ApplicationController < ActionController::Base
     @current_api_user = User.find_by!(token: token)
   rescue ActiveRecord::RecordNotFound
     render json: {error: "Invalid token"}, status: :unauthorized
+  end
+
+  def handle_not_found(exception)
+    respond_to do |format|
+      format.html { raise exception }
+      format.json { render json: {error: "Not found"}, status: :not_found }
+    end
   end
 end

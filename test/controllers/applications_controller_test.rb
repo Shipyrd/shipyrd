@@ -14,6 +14,27 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  describe "via JSON" do
+    before do
+      @user = create(:user)
+      @organization.users << @user
+    end
+
+    test "should get applications index with valid user token for JSON requests" do
+      create(:destination, application: @application, name: "production")
+
+      get applications_url, headers: {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
+
+      assert_response :ok
+      response_data = JSON.parse(response.body)
+      assert response_data.is_a?(Array)
+      first_item = response_data.first
+      assert_equal @application.id, first_item["id"]
+      assert_equal @application.name, first_item["name"]
+      assert_equal ["production"], first_item["destinations"]
+    end
+  end
+
   describe "authenticated" do
     before do
       @user = create(:user)
