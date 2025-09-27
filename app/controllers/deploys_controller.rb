@@ -1,5 +1,4 @@
 class DeploysController < ApplicationController
-  skip_before_action :verify_authenticity_token, if: proc { |c| c.action_name == "create" && request.format.json? }
   before_action :ensure_json_format
 
   # POST /deploys or /deploys.json
