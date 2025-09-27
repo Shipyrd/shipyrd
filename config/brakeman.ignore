@@ -36,19 +36,19 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
-      "fingerprint": "6a532ab2316e19086fcabb751d01305ab3f0f6c24c8f24202d11440d1894d28b",
+      "fingerprint": "7aab8a9db195416050f10c197acf14c8dffda5de2c7d0d3ff134aabbe82a5cc6",
       "check_name": "Render",
       "message": "Render path contains parameter value",
       "file": "app/views/destinations/show.html.erb",
       "line": 1,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => (current_organization.applications.find(params[:application_id]).destinations.find_by!(:name => params[:id]) or current_organization.applications.find(params[:application_id]).destinations.find(params[:id])), {})",
+      "code": "render(action => if request.format.json? then\n  id = (params[:id] == \"default\") ? (nil) : (params[:id])\n  current_organization.applications.find(params[:application_id]).destinations.find_by!(:name => ((nil or params[:id])))\nelse\n  current_organization.applications.find(params[:application_id]).destinations.find(params[:id])\nend, {})",
       "render_path": [
         {
           "type": "controller",
           "class": "DestinationsController",
           "method": "show",
-          "line": 13,
+          "line": 11,
           "file": "app/controllers/destinations_controller.rb",
           "rendered": {
             "name": "destinations/show",
@@ -97,7 +97,7 @@
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
       "file": "app/controllers/deploys_controller.rb",
-      "line": 37,
+      "line": 36,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:deploy).permit(:recorded_at, :status, :performer, :commit_message, :version, :service_version, :service, :hosts, :command, :subcommand, :destination, :role, :runtime)",
       "render_path": null,

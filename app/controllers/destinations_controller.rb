@@ -49,7 +49,7 @@ class DestinationsController < ApplicationController
   def set_destination
     @destination = if request.format.json?
       # API usage - treat 'id' parameter as destination name
-      id = params[:id] == "default" ? nil : params[:id]
+      id = (params[:id] == "default") ? nil : params[:id]
       @application.destinations.find_by!(name: id)
     else
       # Web usage - treat 'id' parameter as actual ID
