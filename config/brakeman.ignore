@@ -1,6 +1,40 @@
 {
   "ignored_warnings": [
     {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "38cce42fc701a0c7e7f1413acfefe22a0dc7b9ece31350ffe31825fefbc498ec",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/users/show.html.erb",
+      "line": 3,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => current_organization.users.find(params[:id]), { :locals => ({ :brakemanunresolvedmodel => current_organization.users.find(params[:id]) }) })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "UsersController",
+          "method": "show",
+          "line": 16,
+          "file": "app/controllers/users_controller.rb",
+          "rendered": {
+            "name": "users/show",
+            "file": "app/views/users/show.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "users/show"
+      },
+      "user_input": "params[:id]",
+      "confidence": "Weak",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
       "fingerprint": "5efcd4ebcd19b735aff88540908e3cb1ceac71ed33b3c720c42a45666916c874",
@@ -112,41 +146,7 @@
         915
       ],
       "note": ""
-    },
-    {
-      "warning_type": "Dynamic Render Path",
-      "warning_code": 15,
-      "fingerprint": "a5d1d97d274df67db0a977280ae2565c5b8d5d19dac80f6453449adcaca57e38",
-      "check_name": "Render",
-      "message": "Render path contains parameter value",
-      "file": "app/views/users/show.html.erb",
-      "line": 3,
-      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(action => current_organization.users.find(params[:id]), {})",
-      "render_path": [
-        {
-          "type": "controller",
-          "class": "UsersController",
-          "method": "show",
-          "line": 16,
-          "file": "app/controllers/users_controller.rb",
-          "rendered": {
-            "name": "users/show",
-            "file": "app/views/users/show.html.erb"
-          }
-        }
-      ],
-      "location": {
-        "type": "template",
-        "template": "users/show"
-      },
-      "user_input": "params[:id]",
-      "confidence": "Weak",
-      "cwe_id": [
-        22
-      ],
-      "note": ""
     }
   ],
-  "brakeman_version": "7.0.2"
+  "brakeman_version": "7.1.0"
 }
