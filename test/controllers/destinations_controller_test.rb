@@ -77,6 +77,7 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal @destination.name, response_data["name"]
       assert_not_nil response_data["locked_at"]
       assert_equal @user.display_name, response_data["locked_by"]
+      assert_includes response_data.keys, "on_deck_url"
 
       latest_deploy = response_data["latest_deploy"]
       assert_equal @destination.latest_deploy.status, latest_deploy["status"]
@@ -85,6 +86,7 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal @destination.latest_deploy.role, latest_deploy["role"]
       assert_equal @destination.latest_deploy.runtime, latest_deploy["runtime"]
       assert_equal @destination.latest_deploy.commit_message, latest_deploy["commit_message"]
+      assert_includes latest_deploy.keys, "compare_url"
     end
 
     test "should lock destination with destination name via API" do
