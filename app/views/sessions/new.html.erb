@@ -3,6 +3,7 @@
     <%= form_with url: session_path do |form| %>
       <div class="field">
         <%= form.label :email, class: "label" %>
+
         <div class="control">
           <%= form.email_field :email, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email], class:"input" %>
         </div>
@@ -10,6 +11,7 @@
 
       <div class="field">
         <%= form.label :password, class: "label" %>
+
         <div class="control">
           <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "input" %>
         </div>
@@ -17,12 +19,14 @@
 
       <%= form.submit "Sign in", class: "button is-primary" %>
     <% end %>
+
     <div class="mt-4 field">
       <%= link_to "Sign up", new_user_path, class: "is-clickable is-underlined has-text-info" %>
+
       <% unless community_edition? %>
         <span class="has-text-info">&bull;</span>
         <%= link_to "Contact", "mailto:nick@shipyrd.io", class:"is-inline is-clickable is-underlined has-text-info" %>
       <% end %>
     </div>
-  <div>
+  </div>
 </div>
