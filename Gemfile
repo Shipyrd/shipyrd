@@ -50,6 +50,7 @@ group :development do
   gem "guard-minitest"
   gem "guard-standardrb"
   gem "hotwire-livereload"
+  gem "reactionview"
   gem "web-console"
 end
 
