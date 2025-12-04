@@ -4,7 +4,7 @@
   <div class="field">
     <%= form.label :name, class: "label" %>
     <div class="control">
-      <%= form.text_field :name, class: "input" %>
+      <%= form.text_field :name, class: "input", required: true %>
     </div>
   </div>
 
@@ -12,7 +12,7 @@
     <div class="field">
       <%= form.label :organization_name, class: "label" %>
       <div class="control">
-        <%= form.text_field :organization_name, class: "input" %>
+        <%= form.text_field :organization_name, class: "input", required: true %>
       </div>
     </div>
   <% end %>
@@ -27,14 +27,14 @@
   <div class="field">
     <%= form.label :email, class: "label" %>
     <div class="control">
-      <%= form.text_field :email, class: "input" %>
+      <%= form.text_field :email, class: "input", required: true %>
     </div>
   </div>
 
   <div class="field">
     <%= form.label :password, class: "label" %>
     <div class="control">
-      <%= form.password_field :password, class: "input" %>
+      <%= form.password_field :password, class: "input", required: true %>
     </div>
   </div>
 
