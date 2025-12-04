@@ -1,6 +1,11 @@
 common: &defaults
   monitor: true
 
+  ignore_endpoints:
+    - /up
+    - /rails/active_storage
+    - /jobs
+
 production:
   <<: *defaults
 
