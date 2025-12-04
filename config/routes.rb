@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  get "up" => "rails/health#show", :as => :rails_health_check
+  get "up", to: ->(env) {
+    ActiveRecord::Migrator.current_version
+
+    [200, {}, ['']]
+  }
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
