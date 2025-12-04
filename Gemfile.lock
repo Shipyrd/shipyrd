@@ -397,6 +397,8 @@ GEM
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
+    scout_apm (6.0.0)
+      parser
     securerandom (0.4.1)
     selenium-webdriver (4.10.0)
       rexml (~> 3.2, >= 3.2.5)
@@ -484,6 +486,7 @@ PLATFORMS
   arm64-darwin-22
   arm64-darwin-23
   arm64-darwin-24
+  arm64-darwin-25
   x86_64-linux
 
 DEPENDENCIES
@@ -517,6 +520,7 @@ DEPENDENCIES
   rails (~> 8.0.3)
   rails_semantic_logger
   reactionview
+  scout_apm
   selenium-webdriver
   solid_cable
   solid_queue

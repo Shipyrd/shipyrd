@@ -1,0 +1,21 @@
+common: &defaults
+  monitor: true
+
+  ignore_endpoints:
+    - /up
+    - /rails/active_storage
+    - /jobs
+
+production:
+  <<: *defaults
+
+development:
+  <<: *defaults
+  monitor: false
+
+test:
+  <<: *defaults
+  monitor: false
+
+staging:
+  <<: *defaults
