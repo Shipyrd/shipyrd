@@ -22,7 +22,7 @@ gem "faraday" # Already required by oauth2 and github_api but using it directly
 gem "github_api"
 gem "honeybadger"
 gem "oauth2"
-gem 'scout_apm'
+gem "scout_apm"
 
 # Jobs/Cable
 gem "mission_control-jobs"
