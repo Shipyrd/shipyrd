@@ -1,0 +1,16 @@
+common: &defaults
+  monitor: true
+
+production:
+  <<: *defaults
+
+development:
+  <<: *defaults
+  monitor: false
+
+test:
+  <<: *defaults
+  monitor: false
+
+staging:
+  <<: *defaults
