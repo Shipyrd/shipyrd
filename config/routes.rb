@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get "up", to: ->(env) {
     ActiveRecord::Migrator.current_version
 
-    [200, {}, ['']]
+    [200, {}, [""]]
   }
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
