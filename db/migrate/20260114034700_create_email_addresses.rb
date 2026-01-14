@@ -5,6 +5,7 @@ class CreateEmailAddresses < ActiveRecord::Migration[8.1]
       t.references :user, null: false, foreign_key: true
 
       t.timestamps
+      t.index :email
     end
   end
 end
