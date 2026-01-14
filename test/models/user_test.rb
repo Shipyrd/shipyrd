@@ -1,6 +1,12 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  it "creates an email record" do
+    user = create(:user, email: "hello@world.com")
+
+    assert "hello@world.com", user.email_addresses.first.email
+  end
+
   it "display_name" do
     user = build(:user, username: "https://github.com/username")
 

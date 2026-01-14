@@ -7,6 +7,8 @@ include FactoryBot::Syntax::Methods # standard:disable Style/MixinUsage
 
 require "mocha/minitest"
 
+Minitest.load_plugins
+
 module ActiveSupport
   class TestCase
     parallelize(workers: :number_of_processors)

@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :organizations, through: :memberships, counter_cache: true
   has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
+  has_many :email_addresses, dependent: :destroy
 
   has_secure_token length: 64
   has_secure_password validations: false
@@ -14,6 +15,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, presence: true, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i}
 
   after_create_commit :queue_populate_avatar
+  after_create :store_email_address
 
   scope :has_password, -> { where.not(password_digest: nil) }
 
@@ -64,5 +66,11 @@ class User < ApplicationRecord
     return if user_info["avatar_url"].blank?
 
     update!(avatar_url: "#{user_info["avatar_url"]}&s=100")
+  end
+
+  private
+
+  def store_email_address
+    email_addresses.create(email: email)
   end
 end
