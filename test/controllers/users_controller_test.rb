@@ -107,10 +107,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         @user = create(:user)
         @organization.users << @user
 
-        assert_difference("User.count", -1) do
+        assert_difference("@organization.users.count", -1) do
           delete user_url(@user)
         end
 
+        assert @user.reload.persisted?
         assert_redirected_to users_url
       end
 

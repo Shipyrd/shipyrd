@@ -59,7 +59,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy!
+    current_organization.memberships.find_by(user: @user).destroy
 
     respond_to do |format|
       format.html { redirect_to users_path, status: :see_other, notice: "User was successfully destroyed." }
