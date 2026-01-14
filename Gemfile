@@ -8,7 +8,7 @@ gem "bootsnap", require: false
 gem "dotenv"
 gem "puma", ">= 5.0"
 gem "mysql2", "~> 0.5.7"
-gem "rails", "~> 8.0.3"
+gem "rails", "~> 8.1.1"
 gem "rails_semantic_logger", require: false
 
 # Assets
