@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :organizations, through: :memberships, counter_cache: true
   has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
+  has_many :email_addresses, dependent: :destroy
 
   has_secure_token length: 64
   has_secure_password validations: false
