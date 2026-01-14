@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_09_14_082905) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_14_034700) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "token"
@@ -77,6 +77,14 @@ ActiveRecord::Schema[8.1].define(version: 2025_09_14_082905) do
     t.string "url"
     t.index ["application_id", "name"], name: "index_destinations_on_application_id_and_name"
     t.index ["application_id"], name: "index_destinations_on_application_id"
+  end
+
+  create_table "email_addresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_email_addresses_on_user_id"
   end
 
   create_table "invite_links", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -187,6 +195,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_09_14_082905) do
 
   add_foreign_key "channels", "applications"
   add_foreign_key "destinations", "applications"
+  add_foreign_key "email_addresses", "users"
   add_foreign_key "invite_links", "users", column: "creator_id"
   add_foreign_key "memberships", "organizations"
   add_foreign_key "memberships", "users"
