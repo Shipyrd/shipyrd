@@ -7,6 +7,15 @@ class UserTest < ActiveSupport::TestCase
     assert "hello@world.com", user.email_addresses.first.email
   end
 
+  it "deletes user oauth tokens" do
+    user = create(:user)
+    user.oauth_tokens.create!
+
+    assert_difference("user.oauth_tokens.count", -1) do
+      user.destroy
+    end
+  end
+
   it "display_name" do
     user = build(:user, username: "https://github.com/username")
 

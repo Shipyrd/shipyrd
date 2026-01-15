@@ -12,9 +12,9 @@ class ApplicationController < ActionController::Base
     return @current_api_user if @current_api_user
 
     # Fall back to session-based authentication
-    return nil if cookies.signed[:user_id].blank?
+    return nil if session[:user_id].blank?
 
-    User.find_by(id: cookies.signed[:user_id])
+    User.find_by(id: session[:user_id])
   end
 
   def current_admin?
@@ -24,6 +24,8 @@ class ApplicationController < ActionController::Base
   end
 
   def current_organization
+    return nil unless current_user
+
     current_user.organizations.first
   end
 

@@ -40,5 +40,6 @@
 
   <div class="field">
     <%= form.submit class: "button is-primary" %>
+    <%= link_to "Create account with GitHub", oauth_authorize_url(:github), class: "button is-secondary" %>
   </div>
 <% end %>

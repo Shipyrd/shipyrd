@@ -4,7 +4,7 @@ class OauthToken < ApplicationRecord
   encrypts :extra_data
 
   belongs_to :user
-  belongs_to :application
+  belongs_to :application, optional: true
   has_one :channel, as: :owner, dependent: :destroy
 
   enum :provider, {
@@ -20,7 +20,13 @@ class OauthToken < ApplicationRecord
     slack: "identify,incoming-webhook,chat:write:bot"
   }
 
+  def user_token?
+    user.present? && application.blank?
+  end
+
   def create_channel
+    return unless application
+
     create_channel!(
       application: application,
       channel_type: provider,
@@ -59,13 +65,15 @@ class OauthToken < ApplicationRecord
     )
   end
 
-  def self.create_from_oauth_token(provider:, code:, application:, user:, redirect_uri:)
+  def self.create_from_oauth_token(provider:, code:, redirect_uri:, application: nil, user: nil, organization: nil, role: nil)
     token = oauth2_client(provider).auth_code.get_token(
       code,
       redirect_uri: redirect_uri
     )
 
-    application.oauth_tokens.create!(
+    user = create_user_from_provider(provider: provider, token: token.token, organization: organization, role: role) if user.nil?
+
+    create!(
       provider: provider,
       application: application,
       user: user,
@@ -74,6 +82,42 @@ class OauthToken < ApplicationRecord
       scope: token.params["scope"],
       extra_data: provider_extra_data(provider, token.params)
     )
+  end
+
+  def self.create_user_from_provider(provider:, token:, organization:, role:)
+    case provider
+    when "github"
+      github = Octokit::Client.new(access_token: token)
+      github_user = github.user
+      github_emails = github.emails
+
+      user = User.find_or_create_by!(email: github_user.email) do |u|
+        u.username = "https://github.com/#{github_user.login}"
+        u.avatar_url = "#{github_user.avatar_url}&s=100"
+        u.name = github_user.name
+
+        if organization
+          organization.memberships.create(
+            user: u,
+            role: role
+          )
+        else
+          organization = Organization.create!(name: u.name)
+          organization.memberships.create(
+            user: u,
+            role: :admin
+          )
+        end
+      end
+
+      github_emails.each do |email|
+        user.email_addresses.find_or_create_by(email: email[:email])
+      end
+
+      user
+    else
+      raise "Unknown provider for user creation"
+    end
   end
 
   def self.provider_configuration(provider)

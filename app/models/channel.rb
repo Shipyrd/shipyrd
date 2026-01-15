@@ -14,11 +14,10 @@ class Channel < ApplicationRecord
 
   EVENTS = %w[deploy lock unlock]
 
-  def self.available_channels
+  def self.available_notification_channels
     channels = []
 
     channels << :webhook
-    channels << :github if OauthToken.configured_providers.include?("github")
     channels << :slack if OauthToken.configured_providers.include?("slack")
 
     channels

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_14_034700) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_14_151406) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "token"
@@ -124,7 +124,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_14_034700) do
   end
 
   create_table "oauth_tokens", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "application_id", null: false
+    t.bigint "application_id"
     t.datetime "created_at", null: false
     t.datetime "expires_at"
     t.text "extra_data"

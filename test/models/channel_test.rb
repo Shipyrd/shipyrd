@@ -13,9 +13,9 @@ class ChannelTest < ActiveSupport::TestCase
   end
 
   test "should return available channels" do
-    OauthToken.stubs(:configured_providers).returns(["github", "slack"])
+    OauthToken.stubs(:configured_providers).returns(["slack"])
 
-    assert_equal [:webhook, :github, :slack], Channel.available_channels
+    assert_equal [:webhook, :slack], Channel.available_notification_channels
   end
 
   test "should return display name" do

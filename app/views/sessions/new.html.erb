@@ -18,6 +18,7 @@
       </div>
 
       <%= form.submit "Sign in", class: "button is-primary" %>
+      <%= link_to "Sign in with GitHub", oauth_authorize_url(:github), class: "button is-secondary"  %>
     <% end %>
 
     <div class="mt-4 field">

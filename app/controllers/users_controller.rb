@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
+  include Invitable
+
   skip_before_action :authenticate, only: %i[new create]
 
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_user_url, alert: "Try again later." }
 
-  before_action :check_invite_link, only: %i[new create]
   before_action :set_user, only: %i[show edit update destroy]
   before_action :require_self, only: %i[edit update]
   before_action :require_admin, only: %i[index destroy]
@@ -26,7 +27,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     respond_to do |format|
-      if params[:code] && @invite_link.blank?
+      if invite_code && @invite_link.blank?
         @user.errors.add(:base, "Invalid invite link")
 
         format.html { render :new, status: :unprocessable_content }
@@ -37,7 +38,8 @@ class UsersController < ApplicationController
           role: @invite_link ? @invite_link.role : :admin
         )
 
-        cookies.signed[:user_id] = @user.id
+        reset_session
+        session[:user_id] = @user.id
 
         format.html { redirect_to root_url, notice: "User was successfully created." }
       else
@@ -67,14 +69,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def check_invite_link
-    @invite_link = InviteLink.active.find_by(code: params[:code]) if params[:code]
-
-    return unless community_edition?
-
-    redirect_to new_session_url if Organization.count.positive? && @invite_link.blank?
-  end
 
   def require_self
     redirect_to root_path unless @user.id == current_user.id

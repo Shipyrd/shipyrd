@@ -6,6 +6,7 @@ class User < ApplicationRecord
   has_many :organizations, through: :memberships, counter_cache: true
   has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
   has_many :email_addresses, dependent: :destroy
+  has_many :oauth_tokens, -> { where(application: nil) }, dependent: :destroy
 
   has_secure_token length: 64
   has_secure_password validations: false
@@ -14,8 +15,8 @@ class User < ApplicationRecord
   validates :username, allow_blank: true, url: {no_local: true}
   validates :email, uniqueness: true, presence: true, format: {with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i}
 
-  after_create_commit :queue_populate_avatar
   after_create :store_email_address
+  after_create_commit :queue_populate_avatar
 
   scope :has_password, -> { where.not(password_digest: nil) }
 
@@ -54,7 +55,7 @@ class User < ApplicationRecord
   end
 
   def queue_populate_avatar
-    return false if Rails.env.test? || !github_user?
+    return false if avatar_url.present? || Rails.env.test? || !github_user?
 
     AvatarImporterJob.perform_later(id)
   end
@@ -71,6 +72,6 @@ class User < ApplicationRecord
   private
 
   def store_email_address
-    email_addresses.create(email: email)
+    email_addresses.find_or_create_by(email: email)
   end
 end

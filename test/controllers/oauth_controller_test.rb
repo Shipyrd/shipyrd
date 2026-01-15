@@ -15,6 +15,47 @@ class OauthControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  describe "oauth with github" do
+    it "redirects to github.com/login/oauth" do
+      get oauth_authorize_url(:github)
+
+      assert_redirected_to %r{https://github.com/login/oauth/authorize}
+    end
+
+    it "handles the callback and loads the user" do
+      oauth_token = build(:oauth_token, user: build(:user), application: nil)
+      OauthToken.stubs(:create_from_oauth_token).returns(oauth_token)
+      OauthController.any_instance.stubs(:oauth_session_state).returns("456")
+
+      get oauth_callback_url(:github, code: "123", state: "456")
+
+      assert_redirected_to root_path
+    end
+
+    it "supports invite links" do
+      invite_link = create(:invite_link)
+      oauth_token = build(:oauth_token, user: build(:user), application: nil)
+      OauthController.any_instance.stubs(:redirect_uri).returns("https://example.com")
+      OauthToken.expects(:create_from_oauth_token).with(
+        provider: "github",
+        code: "123",
+        application: nil,
+        user: nil,
+        organization: invite_link.organization,
+        role: invite_link.role,
+        redirect_uri: "https://example.com"
+      ).returns(oauth_token)
+
+      OauthController.any_instance.stubs(:oauth_session_state).returns("456")
+
+      get new_user_url(code: invite_link.code)
+
+      get oauth_callback_url(:github, code: "123", state: "456")
+
+      assert_redirected_to root_path
+    end
+  end
+
   describe "authenticated" do
     setup do
       @admin = create(:user)

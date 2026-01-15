@@ -6,6 +6,11 @@ class OauthTokensTest < ActiveSupport::TestCase
     @user = create(:user)
   end
 
+  test "user_token? returns true when associated with a user and false otherwise" do
+    assert OauthToken.new(user: @user, provider: :slack).user_token?
+    refute OauthToken.new(application: @application, provider: :slack).user_token?
+  end
+
   test "creates a channel" do
     token = OauthToken.create!(
       user: @user,
@@ -19,6 +24,72 @@ class OauthTokensTest < ActiveSupport::TestCase
     assert_equal token, channel.owner
     assert_equal "slack", channel.channel_type
     assert_equal Channel::EVENTS, channel.events
+  end
+
+  describe "create user from oauth" do
+    setup do
+      @organization = create(:organization)
+      token = OAuth2::AccessToken.from_hash(
+        OauthToken.oauth2_client("github"),
+        {
+          access_token: "github-token"
+        }
+      )
+
+      OAuth2::Client.any_instance.stubs(:auth_code).returns(stub(get_token: token))
+
+      @user_stub = stub(
+        login: "username",
+        avatar_url: "https://github.com/avatar.png",
+        name: "user",
+        email: "test@example.com"
+      )
+
+      Octokit::Client.stubs(:new).returns(
+        stub(
+          user: @user_stub,
+          emails: [{email: "additional@example.com"}]
+        )
+      )
+    end
+
+    test "creates a user from oauth when user doesn't exist" do
+      token = OauthToken.create_from_oauth_token(
+        provider: "github",
+        code: "123",
+        redirect_uri: nil,
+        organization: @organization,
+        role: :admin
+      )
+
+      user = token.user
+      assert_equal "https://github.com/username", user.username
+      assert_equal @user_stub.name, user.name
+      assert_equal "#{@user_stub.avatar_url}&s=100", user.avatar_url
+      assert_equal "additional@example.com", user.email_addresses.last.email
+      membership = @organization.memberships.find_by!(user: user)
+
+      assert membership.admin?
+    end
+
+    test "create a new organization if not invited" do
+      token = OauthToken.create_from_oauth_token(
+        provider: "github",
+        code: "123",
+        redirect_uri: nil,
+        organization: nil,
+        role: nil
+      )
+
+      user = token.user
+      assert_equal "https://github.com/username", user.username
+      assert_equal @user_stub.name, user.name
+      assert_equal "#{@user_stub.avatar_url}&s=100", user.avatar_url
+      assert_equal "additional@example.com", user.email_addresses.last.email
+      organization = user.memberships.find_by(role: :admin).organization
+
+      assert_equal organization.name, user.name
+    end
   end
 
   test "creates an oauth token" do

@@ -1,4 +1,8 @@
 class OauthController < ApplicationController
+  include Invitable
+
+  skip_before_action :authenticate, if: -> { params[:provider] == "github" }
+  skip_before_action :store_invite_code # oauth returns an auth code in params[:code]
   before_action :verify_provider, only: %i[authorize callback]
   before_action :set_current_application_id, only: %i[authorize]
 
@@ -20,12 +24,18 @@ class OauthController < ApplicationController
       code: params[:code],
       application: current_application,
       user: current_user,
+      organization: @invite_link&.organization,
+      role: @invite_link&.role,
       redirect_uri: redirect_uri
     )
 
-    session[:current_application_id] = nil
-
-    redirect_to edit_application_url(auth.application)
+    if auth.user_token?
+      session[:user_id] = auth.user.id
+      redirect_to root_path
+    else
+      session[:current_application_id] = nil
+      redirect_to edit_application_url(auth.application)
+    end
   end
 
   private
@@ -43,10 +53,14 @@ class OauthController < ApplicationController
   end
 
   def set_current_application_id
+    return unless current_organization
+
     session[:current_application_id] ||= current_organization.applications.find(params[:application_id]).id
   end
 
   def current_application
+    return unless current_organization
+
     current_organization.applications.find(session[:current_application_id])
   end
 
