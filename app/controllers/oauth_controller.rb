@@ -5,6 +5,7 @@ class OauthController < ApplicationController
   skip_before_action :store_invite_code # oauth returns an auth code in params[:code]
   before_action :verify_provider, only: %i[authorize callback]
   before_action :set_current_application_id, only: %i[authorize]
+  before_action :load_invite_link, only: %i[callback]
 
   def authorize
     auth_url = client.auth_code.authorize_url(

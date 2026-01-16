@@ -57,11 +57,20 @@ class UserTest < ActiveSupport::TestCase
       assert_equal name, lookup
     end
 
-    it "with a known user" do
+    it "with a known email user" do
       user = build(:user)
       organization.users << user
 
-      lookup = User.lookup_performer(organization.id, user.github_username)
+      lookup = User.lookup_performer(organization.id, user.email)
+
+      assert_equal user.display_name, lookup
+    end
+
+    it "with a known username" do
+      user = build(:user, username: "https://github.com/username")
+      organization.users << user
+
+      lookup = User.lookup_performer(organization.id, user.username)
 
       assert_equal user.display_name, lookup
     end

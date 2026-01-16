@@ -48,7 +48,10 @@ class OauthTokensTest < ActiveSupport::TestCase
       Octokit::Client.stubs(:new).returns(
         stub(
           user: @user_stub,
-          emails: [{email: "additional@example.com"}]
+          emails: [{
+            email: "additional@example.com",
+            verified: true
+          }]
         )
       )
     end

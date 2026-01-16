@@ -3,7 +3,6 @@ module Invitable
 
   included do
     before_action :store_invite_code
-    before_action :load_invite_link
   end
 
   private
@@ -17,8 +16,6 @@ module Invitable
   end
 
   def load_invite_link
-    return if invite_code.blank?
-
     @invite_link = InviteLink.active.find_by(code: invite_code)
 
     return unless community_edition?

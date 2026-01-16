@@ -16,7 +16,7 @@ class UsersControllerCommunityEditionTest < ActionDispatch::IntegrationTest
         user = build(:user)
 
         assert_difference("User.count") do
-          post users_url, params: {user: {organization_name: "Initech", email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+          post users_url, params: {user: {organization_name: "Initech", email: user.email, name: user.name, password: "secretsecret"}}
         end
 
         user = User.last
@@ -40,7 +40,7 @@ class UsersControllerCommunityEditionTest < ActionDispatch::IntegrationTest
           assert_redirected_to new_session_url
 
           assert_no_difference("User.count") do
-            post users_url, params: {user: {organization_name: "Initech", email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+            post users_url, params: {user: {organization_name: "Initech", email: user.email, name: user.name, password: "secretsecret"}}
           end
 
           assert_redirected_to new_session_url
@@ -54,7 +54,7 @@ class UsersControllerCommunityEditionTest < ActionDispatch::IntegrationTest
           assert_response :success
 
           assert_difference("User.count") do
-            post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+            post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret"}}
           end
 
           user = User.last

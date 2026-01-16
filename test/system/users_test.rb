@@ -62,7 +62,6 @@ class UsersTest < ApplicationSystemTestCase
       assert_no_field "Organization name"
 
       fill_in "Name", with: @user.name
-      fill_in "GitHub username", with: @user.username
       fill_in "Email", with: @user.email
       fill_in "Password", with: "secretsecret"
 
@@ -81,7 +80,6 @@ class UsersTest < ApplicationSystemTestCase
       visit new_user_url(code: code)
 
       fill_in "Name", with: @user.name
-      fill_in "GitHub username", with: @user.username
       fill_in "Email", with: @user.email
       fill_in "Password", with: "secretsecret"
 

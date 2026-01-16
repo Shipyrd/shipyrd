@@ -4,7 +4,6 @@ class Deploy < ApplicationRecord
   after_create :dispatch_notifications
 
   belongs_to :application, optional: true, touch: true, inverse_of: "deploys"
-  belongs_to :user, foreign_key: :performer, primary_key: :username, optional: true, inverse_of: "deploys"
 
   validates :recorded_at, :performer, :service_version, :command, presence: true
   validate :service_version_is_valid
@@ -59,8 +58,14 @@ class Deploy < ApplicationRecord
     ).where.not(id: id).last
   end
 
+  def user
+    @user ||= User.lookup_user(application.organization.id, performer)
+  end
+
   def performer_avatar
-    user&.avatar_url
+    return nil if performer_user.blank?
+
+    performer_user&.avatar_url
   end
 
   def progress_value

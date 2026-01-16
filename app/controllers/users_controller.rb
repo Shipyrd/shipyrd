@@ -8,6 +8,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
   before_action :require_self, only: %i[edit update]
   before_action :require_admin, only: %i[index destroy]
+  before_action :load_invite_link, only: %i[new create]
 
   def index
     @memberships = current_organization.memberships.includes(:user)
@@ -81,7 +82,6 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(
       :organization_name,
-      :username,
       :email,
       :name,
       :password

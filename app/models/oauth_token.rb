@@ -95,23 +95,26 @@ class OauthToken < ApplicationRecord
         u.username = "https://github.com/#{github_user.login}"
         u.avatar_url = "#{github_user.avatar_url}&s=100"
         u.name = github_user.name
+      end
 
-        if organization
-          organization.memberships.create(
-            user: u,
-            role: role
-          )
-        else
-          organization = Organization.create!(name: u.name)
-          organization.memberships.create(
-            user: u,
-            role: :admin
-          )
-        end
+      if organization
+        organization.memberships.create(
+          user: user,
+          role: role
+        )
+      elsif user.memberships.empty?
+        organization = Organization.create!(name: user.name)
+        user.memberships.create(
+          organization: organization,
+          role: :admin
+        )
       end
 
       github_emails.each do |email|
-        user.email_addresses.find_or_create_by(email: email[:email])
+        next unless email[:verified]
+        next if /noreply\.github\.com/.match?(email[:email])
+
+        user.email_addresses.find_or_create_by!(email: email[:email])
       end
 
       user

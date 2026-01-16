@@ -9,7 +9,7 @@ class CreateEmailAddresses < ActiveRecord::Migration[8.1]
     end
 
     User.all.find_each do |user|
-      user.email_addresses.find_or_create_by(email: user.email)
+      user.send(:store_email_address)
     end
   end
 end

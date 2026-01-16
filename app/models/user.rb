@@ -4,9 +4,9 @@ require "json"
 class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :organizations, through: :memberships, counter_cache: true
-  has_many :deploys, foreign_key: :performer, primary_key: :username, dependent: :nullify, inverse_of: "user"
+  has_many :deploys, foreign_key: :performer, primary_key: :username, inverse_of: "user"
   has_many :email_addresses, dependent: :destroy
-  has_many :oauth_tokens, -> { where(application: nil) }, dependent: :destroy
+  has_many :oauth_tokens, dependent: :destroy
 
   has_secure_token length: 64
   has_secure_password validations: false
@@ -37,11 +37,19 @@ class User < ApplicationRecord
   end
 
   def self.lookup_performer(organization_id, performer)
-    user = Organization.find(organization_id).users.find_by(username: performer)
+    user = lookup_user(organization_id, performer)
 
     return user.display_name if user
 
     /github\.com/.match?(performer) ? performer.split("/").last : performer
+  end
+
+  def self.lookup_user(organization_id, performer)
+    if /github\.com/.match?(performer)
+      Organization.find(organization_id).users.find_by(username: performer)
+    elsif /@/.match?(performer)
+      EmailAddress.find_by(email: performer)&.user
+    end
   end
 
   def github_user?

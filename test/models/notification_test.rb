@@ -36,7 +36,10 @@ class NotificationTest < ActiveSupport::TestCase
   it "figures out a user name for the notification" do
     assert_equal @user.display_name, @notification.user_name
 
-    @notification.update!(details: {performer: @user.username, user_id: nil})
+    @notification.details = {
+      performer: @user.username,
+      user_id: nil
+    }
     User.stubs(:lookup_performer).returns("username")
     assert_equal "username", @notification.user_name
   end

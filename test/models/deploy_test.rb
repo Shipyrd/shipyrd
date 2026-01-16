@@ -9,6 +9,22 @@ class DeployTest < ActiveSupport::TestCase
     end
   end
 
+  describe "user" do
+    it "fails to find user" do
+      email = "deployer@example.com"
+      deploy = build(:deploy, application: application, performer: email)
+
+      assert_nil deploy.user
+    end
+
+    it "finds the user via email" do
+      user = create(:user)
+      deploy = build(:deploy, application: application, performer: user.email)
+
+      assert_equal user, deploy.user
+    end
+  end
+
   describe "compare_url" do
     it "crafts a github link" do
       application.update!(repository_url: "https://github.com/nickhammond/shipyrd")

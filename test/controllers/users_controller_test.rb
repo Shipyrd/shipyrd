@@ -21,7 +21,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         user = build(:user)
 
         assert_difference("User.count") do
-          post users_url, params: {user: {organization_name: "Initech", email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+          post users_url, params: {user: {organization_name: "Initech", email: user.email, name: user.name, password: "secretsecret"}}
         end
 
         user = User.last
@@ -41,7 +41,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
           user = build(:user)
 
           assert_no_difference("User.count") do
-            post users_url, params: {code: "heyo", user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+            post users_url, params: {code: "heyo", user: {email: user.email, name: user.name, password: "secretsecret"}}
           end
 
           assert_response :unprocessable_content
@@ -52,13 +52,13 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
           user = build(:user)
 
           assert_no_difference("User.count") do
-            post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, username: user.username}}
+            post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name}}
           end
 
           assert_response :unprocessable_content
 
           assert_difference("User.count") do
-            post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+            post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret"}}
           end
 
           user = User.last
@@ -73,7 +73,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
           user = build(:user)
 
           assert_difference("User.count") do
-            post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret", username: user.username}}
+            post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret"}}
           end
 
           user = User.last
@@ -159,7 +159,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
       test "should not update someone else" do
         other_user = create(:user)
-        patch user_url(other_user), params: {user: {email: @user.email, name: @user.name, password: "secretsecret", username: @user.username}}
+        patch user_url(other_user), params: {user: {email: @user.email, name: @user.name, password: "secretsecret"}}
 
         assert_response :not_found
       end
@@ -170,7 +170,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
       end
 
       test "should update current user" do
-        patch user_url(@user), params: {user: {email: @user.email, name: @user.name, password: "secretsecret", username: @user.username}}
+        patch user_url(@user), params: {user: {email: @user.email, name: @user.name, password: "secretsecret"}}
         assert_redirected_to user_url(@user)
       end
     end
