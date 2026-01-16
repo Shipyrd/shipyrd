@@ -63,9 +63,9 @@ class Deploy < ApplicationRecord
   end
 
   def performer_avatar
-    return nil if performer_user.blank?
+    return nil if user.blank?
 
-    performer_user&.avatar_url
+    user&.avatar_url
   end
 
   def progress_value

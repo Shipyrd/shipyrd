@@ -25,6 +25,23 @@ class DeployTest < ActiveSupport::TestCase
     end
   end
 
+  describe "performer_avatar" do
+    it "without a user" do
+      deploy = build(:deploy)
+      deploy.stubs(:user).returns(nil)
+
+      refute deploy.performer_avatar
+    end
+
+    it "with a user" do
+      deploy = build(:deploy)
+      user = build(:user, avatar_url: "https://google.com")
+      deploy.stubs(:user).returns(user)
+
+      assert_equal user.avatar_url, deploy.performer_avatar
+    end
+  end
+
   describe "compare_url" do
     it "crafts a github link" do
       application.update!(repository_url: "https://github.com/nickhammond/shipyrd")
