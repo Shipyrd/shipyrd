@@ -15,7 +15,7 @@
           "type": "controller",
           "class": "UsersController",
           "method": "show",
-          "line": 16,
+          "line": 18,
           "file": "app/controllers/users_controller.rb",
           "rendered": {
             "name": "users/show",
@@ -102,6 +102,50 @@
       "note": ""
     },
     {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "8b6d302236b2178d89b2b62530461299fd5c48f222986899ed550b6bc582f6a5",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/incoming_webhooks/_form.html.erb",
+      "line": 8,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => \"incoming_webhooks/#{params[:provider]}/form\", { :form => form })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "IncomingWebhooksController",
+          "method": "new",
+          "line": 9,
+          "file": "app/controllers/incoming_webhooks_controller.rb",
+          "rendered": {
+            "name": "incoming_webhooks/new",
+            "file": "app/views/incoming_webhooks/new.html.erb"
+          }
+        },
+        {
+          "type": "template",
+          "name": "incoming_webhooks/new",
+          "line": 5,
+          "file": "app/views/incoming_webhooks/new.html.erb",
+          "rendered": {
+            "name": "incoming_webhooks/_form",
+            "file": "app/views/incoming_webhooks/_form.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "incoming_webhooks/_form"
+      },
+      "user_input": "params[:provider]",
+      "confidence": "Medium",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
+    },
+    {
       "warning_type": "Mass Assignment",
       "warning_code": 105,
       "fingerprint": "90e4b947487d878a0beac70b81c04207fea6073f4e3101fb2e9a10b3a75aac79",
@@ -146,7 +190,51 @@
         915
       ],
       "note": ""
+    },
+    {
+      "warning_type": "Dynamic Render Path",
+      "warning_code": 15,
+      "fingerprint": "beee8243eeabb1082cf97dd982fbd561d70e73f3480e96435d6a4d94b6d14bfe",
+      "check_name": "Render",
+      "message": "Render path contains parameter value",
+      "file": "app/views/incoming_webhooks/_form.html.erb",
+      "line": 6,
+      "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
+      "code": "render(action => \"incoming_webhooks/#{params[:provider]}/instructions\", { :incoming_webhook => incoming_webhook })",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "IncomingWebhooksController",
+          "method": "new",
+          "line": 9,
+          "file": "app/controllers/incoming_webhooks_controller.rb",
+          "rendered": {
+            "name": "incoming_webhooks/new",
+            "file": "app/views/incoming_webhooks/new.html.erb"
+          }
+        },
+        {
+          "type": "template",
+          "name": "incoming_webhooks/new",
+          "line": 5,
+          "file": "app/views/incoming_webhooks/new.html.erb",
+          "rendered": {
+            "name": "incoming_webhooks/_form",
+            "file": "app/views/incoming_webhooks/_form.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "incoming_webhooks/_form"
+      },
+      "user_input": "params[:provider]",
+      "confidence": "Medium",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
     }
   ],
-  "brakeman_version": "7.1.0"
+  "brakeman_version": "7.1.2"
 }
