@@ -6,6 +6,7 @@ ruby file: ".ruby-version"
 gem "bcrypt", "~> 3.1.7"
 gem "bootsnap", require: false
 gem "dotenv"
+gem "openssl"
 gem "puma", ">= 5.0"
 gem "mysql2", "~> 0.5.7"
 gem "rails", "~> 8.1.1"
