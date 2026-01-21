@@ -16,6 +16,7 @@ class OauthControllerTest < ActionDispatch::IntegrationTest
   end
 
   describe "oauth with github" do
+    let(:invite_link) { create(:invite_link, organization: @organization) }
     it "redirects to github.com/login/oauth" do
       get oauth_authorize_url(:github)
 
@@ -27,13 +28,13 @@ class OauthControllerTest < ActionDispatch::IntegrationTest
       OauthToken.stubs(:create_from_oauth_token).returns(oauth_token)
       OauthController.any_instance.stubs(:oauth_session_state).returns("456")
 
+      get new_user_url(code: invite_link.code)
       get oauth_callback_url(:github, code: "123", state: "456")
 
       assert_redirected_to root_path
     end
 
     it "supports invite links" do
-      invite_link = create(:invite_link)
       oauth_token = build(:oauth_token, user: build(:user), application: nil)
       OauthController.any_instance.stubs(:redirect_uri).returns("https://example.com")
       OauthToken.expects(:create_from_oauth_token).with(
@@ -60,6 +61,7 @@ class OauthControllerTest < ActionDispatch::IntegrationTest
     setup do
       @admin = create(:user)
       @organization.memberships.create(user: @admin, role: :admin)
+      @invite_link = create(:invite_link, organization: @organization)
       sign_in(@admin.email, @admin.password)
     end
 
@@ -70,6 +72,8 @@ class OauthControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "callback fails with invalid state" do
+      get new_user_url(code: @invite_link.code)
+
       assert_raises(RuntimeError) do
         get oauth_callback_url(:slack, code: "123", state: "123")
       end
@@ -80,6 +84,8 @@ class OauthControllerTest < ActionDispatch::IntegrationTest
       OauthController.any_instance.stubs(:current_application).returns(@application)
       OauthToken.stubs(:create_from_oauth_token).returns(OauthToken.new(application: @application))
 
+      get new_user_url(code: @invite_link.code)
+      get oauth_authorize_url(:slack, application_id: @application.id)
       get oauth_callback_url(:slack, code: "123", state: "123")
 
       assert_redirected_to edit_application_url(@application)
