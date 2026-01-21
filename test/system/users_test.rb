@@ -38,7 +38,6 @@ class UsersTest < ApplicationSystemTestCase
 
       fill_in "Name", with: @user.name
       fill_in "Organization name", with: "Initech"
-      fill_in "GitHub username", with: @user.username
       fill_in "Email", with: @user.email
       fill_in "Password", with: "secretsecret"
 
