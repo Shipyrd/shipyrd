@@ -53,3 +53,8 @@ progress.green {
 #destination-buttons.buttons {
   gap: 0.5rem;
 }
+
+.user-select-all {
+  -webkit-user-select: all;
+  user-select: all;
+}

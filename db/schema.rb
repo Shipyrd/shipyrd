@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_14_151406) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_16_233350) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "token"
@@ -23,6 +23,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_14_151406) do
     t.string "name"
     t.bigint "organization_id"
     t.string "repository_url"
+    t.string "service"
     t.string "token"
     t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_applications_on_organization_id"
@@ -86,6 +87,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_14_151406) do
     t.bigint "user_id", null: false
     t.index ["email"], name: "index_email_addresses_on_email"
     t.index ["user_id"], name: "index_email_addresses_on_user_id"
+  end
+
+  create_table "incoming_webhooks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "application_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "provider"
+    t.string "token"
+    t.datetime "updated_at", null: false
+    t.index ["application_id"], name: "index_incoming_webhooks_on_application_id"
   end
 
   create_table "invite_links", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -197,6 +207,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_14_151406) do
   add_foreign_key "channels", "applications"
   add_foreign_key "destinations", "applications"
   add_foreign_key "email_addresses", "users"
+  add_foreign_key "incoming_webhooks", "applications"
   add_foreign_key "invite_links", "users", column: "creator_id"
   add_foreign_key "memberships", "organizations"
   add_foreign_key "memberships", "users"

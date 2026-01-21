@@ -7,6 +7,10 @@ Rails.application.routes.draw do
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
+  namespace :incoming do
+    post "honeybadger/:token", action: :create, controller: :honeybadger, as: :honeybadger
+  end
+
   resources :users
   resources :organizations, only: %i[edit update]
   resource :session
@@ -21,6 +25,7 @@ Rails.application.routes.draw do
   resources :applications do
     resources :channels, only: %i[edit update destroy]
     resources :webhooks, only: %i[new create]
+    resources :incoming_webhooks, only: %i[new create destroy]
     resources :destinations do
       member do
         patch "lock"

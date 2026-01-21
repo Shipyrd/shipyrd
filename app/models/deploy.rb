@@ -95,7 +95,10 @@ class Deploy < ApplicationRecord
   def set_service_name
     return false if service.present? || service_version.blank?
 
-    self.service = service_version.split("@").first
+    service_name = service_version.split("@").first
+
+    application.update_column(:service, service_name) if application.service.blank?
+    self.service = service_name
   end
 
   def find_or_create_destination

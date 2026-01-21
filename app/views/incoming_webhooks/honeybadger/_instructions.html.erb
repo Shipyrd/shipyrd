@@ -1,0 +1,38 @@
+<div class="content">
+  <h3>How to setup Honeybadger with Shipyrd</h3>
+
+  <p>
+    If you're using Honeybadger for error and deploy tracking
+    you can utilize a Honeybadger webhook to let Shipyrd know
+    about new deploys instead of adding hooks to Kamal in
+    <code>.kamal/hooks</code>.
+  </p>
+
+  <h4>Setup instructions</h4>
+  <ol>
+    <li>Ensure you've configured <a class="is-underlined" target="_blank" href="https://docs.honeybadger.io/lib/ruby/getting-started/tracking-deployments/">Honeybadger deployment tracking</a>.</li>
+    <li>
+      Within your project on Honeybadger go to Settings -> Alerts & Integrations -> Find "Webhook" within "Add a project integration".
+      <%= image_tag "incoming_webhooks/honeybadger/webhook.png" %>
+    </li>
+
+    <li>
+      Within the "New webhook integration" settings configure the following:
+
+      <ul>
+        <li>For the URL, enter <code class="user-select-all"><%= incoming_webhook.url %></code></li>
+        <li>For "Error Events" only check "When project is deployed".</li>
+        <li>De-select everything under "Uptime events", "Uptime sites", "Check-in events", "Check-Ins".
+          <%= image_tag "incoming_webhooks/honeybadger/enable-webhook.png" %>
+        </li>
+      </ul>
+
+    </li>
+    <li>
+      Click the "Create Incoming Webhook" button below.
+    </li>
+    <li>
+      Deploy your application and you'll see updates in Shipyrd!
+    </li>
+  </ol>
+</div>

@@ -1,0 +1,5 @@
+<% content_for :title, "New incoming webhook" %>
+
+<h1 class="is-size-2 mb-4">New incoming webhook for <%= params[:provider].humanize %></h1>
+
+<%= render "form", incoming_webhook: @incoming_webhook %>

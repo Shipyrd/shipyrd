@@ -1,0 +1,14 @@
+<% IncomingWebhook.providers.keys.each do |provider| %>
+
+  <span class="icon-text">
+    <%= link_to new_application_incoming_webhook_url(application, provider: provider), class: "button is-dark has-text-white", title: "Connect #{provider}" do %>
+      <span class="icon">
+        <i class="<%= incoming_webhook_icon(provider) %>"></i>
+      </span>
+      <span>
+        Connect <%= provider.to_s.titleize %>
+      </span>
+    <% end %>
+  </span>
+
+<% end %>
