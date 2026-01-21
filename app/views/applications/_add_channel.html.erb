@@ -1,0 +1,14 @@
+<% Channel.available_notification_channels.each do |provider| %>
+
+  <span class="icon-text">
+    <%= link_to connect_channel_url(provider, application_id: application.id), class: "button is-dark has-text-white", title: "Connect #{provider}" do %>
+      <span class="icon">
+        <i class="<%= channel_icon(provider) %>"></i>
+      </span>
+      <span>
+        Connect <%= provider.to_s.titleize %>
+      </span>
+    <% end %>
+  </span>
+
+<% end %>

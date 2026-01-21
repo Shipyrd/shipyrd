@@ -1,0 +1,35 @@
+<% if incoming_webhooks.present? %>
+
+  <% incoming_webhooks.each do |incoming_webhook| %>
+    <% icon = incoming_webhook_icon(incoming_webhook.provider) %>
+
+    <div class="box mb-2">
+      <div class="columns is-vcentered">
+
+        <div class="column">
+          <span class="icon">
+            <i class="<%= icon %>"></i>
+          </span>
+
+          <%= incoming_webhook.display_name %>
+        </div>
+
+        <div class="column has-text-right">
+
+          <span class="icon-text">
+            <%= button_to application_incoming_webhook_url(@application, incoming_webhook), method: :delete, class: "button is-danger", title: "Disconnect #{incoming_webhook.display_name}", data: { turbo_confirm: "Are you sure?" } do %>
+              <span class="icon">
+                <i class="<%= icon %>"></i>
+              </span>
+              <span>
+                Disconnect <%= incoming_webhook.display_name %>
+              </span>
+            <% end %>
+          </span>
+        </div>
+
+      </div>
+    </div>
+  <% end %>
+
+<% end %>

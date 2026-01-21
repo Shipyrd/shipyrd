@@ -6,6 +6,7 @@ class DeployTest < ActiveSupport::TestCase
   describe "set_service_name" do
     it "split service_version" do
       assert_equal "app", create(:deploy, service_version: "app@123", application: application).service
+      assert_equal "app", application.service
     end
   end
 

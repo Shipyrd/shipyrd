@@ -1,0 +1,13 @@
+<%= form_with(model: [@application, incoming_webhook], class: "contents") do |form| %>
+  <%= form.hidden_field :provider %>
+
+  <%= render "shared/errors", form: form %>
+
+  <%= render "incoming_webhooks/#{params[:provider]}/instructions", incoming_webhook: incoming_webhook %>
+
+  <%= render "incoming_webhooks/#{params[:provider]}/form", form: form %>
+
+  <div class="field">
+    <%= form.submit class: "button is-primary" %>
+  </div>
+<% end %>

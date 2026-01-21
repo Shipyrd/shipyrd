@@ -15,6 +15,12 @@
   <h3 class="is-size-3 mt-4">Connections</h3>
 
   <%= render "channels", owner: @application, channels: @application.channels %>
+  <%= render "incoming_webhooks", incoming_webhooks: @application.incoming_webhooks%>
+
+  <h5 class="is-size-5">Add a connection</h5>
+
+  <%= render "add_channel", application: @application %>
+  <%= render "add_incoming_webhook", application: @application %>
 
   <hr>
 
