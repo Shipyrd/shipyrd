@@ -12,8 +12,7 @@ class HoneybadgerControllerTest < ActionDispatch::IntegrationTest
 
   test "fails on invalid token" do
     post incoming_honeybadger_url("invalid"),
-      params: {event: "deployed"},
-      as: :json
+      params: {event: "deployed"}
 
     assert_response :not_found
   end
@@ -22,8 +21,7 @@ class HoneybadgerControllerTest < ActionDispatch::IntegrationTest
     IncomingWebhook.expects(:find_by!).never
 
     post incoming_honeybadger_url(incoming_webhook.token),
-      params: {event: "occurred"},
-      as: :json
+      params: {event: "occurred"}
 
     assert_response :ok
   end
@@ -40,8 +38,7 @@ class HoneybadgerControllerTest < ActionDispatch::IntegrationTest
     }
 
     post incoming_honeybadger_url(incoming_webhook.token),
-      params: honeybadger,
-      as: :json
+      params: honeybadger
 
     deploy = application.deploys.last
     honeybadger_deploy = honeybadger[:deploy]
