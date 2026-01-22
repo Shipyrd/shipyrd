@@ -40,7 +40,7 @@ Rails.application.configure do
     :remote_ip
   ]
 
-  config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
+  config.logger = ActiveSupport::TaggedLogging.logger($stdout)
 
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
