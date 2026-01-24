@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_16_233350) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_24_073010) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "token"
@@ -152,9 +152,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_16_233350) do
     t.integer "applications_count", default: 0
     t.datetime "created_at", null: false
     t.string "name"
+    t.string "stripe_customer_id"
     t.string "token"
     t.datetime "updated_at", null: false
     t.integer "users_count", default: 0
+    t.index ["stripe_customer_id"], name: "index_organizations_on_stripe_customer_id"
   end
 
   create_table "runners", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|

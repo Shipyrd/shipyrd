@@ -1,0 +1,1 @@
+Stripe.api_key = ENV["SHIPYRD_STRIPE_SECRET_KEY"] if ENV["SHIPYRD_STRIPE_SECRET_KEY"].present?
