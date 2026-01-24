@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   namespace :incoming do
     post "honeybadger/:token", action: :create, controller: :honeybadger, as: :honeybadger
+    post "stripe", action: :create, controller: :stripe, as: :stripe
   end
 
   resources :users

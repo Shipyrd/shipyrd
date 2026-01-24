@@ -9,4 +9,8 @@ class Organization < ApplicationRecord
   def admin?(user)
     memberships.exists?(user: user, role: :admin)
   end
+
+  def active_subscription?
+    stripe_subscription_status == "active"
+  end
 end
