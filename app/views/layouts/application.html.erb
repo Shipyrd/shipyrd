@@ -40,7 +40,12 @@
                 <%= link_to "Organization settings", edit_organization_path(current_organization), class: "navbar-item" %>
                 <hr class="navbar-divider">
               <% end %>
-              <%= link_to "Billing", billing_checkout_path, class: "navbar-item" %>
+              <%= link_to billing_checkout_path, class: "navbar-item" do %>
+                Billing
+                <span class="tag ml-2 <%= current_organization.active_subscription? ? 'is-success' : 'is-info' %>">
+                  <%= current_organization.subscription_state_label %>
+                </span>
+              <% end %>
             </div>
           </div>
         </div>

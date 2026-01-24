@@ -13,4 +13,14 @@ class Organization < ApplicationRecord
   def active_subscription?
     stripe_subscription_status == "active"
   end
+
+  def subscription_state_label
+    stripe_subscription_status&.humanize || "Trial"
+  end
+
+  def trial_active?
+    return false if active_subscription?
+
+    created_at > 45.days.ago
+  end
 end
