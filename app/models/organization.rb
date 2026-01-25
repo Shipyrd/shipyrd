@@ -23,4 +23,10 @@ class Organization < ApplicationRecord
 
     created_at > 45.days.ago
   end
+
+  def payment_required?
+    return false if ENV["COMMUNITY_EDITION"] != "0"
+
+    !active_subscription? && !trial_active?
+  end
 end

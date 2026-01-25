@@ -1,4 +1,7 @@
 class BillingController < ApplicationController
+  def setup
+  end
+
   def checkout
     unless current_organization.stripe_customer_id.present?
       customer = Stripe::Customer.create(

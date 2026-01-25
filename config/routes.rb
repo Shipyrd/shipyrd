@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resource :session
   resources :invite_links
   resources :deploys
+  get "billing/setup", to: "billing#setup", as: :billing_setup
   get "billing/checkout", to: "billing#checkout", as: :billing_checkout
 
   namespace :oauth do
