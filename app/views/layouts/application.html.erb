@@ -64,7 +64,7 @@
                 <% end %>
                 <%= link_to billing_checkout_path, class: "navbar-item" do %>
                   Billing
-                  <span class="tag ml-2 <%= current_organization.active_subscription? ? 'is-success' : 'is-info' %>">
+                  <span class="tag ml-2 <%= current_organization.active_subscription? ? 'is-success' : 'is-warning' %>">
                     <%= current_organization.subscription_state_label %>
                   </span>
                 <% end %>
