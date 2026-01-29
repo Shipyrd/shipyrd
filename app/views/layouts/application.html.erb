@@ -29,21 +29,18 @@
             <div class="navbar-item has-dropdown is-hoverable">
               <a href="#" class="navbar-link">
                 <%= current_organization.name %>
-                <span class="icon ml-2">
-                  <i class="fa-solid fa-chevron-down"></i>
-                </span>
               </a>
-              <div class="navbar-dropdown">
+              <div class="navbar-dropdown is-boxed">
                 <% current_user.organizations.each do |org| %>
                   <% if org.id == current_organization.id %>
-                    <a href="#" class="navbar-item is-active">
+                    <a href="#" class="navbar-item has-text-primary">
                       <%= org.name %>
                       <span class="icon ml-2">
                         <i class="fa-solid fa-check"></i>
                       </span>
                     </a>
                   <% else %>
-                    <%= button_to org.name, switch_organization_path(org), method: :post, class: "button is-ghost is-fullwidth has-text-left", form_class: "navbar-item" %>
+                    <%= button_to org.name, switch_organization_path(org), method: :post, class: "is-fullwidth has-text-left navbar-item" %>
                   <% end %>
                 <% end %>
               </div>
