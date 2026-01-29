@@ -1,5 +1,6 @@
 class BillingController < ApplicationController
   def setup
+    redirect_to root_path unless current_organization.payment_required?
   end
 
   def checkout

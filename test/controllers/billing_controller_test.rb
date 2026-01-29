@@ -10,6 +10,13 @@ class BillingControllerTest < ActionDispatch::IntegrationTest
     ENV["SHIPYRD_STRIPE_PRICE_ID"] = "price_test123"
   end
 
+  test "setup should redirect if payment is not required" do
+    @organization.stubs(:payment_required?).returns(false)
+
+    get billing_setup_url
+    assert_redirected_to root_url
+  end
+
   test "should create Stripe customer and redirect to checkout when customer does not exist" do
     customer = stub(id: "cus_test123")
     checkout_session = stub(url: "https://checkout.stripe.com/test")
