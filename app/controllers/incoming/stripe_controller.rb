@@ -59,7 +59,7 @@ class Incoming::StripeController < ApplicationController
         stripe_subscription_status: event.data.object.status
       )
     when "invoice.payment_succeeded"
-      organization.update!(last_payment_at: Time.at(event.data.object.created))
+      organization.update!(last_payment_at: Time.zone.at(event.data.object.created))
     end
 
     head :ok

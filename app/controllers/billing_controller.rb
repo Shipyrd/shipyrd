@@ -3,7 +3,7 @@ class BillingController < ApplicationController
   end
 
   def checkout
-    unless current_organization.stripe_customer_id.present?
+    if current_organization.stripe_customer_id.blank?
       customer = Stripe::Customer.create(
         email: current_user.email,
         metadata: {
