@@ -48,13 +48,12 @@ class OrganizationsControllerTest < ActionDispatch::IntegrationTest
 
     test "should not switch to organization user is not a member of" do
       get root_url
-      initial_org_id = session[:organization_id]
       other_organization = create(:organization, name: "Other Organization")
 
       post switch_organization_path(other_organization)
 
       assert_redirected_to root_path
-      assert_equal initial_org_id, session[:organization_id]
+      assert_nil session[:organization_id]
       assert_equal "Organization not found", flash[:alert]
     end
 

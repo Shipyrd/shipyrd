@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   def current_organization
     return nil unless current_user
 
-    @current_organization ||= if current_user.organizations.count == 1
+    @current_organization ||= if current_user.organizations.count == 1 || session[:organization_id].nil?
       current_user.organizations.first
     else
       current_user.organizations.find_by(id: session[:organization_id])

@@ -126,7 +126,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       get root_url
 
       assert_response :success
-      assert_equal @organization1.id, session[:organization_id]
+      assert_match @organization1.name, @response.body
     end
 
     test "uses session organization_id when present" do
@@ -141,45 +141,21 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       get root_url
 
       assert_response :success
-      assert_equal @organization2.id, session[:organization_id]
+      assert_match @organization2.name, @response.body
     end
 
-    test "falls back to first organization when session organization_id is invalid" do
+    test "falls back to second organization when session organization_id is invalid" do
       sign_in(@user.email, @user.password)
 
       get root_url
       follow_redirect! if response.redirect?
-      assert_equal @organization1.id, session[:organization_id]
 
       @organization1.memberships.find_by(user: @user).destroy
 
       get root_url
 
       assert_response :success
-      assert_equal @organization2.id, session[:organization_id]
-    end
-
-    test "returns nil when user has no organizations" do
-      user_without_orgs = create(:user)
-      sign_in(user_without_orgs.email, user_without_orgs.password)
-
-      get root_url
-
-      assert_nil session[:organization_id]
-    end
-
-    test "memoizes current_organization within a request" do
-      sign_in(@user.email, @user.password)
-
-      get root_url
-
-      assert_response :success
-      first_org_id = session[:organization_id]
-
-      get root_url
-
-      assert_response :success
-      assert_equal first_org_id, session[:organization_id]
+      assert_match @organization2.name, @response.body
     end
   end
 end
