@@ -12,8 +12,6 @@
         <span class="icon">
           <i class="fa-solid fa-copy"></i>
         </span>
-        <span>
-        </span>
       </span>
     </button>
   </p>
@@ -75,12 +73,12 @@ Shipyrd::Client.new.trigger('<%= hook %>')</code></pre>
 
 <p>
   <em>Don't forget to make the hooks executable:</em>
+</p>
 <pre>
 <code id="hooks_executable">chmod +x .kamal/hooks/*</code>
 </pre>
-  <p class="mt-1">
-    <%= render "shared/copy_to_clipboard", target: "#hooks_executable" %>
-  </p>
+<p class="mt-1">
+  <%= render "shared/copy_to_clipboard", target: "#hooks_executable" %>
 </p>
 
 </section>
