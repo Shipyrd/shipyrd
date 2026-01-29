@@ -1,4 +1,5 @@
 require "test_helper"
+require "helpers/basic_auth_helpers"
 
 class ApplicationControllerTest < ActionDispatch::IntegrationTest
   test "redirects to sign in when not authenticated" do
@@ -107,6 +108,78 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       assert_response :not_found
       response_data = JSON.parse(response.body)
       assert_equal "Not found", response_data["error"]
+    end
+  end
+
+  describe "current_organization" do
+    setup do
+      @user = create(:user)
+      @organization1 = create(:organization, name: "Organization 1")
+      @organization2 = create(:organization, name: "Organization 2")
+      @organization1.memberships.create(user: @user)
+      @organization2.memberships.create(user: @user)
+    end
+
+    test "defaults to first organization when no session organization_id" do
+      sign_in(@user.email, @user.password)
+
+      get root_url
+
+      assert_response :success
+      assert_equal @organization1.id, session[:organization_id]
+    end
+
+    test "uses session organization_id when present" do
+      sign_in(@user.email, @user.password)
+
+      get root_url
+      follow_redirect! if response.redirect?
+
+      post switch_organization_path(@organization2)
+      follow_redirect! if response.redirect?
+
+      get root_url
+
+      assert_response :success
+      assert_equal @organization2.id, session[:organization_id]
+    end
+
+    test "falls back to first organization when session organization_id is invalid" do
+      sign_in(@user.email, @user.password)
+
+      get root_url
+      follow_redirect! if response.redirect?
+      assert_equal @organization1.id, session[:organization_id]
+
+      @organization1.memberships.find_by(user: @user).destroy
+
+      get root_url
+
+      assert_response :success
+      assert_equal @organization2.id, session[:organization_id]
+    end
+
+    test "returns nil when user has no organizations" do
+      user_without_orgs = create(:user)
+      sign_in(user_without_orgs.email, user_without_orgs.password)
+
+      get root_url
+
+      assert_nil session[:organization_id]
+    end
+
+    test "memoizes current_organization within a request" do
+      sign_in(@user.email, @user.password)
+
+      get root_url
+
+      assert_response :success
+      first_org_id = session[:organization_id]
+
+      get root_url
+
+      assert_response :success
+      assert_equal first_org_id, session[:organization_id]
     end
   end
 end

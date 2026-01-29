@@ -13,7 +13,11 @@ Rails.application.routes.draw do
   end
 
   resources :users
-  resources :organizations, only: %i[edit update]
+  resources :organizations, only: %i[edit update] do
+    member do
+      post :switch
+    end
+  end
   resource :session
   resources :invite_links
   resources :deploys

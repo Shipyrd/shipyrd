@@ -1,6 +1,17 @@
 class OrganizationsController < ApplicationController
-  before_action :set_organization
-  before_action :require_admin
+  before_action :set_organization, only: %i[edit update]
+  before_action :require_admin, only: %i[edit update]
+
+  def switch
+    organization = current_user.organizations.find_by(id: params[:id])
+    
+    if organization
+      session[:organization_id] = organization.id
+      redirect_to root_path, notice: "Switched to #{organization.name}"
+    else
+      redirect_to root_path, alert: "Organization not found"
+    end
+  end
 
   def edit
   end

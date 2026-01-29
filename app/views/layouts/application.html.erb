@@ -18,34 +18,60 @@
 
   <body class="container is-max-desktop pb-6 px-4">
 
-    <nav class="navbar py-5" role="navigation" aria-label="main navigation">
-      <%= link_to image_tag("logo.png", width: 125), root_url %>
+    <nav class="navbar py-5" role="navigation" aria-label="Main navigation">
+      <div class="navbar-brand">
+        <%= link_to image_tag("logo.png", width: 125), root_url %>
+      </div>
 
       <% if current_user %>
-        <div class="navbar-end is-transparent is-hoverable">
-          <div class="navbar-item has-dropdown is-hoverable">
-
-            <a class="navbar-link">
-              <span class="icon">
-                <i class="fa-solid fa-gear"></i>
-              </span>
-            </a>
-
-            <div class="navbar-dropdown is-boxed">
-              <% if current_admin? %>
-                <%= link_to "Add application", new_application_path, class: "navbar-item" %>
-                <%= link_to "Invite someone to Shipyrd", users_path, class: "navbar-item" %>
-                <hr class="navbar-divider">
-                <%= link_to "Users", users_path, class: "navbar-item" %>
-                <%= link_to "Organization settings", edit_organization_path(current_organization), class: "navbar-item" %>
-                <hr class="navbar-divider">
-              <% end %>
-              <%= link_to billing_checkout_path, class: "navbar-item" do %>
-                Billing
-                <span class="tag ml-2 <%= current_organization.active_subscription? ? 'is-success' : 'is-info' %>">
-                  <%= current_organization.subscription_state_label %>
+        <div class="navbar-menu">
+          <div class="navbar-end">
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a href="#" class="navbar-link">
+                <%= current_organization.name %>
+                <span class="icon ml-2">
+                  <i class="fa-solid fa-chevron-down"></i>
                 </span>
-              <% end %>
+              </a>
+              <div class="navbar-dropdown">
+                <% current_user.organizations.each do |org| %>
+                  <% if org.id == current_organization.id %>
+                    <a href="#" class="navbar-item is-active">
+                      <%= org.name %>
+                      <span class="icon ml-2">
+                        <i class="fa-solid fa-check"></i>
+                      </span>
+                    </a>
+                  <% else %>
+                    <%= button_to org.name, switch_organization_path(org), method: :post, class: "button is-ghost is-fullwidth has-text-left", form_class: "navbar-item" %>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a href="#" class="navbar-link">
+                <span class="icon">
+                  <i class="fa-solid fa-gear"></i>
+                </span>
+              </a>
+
+              <div class="navbar-dropdown is-boxed">
+                <% if current_admin? %>
+                  <%= link_to "Add application", new_application_path, class: "navbar-item" %>
+                  <%= link_to "Invite someone to Shipyrd", users_path, class: "navbar-item" %>
+                  <hr class="navbar-divider">
+                  <%= link_to "Users", users_path, class: "navbar-item" %>
+                  <%= link_to "Organization settings", edit_organization_path(current_organization), class: "navbar-item" %>
+                  <hr class="navbar-divider">
+                <% end %>
+                <%= link_to billing_checkout_path, class: "navbar-item" do %>
+                  Billing
+                  <span class="tag ml-2 <%= current_organization.active_subscription? ? 'is-success' : 'is-info' %>">
+                    <%= current_organization.subscription_state_label %>
+                  </span>
+                <% end %>
+              </div>
             </div>
           </div>
         </div>
