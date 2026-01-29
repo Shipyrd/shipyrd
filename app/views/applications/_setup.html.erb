@@ -32,44 +32,34 @@
 </section>
 
 <section class="block content">
-  <h4 class="is-size-4">2. Configure the Shipyrd API key</h4>
+  <h4 class="is-size-4">2. Configure the Shipyrd API key in your Kamal secrets</h4>
   <p>
-    The Shipyrd gem loads your API key from <code>ENV['SHIPYRD_API_KEY']</code>.
+    The Shipyrd gem loads your API key from <code>ENV['SHIPYRD_API_KEY']</code> which
+    can be loaded automatically for the pre-deploy and post-deploy hook with Kamal.
   </p>
 
   <p>
-    With Kamal 2 you can fetch your API key with the <code>kamal secrets</code> commands. Add your API
-    key to the relevant secrets file(, <code>.kamal/secrets</code>, <code>.kamal/secrets-common</code>, <code>.kamal/secrets.production</code>, etc.).
+    With Kamal 2, you can utilize your secrets to load your API key. Add your API
+    key to one of the relevant secrets file (<code>.kamal/secrets</code>, <code>.kamal/secrets-common</code>, <code>.kamal/secrets.production</code>, etc.).
   </p>
 
   <p>
-    Create a helper
-    script that'll fetch your API key from your secret store and set it as an environment variable.
+    Then add <code>SHIPYRD_API_KEY</code> as a secret within your Kamal config.
   </p>
-<div class="block">
-<code>.kamal/hooks/helpers/shipyrd_api_key.rb</code>
-<pre class="mb-2"><code id="helper_shipyrd_api_key">#!/usr/bin/env ruby
 
-# If you're NOT using destinations:
-ENV["SHIPYRD_API_KEY"] = `kamal secrets print | grep SHIPYRD_API_KEY`.split("=").last.strip
-
-# If you're using destinations:
-# ENV["SHIPYRD_API_KEY"] = `kamal secrets print -d #{ENV['KAMAL_DESTINATION']} | grep SHIPYRD_API_KEY`.split("=").last.strip
-</code></pre>
-<p class="mt-1">
-  <%= render "shared/copy_to_clipboard", target: "#helper_shipyrd_api_key" %>
-</p>
-
-</div>
-
+<code>config/deploy.yml</code>
+<pre><code id="env-secrets">env:
+  secret:
+    - SHIPYRD_API_KEY</code></pre>
+<%= render "shared/copy_to_clipboard", target: "#env-secrets" %>
 </section>
 
 <section class="block content">
   <h4 class="is-size-4">3. Add Shipyrd's triggers to your <code>.kamal/hooks</code> files</h4>
 
-<p>
-  Add the following code to your <code>.kamal/hooks</code> files to ping Shipyrd hooks during the deploy process.
-</p>
+  <p>
+    Add the following code to your <code>.kamal/hooks</code> files to ping Shipyrd hooks during the deploy process.
+  </p>
 
 <% Deploy::KNOWN_HOOKS.each do |hook| %>
 <div class="block">
@@ -77,7 +67,6 @@ ENV["SHIPYRD_API_KEY"] = `kamal secrets print | grep SHIPYRD_API_KEY`.split("=")
 <pre class="mb-2"><code id="hook_<%= hook %>">#!/usr/bin/env ruby
 
 require 'shipyrd'
-require_relative 'helpers/shipyrd_api_key'
 
 Shipyrd::Client.new.trigger('<%= hook %>')</code></pre>
 <%= render "shared/copy_to_clipboard", target: "#hook_#{hook}" %>

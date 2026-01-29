@@ -9,7 +9,7 @@ class Deploy < ApplicationRecord
   validate :service_version_is_valid
   validate :version_is_valid
 
-  KNOWN_HOOKS = %w[pre-connect pre-build pre-deploy post-deploy].freeze
+  KNOWN_HOOKS = %w[pre-deploy post-deploy].freeze
 
   def full_command
     "#{command} #{subcommand}"
