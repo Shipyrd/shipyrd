@@ -13,5 +13,17 @@
     <% end %>
   </h2>
 
-  <%= render partial: "applications/destination", collection: application.destinations.latest %>
+  <% if application.destinations.latest.empty? %>
+    <div class="notification ">
+      <p>
+        <strong>Waiting for your first deploy...</strong>
+      </p>
+
+      <p class="mt-3">
+        <small>Still need to <%= link_to "setup Shipyrd", application_url(application) %>?</small>
+      </p>
+    </div>
+  <% else %>
+    <%= render partial: "applications/destination", collection: application.destinations.latest %>
+  <% end %>
 </div>
