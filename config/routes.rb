@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       member do
         patch "lock"
         delete "unlock"
+        get "badge", to: "badge#show"
       end
     end
   end

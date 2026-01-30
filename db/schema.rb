@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_24_074613) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_30_232446) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "token"
@@ -18,6 +18,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_24_074613) do
   end
 
   create_table "applications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "badge_key"
     t.datetime "created_at", null: false
     t.string "key"
     t.string "name"
