@@ -33,6 +33,7 @@ class BillingControllerTest < ActionDispatch::IntegrationTest
       mode: "subscription",
       success_url: root_url,
       cancel_url: root_url,
+      allow_promotion_codes: true,
       line_items: [{
         price: "price_test123",
         quantity: 1
@@ -57,6 +58,7 @@ class BillingControllerTest < ActionDispatch::IntegrationTest
       mode: "subscription",
       success_url: root_url,
       cancel_url: root_url,
+      allow_promotion_codes: true,
       line_items: [{
         price: "price_test123",
         quantity: 1

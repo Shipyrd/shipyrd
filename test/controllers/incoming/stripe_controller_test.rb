@@ -11,7 +11,7 @@ class Incoming::StripeControllerTest < ActionDispatch::IntegrationTest
 
     post incoming_stripe_url,
       params: "invalid json",
-      headers: {"SHIPYRD_STRIPE_HTTP_SIGNATURE" => "test"}
+      headers: {"HTTP_STRIPE_SIGNATURE" => "test"}
 
     assert_response :bad_request
   end
@@ -21,7 +21,7 @@ class Incoming::StripeControllerTest < ActionDispatch::IntegrationTest
 
     post incoming_stripe_url,
       params: {}.to_json,
-      headers: {"SHIPYRD_STRIPE_HTTP_SIGNATURE" => "invalid"}
+      headers: {"HTTP_STRIPE_SIGNATURE" => "invalid"}
 
     assert_response :unauthorized
   end
@@ -42,7 +42,7 @@ class Incoming::StripeControllerTest < ActionDispatch::IntegrationTest
 
     post incoming_stripe_url,
       params: {}.to_json,
-      headers: {"SHIPYRD_STRIPE_HTTP_SIGNATURE" => "test"}
+      headers: {"HTTP_STRIPE_SIGNATURE" => "test"}
 
     assert_response :ok
     @organization.reload
@@ -65,7 +65,7 @@ class Incoming::StripeControllerTest < ActionDispatch::IntegrationTest
 
     post incoming_stripe_url,
       params: {}.to_json,
-      headers: {"SHIPYRD_STRIPE_HTTP_SIGNATURE" => "test"}
+      headers: {"HTTP_STRIPE_SIGNATURE" => "test"}
 
     assert_response :ok
   end
@@ -85,7 +85,7 @@ class Incoming::StripeControllerTest < ActionDispatch::IntegrationTest
 
     post incoming_stripe_url,
       params: {}.to_json,
-      headers: {"SHIPYRD_STRIPE_HTTP_SIGNATURE" => "test"}
+      headers: {"HTTP_STRIPE_SIGNATURE" => "test"}
 
     assert_response :ok
     @organization.reload
@@ -108,7 +108,7 @@ class Incoming::StripeControllerTest < ActionDispatch::IntegrationTest
 
     post incoming_stripe_url,
       params: {}.to_json,
-      headers: {"SHIPYRD_STRIPE_HTTP_SIGNATURE" => "test"}
+      headers: {"HTTP_STRIPE_SIGNATURE" => "test"}
 
     assert_response :ok
     @organization.reload
@@ -131,7 +131,7 @@ class Incoming::StripeControllerTest < ActionDispatch::IntegrationTest
 
     post incoming_stripe_url,
       params: {}.to_json,
-      headers: {"SHIPYRD_STRIPE_HTTP_SIGNATURE" => "test"}
+      headers: {"HTTP_STRIPE_SIGNATURE" => "test"}
 
     assert_response :ok
     @organization.reload
@@ -142,7 +142,7 @@ class Incoming::StripeControllerTest < ActionDispatch::IntegrationTest
   test "handles invoice.payment_succeeded" do
     @organization.update!(stripe_subscription_id: "sub_test123")
     invoice = stub(
-      subscription: "sub_test123",
+      customer: "cus_test123",
       created: @organization.created_at.to_i
     )
     event = stub(
@@ -154,7 +154,7 @@ class Incoming::StripeControllerTest < ActionDispatch::IntegrationTest
 
     post incoming_stripe_url,
       params: {}.to_json,
-      headers: {"SHIPYRD_STRIPE_HTTP_SIGNATURE" => "test"}
+      headers: {"HTTP_STRIPE_SIGNATURE" => "test"}
 
     assert_response :ok
     @organization.reload
@@ -175,27 +175,8 @@ class Incoming::StripeControllerTest < ActionDispatch::IntegrationTest
 
     post incoming_stripe_url,
       params: {}.to_json,
-      headers: {"SHIPYRD_STRIPE_HTTP_SIGNATURE" => "test"}
+      headers: {"HTTP_STRIPE_SIGNATURE" => "test"}
 
     assert_response :not_found
-  end
-
-  test "skips invoice.payment_succeeded when no subscription" do
-    invoice = stub(
-      subscription: nil,
-      created: 1609459200
-    )
-    event = stub(
-      type: "invoice.payment_succeeded",
-      data: stub(object: invoice)
-    )
-
-    Stripe::Webhook.expects(:construct_event).returns(event)
-
-    post incoming_stripe_url,
-      params: {}.to_json,
-      headers: {"SHIPYRD_STRIPE_HTTP_SIGNATURE" => "test"}
-
-    assert_response :ok
   end
 end
