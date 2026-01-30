@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
-ARG RUBY_VERSION=3.4.5
+ARG RUBY_VERSION=4.0.1
 FROM ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
@@ -25,7 +25,7 @@ RUN --mount=type=cache,id=dev-apt-cache,sharing=locked,target=/var/cache/apt \
 COPY Gemfile Gemfile.lock .ruby-version ./
 
 RUN --mount=type=cache,id=gem-cache-3.4,sharing=locked,target=/srv/vendor \
-    find /srv/vendor -type d -wholename 'ruby/3.4.0' -delete && \
+    find /srv/vendor -type d -wholename 'ruby/4.0.0' -delete && \
     bundle config set app_config .bundle && \
     bundle config set path /srv/vendor && \
     bundle config set deployment 'true' && \
