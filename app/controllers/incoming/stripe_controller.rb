@@ -1,10 +1,10 @@
 class Incoming::StripeController < ApplicationController
-  protect_from_forgery with: :null_session
+  skip_forgery_protection
   skip_before_action :authenticate
 
   def create
     payload = request.body.read
-    sig_header = request.env["SHIPYRD_STRIPE_HTTP_SIGNATURE"]
+    sig_header = request.env["HTTP_STRIPE_SIGNATURE"]
     endpoint_secret = ENV["SHIPYRD_STRIPE_WEBHOOK_SECRET"]
 
     begin
@@ -33,14 +33,10 @@ class Incoming::StripeController < ApplicationController
       subscription_id = subscription.id
     when "invoice.payment_succeeded"
       invoice = event.data.object
-      subscription_id = invoice.subscription
+      customer_id = invoice.customer
     end
 
-    organization = if customer_id
-      Organization.find_by!(stripe_customer_id: customer_id)
-    elsif subscription_id
-      Organization.find_by!(stripe_subscription_id: subscription_id)
-    end
+    organization = Organization.find_by!(stripe_customer_id: customer_id)
 
     return head :ok unless organization
 

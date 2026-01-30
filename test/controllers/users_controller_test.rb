@@ -116,6 +116,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         follow_redirect!
 
         assert_equal @organization.users.last, @new_user
+        assert_equal @organization.id, session[:organization_id]
         assert_match @organization.name, @response.body
       end
 
