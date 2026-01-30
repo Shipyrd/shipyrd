@@ -19,6 +19,7 @@ class BillingController < ApplicationController
       mode: "subscription",
       success_url: root_url,
       cancel_url: root_url,
+      allow_promotion_codes: true,
       line_items: [{
         price: ENV["SHIPYRD_STRIPE_PRICE_ID"],
         quantity: 1

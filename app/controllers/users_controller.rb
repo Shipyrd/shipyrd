@@ -18,7 +18,14 @@ class UsersController < ApplicationController
   end
 
   def new
-    @user = User.new
+    if current_user && @invite_link.present?
+      @invite_link.accept!(current_user)
+      flash[:notice] = "Welcome to #{@invite_link.organization.name}!"
+      session[:organization_id] = @invite_link.organization.id
+      redirect_to root_url
+    else
+      @user = User.new
+    end
   end
 
   def edit

@@ -16,6 +16,13 @@ class InviteLink < ApplicationRecord
     active.find_by(role: role)
   end
 
+  def accept!(user)
+    organization.memberships.create(
+      user: user,
+      role: role
+    )
+  end
+
   def deactivate!
     update(deactivated_at: Time.current)
   end

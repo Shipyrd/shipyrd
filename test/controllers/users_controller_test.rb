@@ -103,6 +103,23 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         assert_response :success
       end
 
+      test "should accept invite" do
+        invite_link = @organization.invite_links.create!(role: :admin)
+
+        @new_user = create(:user)
+        organization = create(:organization)
+        organization.memberships.create!(user: @new_user)
+
+        sign_in(@new_user.email, @new_user.password)
+
+        get new_user_url(code: invite_link.code)
+        follow_redirect!
+
+        assert_equal @organization.users.last, @new_user
+        assert_equal @organization.id, session[:organization_id]
+        assert_match @organization.name, @response.body
+      end
+
       test "should destroy user" do
         @user = create(:user)
         @organization.users << @user
