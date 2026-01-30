@@ -1,0 +1,60 @@
+<div class="box">
+  <h1 class="is-size-2 has-text-weight-bold mb-5">
+    Thanks for trying out Shipyrd!
+  </h1>
+
+  <div class="content">
+    <p class="mb-4">
+      Your 45-day trial has ended. To continue using Shipyrd, please subscribe to a plan.
+    </p>
+
+    <h2 class="is-size-4 has-text-weight-semibold mt-5 mb-3">
+      Why Shipyrd?
+    </h2>
+
+    <div class="columns">
+      <div class="column">
+        <ul class="mb-5">
+          <li>Real-time deployment notifications</li>
+          <li>Prevent deploys by locking a destination(optional)</li>
+          <li>Multi-destination support</li>
+          <li>Team collaboration tools</li>
+          <li>Deployment history and tracking</li>
+          <li>Easily see what's <em>On Deck</em> to be deployed</li>
+          <li>Support an indie developer!</li>
+        </ul>
+      </div>
+
+      <div class="column">
+        <div class="box">
+          <article class="media">
+            <div class="media-left">
+              <figure class="image is-48x48 mt-2">
+                <%= image_tag "https://avatars.githubusercontent.com/u/17698?v=4", class: "is-rounded " %>
+              </figure>
+            </div>
+            <div class="media-content">
+              <div class="content">
+                <p>
+                  <strong>Hi, I'm Nick!</strong>
+                  <br>
+
+                  I've been working on Shipyrd in my nights and weekends to build
+                  the deployment dashboard for Kamal that I've always wanted.
+                  <br>
+
+                  <em>Thanks for your support, it means a lot.</em>
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="has-text-centered mt-6">
+      <%= link_to "Subscribe Now", billing_checkout_path, class: "button is-primary is-large" %>
+    </div>
+  </div>
+</div>

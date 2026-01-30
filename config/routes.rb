@@ -9,13 +9,20 @@ Rails.application.routes.draw do
 
   namespace :incoming do
     post "honeybadger/:token", action: :create, controller: :honeybadger, as: :honeybadger
+    post "stripe", action: :create, controller: :stripe, as: :stripe
   end
 
   resources :users
-  resources :organizations, only: %i[edit update]
+  resources :organizations, only: %i[edit update] do
+    member do
+      post :switch
+    end
+  end
   resource :session
   resources :invite_links
   resources :deploys
+  get "billing/setup", to: "billing#setup", as: :billing_setup
+  get "billing/checkout", to: "billing#checkout", as: :billing_checkout
 
   namespace :oauth do
     get "authorize/:provider", action: :authorize, as: :authorize

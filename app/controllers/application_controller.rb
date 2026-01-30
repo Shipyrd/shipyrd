@@ -8,10 +8,8 @@ class ApplicationController < ActionController::Base
   helper_method :current_user, :current_organization, :require_admin, :current_admin?, :community_edition?
 
   def current_user
-    # Check for API user first (set by API authentication)
     return @current_api_user if @current_api_user
 
-    # Fall back to session-based authentication
     return nil if session[:user_id].blank?
 
     User.find_by(id: session[:user_id])
@@ -26,7 +24,11 @@ class ApplicationController < ActionController::Base
   def current_organization
     return nil unless current_user
 
-    current_user.organizations.first
+    @current_organization ||= if current_user.organizations.count == 1 || session[:organization_id].nil?
+      current_user.organizations.first
+    else
+      current_user.organizations.find_by(id: session[:organization_id])
+    end
   end
 
   def require_admin

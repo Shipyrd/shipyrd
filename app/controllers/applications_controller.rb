@@ -1,4 +1,5 @@
 class ApplicationsController < ApplicationController
+  before_action :check_payment_required
   before_action :set_application, only: %i[show edit update destroy]
 
   # GET /applications or /applications.json
@@ -57,7 +58,10 @@ class ApplicationsController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
+  def check_payment_required
+    redirect_to billing_setup_path if current_organization.payment_required?
+  end
+
   def set_application
     @application = current_organization.applications.find(params[:id])
   end

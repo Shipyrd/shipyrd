@@ -23,6 +23,7 @@ gem "octokit"
 gem "honeybadger"
 gem "oauth2"
 gem "scout_apm"
+gem "stripe"
 
 # Jobs/Cable
 gem "mission_control-jobs"

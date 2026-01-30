@@ -9,4 +9,24 @@ class Organization < ApplicationRecord
   def admin?(user)
     memberships.exists?(user: user, role: :admin)
   end
+
+  def active_subscription?
+    stripe_subscription_status == "active"
+  end
+
+  def subscription_state_label
+    stripe_subscription_status&.humanize || "Trial"
+  end
+
+  def trial_active?
+    return false if active_subscription?
+
+    created_at > 45.days.ago
+  end
+
+  def payment_required?
+    return false if ENV["COMMUNITY_EDITION"] != "0"
+
+    !active_subscription? && !trial_active?
+  end
 end
