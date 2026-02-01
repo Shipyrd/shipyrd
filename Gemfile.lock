@@ -167,7 +167,7 @@ GEM
     herb (0.8.7-aarch64-linux-gnu)
     herb (0.8.7-arm64-darwin)
     herb (0.8.7-x86_64-linux-gnu)
-    honeybadger (6.2.0)
+    honeybadger (6.3.0)
       logger
       ostruct
     hotwire-livereload (2.1.1)
