@@ -1,6 +1,7 @@
 <% label ||= nil %>
+<% button_class ||= nil %>
 
-<button class="button is-light clipboard" data-clipboard-target="<%= target %>">
+<button class="button is-light clipboard <%= button_class %>" data-clipboard-target="<%= target %>">
   <span class="icon-text">
     <span class="icon">
       <i class="fa-solid fa-copy"></i>
