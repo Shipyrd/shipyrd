@@ -31,8 +31,7 @@ class BadgeControllerTest < ActionDispatch::IntegrationTest
       application: @application,
       destination: @destination.name,
       status: "post-deploy",
-      recorded_at: 1.hour.ago
-    )
+      recorded_at: 1.hour.ago)
 
     get badge_deploy_url, as: :json
 
