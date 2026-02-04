@@ -10,49 +10,22 @@ module DestinationsHelper
     end
   end
 
-  def destination_deployed_badge(destination, format = :markdown)
-    parameters = {
-      url: destination_badge_url(destination),
-      query: "deploy.time_ago",
-      label: "🚀 #{destination.name}",
-      color: destination.name == "production" ? "red" : nil
-    }
-
-    badge_url = "https://img.shields.io/badge/dynamic/json?" + parameters.to_query
-
-    if format == :markdown
-      "![#{destination.name}](#{badge_url})"
-    else
-      badge_url
-    end
-  end
-
-  def destination_locked_badge(destination, format = :markdown)
-    parameters = {
-      url: destination_badge_url(destination),
-      query: "lock.by",
-      color: destination.locked? ? "yellow" : "green",
-      # TODO: This can't be dynamic
-      label: "#{destination.locked? ? "🔒" : "🔓"} #{destination.name}"
-    }
-
-    badge_url = "https://img.shields.io/badge/dynamic/json?" + parameters.to_query
-
-    if format == :markdown
-      "![#{destination.name}](#{badge_url})"
-    else
-      badge_url
-    end
-  end
-
-  private
-
-  def destination_badge_url(destination)
-    badge_application_destination_url(
-      destination.application.badge_key,
-      destination.name || "default",
-      host: "badge.shipyrd.io",
+  def destination_badge(destination, style, format)
+    badge_url = url_for(
+      controller: :badge,
+      action: style,
+      application_id: destination.application.badge_key,
+      id: destination.name || "default",
+      host: ENV["SHIPYRD_BADGE_HOST"],
       format: :json
     )
+
+    full_url = "https://img.shields.io/endpoint?url=#{badge_url}"
+
+    if format == :markdown
+      "![#{destination.name}](#{badge_url})"
+    else
+      badge_url
+    end
   end
 end

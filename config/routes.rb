@@ -37,7 +37,8 @@ Rails.application.routes.draw do
       member do
         patch "lock"
         delete "unlock"
-        get "badge", to: "badge#show"
+        get "badge/deploy", action: :deploy, controller: "badge", as: :badge_deploy
+        get "badge/lock", action: :lock, controller: "badge", as: :badge_lock
       end
     end
   end
