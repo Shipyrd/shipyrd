@@ -50,9 +50,8 @@ module DestinationsHelper
   def destination_badge_url(destination)
     badge_application_destination_url(
       destination.application.badge_key,
-      destination.name,
-      # TODO: Deploy badge.shipyrd.io as a host in Cloudflare and kamal
-      host: "app.shipyrd.io",
+      destination.name || "default",
+      host: "badge.shipyrd.io",
       format: :json
     )
   end
