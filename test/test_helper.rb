@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
 ENV["SHIPYRD_HOST"] = "shipyrd.test"
 ENV["SHIPYRD_HOOKS_HOST"] = "hooks.shipyrd.test"
+ENV["SHIPYRD_BADGE_HOST"] = "badge.test"
 
 require_relative "../config/environment"
 require "rails/test_help"

@@ -10,13 +10,14 @@ module DestinationsHelper
     end
   end
 
-  def destination_badge(destination, style, format)
+  def destination_badge(destination, style, format = :image)
     badge_url = url_for(
       controller: :badge,
       action: style,
       application_id: destination.application.badge_key,
       id: destination.name || "default",
       host: ENV["SHIPYRD_BADGE_HOST"],
+      protocol: "https",
       format: :json
     )
 
