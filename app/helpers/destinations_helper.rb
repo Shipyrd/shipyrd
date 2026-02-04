@@ -23,9 +23,9 @@ module DestinationsHelper
     full_url = "https://img.shields.io/endpoint?url=#{badge_url}"
 
     if format == :markdown
-      "![#{destination.name}](#{badge_url})"
+      "![#{destination.name}](#{full_url})"
     else
-      badge_url
+      full_url
     end
   end
 end
