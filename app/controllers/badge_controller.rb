@@ -1,5 +1,5 @@
 class BadgeController < ApplicationController
-  skip_before_action :authenticate, only: [:show]
+  skip_before_action :authenticate, only: [:deploy, :lock]
   before_action :load_destination
 
   def deploy
