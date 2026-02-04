@@ -6,6 +6,18 @@ class BadgeControllerTest < ActionDispatch::IntegrationTest
     @destination = create(:destination, application: @application, name: "production")
   end
 
+  test "returns 404 when badge key does not exist" do
+    get "/applications/nonexistent-badge-key/destinations/production/badge/deploy", as: :json
+
+    assert_response :not_found
+  end
+
+  test "returns 404 when destination does not exist" do
+    get "/applications/#{@application.badge_key}/destinations/nonexistent-destination/badge/deploy", as: :json
+
+    assert_response :not_found
+  end
+
   test "deploy badge" do
     get badge_deploy_url, as: :json
 
