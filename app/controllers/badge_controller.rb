@@ -19,7 +19,7 @@ class BadgeController < ApplicationController
   def load_destination
     application = Application.find_by(badge_key: params[:application_id])
     @destination = application.destinations.find_by(
-      name: params[:id] == "default" ? nil : params[:id]
+      name: (params[:id] == "default") ? nil : params[:id]
     )
   end
 end
