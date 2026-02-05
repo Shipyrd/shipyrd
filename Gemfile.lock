@@ -134,6 +134,8 @@ GEM
       logger
     faraday-net_http (3.4.2)
       net-http (~> 0.5)
+    faraday-retry (2.4.0)
+      faraday (~> 2.0)
     ffi (1.17.3-aarch64-linux-gnu)
     ffi (1.17.3-arm64-darwin)
     ffi (1.17.3-x86_64-linux-gnu)
@@ -479,6 +481,7 @@ DEPENDENCIES
   dotenv
   factory_bot_rails
   faraday
+  faraday-retry
   guard
   guard-minitest
   guard-standardrb
