@@ -89,6 +89,7 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
       test "fails when deploy blocking is enabled" do
         destination = @application.destinations.create!
         destination.update(block_deploys: true)
+        destination.lock!(create(:user))
 
         assert_no_difference("Deploy.count") do
           post deploys_url,
