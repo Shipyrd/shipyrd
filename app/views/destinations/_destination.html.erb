@@ -21,6 +21,19 @@
       <strong>Branch:</strong>
       <span class="tag"><%= destination.branch %></span>
     </p>
+
+    <p>
+      <strong>Block deploys:</strong>
+      <span class="tag"><%= destination.block_deploys? ? "Yes" : "No" %></span>
+      <br>
+        <small>
+          <% if destination.block_deploys? %>
+            When this destination is locked, deploys will only be allowed by whoever it is currently locked by.
+          <% else %>
+            When this destination is locked, anyone can deploy to it.
+          <% end %>
+        </small>
+    </p>
   </div>
 
   <%= link_to "Edit this destination", edit_application_destination_path(application, destination), class: "button is-primary my-4" %>

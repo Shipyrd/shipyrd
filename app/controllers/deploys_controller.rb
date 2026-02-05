@@ -8,7 +8,7 @@ class DeploysController < ApplicationController
     if @deploy.save
       render :show, status: :created
     else
-      render json: @deploy.errors, status: :unprocessable_content
+      render json: {errors: @deploy.errors}, status: :unprocessable_content
     end
   end
 

@@ -66,6 +66,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_05_184219) do
   create_table "destinations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "application_id", null: false
     t.text "base_recipe"
+    t.boolean "block_deploys"
     t.string "branch", default: "main"
     t.datetime "created_at", null: false
     t.datetime "locked_at"

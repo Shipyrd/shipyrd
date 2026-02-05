@@ -16,13 +16,28 @@
   </div>
 
   <div class="field">
-    <%= form.label :branch, style: "label" %>
+    <%= form.label :branch, class: "label" %>
     <div class="control">
       <%= form.text_field :branch, class: "input" %>
     </div>
   </div>
 
   <div class="field">
+    <%= form.label :block_deploys, class: "label" %>
+    <%= form.label :block_deploys do %>
+      <%= form.check_box :block_deploys %>
+      Enable deploy blocking
+    <% end %>
+    <p>
+      <small>
+        When using Shipyrd's hooks(<code>Shipyrd::Client.new.trigger('pre-connect')</code>) you can
+        block a deploy from continuining if the deployer doesn't match who currently has a lock on
+        the destination. For example, if John locked production, Jane won't be able to deploy to production.
+      </small>
+    </p>
+  </div>
+
+  <div class="field mt-4">
     <div class="control">
       <%= form.submit "Update destination", class: "button is-primary" %>
     </div>

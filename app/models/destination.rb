@@ -29,6 +29,10 @@ class Destination < ApplicationRecord
     end
   end
 
+  def unlocked?
+    locked_at.blank?
+  end
+
   def locked?
     locked_at.present?
   end
