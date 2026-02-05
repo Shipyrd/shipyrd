@@ -19,6 +19,7 @@ gem "stimulus-rails"
 
 # 3rd Party
 gem "faraday" # Already required by oauth2 and github_api but using it directly
+gem "faraday-retry"
 gem "octokit"
 gem "honeybadger"
 gem "oauth2"
