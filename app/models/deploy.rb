@@ -6,9 +6,9 @@ class Deploy < ApplicationRecord
   belongs_to :application, optional: true, touch: true, inverse_of: "deploys"
 
   validates :recorded_at, :performer, :service_version, :command, presence: true
-  validate :service_version_is_valid
-  validate :version_is_valid
-  validate :destination_deploy_block_state
+  validate :service_version_is_valid, on: :create
+  validate :version_is_valid, on: :create
+  validate :destination_deploy_block_state, on: :create
 
   KNOWN_HOOKS = %w[pre-deploy post-deploy].freeze
 
