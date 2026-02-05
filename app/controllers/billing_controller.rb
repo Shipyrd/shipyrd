@@ -4,16 +4,6 @@ class BillingController < ApplicationController
   end
 
   def checkout
-    if current_organization.stripe_customer_id.blank?
-      customer = Stripe::Customer.create(
-        email: current_user.email,
-        metadata: {
-          organization_id: current_organization.id
-        }
-      )
-      current_organization.update!(stripe_customer_id: customer.id)
-    end
-
     session = Stripe::Checkout::Session.create(
       customer: current_organization.stripe_customer_id,
       mode: "subscription",
