@@ -4,6 +4,10 @@ class MembershipTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
   describe "create_stripe_customer" do
+    setup do
+      ENV["COMMUNITY_EDITION"] = "0"
+    end
+
     it "does nothing when organization already has a stripe customer" do
       organization = create(:organization, stripe_customer_id: "cus_existing")
       user = create(:user)
