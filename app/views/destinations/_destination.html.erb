@@ -21,6 +21,11 @@
       <strong>Branch:</strong>
       <span class="tag"><%= destination.branch %></span>
     </p>
+
+    <p>
+      <strong>Block deploys:</strong>
+      <span class="tag"><%= destination.block_deploys? ? "Yes" : "No" %></span>
+    </p>
   </div>
 
   <%= link_to "Edit this destination", edit_application_destination_path(application, destination), class: "button is-primary my-4" %>
