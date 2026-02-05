@@ -15,8 +15,8 @@ module DestinationsHelper
       controller: :badge,
       action: style,
       application_id: destination.application.badge_key,
-      id: destination.name || "default",
-      host: ENV["SHIPYRD_BADGE_HOST"],
+      id: destination.display_name,
+      host: ENV["SHIPYRD_BADGE_HOST"] || ENV["SHIPYRD_HOST"],
       protocol: "https",
       format: :json
     )
@@ -24,7 +24,7 @@ module DestinationsHelper
     full_url = "https://img.shields.io/endpoint?url=#{badge_url}"
 
     if format == :markdown
-      "![#{destination.name}](#{full_url})"
+      "[![#{destination.name}](#{full_url})](https://#{ENV['SHIPYRD_HOST']})"
     else
       full_url
     end

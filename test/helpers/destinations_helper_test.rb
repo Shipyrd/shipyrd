@@ -13,7 +13,7 @@ class DestinationsHelperTest < ActionView::TestCase
   end
 
   test "destination_badge deploy markdown" do
-    assert_equal "![#{@destination.name}](https://img.shields.io/endpoint?url=https://badge.test/applications/#{@application.badge_key}/destinations/#{@destination.name}/badge/deploy.json)",
+    assert_equal "[![#{@destination.name}](https://img.shields.io/endpoint?url=https://badge.test/applications/#{@application.badge_key}/destinations/#{@destination.name}/badge/deploy.json)](https://shipyrd.test)",
       destination_badge(@destination, :deploy, :markdown)
   end
 
@@ -23,7 +23,7 @@ class DestinationsHelperTest < ActionView::TestCase
   end
 
   test "destination_badge lock markdown" do
-    assert_equal "![#{@destination.name}](https://img.shields.io/endpoint?url=https://badge.test/applications/#{@application.badge_key}/destinations/#{@destination.name}/badge/lock.json)",
+    assert_equal "[![#{@destination.name}](https://img.shields.io/endpoint?url=https://badge.test/applications/#{@application.badge_key}/destinations/#{@destination.name}/badge/lock.json)](https://shipyrd.test)",
       destination_badge(@destination, :lock, :markdown)
   end
 
