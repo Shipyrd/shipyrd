@@ -162,4 +162,40 @@ class DeployTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe "destination_deploy_block_state" do
+    it "allows deploys when destination does not exist" do
+      deploy = build(:deploy, application: application, destination: "production")
+
+      assert deploy.valid?
+    end
+
+    it "allows deploys when destination is not locked" do
+      application.destinations.create!(name: "production", block_deploys: true)
+      deploy = build(:deploy, application: application, destination: "production")
+
+      assert deploy.valid?
+    end
+
+    it "blocks deploys when destination is locked by different user" do
+      destination = create(:destination, application: application, name: "production", block_deploys: true)
+      user = create(:user)
+      destination.lock!(user)
+
+      deploy = build(:deploy, application: application, destination: "production", performer: "jim")
+
+      refute deploy.valid?
+      assert_includes deploy.errors[:lock], "Destination is currently locked by #{destination.locked_by}"
+    end
+
+    it "allows deploys when destination is locked by same user" do
+      destination = create(:destination, application: application, name: "production", block_deploys: true)
+      user = create(:user)
+      destination.lock!(user)
+
+      deploy = build(:deploy, application: application, destination: "production", performer: user.email)
+
+      assert deploy.valid?
+    end
+  end
 end

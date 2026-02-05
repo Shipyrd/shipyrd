@@ -8,6 +8,7 @@ class Deploy < ApplicationRecord
   validates :recorded_at, :performer, :service_version, :command, presence: true
   validate :service_version_is_valid
   validate :version_is_valid
+  validate :destination_deploy_block_state
 
   KNOWN_HOOKS = %w[pre-deploy post-deploy].freeze
 
@@ -25,12 +26,9 @@ class Deploy < ApplicationRecord
 
   def dispatch_notifications
     return false unless status == "post-deploy"
+    return false if target_destination.blank?
 
-    destination_record = application.destinations.find_by(name: destination)
-
-    return false unless destination_record
-
-    destination_record.dispatch_notifications(
+    target_destination.dispatch_notifications(
       :deploy,
       slice(
         :performer,
@@ -68,6 +66,10 @@ class Deploy < ApplicationRecord
     user&.avatar_url
   end
 
+  def target_destination
+    @target_destination ||= application.destinations.find_by(name: destination)
+  end
+
   def progress_value
     case status
     when "pre-connect"
@@ -82,6 +84,15 @@ class Deploy < ApplicationRecord
   end
 
   private
+
+  def destination_deploy_block_state
+    return true if target_destination.blank?
+    return true if !target_destination.block_deploys?
+    return true if target_destination.unlocked?
+    return true if target_destination.locker == user
+
+    errors.add(:lock, "Destination is currently locked by #{target_destination.locked_by}")
+  end
 
   def version_is_valid
     version =~ /\w+/

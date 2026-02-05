@@ -29,26 +29,78 @@ class DeploysControllerTest < ActionDispatch::IntegrationTest
       end
     end
 
-    test "should create deploy with minimal information" do
-      assert_difference("Deploy.count") do
-        post deploys_url,
-          params: {
-            format: :json,
-            deploy: {
-              command: "deploy",
-              recorded_at: Time.zone.now,
-              performer: "nick",
-              version: "123456",
-              service_version: "potato@123456",
-              status: "pre-build"
-            }
+    it "fails when missing deploy details" do
+      post deploys_url,
+        params: {
+          format: :json,
+          command: "deploy",
+          performer: "nick",
+          status: "pre-connect"
+        },
+        headers: auth_headers(@token)
 
-          },
-          headers: auth_headers(@token)
+      assert_response :bad_request
+    end
+
+    it "fails when missing required information" do
+      post deploys_url,
+        params: {
+          format: :json,
+          deploy: {
+            command: "deploy",
+            performer: "nick",
+            status: "pre-connect"
+          }
+        },
+        headers: auth_headers(@token)
+
+      assert_response :unprocessable_content
+
+      response_data = JSON.parse(response.body)
+      assert response_data["errors"]
+    end
+
+    describe "bare minimum information" do
+      let(:params) do
+        {
+          format: :json,
+          deploy: {
+            command: "deploy",
+            recorded_at: Time.zone.now,
+            performer: "nick",
+            version: "123456",
+            service_version: "potato@123456",
+            status: "pre-build"
+          }
+        }
       end
 
-      assert_response :created
-      assert_equal @application, Deploy.last.application
+      test "should create deploy" do
+        assert_difference("Deploy.count") do
+          post deploys_url,
+            params: params,
+            headers: auth_headers(@token)
+        end
+
+        assert_response :created
+        assert_equal @application, Deploy.last.application
+      end
+
+      test "fails when deploy blocking is enabled" do
+        destination = @application.destinations.create!
+        destination.update(block_deploys: true)
+
+        assert_no_difference("Deploy.count") do
+          post deploys_url,
+            params: params,
+            headers: auth_headers(@token)
+        end
+
+        assert_response :unprocessable_content
+
+        response_data = JSON.parse(response.body)
+        assert response_data["errors"].key?("lock")
+      end
     end
 
     test "should create deploy with full information" do
