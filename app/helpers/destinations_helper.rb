@@ -24,7 +24,7 @@ module DestinationsHelper
     full_url = "https://img.shields.io/endpoint?url=#{badge_url}"
 
     if format == :markdown
-      "[![#{destination.name}](#{full_url})](https://#{ENV['SHIPYRD_HOST']})"
+      "[![#{destination.name}](#{full_url})](https://#{ENV["SHIPYRD_HOST"]})"
     else
       full_url
     end
