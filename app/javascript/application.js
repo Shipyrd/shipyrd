@@ -14,7 +14,8 @@ document.addEventListener('turbo:load', (event) => {
   // Copy to clipboard for key installation on servers
   const clipboard = new ClipboardJS('.clipboard');
   clipboard.on('success', function (e) {
-    e.trigger.textContent = "Copied!";
+    const textSpan = e.trigger.querySelector('.icon-text > span:not(.icon)');
+    if (textSpan) textSpan.textContent = "Copied!";
     e.clearSelection();
   });
 })

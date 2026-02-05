@@ -9,4 +9,24 @@ module DestinationsHelper
       link_to_if params[:action] != "edit", destination.display_name || "default", application_destination_path(destination.application, destination)
     end
   end
+
+  def destination_badge(destination, style, format = :image)
+    badge_url = url_for(
+      controller: :badge,
+      action: style,
+      application_id: destination.application.badge_key,
+      id: destination.display_name,
+      host: ENV["SHIPYRD_BADGE_HOST"] || ENV["SHIPYRD_HOST"],
+      protocol: "https",
+      format: :json
+    )
+
+    full_url = "https://img.shields.io/endpoint?url=#{badge_url}"
+
+    if format == :markdown
+      "[![#{destination.name}](#{full_url})](https://#{ENV["SHIPYRD_HOST"]})"
+    else
+      full_url
+    end
+  end
 end

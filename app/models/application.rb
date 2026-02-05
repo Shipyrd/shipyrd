@@ -1,5 +1,6 @@
 class Application < ApplicationRecord
   has_secure_token length: 64
+  has_secure_token :badge_key
 
   belongs_to :organization, counter_cache: true
   has_many :deploys, dependent: :destroy, inverse_of: "application"

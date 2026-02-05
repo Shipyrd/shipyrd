@@ -70,12 +70,16 @@ class Destination < ApplicationRecord
     ).last
   end
 
-  def latest_deployed_sha
-    @latest_deployed_sha ||= deploys.where(
+  def latest_post_deploy
+    deploys.where(
       destination: name,
       command: :deploy,
       status: "post-deploy"
-    ).last&.version
+    ).last
+  end
+
+  def latest_deployed_sha
+    @latest_deployed_sha ||= latest_post_deploy&.version
   end
 
   def display_name

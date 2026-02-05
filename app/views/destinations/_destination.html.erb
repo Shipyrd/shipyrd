@@ -27,6 +27,47 @@
 
   <hr>
 
+  <h3 class="is-size-3">Badges</h3>
+
+  <div class="columns">
+    <div class="column is-half">
+      <h5 class="is-size-5 mb-2">Last deploy</h5>
+
+      <p>
+        <%= image_tag destination_badge(destination, :deploy, :image), class: "mb-2" %>
+      </p>
+
+      <pre class="mb-1 is-sr-only"><code id="badge_deployed_markdown"><%= destination_badge(destination, :deploy, :markdown) %></code></pre>
+      <div id="badge_deployed_image" class="is-sr-only"><%= destination_badge(destination, :deploy, :image) %></div>
+
+        <%= render "shared/copy_to_clipboard", target: "#badge_deployed_markdown", label: "markdown", button_class: "is-small" %>
+        <%= render "shared/copy_to_clipboard", target: "#badge_deployed_image", label: "image URL", button_class: "is-small" %>
+    </div>
+
+    <div class="column is-half">
+      <h5 class="is-size-5 mb-2">Lock status</h5>
+
+      <p>
+        <%= image_tag destination_badge(destination, :lock, :image), class: "mb-2" %>
+      </p>
+
+      <pre class="is-sr-only"><code id="badge_locked_markdown"><%= destination_badge(destination, :lock, :markdown) %></code></pre>
+      <div id="badge_locked_image" class="is-sr-only"><%= destination_badge(destination, :lock, :image) %></div>
+
+      <p class="mt-1">
+        <%= render "shared/copy_to_clipboard", target: "#badge_locked_markdown", label: "markdown", button_class: "is-small" %>
+        <%= render "shared/copy_to_clipboard", target: "#badge_locked_image", label: "image URL", button_class: "is-small" %>
+      </p>
+    </div>
+  </div>
+
+  <small>
+    <em>
+      Badges are powered by shields.io which has a 60 minute cache expiration.
+    </em>
+  </small>
+  <hr>
+
   <h3 class="is-size-3">Servers</h3>
 
   <% if destination.servers.empty? %>
