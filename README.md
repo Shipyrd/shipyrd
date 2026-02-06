@@ -2,6 +2,8 @@
 
 The simple deployment dashboard for Kamal-based deployments.
 
+[![production](https://img.shields.io/endpoint?url=https://badge.shipyrd.io/applications/gSBbC8Um5MUjwLXKtW2kABdF/destinations/production/badge/deploy.json)](https://app.shipyrd.io) [![production](https://img.shields.io/endpoint?url=https://badge.shipyrd.io/applications/gSBbC8Um5MUjwLXKtW2kABdF/destinations/production/badge/lock.json)](https://app.shipyrd.io)
+
 For a more detailed project and concept overview check out the [initial announcement details](https://www.fromthekeyboard.com/shipyrd-the-dashboard-for-your-kamal-deployments/).
 
 <img src="doc/images/demo.png" border="1" />
