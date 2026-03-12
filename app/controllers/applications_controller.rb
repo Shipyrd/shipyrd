@@ -1,6 +1,6 @@
 class ApplicationsController < ApplicationController
   before_action :check_payment_required
-  before_action :set_application, only: %i[show edit update destroy]
+  before_action :set_application, only: %i[show edit update destroy setup]
 
   # GET /applications or /applications.json
   def index
@@ -31,6 +31,10 @@ class ApplicationsController < ApplicationController
 
   # GET /applications/1/edit
   def edit
+  end
+
+  # GET /applications/1/setup
+  def setup
   end
 
   # PATCH/PUT /applications/1 or /applications/1.json
