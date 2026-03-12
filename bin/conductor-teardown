@@ -1,0 +1,10 @@
+#!/bin/sh
+#/ Usage: bin/conductor-teardown
+#/
+#/ Teardown the database for Conductor workspaces.
+#/ This is run automatically when a workspace is deleted.
+
+set -e
+cd $(dirname "$0")/..
+
+bin/rails db:drop
