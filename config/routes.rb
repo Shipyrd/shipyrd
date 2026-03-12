@@ -30,6 +30,9 @@ Rails.application.routes.draw do
   end
 
   resources :applications do
+    member do
+      get :setup
+    end
     resources :channels, only: %i[edit update destroy]
     resources :webhooks, only: %i[new create]
     resources :incoming_webhooks, only: %i[new create destroy]
