@@ -2,6 +2,6 @@
   "scripts": {
     "setup": "bin/conductor-setup",
     "teardown": "bin/conductor-teardown",
-    "run": "bin/dev"
+    "run": "rm -f tmp/pids/server.pid && bin/dev -p $CONDUCTOR_PORT"
   }
 }
