@@ -31,8 +31,9 @@ SHIPYRD_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}
 SHIPYRD_QUEUE_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_queue
 SHIPYRD_CABLE_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_cable
 
-SHIPYRD_HOST=localhost:${CONDUCTOR_PORT}
-SHIPYRD_HOOKS_HOST=localhost:${CONDUCTOR_PORT}
+PORT=\${CONDUCTOR_PORT}
+SHIPYRD_HOST=localhost:\${CONDUCTOR_PORT}
+SHIPYRD_HOOKS_HOST=localhost:\${CONDUCTOR_PORT}
 EOF
 
 # Run full setup (dependencies, database, fixtures)

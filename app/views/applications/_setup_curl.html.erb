@@ -1,0 +1,48 @@
+<section class="content block">
+  <p>
+    Application API key:
+    <code id="application_token_curl">
+    <%= application.token %>
+    </code>
+
+    <button class="button is-small is-white clipboard" data-clipboard-target="#application_token_curl">
+      <span class="icon-text">
+        <span class="icon">
+          <i class="fa-solid fa-copy"></i>
+        </span>
+      </span>
+    </button>
+  </p>
+</section>
+
+<section class="block content">
+  <p>
+    You can use plain cURL requests to notify Shipyrd about your deploys.
+    Add these commands to your deploy scripts or CI/CD pipeline.
+  </p>
+</section>
+
+<% Deploy::KNOWN_HOOKS.each do |hook| %>
+<section class="block content">
+  <h4 class="is-size-4"><%= hook %></h4>
+
+<pre class="mb-2"><code id="curl_<%= hook %>">curl -X POST <%= deploys_url(format: :json) %> \
+  -H "Authorization: Bearer <%= application.token %>" \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"deploy\": {
+      \"status\": \"<%= hook %>\",
+      \"performer\": \"$(whoami)\",
+      \"version\": \"$(git rev-parse HEAD)\",
+      \"commit_message\": \"$(git log -1 --pretty=format:%s)\",
+      \"service_version\": \"<%= application.name %>@$(git rev-parse HEAD)\",
+      \"service\": \"<%= application.name %>\",
+      \"destination\": \"production\",
+      \"command\": \"deploy\",
+      \"subcommand\": \"app\",
+      \"recorded_at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+    }
+  }"</code></pre>
+<%= render "shared/copy_to_clipboard", target: "#curl_#{hook}" %>
+</section>
+<% end %>
