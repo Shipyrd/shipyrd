@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "setup": "bin/conductor-setup",
+    "teardown": "bin/conductor-teardown",
+    "run": "bin/dev"
+  }
+}

@@ -1,0 +1,41 @@
+#!/bin/sh
+#/ Usage: bin/conductor-setup
+#/
+#/ Setup files that are not tracked in git for Conductor workspaces.
+#/ This is run automatically when a new workspace is created.
+
+set -e
+cd $(dirname "$0")/..
+
+if [ -z "$CONDUCTOR_WORKSPACE_PATH" ]; then
+  echo "Error: CONDUCTOR_WORKSPACE_PATH is not set. Run this from Conductor."
+  exit 1
+fi
+
+WORKSPACE_NAME=$(basename "$CONDUCTOR_WORKSPACE_PATH")
+
+# Symlink .env from the root repo so all workspaces share the same base config.
+if [ -n "$CONDUCTOR_ROOT_PATH" ] && [ -f "$CONDUCTOR_ROOT_PATH/.env" ]; then
+  echo "Symlinking .env from $CONDUCTOR_ROOT_PATH/.env..."
+  ln -sf "$CONDUCTOR_ROOT_PATH/.env" .env
+else
+  echo "Warning: CONDUCTOR_ROOT_PATH/.env not found."
+  echo "Create it from .env.example: cp .env.example \$CONDUCTOR_ROOT_PATH/.env"
+fi
+
+# Create .env.development with workspace-specific database names and host config.
+# dotenv loads .env.development after .env, so these override the base values.
+echo "Creating .env.development for workspace: $WORKSPACE_NAME..."
+cat > .env.development <<EOF
+SHIPYRD_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_primary
+SHIPYRD_QUEUE_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_queue
+SHIPYRD_CABLE_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_cable
+
+SHIPYRD_HOST=localhost:${CONDUCTOR_PORT}
+SHIPYRD_HOOKS_HOST=localhost:${CONDUCTOR_PORT}
+EOF
+
+# Run full setup (dependencies, database, fixtures)
+bin/setup
+
+echo "Conductor setup complete!"
