@@ -208,8 +208,7 @@ class DeployTest < ActiveSupport::TestCase
         application: application,
         name: "production",
         block_deploys: true,
-        auto_lock_outside_business_hours: true
-      )
+        auto_lock_outside_business_hours: true)
 
       travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 20, 0, 0) do
         deploy = build(:deploy, application: application, destination: "production")
@@ -229,8 +228,7 @@ class DeployTest < ActiveSupport::TestCase
         application: application,
         name: "production",
         block_deploys: true,
-        auto_lock_outside_business_hours: true
-      )
+        auto_lock_outside_business_hours: true)
 
       travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 12, 0, 0) do
         deploy = build(:deploy, application: application, destination: "production")
@@ -249,8 +247,7 @@ class DeployTest < ActiveSupport::TestCase
         application: application,
         name: "production",
         block_deploys: false,
-        auto_lock_outside_business_hours: true
-      )
+        auto_lock_outside_business_hours: true)
 
       travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 20, 0, 0) do
         deploy = build(:deploy, application: application, destination: "production")

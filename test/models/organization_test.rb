@@ -34,8 +34,7 @@ class OrganizationTest < ActiveSupport::TestCase
       organization = create(:organization,
         time_zone: "Central Time (US & Canada)",
         business_hours_start: 9,
-        business_hours_end: 17
-      )
+        business_hours_end: 17)
 
       # Simulate 12:00 PM Central
       travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 12, 0, 0) do
@@ -48,8 +47,7 @@ class OrganizationTest < ActiveSupport::TestCase
       organization = create(:organization,
         time_zone: "Central Time (US & Canada)",
         business_hours_start: 9,
-        business_hours_end: 17
-      )
+        business_hours_end: 17)
 
       # Simulate 8:00 PM Central
       travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 20, 0, 0) do
@@ -62,8 +60,7 @@ class OrganizationTest < ActiveSupport::TestCase
       organization = create(:organization,
         time_zone: "Central Time (US & Canada)",
         business_hours_start: 9,
-        business_hours_end: 17
-      )
+        business_hours_end: 17)
 
       # Simulate 7:00 AM Central
       travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 7, 0, 0) do
@@ -75,8 +72,7 @@ class OrganizationTest < ActiveSupport::TestCase
       organization = create(:organization,
         time_zone: "Central Time (US & Canada)",
         business_hours_start: 9,
-        business_hours_end: 17
-      )
+        business_hours_end: 17)
 
       travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 9, 0, 0) do
         assert organization.within_business_hours?
@@ -87,8 +83,7 @@ class OrganizationTest < ActiveSupport::TestCase
       organization = create(:organization,
         time_zone: "Central Time (US & Canada)",
         business_hours_start: 9,
-        business_hours_end: 17
-      )
+        business_hours_end: 17)
 
       travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 17, 0, 0) do
         refute organization.within_business_hours?
@@ -99,8 +94,7 @@ class OrganizationTest < ActiveSupport::TestCase
       organization = create(:organization,
         time_zone: "Central Time (US & Canada)",
         business_hours_start: 22,
-        business_hours_end: 6
-      )
+        business_hours_end: 6)
 
       # 11 PM should be within business hours
       travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 23, 0, 0) do
