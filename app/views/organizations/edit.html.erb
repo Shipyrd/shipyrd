@@ -8,6 +8,57 @@
     </div>
   </div>
 
+  <hr>
+
+  <h3 class="is-size-4 has-text-weight-medium mb-3">Business Hours</h3>
+
+  <p class="mb-4">
+    <small>
+      Configure your organization's time zone and business hours. Destinations with auto-lock enabled
+      will block deploys outside of these hours when deploy blocking is turned on.
+    </small>
+  </p>
+
+  <div class="field">
+    <%= form.label :time_zone, "Time Zone", class: "label" %>
+    <div class="control">
+      <div class="select">
+        <%= form.time_zone_select :time_zone,
+          ActiveSupport::TimeZone.us_zones,
+          { include_blank: "Select a time zone" },
+          {} %>
+      </div>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="column is-half">
+      <div class="field">
+        <%= form.label :business_hours_start, "Business hours start", class: "label" %>
+        <div class="control">
+          <div class="select">
+            <%= form.select :business_hours_start,
+              (0..23).map { |h| [format_hour(h), h] },
+              { selected: @organization.business_hours_start } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="column is-half">
+      <div class="field">
+        <%= form.label :business_hours_end, "Business hours end", class: "label" %>
+        <div class="control">
+          <div class="select">
+            <%= form.select :business_hours_end,
+              (0..23).map { |h| [format_hour(h), h] },
+              { selected: @organization.business_hours_end } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="field">
     <div class="control">
       <%= form.submit class: "button is-primary" %>

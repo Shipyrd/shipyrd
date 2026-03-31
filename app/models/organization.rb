@@ -29,4 +29,25 @@ class Organization < ApplicationRecord
 
     !active_subscription? && !trial_active?
   end
+
+  def business_hours_configured?
+    time_zone.present? && business_hours_start.present? && business_hours_end.present?
+  end
+
+  def within_business_hours?
+    return true unless business_hours_configured?
+
+    current_time = Time.current.in_time_zone(time_zone)
+    current_hour = current_time.hour
+
+    if business_hours_start < business_hours_end
+      current_hour >= business_hours_start && current_hour < business_hours_end
+    else
+      current_hour >= business_hours_start || current_hour < business_hours_end
+    end
+  end
+
+  def outside_business_hours?
+    !within_business_hours?
+  end
 end

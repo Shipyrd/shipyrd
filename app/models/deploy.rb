@@ -88,6 +88,12 @@ class Deploy < ApplicationRecord
   def destination_deploy_block_state
     return true if target_destination.blank?
     return true if !target_destination.block_deploys?
+
+    if target_destination.outside_business_hours?
+      errors.add(:lock, "Destination is locked outside of business hours")
+      return false
+    end
+
     return true if target_destination.unlocked?
     return true if target_destination.locker == user
 

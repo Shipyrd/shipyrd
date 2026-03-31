@@ -34,6 +34,28 @@
           <% end %>
         </small>
     </p>
+
+    <p>
+      <strong>Auto-lock outside business hours:</strong>
+      <span class="tag"><%= destination.auto_lock_outside_business_hours? ? "Yes" : "No" %></span>
+      <% if destination.auto_lock_outside_business_hours? %>
+        <br>
+        <small>
+          <% if destination.application.organization.business_hours_configured? %>
+            <% org = destination.application.organization %>
+            Deploys are blocked outside of <%= format_hour(org.business_hours_start) %> - <%= format_hour(org.business_hours_end) %> (<%= org.time_zone %>).
+            <% if destination.outside_business_hours? %>
+              <span class="tag is-warning">Currently outside business hours</span>
+            <% else %>
+              <span class="tag is-success">Currently within business hours</span>
+            <% end %>
+          <% else %>
+            <span class="tag is-warning">Time zone not configured</span> -
+            <%= link_to "Configure business hours", edit_organization_path(destination.application.organization) %> in organization settings.
+          <% end %>
+        </small>
+      <% end %>
+    </p>
   </div>
 
   <%= link_to "Edit this destination", edit_application_destination_path(application, destination), class: "button is-primary my-4" %>
