@@ -135,6 +135,46 @@ class DestinationTest < ActiveSupport::TestCase
     end
   end
 
+  describe "outside_business_hours?" do
+    it "returns false when auto_lock_outside_business_hours is disabled" do
+      destination = create(:destination, application: @application, auto_lock_outside_business_hours: false)
+
+      refute destination.outside_business_hours?
+    end
+
+    it "returns false when within business hours" do
+      @application.organization.update!(
+        time_zone: "Central Time (US & Canada)",
+        business_hours_start: 9,
+        business_hours_end: 17
+      )
+      destination = create(:destination, application: @application, auto_lock_outside_business_hours: true)
+
+      travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 12, 0, 0) do
+        refute destination.outside_business_hours?
+      end
+    end
+
+    it "returns true when outside business hours" do
+      @application.organization.update!(
+        time_zone: "Central Time (US & Canada)",
+        business_hours_start: 9,
+        business_hours_end: 17
+      )
+      destination = create(:destination, application: @application, auto_lock_outside_business_hours: true)
+
+      travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 20, 0, 0) do
+        assert destination.outside_business_hours?
+      end
+    end
+
+    it "returns false when no time zone is configured" do
+      destination = create(:destination, application: @application, auto_lock_outside_business_hours: true)
+
+      refute destination.outside_business_hours?
+    end
+  end
+
   it "new_servers_available?" do
     destination = create(:destination, application: @application)
 

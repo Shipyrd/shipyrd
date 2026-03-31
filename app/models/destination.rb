@@ -37,6 +37,10 @@ class Destination < ApplicationRecord
     locked_at.present?
   end
 
+  def outside_business_hours?
+    auto_lock_outside_business_hours? && application&.organization&.outside_business_hours?
+  end
+
   def locked_by
     locker&.display_name
   end

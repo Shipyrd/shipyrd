@@ -59,6 +59,6 @@ class DestinationsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def destination_params
-    params.require(:destination).permit(:name, :url, :branch, :block_deploys)
+    params.require(:destination).permit(:name, :url, :branch, :block_deploys, :auto_lock_outside_business_hours)
   end
 end

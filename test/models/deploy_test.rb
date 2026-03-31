@@ -197,5 +197,66 @@ class DeployTest < ActiveSupport::TestCase
 
       assert deploy.valid?
     end
+
+    it "blocks deploys outside of business hours" do
+      application.organization.update!(
+        time_zone: "Central Time (US & Canada)",
+        business_hours_start: 9,
+        business_hours_end: 17
+      )
+      create(:destination,
+        application: application,
+        name: "production",
+        block_deploys: true,
+        auto_lock_outside_business_hours: true
+      )
+
+      travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 20, 0, 0) do
+        deploy = build(:deploy, application: application, destination: "production")
+
+        refute deploy.valid?
+        assert_includes deploy.errors[:lock], "Destination is locked outside of business hours"
+      end
+    end
+
+    it "allows deploys during business hours with auto-lock enabled" do
+      application.organization.update!(
+        time_zone: "Central Time (US & Canada)",
+        business_hours_start: 9,
+        business_hours_end: 17
+      )
+      create(:destination,
+        application: application,
+        name: "production",
+        block_deploys: true,
+        auto_lock_outside_business_hours: true
+      )
+
+      travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 12, 0, 0) do
+        deploy = build(:deploy, application: application, destination: "production")
+
+        assert deploy.valid?
+      end
+    end
+
+    it "does not block deploys outside business hours when block_deploys is disabled" do
+      application.organization.update!(
+        time_zone: "Central Time (US & Canada)",
+        business_hours_start: 9,
+        business_hours_end: 17
+      )
+      create(:destination,
+        application: application,
+        name: "production",
+        block_deploys: false,
+        auto_lock_outside_business_hours: true
+      )
+
+      travel_to Time.find_zone("Central Time (US & Canada)").local(2026, 3, 12, 20, 0, 0) do
+        deploy = build(:deploy, application: application, destination: "production")
+
+        assert deploy.valid?
+      end
+    end
   end
 end

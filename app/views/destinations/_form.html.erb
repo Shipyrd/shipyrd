@@ -37,6 +37,22 @@
     </p>
   </div>
 
+  <div class="field">
+    <%= form.label :auto_lock_outside_business_hours, class: "label" %>
+    <%= form.label :auto_lock_outside_business_hours do %>
+      <%= form.check_box :auto_lock_outside_business_hours %>
+      Auto-lock outside business hours
+    <% end %>
+    <p>
+      <small>
+        Automatically block deploys to this destination outside of your organization's configured business hours.
+        Requires deploy blocking to be enabled and
+        <%= link_to "business hours configured", edit_organization_path(destination.application.organization) %>
+        in your organization settings.
+      </small>
+    </p>
+  </div>
+
   <div class="field mt-4">
     <div class="control">
       <%= form.submit "Update destination", class: "button is-primary" %>

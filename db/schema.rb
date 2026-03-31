@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_05_184219) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_12_000002) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "token"
@@ -65,6 +65,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_05_184219) do
 
   create_table "destinations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "application_id", null: false
+    t.boolean "auto_lock_outside_business_hours", default: false
     t.text "base_recipe"
     t.boolean "block_deploys"
     t.string "branch", default: "main"
@@ -152,12 +153,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_05_184219) do
 
   create_table "organizations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "applications_count", default: 0
+    t.integer "business_hours_end", default: 17
+    t.integer "business_hours_start", default: 9
     t.datetime "created_at", null: false
     t.datetime "last_payment_at"
     t.string "name"
     t.string "stripe_customer_id"
     t.string "stripe_subscription_id"
     t.string "stripe_subscription_status"
+    t.string "time_zone"
     t.string "token"
     t.datetime "updated_at", null: false
     t.integer "users_count", default: 0
