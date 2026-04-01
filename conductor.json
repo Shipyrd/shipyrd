@@ -2,6 +2,6 @@
   "scripts": {
     "setup": "bin/conductor-setup",
     "teardown": "bin/conductor-teardown",
-    "run": "rm -f tmp/pids/server.pid && bin/dev -p $CONDUCTOR_PORT"
+    "run": "echo \"Running on port $CONDUCTOR_PORT\" && lsof -ti :$CONDUCTOR_PORT | xargs kill && rm -f tmp/pids/server.pid && bin/dev -p $CONDUCTOR_PORT"
   }
 }

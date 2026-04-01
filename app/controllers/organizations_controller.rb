@@ -9,13 +9,15 @@ class OrganizationsController < ApplicationController
   def create
     @organization = Organization.new(organization_params)
 
-    if @organization.save
+    ActiveRecord::Base.transaction do
+      @organization.save!
       @organization.memberships.create!(user: current_user, role: :admin)
-      session[:organization_id] = @organization.id
-      redirect_to root_path, notice: "Organization created successfully"
-    else
-      render :new, status: :unprocessable_entity
     end
+
+    session[:organization_id] = @organization.id
+    redirect_to root_path, notice: "Organization created successfully"
+  rescue ActiveRecord::RecordInvalid
+    render :new, status: :unprocessable_content
   end
 
   def switch
