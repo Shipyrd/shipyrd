@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   end
 
   resources :users
-  resources :organizations, only: %i[edit update] do
+  resources :organizations, only: %i[new create edit update] do
     member do
       post :switch
     end
