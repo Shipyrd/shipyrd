@@ -70,6 +70,7 @@ applications[0..1].each do |application|
 end
 
 create_deploy(applications[2], nil, "pre-deploy")
+create_deploy(applications[2], nil, "post-deploy")
 
 username = `whoami`.strip
 
@@ -78,11 +79,15 @@ admin = User.find_or_create_by!(email: "#{username}@example.com") do |u|
   u.password = "password00!"
 end
 
-organization.memberships.create(user: admin, role: :admin)
+organization.memberships.find_or_create_by!(user: admin) do |membership|
+  membership.role = :admin
+end
 
 user = User.find_or_create_by!(email: "new@example.com") do |u|
   u.username = "https://github.com/newguy"
   u.password = "password00!"
 end
 
-Organization.find_or_create_by(name: "Fry's Electronics").memberships.create!(user: user, role: :admin)
+Organization.find_or_create_by(name: "Fry's Electronics").memberships.find_or_create_by!(user: user) do |membership|
+  membership.role = :admin
+end

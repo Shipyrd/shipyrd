@@ -4,6 +4,8 @@ class Membership < ApplicationRecord
   belongs_to :user
   belongs_to :organization, counter_cache: :users_count
 
+  validates :user_id, uniqueness: {scope: :organization_id}
+
   after_create :enqueue_create_stripe_customer, if: :admin?
 
   def enqueue_create_stripe_customer
