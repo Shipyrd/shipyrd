@@ -24,6 +24,15 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       assert_redirected_to root_path
     end
 
+    test "with valid credentials sets organization_id in session" do
+      organization = create(:organization)
+      create(:membership, user: @user, organization: organization)
+
+      post session_url, params: {email: @user.email, password: @user.password}
+
+      assert_equal organization.id, session[:organization_id]
+    end
+
     test "sign out" do
       post session_url, params: {email: @user.email, password: @user.password}
       delete session_url

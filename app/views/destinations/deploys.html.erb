@@ -6,10 +6,15 @@
 </h2>
 
 <p class="mb-4">
-  <%= link_to "← Back to destination", application_destination_path(application, @destination), class: "is-link" %>
+  <%= link_to "← Back to application", application_path(application), class: "is-link" %>
 </p>
 
-<h3 class="is-size-3 mb-4">Deploy History</h3>
+<div class="is-flex is-align-items-center mb-4">
+  <h3 class="is-size-3">Activity</h3>
+  <% if @destination.on_deck_url.present? %>
+    <%= link_to "On Deck", @destination.on_deck_url, target: "_blank", class: "ml-3 button is-success is-light is-small" %>
+  <% end %>
+</div>
 
 <% status_bulma_class = ->(status) {
   { "green" => "success", "yellow" => "warning", "orange" => "warning", "grey" => "light" }
