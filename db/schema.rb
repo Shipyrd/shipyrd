@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_12_000002) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_31_000001) do
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "token"
@@ -121,6 +121,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_12_000002) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["organization_id"], name: "index_memberships_on_organization_id"
+    t.index ["user_id", "organization_id"], name: "index_memberships_on_user_id_and_organization_id", unique: true
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 

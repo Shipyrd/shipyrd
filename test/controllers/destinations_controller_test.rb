@@ -56,6 +56,21 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
       assert_not @destination.reload.locked?
       assert_redirected_to root_path
     end
+
+    test "get deploys" do
+      get deploys_application_destination_path(@application, @destination)
+
+      assert_response :success
+    end
+
+    test "get deploys with deploy records" do
+      create(:deploy, application: @application, destination: @destination.name, status: "pre-deploy", performer: @user.username, version: "abc1234")
+      create(:deploy, application: @application, destination: @destination.name, status: "post-deploy", performer: @user.username, version: "abc1234", runtime: 45)
+
+      get deploys_application_destination_path(@application, @destination)
+
+      assert_response :success
+    end
   end
 
   describe "API functionality" do

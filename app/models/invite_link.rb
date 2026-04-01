@@ -17,10 +17,9 @@ class InviteLink < ApplicationRecord
   end
 
   def accept!(user)
-    organization.memberships.create(
-      user: user,
-      role: role
-    )
+    organization.memberships.find_or_create_by(user: user) do |membership|
+      membership.role = role
+    end
   end
 
   def deactivate!

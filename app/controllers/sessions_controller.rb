@@ -10,6 +10,7 @@ class SessionsController < ApplicationController
   def create
     if (user = User.authenticate_by(auth_params.slice(:email, :password)))
       session[:user_id] = user.id
+      session[:organization_id] = user.organizations.first&.id
       redirect_to root_path
     else
       redirect_to new_session_url, alert: "Invalid email and/or password."
