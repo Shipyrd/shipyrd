@@ -155,7 +155,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       get root_url
 
       assert_response :success
-      assert_match @organization2.name, @response.body
+      assert_no_match(/#{@organization1.name}/, @response.body)
     end
   end
 end
