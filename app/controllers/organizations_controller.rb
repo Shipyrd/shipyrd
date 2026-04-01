@@ -2,6 +2,24 @@ class OrganizationsController < ApplicationController
   before_action :set_organization, only: %i[edit update]
   before_action :require_admin, only: %i[edit update]
 
+  def new
+    @organization = Organization.new
+  end
+
+  def create
+    @organization = Organization.new(organization_params)
+
+    ActiveRecord::Base.transaction do
+      @organization.save!
+      @organization.memberships.create!(user: current_user, role: :admin)
+    end
+
+    session[:organization_id] = @organization.id
+    redirect_to root_path, notice: "Organization created successfully"
+  rescue ActiveRecord::RecordInvalid
+    render :new, status: :unprocessable_content
+  end
+
   def switch
     organization = current_user.organizations.find_by(id: params[:id])
 
