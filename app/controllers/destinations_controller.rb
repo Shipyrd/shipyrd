@@ -33,6 +33,11 @@ class DestinationsController < ApplicationController
     end
   end
 
+  def destroy
+    @destination.destroy!
+    redirect_to edit_application_path(@application), notice: "Destination was successfully deleted."
+  end
+
   def lock
     @destination.lock!(current_user)
 
