@@ -9,6 +9,9 @@ Shipyrd is a deployment dashboard for [Kamal](https://kamal-deploy.org/)-based d
 ## Commands
 
 ```bash
+# Run full CI suite (lint, security, tests, system tests) — mirrors GitHub Actions
+bin/ci
+
 # Run all tests
 bundle exec rails test
 
@@ -64,3 +67,7 @@ Migrations live in `db/migrate/`, `db/queue_migrate/`, and `db/cable_migrate/` r
 **Billing:** Stripe integration; `Organization` tracks trial/subscription state. Incoming Stripe webhooks handled by `IncomingWebhooksController`.
 
 **Testing:** Minitest + fixtures. System tests use Selenium. No mocking of the database — tests hit the real DB.
+
+## Workflow
+
+After creating a PR, run `bin/ci` to catch failures before GitHub Actions runs. Fix any issues before moving on.
