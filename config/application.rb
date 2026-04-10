@@ -23,9 +23,9 @@ module Shipyrd
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
 
-    config.active_record.encryption.primary_key = ENV.fetch("SHIPYRD_ENCRYPTION_PRIMARY_KEY", "dev-primary-key-00000000000000000000")
-    config.active_record.encryption.deterministic_key = ENV.fetch("SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY", "dev-deterministic-key-000000000000000")
-    config.active_record.encryption.key_derivation_salt = ENV.fetch("SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT", "dev-key-derivation-salt-00000000000")
+    config.active_record.encryption.primary_key = ENV["SHIPYRD_ENCRYPTION_PRIMARY_KEY"]
+    config.active_record.encryption.deterministic_key = ENV["SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY"]
+    config.active_record.encryption.key_derivation_salt = ENV["SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT"]
 
     config.mission_control.jobs.base_controller_class = "SystemAdminController"
     config.mission_control.jobs.http_basic_auth_enabled = false
