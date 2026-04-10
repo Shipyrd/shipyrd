@@ -262,8 +262,13 @@ GEM
       railties (>= 7.1)
       stimulus-rails
       turbo-rails
+    mjml-rails (4.16.0)
     mocha (3.0.1)
       ruby2_keywords (>= 0.0.5)
+    mrml (1.10.0-aarch64-linux)
+    mrml (1.10.0-arm64-darwin)
+    mrml (1.10.0-x86_64-darwin)
+    mrml (1.10.0-x86_64-linux)
     msgpack (1.8.0)
     multi_json (1.15.0)
     multi_xml (0.8.0)
@@ -533,7 +538,9 @@ DEPENDENCIES
   letter_opener
   minitest-spec-rails
   mission_control-jobs
+  mjml-rails
   mocha
+  mrml
   mysql2 (~> 0.5.7)
   oauth2
   octokit

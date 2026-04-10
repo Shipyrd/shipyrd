@@ -1,0 +1,32 @@
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-all font-family="Helvetica, Arial, sans-serif" />
+      <mj-text font-size="15px" line-height="1.5" color="#333333" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f4f4f4">
+    <mj-section background-color="#000000" padding="16px 30px">
+      <mj-column>
+        <mj-image src="<%= image_url('logo.png') %>" alt="Shipyrd" width="125px" />
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#ffffff" padding="30px 30px">
+      <mj-column>
+        <mj-text font-size="22px" font-weight="bold">Verify your email address</mj-text>
+        <mj-text>Hi <%= @user.name %>,</mj-text>
+        <mj-text>Please verify your email address on Shipyrd by clicking the button below:</mj-text>
+        <mj-button background-color="#42dca3" color="#ffffff" border-radius="6px" font-size="16px" inner-padding="12px 30px" href="<%= @verification_url %>">Verify email address</mj-button>
+        <mj-text>This link will expire in 24 hours.</mj-text>
+        <mj-text font-size="13px" color="#999999">If you didn't create a Shipyrd account, you can safely ignore this email.</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="10px 30px">
+      <mj-column>
+        <mj-text align="center" font-size="12px" color="#999999">
+          Sent by <a href="https://shipyrd.io" style="color: #42dca3;">Shipyrd</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

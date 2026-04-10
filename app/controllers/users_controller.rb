@@ -70,7 +70,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to user_url(@user), notice: "Account successfully updated." }
+        format.html { redirect_to edit_user_url(@user), notice: "Settings saved." }
       else
         format.html { render :edit, status: :unprocessable_content }
       end
@@ -100,7 +100,8 @@ class UsersController < ApplicationController
       :organization_name,
       :email,
       :name,
-      :password
+      :password,
+      :weekly_deploy_summary
     )
   end
 end

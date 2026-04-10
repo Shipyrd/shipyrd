@@ -1,12 +1,45 @@
-<% content_for :title, "Editing user" %>
+<% content_for :title, "Settings" %>
 
-<h1>Editing user</h1>
+<h1 class="is-size-3 has-text-weight-bold mb-5">Settings</h1>
 
-<%= render "form", user: @user %>
+<%= form_with model: @user, class: "contents" do |form| %>
+  <%= render "shared/errors", form: form %>
 
-<br>
+  <h3 class="is-size-4 has-text-weight-medium mb-3">Profile</h3>
 
-<div>
-  <%= link_to "Show this user", @user %> |
-  <%= link_to "Back to users", users_path %>
-</div>
+  <div class="field">
+    <%= form.label :name, class: "label" %>
+    <div class="control">
+      <%= form.text_field :name, class: "input" %>
+    </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :email, class: "label" %>
+    <div class="control">
+      <%= form.text_field :email, class: "input" %>
+    </div>
+  </div>
+
+  <% unless community_edition? %>
+    <hr>
+
+    <h3 class="is-size-4 has-text-weight-medium mb-3">Email Notifications</h3>
+
+    <div class="field">
+      <label class="checkbox">
+        <%= form.check_box :weekly_deploy_summary %>
+        Weekly deploy summary
+      </label>
+      <p class="help">Receive a weekly email summarizing deploy activity across your organizations.</p>
+    </div>
+  <% end %>
+
+  <hr>
+
+  <div class="field">
+    <div class="control">
+      <%= form.submit "Save settings", class: "button is-primary" %>
+    </div>
+  </div>
+<% end %>

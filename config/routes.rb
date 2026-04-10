@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   end
 
   resources :email_verifications, only: %i[new show create]
+  resources :unsubscribes, only: %i[show update]
   resources :users
   resources :organizations, only: %i[new create edit update] do
     member do
