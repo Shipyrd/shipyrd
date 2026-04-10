@@ -31,6 +31,9 @@ EOF
 echo "Creating .env.test for workspace: $WORKSPACE_NAME..."
 cat > .env.test <<EOF
 SHIPYRD_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_test
+SHIPYRD_ENCRYPTION_PRIMARY_KEY=$(ruby -e "require 'securerandom'; puts SecureRandom.hex(16)")
+SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY=$(ruby -e "require 'securerandom'; puts SecureRandom.hex(16)")
+SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT=$(ruby -e "require 'securerandom'; puts SecureRandom.hex(16)")
 EOF
 
 # Run full setup (dependencies, database, fixtures)
