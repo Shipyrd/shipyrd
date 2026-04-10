@@ -74,14 +74,14 @@ class Destination < ApplicationRecord
   def latest_deploy
     deploys.where(
       destination: name,
-      command: :deploy
+      command: [:deploy, :setup]
     ).last
   end
 
   def latest_post_deploy
     deploys.where(
       destination: name,
-      command: :deploy,
+      command: [:deploy, :setup],
       status: "post-deploy"
     ).last
   end
