@@ -26,6 +26,7 @@ gem "oauth2"
 gem "scout_apm"
 gem "ahoy_matey"
 gem "blazer"
+gem "brevo-rails"
 gem "stripe"
 
 # Jobs/Cable
@@ -51,6 +52,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "letter_opener"
   gem "guard"
   gem "guard-minitest"
   gem "guard-standardrb"

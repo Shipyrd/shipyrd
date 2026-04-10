@@ -95,7 +95,10 @@ class OauthToken < ApplicationRecord
         u.username = "https://github.com/#{github_user.login}"
         u.avatar_url = "#{github_user.avatar_url}&s=100"
         u.name = github_user.name
+        u.email_verified_at = Time.current
       end
+
+      user.update!(email_verified_at: Time.current) unless user.email_verified?
 
       if organization
         organization.memberships.create(

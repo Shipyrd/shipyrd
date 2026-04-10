@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     post "stripe", action: :create, controller: :stripe, as: :stripe
   end
 
+  resources :email_verifications, only: %i[new show create]
   resources :users
   resources :organizations, only: %i[new create edit update] do
     member do

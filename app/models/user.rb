@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   has_secure_token length: 64
   has_secure_password validations: false
+  generates_token_for :email_verification, expires_in: 24.hours
   validates :password, length: {minimum: 10, maximum: 72}, if: -> { password.present? }
 
   validates :username, allow_blank: true, url: {no_local: true}
@@ -21,6 +22,18 @@ class User < ApplicationRecord
   scope :has_password, -> { where.not(password_digest: nil) }
 
   attr_accessor :organization_name
+
+  def email_verified?
+    email_verified_at.present?
+  end
+
+  def verification_grace_period?
+    !email_verified? && created_at > 7.days.ago
+  end
+
+  def verification_required?
+    !email_verified? && !verification_grace_period?
+  end
 
   def display_name
     display_username || name

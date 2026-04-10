@@ -66,7 +66,7 @@ Migrations live in `db/migrate/`, `db/queue_migrate/`, and `db/cable_migrate/` r
 
 **Billing:** Stripe integration; `Organization` tracks trial/subscription state. Incoming Stripe webhooks handled by `Incoming::StripeController`.
 
-**Testing:** Minitest + fixtures. System tests use Selenium. No mocking of the database — tests hit the real DB.
+**Testing:** Minitest + FactoryBot. System tests use Selenium. No mocking of the database — tests hit the real DB.
 
 ## Workflow
 

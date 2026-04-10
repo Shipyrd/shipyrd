@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_08_144600) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_10_144437) do
   create_table "ahoy_events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.json "properties"
@@ -274,6 +274,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_08_144600) do
     t.string "avatar_url"
     t.datetime "created_at", null: false
     t.string "email"
+    t.datetime "email_verified_at"
     t.string "name"
     t.string "password_digest"
     t.boolean "system_admin"
