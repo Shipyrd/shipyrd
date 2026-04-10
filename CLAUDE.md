@@ -56,15 +56,15 @@ Migrations live in `db/migrate/`, `db/queue_migrate/`, and `db/cable_migrate/` r
 
 **Authentication — two paths:**
 1. User sessions (password or GitHub OAuth)
-2. Bearer token — either an `Application` token (for Kamal webhook deploys) or a `User` `ApiKey` token (for API calls); resolved in `ApplicationController#authenticate_with_token`
+2. Bearer token — either an `Application` token (for Kamal webhook deploys) or a `User` token (for API calls); resolved in `ApplicationController#authenticate`
 
 **Frontend:** No JS bundler — uses importmap. Stimulus controllers live in `app/javascript/controllers/`. CSS is Bulma + custom properties in `app/assets/stylesheets/application.css`.
 
 **Background jobs (Solid Queue):** `NotificationJob`, `AvatarImporterJob`, `CleanupOldDeploysJob`, `CreateStripeCustomerJob`. Mission Control UI at `/jobs` (admin only).
 
-**Notifications:** Notification channel integrations are in `app/models/channels/` (Slack, Discord, etc.). `lib/slack.rb` contains the low-level Slack client.
+**Notifications:** `Channel` is a polymorphic model (`app/models/channel.rb`) whose `owner` points to the integration type (`Webhook`, `OauthToken`). `lib/slack.rb` contains the low-level Slack client.
 
-**Billing:** Stripe integration; `Organization` tracks trial/subscription state. Incoming Stripe webhooks handled by `IncomingWebhooksController`.
+**Billing:** Stripe integration; `Organization` tracks trial/subscription state. Incoming Stripe webhooks handled by `Incoming::StripeController`.
 
 **Testing:** Minitest + fixtures. System tests use Selenium. No mocking of the database — tests hit the real DB.
 
