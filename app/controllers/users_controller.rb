@@ -49,6 +49,8 @@ class UsersController < ApplicationController
         reset_session
         session[:user_id] = @user.id
 
+        ahoy.track "user_signed_up", user_id: @user.id, organization_id: organization.id
+
         format.html { redirect_to root_url, notice: "User was successfully created." }
       else
         @user.errors.add(:password, "can't be blank") if @user.password.blank?

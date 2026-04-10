@@ -24,6 +24,8 @@ gem "octokit"
 gem "honeybadger"
 gem "oauth2"
 gem "scout_apm"
+gem "ahoy_matey"
+gem "blazer"
 gem "stripe"
 
 # Jobs/Cable
