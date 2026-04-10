@@ -27,6 +27,8 @@ gem "scout_apm"
 gem "ahoy_matey"
 gem "blazer"
 gem "brevo-rails"
+gem "mjml-rails"
+gem "mrml"
 gem "stripe"
 
 # Jobs/Cable

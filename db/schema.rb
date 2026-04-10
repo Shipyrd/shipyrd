@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_10_144437) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_10_162127) do
   create_table "ahoy_events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.json "properties"
@@ -281,6 +281,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_144437) do
     t.string "token"
     t.datetime "updated_at", null: false
     t.string "username"
+    t.boolean "weekly_deploy_summary", default: true, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["username"], name: "index_users_on_username"
   end

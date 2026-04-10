@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_secure_token length: 64
   has_secure_password validations: false
   generates_token_for :email_verification, expires_in: 24.hours
+  generates_token_for :unsubscribe, expires_in: 2.weeks
   validates :password, length: {minimum: 10, maximum: 72}, if: -> { password.present? }
 
   validates :username, allow_blank: true, url: {no_local: true}

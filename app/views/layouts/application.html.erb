@@ -66,10 +66,11 @@
                   <%= link_to "Organization settings", edit_organization_path(current_organization), class: "navbar-item" %>
                   <hr class="navbar-divider">
                 <% end %>
+                <%= link_to "Settings", edit_user_path(current_user), class: "navbar-item" %>
                 <% unless current_user.organizations.many? %>
                   <%= link_to "Add Organization", new_organization_path, class: "navbar-item" %>
-                  <hr class="navbar-divider">
                 <% end %>
+                <hr class="navbar-divider">
                 <%= link_to billing_checkout_path, class: "navbar-item" do %>
                   Billing
                   <span class="tag ml-2 <%= current_organization.active_subscription? ? 'is-success' : 'is-warning' %>">

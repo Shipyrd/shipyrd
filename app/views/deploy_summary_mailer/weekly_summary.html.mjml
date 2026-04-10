@@ -1,0 +1,67 @@
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-all font-family="Helvetica, Arial, sans-serif" />
+      <mj-text font-size="15px" line-height="1.5" color="#333333" />
+    </mj-attributes>
+  </mj-head>
+  <mj-body background-color="#f4f4f4">
+    <mj-section background-color="#000000" padding="16px 30px">
+      <mj-column>
+        <mj-image src="<%= image_url('logo.png') %>" alt="Shipyrd" width="125px" />
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#ffffff" padding="30px 30px 10px" border-left="4px solid #42dca3">
+      <mj-column>
+        <mj-text font-size="22px" font-weight="bold"><%= @organization.name %> shipped!</mj-text>
+        <mj-text>Your team pushed <strong style="color: #42dca3;"><%= pluralize(@total_deploys, "deploy") %></strong> last week (<%= @period_start.strftime("%B %d") %> &ndash; <%= @period_end.strftime("%B %d, %Y") %>).
+          <% diff = @total_deploys - @previous_week_deploys %>
+          <% if @previous_week_deploys == 0 %>
+            There were no deploys the week before &mdash; welcome back!
+          <% elsif diff > 0 %>
+            That's <span style="color: #42dca3;"><%= pluralize(diff, "more deploy") %></span> than the week before.
+          <% elsif diff < 0 %>
+            That's <%= pluralize(diff.abs, "fewer deploy") %> than the week before.
+          <% else %>
+            Same as the week before &mdash; steady as she goes.
+          <% end %>
+        </mj-text>
+        <mj-text>Here's the breakdown:</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#ffffff" padding="0 30px 10px" border-left="4px solid #42dca3">
+      <mj-column>
+        <% @applications.each do |app_name, data| %>
+          <mj-text padding-top="10px">
+            <strong style="color: #2c3e50;"><%= app_name %></strong> saw <span style="color: #42dca3; font-weight: bold;"><%= pluralize(data[:total], "deploy") %></span><% if data[:destinations].any? %> &mdash; <%= data[:destinations].map { |dest, count| "#{pluralize(count, "time")} to #{dest}" }.to_sentence(last_word_connector: ", and ") %><% end %>.<% if data[:runtime] > 0 %>
+            You spent <%= pluralize((data[:runtime] / 60.0).ceil, "minute") %> shipping.
+            <% end %>
+          </mj-text>
+        <% end %>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#ffffff" padding="10px 30px 30px" border-left="4px solid #42dca3">
+      <mj-column>
+        <% if @deployers.any? %>
+          <mj-text padding-top="10px" padding-bottom="16px" background-color="#f8faf9" border-radius="6px" padding-left="16px" padding-right="16px">
+            <% if @deployers.length == 1 %>
+              <strong><%= @deployers.first[0] %></strong> ran the show with all <%= pluralize(@deployers.first[1], "deploy") %>.
+            <% else %>
+              Shoutout to the team: <%= raw @deployers.map { |name, count| "<strong>#{ERB::Util.html_escape(name)}</strong> (#{count})" }.to_sentence(last_word_connector: ", and ") %>.
+            <% end %>
+          </mj-text>
+        <% end %>
+
+        <mj-text padding-top="16px">Keep shipping!<br/>&mdash; Nick</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="10px 30px">
+      <mj-column>
+        <mj-text align="center" font-size="12px" color="#999999">
+          Sent by <a href="https://shipyrd.io" style="color: #42dca3;">Shipyrd</a> &bull;
+          <a href="<%= @unsubscribe_url %>" style="color: #999999;">Unsubscribe</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
