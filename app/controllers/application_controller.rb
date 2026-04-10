@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
   end
 
   def email_requires_verification?
-    current_user && !community_edition? && !current_user.email_verified?
+    current_user && current_organization&.applications_count&.positive? && !community_edition? && !current_user.email_verified?
   end
 
   private

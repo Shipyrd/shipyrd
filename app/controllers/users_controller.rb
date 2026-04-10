@@ -58,7 +58,7 @@ class UsersController < ApplicationController
 
         ahoy.track "user_signed_up", user_id: @user.id, organization_id: organization.id
 
-        format.html { redirect_to root_url, notice: "User was successfully created." }
+        format.html { redirect_to root_url }
       else
         @user.errors.add(:password, "can't be blank") if @user.password.blank?
 

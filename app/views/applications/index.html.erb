@@ -5,12 +5,79 @@
   <% if @applications.empty? %>
     <%= turbo_stream_from :applications %>
 
-    <div class="box">
-      <h3 class="is-size-3 mb-4">
-        Configure your first application
-      </h3>
+    <div class="columns is-centered mt-5">
+      <div class="column is-two-thirds">
+        <div class="has-text-centered mb-5">
+          <h1 class="title is-3 mb-3">Welcome to Shipyrd</h1>
+          <p class="subtitle is-5 has-text-grey">
+            Add your first application to start tracking deployments, seeing what changed, and keeping your team in the loop.
+          </p>
+        </div>
 
-      <%= link_to "Create your first application", new_application_path, class: "button is-primary" %>
+        <div class="has-text-centered mb-5">
+          <%= link_to new_application_path, class: "button is-primary is-medium" do %>
+            <span class="icon">
+              <i class="fa-solid fa-plus"></i>
+            </span>
+            <span>Add your first application</span>
+          <% end %>
+        </div>
+
+        <div class="columns is-mobile is-multiline has-text-centered mb-5">
+          <div class="column is-one-third">
+            <span class="icon has-text-primary mb-2">
+              <i class="fa-solid fa-timeline"></i>
+            </span>
+            <p class="is-size-7 has-text-grey">Deploy timeline</p>
+          </div>
+          <div class="column is-one-third">
+            <span class="icon has-text-primary mb-2">
+              <i class="fa-solid fa-lock"></i>
+            </span>
+            <p class="is-size-7 has-text-grey">Environment locking</p>
+          </div>
+          <div class="column is-one-third">
+            <span class="icon has-text-primary mb-2">
+              <i class="fa-brands fa-slack"></i>
+            </span>
+            <p class="is-size-7 has-text-grey">Slack notifications</p>
+          </div>
+        </div>
+
+        <div class="box has-background-light">
+          <h2 class="is-size-6 has-text-weight-semibold has-text-centered mb-3">How it works</h2>
+          <div class="columns is-mobile has-text-centered">
+            <div class="column">
+              <span class="icon has-text-primary mb-1">
+                <i class="fa-solid fa-circle-plus"></i>
+              </span>
+              <p class="is-size-7 has-text-grey-dark has-text-weight-medium">Add your app</p>
+            </div>
+            <div class="column is-narrow is-flex is-align-items-center">
+              <span class="icon is-small has-text-grey-light">
+                <i class="fa-solid fa-arrow-right"></i>
+              </span>
+            </div>
+            <div class="column">
+              <span class="icon has-text-primary mb-1">
+                <i class="fa-solid fa-gear"></i>
+              </span>
+              <p class="is-size-7 has-text-grey-dark has-text-weight-medium">Configure Kamal hooks</p>
+            </div>
+            <div class="column is-narrow is-flex is-align-items-center">
+              <span class="icon is-small has-text-grey-light">
+                <i class="fa-solid fa-arrow-right"></i>
+              </span>
+            </div>
+            <div class="column">
+              <span class="icon has-text-primary mb-1">
+                <i class="fa-solid fa-rocket"></i>
+              </span>
+              <p class="is-size-7 has-text-grey-dark has-text-weight-medium">See every deploy</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   <% else %>
     <%= render @applications %>

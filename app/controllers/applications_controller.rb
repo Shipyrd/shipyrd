@@ -1,4 +1,5 @@
 class ApplicationsController < ApplicationController
+  skip_before_action :check_email_verification, only: %i[index new create]
   before_action :check_payment_required
   before_action :set_application, only: %i[show edit update destroy setup]
 
