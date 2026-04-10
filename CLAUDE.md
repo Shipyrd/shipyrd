@@ -70,4 +70,4 @@ Migrations live in `db/migrate/`, `db/queue_migrate/`, and `db/cable_migrate/` r
 
 ## Workflow
 
-After creating a PR, run `bin/ci` to catch failures before GitHub Actions runs. Fix any issues before moving on.
+After creating a PR or pushing changes to an existing PR, run `bin/ci` to catch failures before GitHub Actions runs. Fix any issues before moving on.
