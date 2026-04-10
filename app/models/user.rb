@@ -18,6 +18,7 @@ class User < ApplicationRecord
 
   after_create :store_email_address
   after_create_commit :queue_populate_avatar
+  after_create_commit :enqueue_add_to_brevo_list
 
   scope :has_password, -> { where.not(password_digest: nil) }
 
@@ -88,6 +89,11 @@ class User < ApplicationRecord
     return if user_info["avatar_url"].blank?
 
     update!(avatar_url: "#{user_info["avatar_url"]}&s=100")
+  end
+
+  def enqueue_add_to_brevo_list
+    return if ENV["COMMUNITY_EDITION"] != "0"
+    AddToBrevoListJob.perform_later(id)
   end
 
   private
