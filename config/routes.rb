@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
-  constraints(SystemAdminConstraint.new) do
+  constraints(Constraints::SystemAdminConstraint.new) do
     mount Blazer::Engine, at: "/blazer"
   end
 
