@@ -41,7 +41,7 @@ class UsersTest < ApplicationSystemTestCase
       fill_in "Email", with: @user.email
       fill_in "Password", with: "secretsecret"
 
-      click_on "Create User"
+      click_on "Create account"
 
       assert_text "Create your first application"
     end
@@ -64,7 +64,7 @@ class UsersTest < ApplicationSystemTestCase
       fill_in "Email", with: @user.email
       fill_in "Password", with: "secretsecret"
 
-      click_on "Create User"
+      click_on "Create account"
 
       assert_text "User was successfully created"
       assert_text "Create your first application"
@@ -82,7 +82,7 @@ class UsersTest < ApplicationSystemTestCase
       fill_in "Email", with: @user.email
       fill_in "Password", with: "secretsecret"
 
-      click_on "Create User"
+      click_on "Create account"
 
       assert_text "User was successfully created"
       assert_text "Create your first application"
