@@ -81,8 +81,6 @@ class ApplicationsTest < ApplicationSystemTestCase
         )
       end
 
-      sleep(1)
-
       assert_content "by Nick"
       assert_content "Deploying the potato"
       refute_link "On Deck"
@@ -133,8 +131,6 @@ class ApplicationsTest < ApplicationSystemTestCase
       fill_in "Repository URL", with: "https://github.com/shipyrd/shipyrd"
 
       click_on "Update"
-
-      sleep(1)
 
       assert_text "Application was successfully updated"
     end
