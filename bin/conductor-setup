@@ -24,6 +24,8 @@ SHIPYRD_CABLE_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE
 PORT=\${CONDUCTOR_PORT}
 SHIPYRD_HOST=localhost:\${CONDUCTOR_PORT}
 SHIPYRD_HOOKS_HOST=localhost:\${CONDUCTOR_PORT}
+
+COMMUNITY_EDITION=0
 EOF
 
 echo "Creating .env.test for workspace: $WORKSPACE_NAME..."

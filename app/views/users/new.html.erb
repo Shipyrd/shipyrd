@@ -1,7 +1,40 @@
 <div class="columns is-centered">
   <div class="column is-half">
-    <%= render "form", user: @user %>
-    <div class="mt-4 field">
+    <div class="has-text-centered mb-5">
+      <h1 class="title is-3 mb-4">Know what's deployed. Always.</h1>
+      <p class="subtitle is-5 has-text-grey">
+        The deployment dashboard for Kamal. See who deployed, what changed, and what's waiting to go out.
+      </p>
+    </div>
+
+    <div class="box">
+      <%= render "form", user: @user %>
+    </div>
+
+    <div class="mt-5">
+      <div class="columns is-mobile is-multiline has-text-centered">
+        <div class="column is-one-third">
+          <span class="icon has-text-primary mb-2">
+            <i class="fa-solid fa-timeline"></i>
+          </span>
+          <p class="is-size-7 has-text-grey">Deploy timeline</p>
+        </div>
+        <div class="column is-one-third">
+          <span class="icon has-text-primary mb-2">
+            <i class="fa-solid fa-lock"></i>
+          </span>
+          <p class="is-size-7 has-text-grey">Environment locking</p>
+        </div>
+        <div class="column is-one-third">
+          <span class="icon has-text-primary mb-2">
+            <i class="fa-brands fa-slack"></i>
+          </span>
+          <p class="is-size-7 has-text-grey">Slack notifications</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 field has-text-centered">
       <%= link_to "Sign in", new_session_path, class: "has-text-info is-clickable is-underlined" %>
       <% unless community_edition? %>
         <span class="has-text-info">&bull;</span>
