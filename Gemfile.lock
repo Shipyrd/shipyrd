@@ -97,6 +97,13 @@ GEM
       msgpack (~> 1.2)
     brakeman (7.1.2)
       racc
+    brevo (2.0.0)
+      addressable (~> 2.3, >= 2.3.0)
+      json (~> 2.1, >= 2.1.0)
+      typhoeus (~> 1.0, >= 1.0.1)
+    brevo-rails (1.1.1)
+      activesupport (> 4.3)
+      brevo (~> 2.0)
     builder (3.3.0)
     bullet (8.1.0)
       activesupport (>= 3.0.0)
@@ -138,6 +145,9 @@ GEM
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
+    ethon (0.18.0)
+      ffi (>= 1.15.0)
+      logger
     factory_bot (6.5.6)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.5.1)
@@ -216,6 +226,8 @@ GEM
       addressable (~> 2.8)
       childprocess (~> 5.0)
       logger (~> 1.6)
+    letter_opener (1.10.0)
+      launchy (>= 2.2, < 4)
     lint_roller (1.1.0)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -261,7 +273,7 @@ GEM
     nenv (0.3.0)
     net-http (0.9.1)
       uri (>= 0.11.1)
-    net-imap (0.5.10)
+    net-imap (0.6.3)
       date
       net-protocol
     net-pop (0.1.2)
@@ -447,7 +459,7 @@ GEM
     stringio (3.2.0)
     stripe (18.3.0)
     thor (1.5.0)
-    timeout (0.6.0)
+    timeout (0.6.1)
     tsort (0.2.0)
     tty-color (0.6.0)
     tty-command (0.10.1)
@@ -455,6 +467,8 @@ GEM
     turbo-rails (2.0.20)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
+    typhoeus (1.6.0)
+      ethon (>= 0.18.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (3.2.0)
@@ -499,6 +513,7 @@ DEPENDENCIES
   blazer
   bootsnap
   brakeman
+  brevo-rails
   bullet
   bundle-audit
   capybara
@@ -515,6 +530,7 @@ DEPENDENCIES
   importmap-rails
   jbuilder
   launchy
+  letter_opener
   minitest-spec-rails
   mission_control-jobs
   mocha

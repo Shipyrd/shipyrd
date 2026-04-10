@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   include Invitable
 
   skip_before_action :authenticate, only: %i[new create]
+  skip_before_action :check_email_verification, only: %i[new create]
 
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_user_url, alert: "Try again later." }
 
@@ -45,6 +46,12 @@ class UsersController < ApplicationController
           user: @user,
           role: @invite_link ? @invite_link.role : :admin
         )
+
+        if @invite_link
+          @user.update!(email_verified_at: Time.current)
+        else
+          UserMailer.email_verification(@user).deliver_later
+        end
 
         reset_session
         session[:user_id] = @user.id

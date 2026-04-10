@@ -2,6 +2,7 @@ class OauthController < ApplicationController
   include Invitable
 
   skip_before_action :authenticate, if: -> { params[:provider] == "github" }
+  skip_before_action :check_email_verification
   skip_before_action :store_invite_code # oauth returns an auth code in params[:code]
   before_action :verify_provider, only: %i[authorize callback]
   before_action :set_current_application_id, only: %i[authorize]

@@ -85,6 +85,16 @@
 
     <%= render "shared/flash" %>
 
+    <% if email_requires_verification? %>
+      <section class="container">
+        <div class="notification is-warning is-light my-5">
+          Please verify your email address.
+          Check your inbox or
+          <%= button_to "resend verification email", email_verifications_path, class: "is-clickable is-underlined has-text-warning-dark", form_class: "is-inline" %>.
+        </div>
+      </section>
+    <% end %>
+
     <main class="container">
       <%= yield %>
     </main>
