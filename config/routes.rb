@@ -7,6 +7,10 @@ Rails.application.routes.draw do
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
+  constraints(SystemAdminConstraint.new) do
+    mount Blazer::Engine, at: "/blazer"
+  end
+
   namespace :incoming do
     post "honeybadger/:token", action: :create, controller: :honeybadger, as: :honeybadger
     post "stripe", action: :create, controller: :stripe, as: :stripe
