@@ -49,6 +49,10 @@ class Application < ApplicationRecord
     deploys.where(destination: destination, command: [:deploy, :setup]).last
   end
 
+  def hosted_on_github?
+    repository_url&.include?("github.com")
+  end
+
   def repository_name
     repository_url.split("/").last
   end
