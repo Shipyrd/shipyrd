@@ -27,7 +27,7 @@ class Deploy < ApplicationRecord
 
   def dispatch_github_deployment
     return unless KNOWN_HOOKS.include?(status)
-    return unless application.repository_url&.include?("github.com")
+    return unless application.hosted_on_github?
 
     GithubDeploymentJob.perform_later(id)
   end

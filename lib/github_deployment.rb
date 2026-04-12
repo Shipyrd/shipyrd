@@ -19,7 +19,7 @@ class GithubDeployment
 
   def create_status(deployment_id:, state:, description: nil)
     client.create_deployment_status(
-      "#{repo}/deployments/#{deployment_id}",
+      "repos/#{repo}/deployments/#{deployment_id}",
       state,
       description: description
     )

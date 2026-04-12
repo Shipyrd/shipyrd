@@ -19,7 +19,7 @@ class GithubDeploymentJob < ApplicationJob
     result = github.create(
       ref: deploy.version,
       environment: deploy.destination.presence || "production",
-      description: "Deployed via Shipyrd"
+      description: "Tracked by Shipyrd"
     )
 
     deploy.update_column(:github_deployment_id, result.id)
@@ -50,7 +50,7 @@ class GithubDeploymentJob < ApplicationJob
   end
 
   def github_deployment_for(deploy)
-    return nil unless deploy.application.repository_url&.include?("github.com")
+    return nil unless deploy.application.hosted_on_github?
 
     token = github_token_for(deploy)
     return nil unless token

@@ -14,7 +14,7 @@ module ApplicationsHelper
 
   def display_commit_message(commit_message, application)
     return nil if commit_message.blank?
-    return commit_message if application.repository_url.blank? || application.repository_url !~ /github/
+    return commit_message unless application.hosted_on_github?
 
     display_message = commit_message.dup
     commit_message.scan(/#(\d+)/).flatten.each do |issue_number|
