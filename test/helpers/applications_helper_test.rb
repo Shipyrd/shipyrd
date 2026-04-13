@@ -19,7 +19,7 @@ class ApplicationsHelperTest < ActionView::TestCase
     it "returns the commit message if blank or unsupported repository url" do
       assert_equal "Changed this thing #22, #43", display_commit_message("Changed this thing #22, #43", @application)
 
-      @application.update!(repository_url: "https://gitlab.com/u/r")
+      @application.update!(repository_url: "https://bitbucket.org/u/r")
       assert_equal "Changed this thing #22", display_commit_message("Changed this thing #22", @application)
     end
 
@@ -30,6 +30,16 @@ class ApplicationsHelperTest < ActionView::TestCase
       assert_equal(
         "Fixed: <a href='#{issues_url}/22'>#22</a>, <a href='#{issues_url}/34'>#34</a>",
         display_commit_message("Fixed: #22, #34", @application)
+      )
+    end
+
+    it "links to all issues if gitlab repository URL is set" do
+      @application.update!(repository_url: "https://gitlab.com/u/r")
+      issues_url = "#{@application.repository_url}/issues"
+
+      assert_equal(
+        "Changed this thing <a href='#{issues_url}/22'>#22</a>",
+        display_commit_message("Changed this thing #22", @application)
       )
     end
   end
