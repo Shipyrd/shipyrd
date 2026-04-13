@@ -59,6 +59,27 @@ progress.green {
   user-select: all;
 }
 
+.application-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sort-arrows {
+  display: flex;
+  gap: 0.15rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.application-row:hover .sort-arrows {
+  opacity: 1;
+}
+
+.sort-arrows .button {
+  text-decoration: none;
+}
+
 .signup-divider {
   position: relative;
 }

@@ -1,17 +1,34 @@
 <%= turbo_stream_from application %>
 
-<div id="<%= dom_id application %>" class="mb-6">
-  <h2 class="is-size-2 has-text-weight-medium">
-    <%= link_to application.display_name, application_path(application), title: 'View this application' %>
+<div id="<%= dom_id application %>" class="mb-6 application-row">
+  <div class="application-header">
+    <h2 class="is-size-2 has-text-weight-medium">
+      <%= link_to application.display_name, application_path(application), title: 'View this application' %>
 
-    <% if params[:action] == "show" || params[:action].nil? %>
-      <%= link_to edit_application_path(application), class: "mt-4 button is-small" do %>
-        <span class="icon is-small">
-          <i class="fa-solid fa-edit"></i>
-        </span>
+      <% if params[:action] == "show" || params[:action].nil? %>
+        <%= link_to edit_application_path(application), class: "mt-4 button is-small" do %>
+          <span class="icon is-small">
+            <i class="fa-solid fa-edit"></i>
+          </span>
+        <% end %>
       <% end %>
+    </h2>
+
+    <% if params[:action] == "index" || params[:action].nil? %>
+      <span class="sort-arrows">
+        <%= button_to move_up_application_path(application), method: :patch, class: "button is-small is-white" do %>
+          <span class="icon is-small">
+            <i class="fa-solid fa-arrow-up"></i>
+          </span>
+        <% end %>
+        <%= button_to move_down_application_path(application), method: :patch, class: "button is-small is-white" do %>
+          <span class="icon is-small">
+            <i class="fa-solid fa-arrow-down"></i>
+          </span>
+        <% end %>
+      </span>
     <% end %>
-  </h2>
+  </div>
 
   <% if application.destinations.latest.empty? %>
     <div class="notification ">

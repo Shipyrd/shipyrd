@@ -77,6 +77,34 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
       assert_redirected_to edit_application_url(@application)
     end
 
+    test "should move application up" do
+      @application.update!(sort_order: 5)
+
+      patch move_up_application_url(@application)
+
+      assert_redirected_to applications_url
+      assert_equal 4, @application.reload.sort_order
+    end
+
+    test "should move application down" do
+      @application.update!(sort_order: 5)
+
+      patch move_down_application_url(@application)
+
+      assert_redirected_to applications_url
+      assert_equal 6, @application.reload.sort_order
+    end
+
+    test "should order applications by sort_order" do
+      app_b = create(:application, organization: @organization, sort_order: -1)
+
+      get applications_url
+
+      assert_response :success
+      apps = assigns(:applications)
+      assert_equal app_b, apps.first
+    end
+
     test "should destroy application" do
       assert_difference("Application.count", -1) do
         delete application_url(@application)
