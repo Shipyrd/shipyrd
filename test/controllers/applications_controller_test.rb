@@ -101,8 +101,7 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
       get applications_url
 
       assert_response :success
-      apps = assigns(:applications)
-      assert_equal app_b, apps.first
+      assert_match(/#{app_b.display_name}.*#{@application.display_name}/m, response.body)
     end
 
     test "should destroy application" do
