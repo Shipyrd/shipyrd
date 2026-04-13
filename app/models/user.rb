@@ -85,7 +85,10 @@ class User < ApplicationRecord
 
   def populate_avatar_url
     url = URI("https://api.github.com/users/#{github_username}")
-    user_info = JSON.parse(Net::HTTP.get(url))
+    response = Net::HTTP.start(url.host, url.port, use_ssl: true, open_timeout: 5, read_timeout: 10) do |http|
+      http.request(Net::HTTP::Get.new(url.path))
+    end
+    user_info = JSON.parse(response.body)
 
     return if user_info["avatar_url"].blank?
 

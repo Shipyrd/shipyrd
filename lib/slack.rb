@@ -30,7 +30,7 @@ class Slack
   private
 
   def send_message(channel_id:, message:)
-    Faraday.new do |faraday|
+    Faraday.new(request: {timeout: 10, open_timeout: 5}) do |faraday|
       faraday.request :json
       faraday.response :logger, Rails.logger if Rails.env.development?
     end.post("https://slack.com/api/chat.postMessage") do |req|

@@ -18,7 +18,7 @@ class Webhook < ApplicationRecord
   def notify(event, details)
     logger.debug "Notifying #{url} of #{event} with #{details}"
 
-    Faraday.new do |f|
+    Faraday.new(request: {timeout: 10, open_timeout: 5}) do |f|
       f.request :json
       f.response :logger, Rails.logger if Rails.env.development?
     end.post(url) do |r|
