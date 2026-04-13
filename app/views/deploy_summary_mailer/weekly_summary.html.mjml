@@ -8,7 +8,7 @@
   <mj-body background-color="#f4f4f4">
     <mj-section background-color="#000000" padding="16px 30px">
       <mj-column>
-        <mj-image src="<%= image_url('logo.png') %>" alt="Shipyrd" width="125px" />
+        <mj-image src="https://shipyrd.io/images/shipyrd-logo.png" alt="Shipyrd" width="125px" />
       </mj-column>
     </mj-section>
     <mj-section background-color="#ffffff" padding="30px 30px 10px" border-left="4px solid #42dca3">
