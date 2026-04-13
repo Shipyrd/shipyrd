@@ -38,6 +38,8 @@ Rails.application.routes.draw do
   resources :applications do
     member do
       get :setup
+      patch :move_up
+      patch :move_down
     end
     resources :channels, only: %i[edit update destroy]
     resources :webhooks, only: %i[new create]
