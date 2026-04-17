@@ -17,16 +17,16 @@ class Incoming::AppsignalTest < ApplicationSystemTestCase
 
     assert_text "How to setup AppSignal with Shipyrd"
 
-    click_on "Create Incoming webhook"
+    click_on "Connect Appsignal"
 
     assert_text "Incoming webhook was successfully created"
-    assert_text "Disconnect Appsignal"
+    assert_text "Disconnect"
 
     accept_confirm do
-      click_on "Disconnect Appsignal"
+      click_on "Disconnect"
     end
 
     assert_text "Incoming webhook was successfully destroyed"
-    assert_no_text "Disconnect Appsignal"
+    assert_no_text "Disconnect"
   end
 end
