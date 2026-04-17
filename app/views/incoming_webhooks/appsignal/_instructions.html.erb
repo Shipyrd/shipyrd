@@ -1,0 +1,31 @@
+<div class="content">
+  <h3>How to setup AppSignal with Shipyrd</h3>
+
+  <p>
+    If you're using AppSignal for error and deploy tracking
+    you can utilize an AppSignal webhook to let Shipyrd know
+    about new deploys.
+  </p>
+
+  <h4>Setup instructions</h4>
+  <ol>
+    <li>Ensure you've configured <a class="is-underlined" target="_blank" href="https://docs.appsignal.com/application/markers/deploy-markers.html">AppSignal deploy markers</a> for your app.</li>
+    <li>
+      Within your app on AppSignal go to App Settings -> Notifications -> Webhook.
+    </li>
+    <li>
+      Within the Webhook notification settings configure the following:
+      <ul>
+        <li>For the URL, enter <code class="user-select-all"><%= incoming_webhook.url %></code></li>
+        <li>Enable the "Deploy marker" trigger and disable all others.</li>
+      </ul>
+    </li>
+    <li>Click "Save" in AppSignal.</li>
+    <li>
+      Click the "Create Incoming Webhook" button below.
+    </li>
+    <li>
+      Deploy your application and you'll see updates in Shipyrd!
+    </li>
+  </ol>
+</div>
