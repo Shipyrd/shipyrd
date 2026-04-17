@@ -17,16 +17,16 @@ class Incoming::RollbarTest < ApplicationSystemTestCase
 
     assert_text "How to setup Rollbar with Shipyrd"
 
-    click_on "Create Incoming webhook"
+    click_on "Connect Rollbar"
 
     assert_text "Incoming webhook was successfully created"
-    assert_text "Disconnect Rollbar"
+    assert_text "Disconnect"
 
     accept_confirm do
-      click_on "Disconnect Rollbar"
+      click_on "Disconnect"
     end
 
     assert_text "Incoming webhook was successfully destroyed"
-    assert_no_text "Disconnect Rollbar"
+    assert_no_text "Disconnect"
   end
 end

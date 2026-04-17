@@ -8,6 +8,6 @@
   <%= render "incoming_webhooks/#{params[:provider]}/form", form: form %>
 
   <div class="field">
-    <%= form.submit class: "button is-primary" %>
+    <%= form.submit "Connect #{params[:provider].titleize}", class: "button is-primary" %>
   </div>
 <% end %>

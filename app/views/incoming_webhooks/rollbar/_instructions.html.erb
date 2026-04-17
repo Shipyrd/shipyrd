@@ -17,7 +17,15 @@
       Within the Webhook notification settings configure the following:
       <ul>
         <li>
-          For the URL, enter <code class="user-select-all"><%= incoming_webhook.url %></code>
+          For the URL, enter:
+          <div class="field has-addons mt-2">
+            <div class="control is-expanded">
+              <input id="rollbar_webhook_url" class="input" type="text" value="<%= incoming_webhook.url %>" readonly>
+            </div>
+            <div class="control">
+              <%= render "shared/copy_to_clipboard", target: "#rollbar_webhook_url", button_class: "" %>
+            </div>
+          </div>
           <%= image_tag "incoming_webhooks/rollbar/webhook-settings.png", class: "setup-screenshot" %>
         </li>
         <li>
