@@ -28,6 +28,6 @@ class Incoming::AppsignalController < ApplicationController
   private
 
   def validate_event
-    head :ok unless params[:marker].present?
+    head :ok if params[:marker].blank?
   end
 end
