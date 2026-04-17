@@ -1,0 +1,31 @@
+<div class="content">
+  <h3>How to setup Rollbar with Shipyrd</h3>
+
+  <p>
+    If you're using Rollbar for error and deploy tracking
+    you can utilize a Rollbar webhook to let Shipyrd know
+    about new deploys.
+  </p>
+
+  <h4>Setup instructions</h4>
+  <ol>
+    <li>Ensure you've configured <a class="is-underlined" target="_blank" href="https://docs.rollbar.com/docs/deploy-tracking">Rollbar deploy tracking</a> for your app.</li>
+    <li>
+      Within your project on Rollbar go to Settings -> Notifications -> Webhook.
+    </li>
+    <li>
+      Within the Webhook notification settings configure the following:
+      <ul>
+        <li>For the URL, enter <code class="user-select-all"><%= incoming_webhook.url %></code></li>
+        <li>Enable the "Deploy" trigger and disable all others.</li>
+      </ul>
+    </li>
+    <li>Click "Save Settings" in Rollbar.</li>
+    <li>
+      Click the "Create Incoming Webhook" button below.
+    </li>
+    <li>
+      Deploy your application and you'll see updates in Shipyrd!
+    </li>
+  </ol>
+</div>
