@@ -73,10 +73,10 @@ class Deploy < ApplicationRecord
   def progress_value
     case status
     when "pre-connect" then 1
-    when "pre-build"   then 2
-    when "pre-deploy"  then 3
+    when "pre-build" then 2
+    when "pre-deploy" then 3
     when "post-deploy" then 4
-    when "failed"      then 4
+    when "failed" then 4
     end
   end
 
