@@ -5,6 +5,8 @@ module IncomingWebhooksHelper
       "fa-solid fa-otter" # Yes, it's not a honeybadger
     when :rollbar
       "fa-solid fa-rotate"
+    when :appsignal
+      "fa-solid fa-signal"
     end
   end
 end

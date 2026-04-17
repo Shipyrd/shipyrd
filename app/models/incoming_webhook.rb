@@ -6,7 +6,8 @@ class IncomingWebhook < ApplicationRecord
 
   enum :provider, {
     honeybadger: 0,
-    rollbar: 1
+    rollbar: 1,
+    appsignal: 2
   }
 
   def display_name
