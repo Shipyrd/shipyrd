@@ -3,10 +3,13 @@
   <%= button_to "Delete application", application_path(application), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete #{application.name}?" }, class: "button is-danger" %>
 </div>
 
-<%= render "setup_tabs", application: application, active_tab: params[:tab] == "curl" ? :curl : :kamal %>
+<%= render "setup_tabs", application: application, active_tab: params[:tab]&.to_sym || :kamal %>
 
-<% if params[:tab] == "curl" %>
+<% case params[:tab] %>
+<% when "curl" %>
   <%= render "setup_curl", application: application %>
+<% when "github_actions" %>
+  <%= render "setup_github_actions", application: application %>
 <% else %>
   <%= render "setup_kamal", application: application %>
 <% end %>

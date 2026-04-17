@@ -17,7 +17,7 @@
 </div>
 
 <% status_bulma_class = ->(status) {
-  { "green" => "success", "yellow" => "warning", "orange" => "warning", "grey" => "light" }
+  { "green" => "success", "yellow" => "warning", "orange" => "warning", "grey" => "light", "red" => "danger" }
     .fetch(application_status_color(status), "light")
 } %>
 
