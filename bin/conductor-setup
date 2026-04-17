@@ -25,15 +25,19 @@ PORT=\${CONDUCTOR_PORT}
 SHIPYRD_HOST=localhost:\${CONDUCTOR_PORT}
 SHIPYRD_HOOKS_HOST=localhost:\${CONDUCTOR_PORT}
 
+SHIPYRD_ENCRYPTION_PRIMARY_KEY=$(openssl rand -hex 16)
+SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY=$(openssl rand -hex 16)
+SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT=$(openssl rand -hex 16)
+
 COMMUNITY_EDITION=0
 EOF
 
 echo "Creating .env.test for workspace: $WORKSPACE_NAME..."
 cat > .env.test <<EOF
 SHIPYRD_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_test
-SHIPYRD_ENCRYPTION_PRIMARY_KEY=$(ruby -e "require 'securerandom'; puts SecureRandom.hex(16)")
-SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY=$(ruby -e "require 'securerandom'; puts SecureRandom.hex(16)")
-SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT=$(ruby -e "require 'securerandom'; puts SecureRandom.hex(16)")
+SHIPYRD_ENCRYPTION_PRIMARY_KEY=$(openssl rand -hex 16)
+SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY=$(openssl rand -hex 16)
+SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT=$(openssl rand -hex 16)
 EOF
 
 # Run full setup (dependencies, database, fixtures)
