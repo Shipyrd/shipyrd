@@ -14,15 +14,17 @@ class Incoming::RollbarController < ApplicationController
 
     finish_time = deploy[:finish_time].to_i
     start_time = deploy[:start_time].to_i
+    pre_deploy = deploy[:status] == "started"
 
     application.deploys.create!(
       destination: deploy[:environment],
-      recorded_at: Time.zone.at(finish_time),
+      recorded_at: pre_deploy ? Time.zone.at(start_time) : Time.zone.at(finish_time),
       version: deploy[:revision],
       performer: deploy[:local_username],
-      runtime: finish_time - start_time,
+      runtime: pre_deploy ? nil : finish_time - start_time,
+      commit_message: deploy[:comment],
       command: "deploy",
-      status: "post-deploy",
+      status: pre_deploy ? "pre-deploy" : "post-deploy",
       service_version: "#{application.service}@#{deploy[:revision].first(7)}"
     )
 
