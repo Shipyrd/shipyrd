@@ -3,6 +3,8 @@ module IncomingWebhooksHelper
     case provider.intern
     when :honeybadger
       "fa-solid fa-otter" # Yes, it's not a honeybadger
+    when :rollbar
+      "fa-solid fa-rotate"
     end
   end
 end
