@@ -2,6 +2,7 @@
   <ul>
     <li class="<%= "is-active" if active_tab == :kamal %>"><%= link_to "Kamal", setup_application_url(application) %></li>
     <li class="<%= "is-active" if active_tab == :curl %>"><%= link_to "cURL", setup_application_url(application, tab: "curl") %></li>
+    <li class="<%= "is-active" if active_tab == :github_actions %>"><%= link_to "GitHub Actions", setup_application_url(application, tab: "github_actions") %></li>
     <li class="<%= "is-active" if active_tab == :honeybadger %>"><%= link_to "Honeybadger", new_application_incoming_webhook_url(application, provider: :honeybadger) %></li>
     <li class="<%= "is-active" if active_tab == :rollbar %>"><%= link_to "Rollbar", new_application_incoming_webhook_url(application, provider: :rollbar) %></li>
     <li class="<%= "is-active" if active_tab == :appsignal %>"><%= link_to "AppSignal", new_application_incoming_webhook_url(application, provider: :appsignal) %></li>
