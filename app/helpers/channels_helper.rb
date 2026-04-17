@@ -10,7 +10,7 @@ module ChannelsHelper
   def channel_icon(channel_type)
     case channel_type.intern
     when :webhook
-      "fa-solid fa-bolt"
+      "fa-solid fa-share-nodes"
     else
       "fa-brands fa-#{channel_type}"
     end

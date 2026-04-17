@@ -17,7 +17,15 @@
       Within the Webhook notification settings configure the following:
       <ul>
         <li>
-          Set the Name to "Shipyrd" and for the URL enter <code class="user-select-all"><%= incoming_webhook.url %></code>
+          Set the Name to "Shipyrd" and for the URL enter:
+          <div class="field has-addons mt-2">
+            <div class="control is-expanded">
+              <input id="appsignal_webhook_url" class="input" type="text" value="<%= incoming_webhook.url %>" readonly>
+            </div>
+            <div class="control">
+              <%= render "shared/copy_to_clipboard", target: "#appsignal_webhook_url", button_class: "" %>
+            </div>
+          </div>
           <%= image_tag "incoming_webhooks/appsignal/webhook-settings.png", class: "setup-screenshot" %>
         </li>
         <li>
