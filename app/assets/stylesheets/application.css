@@ -98,3 +98,10 @@ progress.green {
   background: white;
   padding: 0 1rem;
 }
+
+.setup-screenshot {
+  width: 75%;
+  border: 1px solid hsl(0, 0%, 86%);
+  border-radius: 4px;
+  margin-top: 0.75rem;
+}

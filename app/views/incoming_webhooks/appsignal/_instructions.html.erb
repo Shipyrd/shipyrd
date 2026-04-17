@@ -16,8 +16,14 @@
     <li>
       Within the Webhook notification settings configure the following:
       <ul>
-        <li>For the URL, enter <code class="user-select-all"><%= incoming_webhook.url %></code></li>
-        <li>Enable the "Deploy marker" trigger and disable all others.</li>
+        <li>
+          Set the Name to "Shipyrd" and for the URL enter <code class="user-select-all"><%= incoming_webhook.url %></code>
+          <%= image_tag "incoming_webhooks/appsignal/webhook-settings.png", class: "setup-screenshot" %>
+        </li>
+        <li>
+          Enable the "Deploys" trigger and disable all others.
+          <%= image_tag "incoming_webhooks/appsignal/deploy-events.png", class: "setup-screenshot" %>
+        </li>
       </ul>
     </li>
     <li>Click "Save" in AppSignal.</li>
