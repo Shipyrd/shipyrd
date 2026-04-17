@@ -11,17 +11,21 @@
   <ol>
     <li>Ensure you've configured <a class="is-underlined" target="_blank" href="https://docs.rollbar.com/docs/deploy-tracking">Rollbar deploy tracking</a> for your app.</li>
     <li>
-      Within your project on Rollbar go to Settings -> Notifications -> Webhook.
+      Within your project on Rollbar go to Project Settings &rarr; Notifications &rarr; Webhook.
     </li>
     <li>
       Within the Webhook notification settings configure the following:
       <ul>
-        <li>For the URL, enter <code class="user-select-all"><%= incoming_webhook.url %></code></li>
+        <li>
+          For the URL, enter <code class="user-select-all"><%= incoming_webhook.url %></code>
+          <%= image_tag "incoming_webhooks/rollbar/webhook-settings.png", class: "setup-screenshot" %>
+        </li>
         <li>
           In the Rules section, delete any existing rules until only the
           <strong>Deploy &rarr; Post to Webhook</strong> rule remains. If it isn't there, select
           <strong>Deploy &rarr; Post to Webhook</strong> from the Template dropdown and click
           <strong>Configure Rule</strong> to add it.
+          <%= image_tag "incoming_webhooks/rollbar/notification-rules.png", class: "setup-screenshot" %>
         </li>
       </ul>
     </li>
