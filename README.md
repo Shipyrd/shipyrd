@@ -1,6 +1,6 @@
 # Shipyrd
 
-The simple deployment dashboard for Kamal-based deployments.
+The deployment dashboard for your team.
 
 [![production](https://img.shields.io/endpoint?url=https://badge.shipyrd.io/applications/gSBbC8Um5MUjwLXKtW2kABdF/destinations/production/badge/deploy.json)](https://app.shipyrd.io) [![production](https://img.shields.io/endpoint?url=https://badge.shipyrd.io/applications/gSBbC8Um5MUjwLXKtW2kABdF/destinations/production/badge/lock.json)](https://app.shipyrd.io)
 

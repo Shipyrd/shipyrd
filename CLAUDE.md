@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This App Does
 
-Shipyrd is a deployment dashboard for [Kamal](https://kamal-deploy.org/)-based deployments. It tracks deploy lifecycle events, manages deployment locks, integrates with GitHub, and dispatches notifications to Slack/Discord/etc.
+Shipyrd is a deployment dashboard for your team. It tracks deploy lifecycle events, manages deployment locks, integrates with GitHub, and dispatches notifications to Slack/Discord/etc.
 
 ## Commands
 

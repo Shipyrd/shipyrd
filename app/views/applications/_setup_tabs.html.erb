@@ -1,0 +1,7 @@
+<div class="tabs is-boxed">
+  <ul>
+    <li class="<%= "is-active" if active_tab == :kamal %>"><%= link_to "Kamal", setup_application_url(application) %></li>
+    <li class="<%= "is-active" if active_tab == :curl %>"><%= link_to "cURL", setup_application_url(application, tab: "curl") %></li>
+    <li class="<%= "is-active" if active_tab == :honeybadger %>"><%= link_to "Honeybadger", new_application_incoming_webhook_url(application, provider: :honeybadger) %></li>
+  </ul>
+</div>
