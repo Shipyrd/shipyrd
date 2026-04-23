@@ -26,25 +26,29 @@
       <% if current_user %>
         <div class="navbar-menu">
           <div class="navbar-end">
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a href="#" class="navbar-link">
-                <%= current_organization.name %>
-              </a>
-              <div class="navbar-dropdown is-boxed">
-                <% current_user.organizations.each do |org| %>
-                  <% if org.id == current_organization.id %>
-                    <a href="#" class="navbar-item has-text-primary">
-                      <%= org.name %>
-                      <span class="icon ml-2">
-                        <i class="fa-solid fa-check"></i>
-                      </span>
-                    </a>
-                  <% else %>
-                    <%= button_to org.name, switch_organization_path(org), method: :post, class: "is-fullwidth has-text-left navbar-item" %>
+            <% if current_user.organizations.many? %>
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a href="#" class="navbar-link">
+                  <%= current_organization.name %>
+                </a>
+                <div class="navbar-dropdown is-boxed">
+                  <% current_user.organizations.each do |org| %>
+                    <% if org.id == current_organization.id %>
+                      <a href="#" class="navbar-item has-text-primary">
+                        <%= org.name %>
+                        <span class="icon ml-2">
+                          <i class="fa-solid fa-check"></i>
+                        </span>
+                      </a>
+                    <% else %>
+                      <%= button_to org.name, switch_organization_path(org), method: :post, class: "is-fullwidth has-text-left navbar-item" %>
+                    <% end %>
                   <% end %>
-                <% end %>
+                  <hr class="navbar-divider">
+                  <%= link_to "Add Organization", new_organization_path, class: "navbar-item" %>
+                </div>
               </div>
-            </div>
+            <% end %>
 
             <div class="navbar-item has-dropdown is-hoverable">
               <a href="#" class="navbar-link">
@@ -62,6 +66,11 @@
                   <%= link_to "Organization settings", edit_organization_path(current_organization), class: "navbar-item" %>
                   <hr class="navbar-divider">
                 <% end %>
+                <%= link_to "Settings", edit_user_path(current_user), class: "navbar-item" %>
+                <% unless current_user.organizations.many? %>
+                  <%= link_to "Add Organization", new_organization_path, class: "navbar-item" %>
+                <% end %>
+                <hr class="navbar-divider">
                 <%= link_to billing_checkout_path, class: "navbar-item" do %>
                   Billing
                   <span class="tag ml-2 <%= current_organization.active_subscription? ? 'is-success' : 'is-warning' %>">
@@ -77,12 +86,22 @@
 
     <%= render "shared/flash" %>
 
+    <% if email_requires_verification? %>
+      <section class="container">
+        <div class="notification is-warning is-light my-5">
+          Please verify your email address.
+          Check your inbox or
+          <%= button_to "resend verification email", email_verifications_path, class: "is-clickable is-underlined has-text-warning-dark", form_class: "is-inline" %>.
+        </div>
+      </section>
+    <% end %>
+
     <main class="container">
       <%= yield %>
     </main>
 
     <% if current_user %>
-      <footer class="mt-4">
+      <footer class="mt-6 pt-4" style="border-top: 1px solid hsl(0, 0%, 93%)">
         <div class="has-text-centered">
           <p>
             <%= button_to "Sign out", session_path, method: :delete, form_class: "is-inline", class:"has-text-info is-clickable is-underlined" %>

@@ -5,7 +5,9 @@ class IncomingWebhook < ApplicationRecord
   belongs_to :application
 
   enum :provider, {
-    honeybadger: 0
+    honeybadger: 0,
+    rollbar: 1,
+    appsignal: 2
   }
 
   def display_name
@@ -13,6 +15,6 @@ class IncomingWebhook < ApplicationRecord
   end
 
   def url
-    "https://#{ENV["SHIPYRD_HOOKS_HOST"]}/incoming/honeybadger/#{token}"
+    "https://#{ENV["SHIPYRD_HOOKS_HOST"]}/incoming/#{provider}/#{token}"
   end
 end

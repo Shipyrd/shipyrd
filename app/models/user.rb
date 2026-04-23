@@ -10,6 +10,8 @@ class User < ApplicationRecord
 
   has_secure_token length: 64
   has_secure_password validations: false
+  generates_token_for :email_verification, expires_in: 24.hours
+  generates_token_for :unsubscribe, expires_in: 2.weeks
   validates :password, length: {minimum: 10, maximum: 72}, if: -> { password.present? }
 
   validates :username, allow_blank: true, url: {no_local: true}
@@ -17,10 +19,23 @@ class User < ApplicationRecord
 
   after_create :store_email_address
   after_create_commit :queue_populate_avatar
+  after_create_commit :enqueue_add_to_brevo_list
 
   scope :has_password, -> { where.not(password_digest: nil) }
 
   attr_accessor :organization_name
+
+  def email_verified?
+    email_verified_at.present?
+  end
+
+  def verification_grace_period?
+    !email_verified? && created_at > 7.days.ago
+  end
+
+  def verification_required?
+    !email_verified? && !verification_grace_period?
+  end
 
   def display_name
     display_username || name
@@ -70,11 +85,19 @@ class User < ApplicationRecord
 
   def populate_avatar_url
     url = URI("https://api.github.com/users/#{github_username}")
-    user_info = JSON.parse(Net::HTTP.get(url))
+    response = Net::HTTP.start(url.host, url.port, use_ssl: true, open_timeout: 5, read_timeout: 10) do |http|
+      http.request(Net::HTTP::Get.new(url.path))
+    end
+    user_info = JSON.parse(response.body)
 
     return if user_info["avatar_url"].blank?
 
     update!(avatar_url: "#{user_info["avatar_url"]}&s=100")
+  end
+
+  def enqueue_add_to_brevo_list
+    return if ENV["COMMUNITY_EDITION"] != "0"
+    AddToBrevoListJob.perform_later(id)
   end
 
   private

@@ -3,13 +3,13 @@ source "https://rubygems.org"
 ruby file: ".ruby-version"
 
 # Core
-gem "bcrypt", "~> 3.1.21"
+gem "bcrypt", "~> 3.1.22"
 gem "bootsnap", require: false
 gem "dotenv"
 gem "openssl"
 gem "puma", ">= 5.0"
 gem "mysql2", "~> 0.5.7"
-gem "rails", "~> 8.1.1"
+gem "rails", "~> 8.1.3"
 
 # Assets
 gem "propshaft"
@@ -24,6 +24,11 @@ gem "octokit"
 gem "honeybadger"
 gem "oauth2"
 gem "scout_apm"
+gem "ahoy_matey"
+gem "blazer"
+gem "brevo-rails"
+gem "mjml-rails"
+gem "mrml"
 gem "stripe"
 
 # Jobs/Cable
@@ -49,6 +54,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "letter_opener"
   gem "guard"
   gem "guard-minitest"
   gem "guard-standardrb"

@@ -11,7 +11,7 @@ class Deploy < ApplicationRecord
   validate :version_is_valid, on: :create
   validate :destination_deploy_block_state, on: :create
 
-  KNOWN_HOOKS = %w[pre-deploy post-deploy].freeze
+  KNOWN_HOOKS = %w[pre-deploy post-deploy failed].freeze
 
   def full_command
     "#{command} #{subcommand}"
@@ -59,7 +59,7 @@ class Deploy < ApplicationRecord
   def previous_deploy
     application.deploys.where(
       destination: destination,
-      command: :deploy,
+      command: [:deploy, :setup],
       status: "post-deploy"
     ).where.not(id: id).last
   end
@@ -80,14 +80,11 @@ class Deploy < ApplicationRecord
 
   def progress_value
     case status
-    when "pre-connect"
-      1
-    when "pre-build"
-      2
-    when "pre-deploy"
-      3
-    when "post-deploy"
-      4
+    when "pre-connect" then 1
+    when "pre-build" then 2
+    when "pre-deploy" then 3
+    when "post-deploy" then 4
+    when "failed" then 4
     end
   end
 

@@ -7,13 +7,21 @@ Rails.application.routes.draw do
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
+  constraints(Constraints::SystemAdminConstraint.new) do
+    mount Blazer::Engine, at: "/blazer"
+  end
+
   namespace :incoming do
     post "honeybadger/:token", action: :create, controller: :honeybadger, as: :honeybadger
+    post "rollbar/:token", action: :create, controller: :rollbar, as: :rollbar
+    post "appsignal/:token", action: :create, controller: :appsignal, as: :appsignal
     post "stripe", action: :create, controller: :stripe, as: :stripe
   end
 
+  resources :email_verifications, only: %i[new show create]
+  resources :unsubscribes, only: %i[show update]
   resources :users
-  resources :organizations, only: %i[edit update] do
+  resources :organizations, only: %i[new create edit update] do
     member do
       post :switch
     end
@@ -32,6 +40,8 @@ Rails.application.routes.draw do
   resources :applications do
     member do
       get :setup
+      patch :move_up
+      patch :move_down
     end
     resources :channels, only: %i[edit update destroy]
     resources :webhooks, only: %i[new create]
@@ -43,6 +53,7 @@ Rails.application.routes.draw do
         delete "unlock"
         get "badge/deploy", action: :deploy, controller: "badge", as: :badge_deploy
         get "badge/lock", action: :lock, controller: "badge", as: :badge_lock
+        get "deploys", action: :deploys, as: :deploys
       end
     end
   end

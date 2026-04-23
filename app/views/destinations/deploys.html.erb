@@ -1,0 +1,73 @@
+<% application = @destination.application %>
+
+<h2 class="mb-4 is-size-2 has-text-weight-medium">
+  <%= link_to application.display_name, application_path(application) %>
+  <%= destination_tag(@destination) %>
+</h2>
+
+<p class="mb-4">
+  <%= link_to "← Back to application", application_path(application), class: "is-link" %>
+</p>
+
+<div class="is-flex is-align-items-center mb-4">
+  <h3 class="is-size-3">Activity</h3>
+  <% if @destination.on_deck_url.present? %>
+    <%= link_to "On Deck", @destination.on_deck_url, target: "_blank", class: "ml-3 button is-success is-light is-small" %>
+  <% end %>
+</div>
+
+<% status_bulma_class = ->(status) {
+  { "green" => "success", "yellow" => "warning", "orange" => "warning", "grey" => "light", "red" => "danger" }
+    .fetch(application_status_color(status), "light")
+} %>
+
+<% if @grouped_deploys.empty? %>
+  <p>No deploys recorded for this destination.</p>
+<% else %>
+  <% @grouped_deploys.each do |deploy_group| %>
+    <% latest = deploy_group.first %>
+    <article class="box mb-3">
+      <div class="is-flex is-align-items-center is-justify-content-space-between">
+        <div class="is-flex is-align-items-center">
+          <% if latest.performer_avatar %>
+            <figure class="image is-24x24 mr-2">
+              <%= image_tag latest.performer_avatar, width: 24, class: "is-rounded" %>
+            </figure>
+          <% end %>
+          <span>
+            <strong><%= latest.performer %></strong>
+            deployed
+            <code><%= latest.version&.first(12) %></code>
+            <span class="tag is-<%= status_bulma_class.call(latest.status) %> is-light ml-1"><%= latest.status %></span>
+          </span>
+        </div>
+        <div class="is-flex is-align-items-center" style="gap: 0.75rem;">
+          <% if latest.compare_url.present? %>
+            <%= link_to "Compare changes", latest.compare_url, target: "_blank", class: "button is-info is-small has-text-white" %>
+          <% end %>
+          <time class="timeago is-size-7 has-text-grey" datetime="<%= latest.recorded_at %>">
+            <%= time_ago_in_words(latest.recorded_at) %> ago
+          </time>
+        </div>
+      </div>
+
+      <% if latest.commit_message.present? %>
+        <p class="mt-2 is-size-6 has-text-grey-dark"><em><%= sanitize display_commit_message(latest.commit_message, application), tags: %w(a), attributes: %w(href) %></em></p>
+      <% end %>
+
+      <% if deploy_group.length > 1 %>
+        <ul class="mt-2 ml-2" style="list-style: none; border-left: 2px solid #dbdbdb; padding-left: 0;">
+          <% deploy_group.reverse_each do |deploy| %>
+            <% next if deploy == latest %>
+            <li class="is-size-7 has-text-grey py-1" style="padding-left: 0.75rem; position: relative;">
+              <span style="position: absolute; left: -0.05rem; color: #dbdbdb;">↳</span>
+              <span class="tag is-<%= status_bulma_class.call(deploy.status) %> is-light is-small mr-1"><%= deploy.status %></span>
+              <% seconds = (latest.recorded_at - deploy.recorded_at).to_i %>
+              <%= seconds < 60 ? "#{seconds}s" : distance_of_time_in_words(deploy.recorded_at, latest.recorded_at) %> before
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </article>
+  <% end %>
+<% end %>

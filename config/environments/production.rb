@@ -60,6 +60,15 @@ Rails.application.configure do
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
 
+  # ActionMailer via Brevo API (non-community edition only)
+  if ENV["COMMUNITY_EDITION"] == "0"
+    config.action_mailer.delivery_method = :brevo
+    config.action_mailer.brevo_settings = {
+      api_key: ENV.fetch("BREVO_API_KEY")
+    }
+  end
+  config.action_mailer.default_url_options = {host: ENV["SHIPYRD_HOST"], protocol: "https"}
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 

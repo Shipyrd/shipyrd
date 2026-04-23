@@ -4,7 +4,7 @@
   <div class="field">
     <%= form.label :name, class: "label" %>
     <div class="control">
-      <%= form.text_field :name, class: "input", required: true %>
+      <%= form.text_field :name, class: "input", required: true, placeholder: "Your full name" %>
     </div>
   </div>
 
@@ -12,7 +12,7 @@
     <div class="field">
       <%= form.label :organization_name, class: "label" %>
       <div class="control">
-        <%= form.text_field :organization_name, class: "input", required: true %>
+        <%= form.text_field :organization_name, class: "input", required: true, placeholder: "Your team or company name" %>
       </div>
     </div>
   <% end %>
@@ -20,19 +20,26 @@
   <div class="field">
     <%= form.label :email, class: "label" %>
     <div class="control">
-      <%= form.text_field :email, class: "input", required: true %>
+      <%= form.text_field :email, class: "input", required: true, placeholder: "you@example.com" %>
     </div>
   </div>
 
   <div class="field">
     <%= form.label :password, class: "label" %>
     <div class="control">
-      <%= form.password_field :password, class: "input", required: true %>
+      <%= form.password_field :password, class: "input", required: true, placeholder: "At least 10 characters" %>
     </div>
   </div>
 
   <div class="field">
-    <%= form.submit class: "button is-primary" %>
-    <%= link_to "Create account with GitHub", oauth_authorize_url(:github), class: "button is-secondary" %>
+    <%= form.submit "Create account", class: "button is-primary is-fullwidth" %>
+  </div>
+
+  <div class="signup-divider has-text-centered my-4">
+    <span class="has-text-grey is-size-7">or</span>
+  </div>
+
+  <div class="field">
+    <%= link_to "Create account with GitHub", oauth_authorize_url(:github), class: "button is-fullwidth" %>
   </div>
 <% end %>

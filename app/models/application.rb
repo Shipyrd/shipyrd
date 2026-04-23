@@ -46,7 +46,7 @@ class Application < ApplicationRecord
   end
 
   def latest_deploy(destination:)
-    deploys.where(destination: destination, command: :deploy).last
+    deploys.where(destination: destination, command: [:deploy, :setup]).last
   end
 
   def hosted_on_github?

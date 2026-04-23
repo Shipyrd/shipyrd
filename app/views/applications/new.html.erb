@@ -1,7 +1,21 @@
-<div>
-  <h2 class="mb-4 is-size-2 has-text-weight-medium">
-    Add an application
-  </h2>
+<div class="columns is-centered mt-5">
+  <div class="column is-half">
+    <div class="has-text-centered mb-5">
+      <h1 class="title is-3 mb-3">Add an application</h1>
+      <p class="subtitle is-5 has-text-grey">
+        Connect your app to start tracking deployments and notifying your team.
+      </p>
+    </div>
 
-  <%= render "form", application: @application %>
+    <div class="box">
+      <%= render "form", application: @application %>
+    </div>
+
+    <%= link_to root_path, class: "button is-ghost is-fullwidth mt-2" do %>
+      <span class="icon is-small">
+        <i class="fa-solid fa-arrow-left"></i>
+      </span>
+      <span>Back</span>
+    <% end %>
+  </div>
 </div>

@@ -1,0 +1,7 @@
+production:
+  cleanup_old_deploys:
+    class: CleanupOldDeploysJob
+    schedule: every day at 3am
+  weekly_deploy_summary:
+    class: WeeklyDeploySummaryJob
+    schedule: every Monday at 9am

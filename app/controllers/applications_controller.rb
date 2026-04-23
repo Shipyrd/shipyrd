@@ -1,10 +1,11 @@
 class ApplicationsController < ApplicationController
+  skip_before_action :check_email_verification, only: %i[index new create]
   before_action :check_payment_required
-  before_action :set_application, only: %i[show edit update destroy setup]
+  before_action :set_application, only: %i[show edit update destroy setup move_up move_down]
 
   # GET /applications or /applications.json
   def index
-    @applications = current_organization.applications.order(created_at: :desc)
+    @applications = current_organization.applications.order(sort_order: :asc, created_at: :desc)
   end
 
   # GET /applications/1 or /applications/1.json
@@ -48,6 +49,16 @@ class ApplicationsController < ApplicationController
         format.json { render json: @application.errors, status: :unprocessable_content }
       end
     end
+  end
+
+  def move_up
+    @application.decrement!(:sort_order)
+    redirect_to applications_url
+  end
+
+  def move_down
+    @application.increment!(:sort_order)
+    redirect_to applications_url
   end
 
   # DELETE /applications/1 or /applications/1.json

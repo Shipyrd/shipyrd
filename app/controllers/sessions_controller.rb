@@ -2,6 +2,7 @@ class SessionsController < ApplicationController
   include Invitable
 
   skip_before_action :authenticate, only: %i[new create]
+  skip_before_action :check_email_verification
   rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to new_session_url, alert: "Try again later." }
 
   def new
@@ -10,6 +11,7 @@ class SessionsController < ApplicationController
   def create
     if (user = User.authenticate_by(auth_params.slice(:email, :password)))
       session[:user_id] = user.id
+      session[:organization_id] = user.organizations.first&.id
       redirect_to root_path
     else
       redirect_to new_session_url, alert: "Invalid email and/or password."

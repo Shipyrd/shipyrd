@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #/ Usage: bin/conductor-setup
 #/
 #/ Setup files that are not tracked in git for Conductor workspaces.
@@ -14,19 +14,9 @@ fi
 
 WORKSPACE_NAME=$(basename "$CONDUCTOR_WORKSPACE_PATH")
 
-# Symlink .env from the root repo so all workspaces share the same base config.
-if [ -n "$CONDUCTOR_ROOT_PATH" ] && [ -f "$CONDUCTOR_ROOT_PATH/.env" ]; then
-  echo "Symlinking .env from $CONDUCTOR_ROOT_PATH/.env..."
-  ln -sf "$CONDUCTOR_ROOT_PATH/.env" .env
-else
-  echo "Warning: CONDUCTOR_ROOT_PATH/.env not found."
-  echo "Create it from .env.example: cp .env.example \$CONDUCTOR_ROOT_PATH/.env"
-fi
-
-# Create .env.development with workspace-specific database names and host config.
-# dotenv loads .env.development after .env, so these override the base values.
-echo "Creating .env.development for workspace: $WORKSPACE_NAME..."
-cat > .env.development <<EOF
+# Create .env with workspace-specific database names and host config.
+echo "Creating .env for workspace: $WORKSPACE_NAME..."
+cat > .env <<EOF
 SHIPYRD_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_primary
 SHIPYRD_QUEUE_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_queue
 SHIPYRD_CABLE_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_cable
@@ -34,6 +24,20 @@ SHIPYRD_CABLE_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE
 PORT=\${CONDUCTOR_PORT}
 SHIPYRD_HOST=localhost:\${CONDUCTOR_PORT}
 SHIPYRD_HOOKS_HOST=localhost:\${CONDUCTOR_PORT}
+
+SHIPYRD_ENCRYPTION_PRIMARY_KEY=$(openssl rand -hex 16)
+SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY=$(openssl rand -hex 16)
+SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT=$(openssl rand -hex 16)
+
+COMMUNITY_EDITION=0
+EOF
+
+echo "Creating .env.test for workspace: $WORKSPACE_NAME..."
+cat > .env.test <<EOF
+SHIPYRD_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_test
+SHIPYRD_ENCRYPTION_PRIMARY_KEY=$(openssl rand -hex 16)
+SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY=$(openssl rand -hex 16)
+SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT=$(openssl rand -hex 16)
 EOF
 
 # Run full setup (dependencies, database, fixtures)

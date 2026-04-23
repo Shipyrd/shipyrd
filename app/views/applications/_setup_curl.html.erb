@@ -1,6 +1,10 @@
+<div class="content">
+  <h3>How to setup cURL with Shipyrd</h3>
+</div>
+
 <section class="content block">
   <p>
-    Application API key:
+    Deploy token:
     <code id="application_token_curl">
     <%= application.token %>
     </code>
@@ -26,22 +30,31 @@
 <section class="block content">
   <h4 class="is-size-4"><%= hook %></h4>
 
-<pre class="mb-2"><code id="curl_<%= hook %>">curl -X POST <%= deploys_url(format: :json) %> \
-  -H "Authorization: Bearer <%= application.token %>" \
-  -H "Content-Type: application/json" \
-  -d "{
-    \"deploy\": {
-      \"status\": \"<%= hook %>\",
-      \"performer\": \"$(whoami)\",
-      \"version\": \"$(git rev-parse HEAD)\",
-      \"commit_message\": \"$(git log -1 --pretty=format:%s)\",
-      \"service_version\": \"<%= application.name %>@$(git rev-parse HEAD)\",
-      \"service\": \"<%= application.name %>\",
-      \"destination\": \"production\",
-      \"command\": \"deploy\",
-      \"recorded_at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+<pre class="mb-2"><code id="curl_<%= hook %>">STATUS=<%= hook %>
+TOKEN=<%= application.token %>
+SERVICE=<%= application.name %>
+DESTINATION=production
+PERFORMER=$(whoami)
+VERSION=$(git rev-parse HEAD)
+COMMIT_MESSAGE=$(git log -1 --pretty=format:%s)
+RECORDED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+curl -X POST <%= deploys_url(format: :json) %> \
+  -H 'Authorization: Bearer '$TOKEN'' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "deploy": {
+      "status": "'$STATUS'",
+      "performer": "'$PERFORMER'",
+      "version": "'$VERSION'",
+      "commit_message": "'$COMMIT_MESSAGE'",
+      "service_version": "'$SERVICE'@'$VERSION'",
+      "service": "'$SERVICE'",
+      "destination": "'$DESTINATION'",
+      "command": "deploy",
+      "recorded_at": "'$RECORDED_AT'"
     }
-  }"</code></pre>
+  }'</code></pre>
 <%= render "shared/copy_to_clipboard", target: "#curl_#{hook}" %>
 </section>
 <% end %>

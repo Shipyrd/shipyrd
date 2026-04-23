@@ -1,15 +1,15 @@
-<h2 class="is-size-2">Setup <%= application.name %></h2>
-
-<div class="tabs is-boxed">
-  <ul>
-    <li class="<%= "is-active" unless params[:tab] %>"><%= link_to "Kamal", setup_application_url(application) %></li>
-    <li class="<%= "is-active" if params[:tab] == "curl" %>"><%= link_to "cURL", setup_application_url(application, tab: "curl") %></li>
-    <li><%= link_to "Honeybadger", new_application_incoming_webhook_url(application, provider: :honeybadger) %></li>
-  </ul>
+<div class="is-flex is-justify-content-space-between is-align-items-center">
+  <h2 class="is-size-2">Setup <%= application.name %></h2>
+  <%= button_to "Delete application", application_path(application), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete #{application.name}?" }, class: "button is-danger" %>
 </div>
 
-<% if params[:tab] == "curl" %>
+<%= render "setup_tabs", application: application, active_tab: params[:tab]&.to_sym || :kamal %>
+
+<% case params[:tab] %>
+<% when "curl" %>
   <%= render "setup_curl", application: application %>
+<% when "github_actions" %>
+  <%= render "setup_github_actions", application: application %>
 <% else %>
   <%= render "setup_kamal", application: application %>
 <% end %>

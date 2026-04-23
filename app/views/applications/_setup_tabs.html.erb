@@ -1,0 +1,35 @@
+<div class="tabs is-boxed">
+  <ul>
+    <li class="<%= "is-active" if active_tab == :kamal %>"><%= link_to "Kamal", setup_application_url(application) %></li>
+    <li class="<%= "is-active" if active_tab == :curl %>">
+      <%= link_to setup_application_url(application, tab: "curl") do %>
+        <span class="icon is-small"><i class="fa-solid fa-globe"></i></span>
+        <span>cURL</span>
+      <% end %>
+    </li>
+    <li class="<%= "is-active" if active_tab == :github_actions %>">
+      <%= link_to setup_application_url(application, tab: "github_actions") do %>
+        <span class="icon is-small"><%= image_tag "setup_tabs/github.svg", size: "20x20", alt: "GitHub" %></span>
+        <span>GitHub Actions</span>
+      <% end %>
+    </li>
+    <li class="<%= "is-active" if active_tab == :honeybadger %>">
+      <%= link_to new_application_incoming_webhook_url(application, provider: :honeybadger) do %>
+        <span class="icon is-small"><%= incoming_webhook_icon(:honeybadger) %></span>
+        <span>Honeybadger</span>
+      <% end %>
+    </li>
+    <li class="<%= "is-active" if active_tab == :rollbar %>">
+      <%= link_to new_application_incoming_webhook_url(application, provider: :rollbar) do %>
+        <span class="icon is-small"><%= incoming_webhook_icon(:rollbar) %></span>
+        <span>Rollbar</span>
+      <% end %>
+    </li>
+    <li class="<%= "is-active" if active_tab == :appsignal %>">
+      <%= link_to new_application_incoming_webhook_url(application, provider: :appsignal) do %>
+        <span class="icon is-small"><%= incoming_webhook_icon(:appsignal) %></span>
+        <span>AppSignal</span>
+      <% end %>
+    </li>
+  </ul>
+</div>

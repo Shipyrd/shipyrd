@@ -1,0 +1,20 @@
+<div class="box">
+  <h1 class="is-size-2 has-text-weight-bold mb-5">
+    Verify your email address
+  </h1>
+
+  <div class="content">
+    <p class="mb-4">
+      Please verify your email address to continue using Shipyrd.
+      We sent a verification link to <strong><%= current_user.email %></strong>.
+    </p>
+
+    <p class="mb-4">
+      Check your inbox and click the link to verify. If you don't see it, check your spam folder or request a new one below.
+    </p>
+
+    <div class="has-text-centered mt-6">
+      <%= button_to "Resend verification email", email_verifications_path, class: "button is-primary" %>
+    </div>
+  </div>
+</div>

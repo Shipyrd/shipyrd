@@ -188,7 +188,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
       test "should update current user" do
         patch user_url(@user), params: {user: {email: @user.email, name: @user.name, password: "secretsecret"}}
-        assert_redirected_to user_url(@user)
+        assert_redirected_to edit_user_url(@user)
+      end
+
+      test "should toggle weekly deploy summary off" do
+        assert @user.weekly_deploy_summary?
+
+        patch user_url(@user), params: {user: {weekly_deploy_summary: "0"}}
+        assert_redirected_to edit_user_url(@user)
+
+        refute @user.reload.weekly_deploy_summary?
       end
     end
   end

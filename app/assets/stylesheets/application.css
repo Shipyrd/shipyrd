@@ -15,6 +15,7 @@
   --orange: hsl(39, 100%, 50%);
   --yellow: #ffe70f;
   --green: #42dca3;
+  --red: hsl(348, 86%, 53%);
 }
 
 pre code {
@@ -42,6 +43,10 @@ progress.green {
   --bulma-progress-value-background-color: var(--green);
 }
 
+progress.red {
+  --bulma-progress-value-background-color: var(--red);
+}
+
 @media (prefers-color-scheme: light) {
 
   main a,
@@ -57,4 +62,51 @@ progress.green {
 .user-select-all {
   -webkit-user-select: all;
   user-select: all;
+}
+
+.application-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sort-arrows {
+  display: flex;
+  gap: 0.15rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.application-row:hover .sort-arrows {
+  opacity: 1;
+}
+
+.sort-arrows .button {
+  text-decoration: none;
+}
+
+.signup-divider {
+  position: relative;
+}
+
+.signup-divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  border-top: 1px solid hsl(0, 0%, 86%);
+}
+
+.signup-divider span {
+  position: relative;
+  background: white;
+  padding: 0 1rem;
+}
+
+.setup-screenshot {
+  width: 75%;
+  border: 1px solid hsl(0, 0%, 86%);
+  border-radius: 4px;
+  margin-top: 0.75rem;
 }

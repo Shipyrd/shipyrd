@@ -1,0 +1,19 @@
+<%= @organization.name %> shipped!
+Your team pushed <%= pluralize(@total_deploys, "deploy") %> last week (<%= @period_start.strftime("%B %d") %> - <%= @period_end.strftime("%B %d, %Y") %>).
+<% diff = @total_deploys - @previous_week_deploys %><% if @previous_week_deploys == 0 %>There were no deploys the week before - welcome back!<% elsif diff > 0 %>That's <%= pluralize(diff, "more deploy") %> than the week before.<% elsif diff < 0 %>That's <%= pluralize(diff.abs, "fewer deploy") %> than the week before.<% else %>Same as the week before - steady as she goes.<% end %>
+Here's the breakdown:
+
+<% @applications.each do |app_name, data| %>
+<%= app_name %> saw <%= pluralize(data[:total], "deploy") %><% if data[:destinations].any? %> -- <%= data[:destinations].map { |dest, count| "#{pluralize(count, "time")} to #{dest}" }.to_sentence(last_word_connector: ", and ") %><% end %>.<% if data[:runtime] > 0 %> You spent <%= pluralize((data[:runtime] / 60.0).ceil, "minute") %> shipping.<% end %>
+<% end %>
+<% if @deployers.any? %>
+<% if @deployers.length == 1 %>
+<%= @deployers.first[0] %> ran the show with all <%= pluralize(@deployers.first[1], "deploy") %>.
+<% else %>
+Shoutout to the team: <%= @deployers.map { |name, count| "#{name} (#{count})" }.to_sentence(last_word_connector: ", and ") %>.
+<% end %>
+<% end %>
+Keep shipping!
+- Nick
+
+Unsubscribe: <%= @unsubscribe_url %>

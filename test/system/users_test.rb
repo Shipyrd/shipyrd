@@ -41,9 +41,9 @@ class UsersTest < ApplicationSystemTestCase
       fill_in "Email", with: @user.email
       fill_in "Password", with: "secretsecret"
 
-      click_on "Create User"
+      click_on "Create account"
 
-      assert_text "Create your first application"
+      assert_text "Welcome to Shipyrd"
     end
   end
 
@@ -64,13 +64,12 @@ class UsersTest < ApplicationSystemTestCase
       fill_in "Email", with: @user.email
       fill_in "Password", with: "secretsecret"
 
-      click_on "Create User"
+      click_on "Create account"
 
-      assert_text "User was successfully created"
-      assert_text "Create your first application"
+      assert_text "Welcome to Shipyrd"
 
       visit users_url
-      assert_text "Create your first application"
+      assert_text "Welcome to Shipyrd"
     end
 
     test "creating via admin invite link" do
@@ -82,10 +81,9 @@ class UsersTest < ApplicationSystemTestCase
       fill_in "Email", with: @user.email
       fill_in "Password", with: "secretsecret"
 
-      click_on "Create User"
+      click_on "Create account"
 
-      assert_text "User was successfully created"
-      assert_text "Create your first application"
+      assert_text "Welcome to Shipyrd"
 
       visit users_url
       assert_text "Invite a user to #{@organization.name}"

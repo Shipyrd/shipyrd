@@ -6,9 +6,9 @@
     <div class="box mb-2">
       <div class="columns is-vcentered">
 
-        <div class="column">
-          <span class="icon">
-            <i class="<%= icon %>"></i>
+        <div class="column is-flex is-align-items-center">
+          <span class="icon mr-2">
+            <%= icon %>
           </span>
 
           <%= incoming_webhook.display_name %>
@@ -16,16 +16,7 @@
 
         <div class="column has-text-right">
 
-          <span class="icon-text">
-            <%= button_to application_incoming_webhook_url(@application, incoming_webhook), method: :delete, class: "button is-danger", title: "Disconnect #{incoming_webhook.display_name}", data: { turbo_confirm: "Are you sure?" } do %>
-              <span class="icon">
-                <i class="<%= icon %>"></i>
-              </span>
-              <span>
-                Disconnect <%= incoming_webhook.display_name %>
-              </span>
-            <% end %>
-          </span>
+          <%= button_to "Disconnect", application_incoming_webhook_url(@application, incoming_webhook), method: :delete, class: "button is-danger", title: "Disconnect #{incoming_webhook.display_name}", data: { turbo_confirm: "Are you sure?" } %>
         </div>
 
       </div>

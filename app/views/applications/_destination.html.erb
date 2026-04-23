@@ -7,13 +7,11 @@
     <div class="column pb-0">
       <%= destination_tag(destination) %>
 
-      <% if destination.new_servers_available? %>
-        <span class="icon is-small ml-1">
-          <%= link_to application_destination_path(application, destination), alt: "New servers available!" do %>
-            <i class="fa-solid fa-server <%= destination.new_servers_available? ? "has-text-warning" : nil %>"></i>
-          <% end %>
-        </span>
-      <% end %>
+      <span class="icon is-small ml-1">
+        <%= link_to deploys_application_destination_path(application, destination), title: "Deploy history" do %>
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        <% end %>
+      </span>
     </div>
 
     <div class="column py-0 pr-0 has-text-right">

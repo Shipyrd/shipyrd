@@ -15,7 +15,7 @@ class ChannelsHelperTest < ActionView::TestCase
   end
 
   test "channel_icon returns correct icon for webhook" do
-    assert_equal "fa-solid fa-bolt", channel_icon("webhook")
+    assert_equal "fa-solid fa-share-nodes", channel_icon("webhook")
   end
 
   test "channel_icon returns correct icon for other channel types" do

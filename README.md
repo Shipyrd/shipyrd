@@ -1,6 +1,6 @@
 # Shipyrd
 
-The simple deployment dashboard for Kamal-based deployments.
+The deployment dashboard for your team.
 
 [![production](https://img.shields.io/endpoint?url=https://badge.shipyrd.io/applications/gSBbC8Um5MUjwLXKtW2kABdF/destinations/production/badge/deploy.json)](https://app.shipyrd.io) [![production](https://img.shields.io/endpoint?url=https://badge.shipyrd.io/applications/gSBbC8Um5MUjwLXKtW2kABdF/destinations/production/badge/lock.json)](https://app.shipyrd.io)
 
@@ -33,7 +33,7 @@ The accessory configuration requires a few secrets:
 ``` yml
 accessories:
   shipyrd:
-    image: shipyrd/shipyrd:v0.3.5
+    image: shipyrd/shipyrd:v4.4.0
     host: 867.530.9
     proxy:
       host: shipyrd.myapp.com
@@ -106,20 +106,19 @@ With the triggers added to your Kamal hooks you'll now be able to see your app g
 
 ### Customizing the deploy performer
 
-Kamal sets `ENV['KAMAL_PERFORMER']` to your username on your computer via `git config user.email` or `whoami`, whichever it finds first. Shipyrd will instead fetch your GitHub username from your local configuration if it's set since this helps with linking over to GitHub and avatars. You can set your GitHub username in your local configuration via:
+Kamal sets `KAMAL_PERFORMER` to identify who is deploying — typically `git config user.email` or `whoami`. The Shipyrd gem forwards this value as the deploy's `performer`. For Shipyrd to match a deploy to the correct user (which matters for deploy locks), the performer value must match one of:
 
-```
-gh config get -h github.com [USERNAME]
-```
+1. **The user's GitHub profile URL** — set automatically when signing in with GitHub OAuth (e.g. `https://github.com/yourname`). The Shipyrd gem will use this format if you have your GitHub username configured locally via `gh config set -h github.com user yourname`.
+2. **The user's email address** — matched against email addresses associated with the user's Shipyrd account.
 
 ## Upgrading
 
 When you're ready to upgrade to a newer version of Shipyrd it's just a matter of bumping the version in your _deploy.yml_ file and then rebooting the accessory via Kamal.
 
-1. Change the version(`v4.0.4`) in the image reference line in your _deploy.yml_ file.
+1. Change the version(`v4.4.0`) in the image reference line in your _deploy.yml_ file.
 
 ```
-image: shipyrd/shipyrd:v4.0.4
+image: shipyrd/shipyrd:v4.4.0
 ```
 
 2. Reboot the accessory via Kamal.

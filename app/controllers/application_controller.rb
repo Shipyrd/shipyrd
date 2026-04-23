@@ -2,17 +2,19 @@ class ApplicationController < ActionController::Base
   rate_limit to: 60, within: 1.minute
 
   before_action :authenticate
+  before_action :check_email_verification
   skip_before_action :verify_authenticity_token, if: :json_request?
   rescue_from ActiveRecord::RecordNotFound, with: :handle_not_found
 
-  helper_method :current_user, :current_organization, :require_admin, :current_admin?, :community_edition?
+  helper_method :current_user, :current_organization, :require_admin, :current_admin?, :community_edition?,
+    :email_requires_verification?
 
   def current_user
     return @current_api_user if @current_api_user
 
     return nil if session[:user_id].blank?
 
-    User.find_by(id: session[:user_id])
+    @current_user ||= User.find_by(id: session[:user_id])
   end
 
   def current_admin?
@@ -39,7 +41,19 @@ class ApplicationController < ActionController::Base
     ENV["COMMUNITY_EDITION"] != "0"
   end
 
+  def email_requires_verification?
+    current_user && current_organization&.applications_count&.positive? && !community_edition? && !current_user.email_verified?
+  end
+
   private
+
+  def check_email_verification
+    return unless email_requires_verification?
+    return if json_request?
+    return if current_user.verification_grace_period?
+
+    redirect_to new_email_verification_path
+  end
 
   def authenticate
     if request.headers["Authorization"] && request.headers["Authorization"] =~ /^bearer/i

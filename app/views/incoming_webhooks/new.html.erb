@@ -1,5 +1,10 @@
 <% content_for :title, "New incoming webhook" %>
 
-<h1 class="is-size-2 mb-4">New incoming webhook for <%= params[:provider].humanize %></h1>
+<div class="is-flex is-justify-content-space-between is-align-items-center">
+  <h2 class="is-size-2">Setup <%= @application.name %></h2>
+  <%= button_to "Delete application", application_path(@application), method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete #{@application.name}?" }, class: "button is-danger" %>
+</div>
+
+<%= render "applications/setup_tabs", application: @application, active_tab: params[:provider]&.to_sym %>
 
 <%= render "form", incoming_webhook: @incoming_webhook %>

@@ -4,8 +4,7 @@
   <p>
     If you're using Honeybadger for error and deploy tracking
     you can utilize a Honeybadger webhook to let Shipyrd know
-    about new deploys instead of adding hooks to Kamal in
-    <code>.kamal/hooks</code>.
+    about new deploys.
   </p>
 
   <h4>Setup instructions</h4>
@@ -20,7 +19,17 @@
       Within the "New webhook integration" settings configure the following:
 
       <ul>
-        <li>For the URL, enter <code class="user-select-all"><%= incoming_webhook.url %></code></li>
+        <li>
+          For the URL, enter:
+          <div class="field has-addons mt-2">
+            <div class="control is-expanded">
+              <input id="honeybadger_webhook_url" class="input" type="text" value="<%= incoming_webhook.url %>" readonly>
+            </div>
+            <div class="control">
+              <%= render "shared/copy_to_clipboard", target: "#honeybadger_webhook_url", button_class: "" %>
+            </div>
+          </div>
+        </li>
         <li>For "Error Events" only check "When project is deployed".</li>
         <li>De-select everything under "Uptime events", "Uptime sites", "Check-in events", "Check-Ins".
           <%= image_tag "incoming_webhooks/honeybadger/enable-webhook.png" %>
