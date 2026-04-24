@@ -1,6 +1,6 @@
 class OrganizationsController < ApplicationController
-  before_action :set_organization, only: %i[edit update]
-  before_action :require_admin, only: %i[edit update]
+  before_action :set_organization, only: %i[edit update disconnect_slack]
+  before_action :require_admin, only: %i[edit update disconnect_slack]
 
   def new
     @organization = Organization.new
@@ -40,6 +40,16 @@ class OrganizationsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def disconnect_slack
+    @organization.update!(
+      slack_team_id: nil,
+      slack_team_name: nil,
+      slack_access_token: nil
+    )
+
+    redirect_to edit_organization_url(@organization), notice: "Slack workspace disconnected."
   end
 
   private

@@ -1,3 +1,5 @@
+<%= render "slack_integration", organization: @organization %>
+
 <%= form_with(model: @organization, class: "contents") do |form| %>
   <%= render "shared/errors", form: form %>
 

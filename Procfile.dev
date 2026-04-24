@@ -1,2 +1,3 @@
-web: bin/rails server
+web: bin/rails server -p $APP_PORT
 jobs: bin/jobs
+tunnel: ngrok http --url=$NGROK_URL $APP_PORT --log stdout

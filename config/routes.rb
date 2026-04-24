@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     post "honeybadger/:token", action: :create, controller: :honeybadger, as: :honeybadger
     post "rollbar/:token", action: :create, controller: :rollbar, as: :rollbar
     post "stripe", action: :create, controller: :stripe, as: :stripe
+    post "slack", action: :create, controller: :slack, as: :slack
   end
 
   resources :email_verifications, only: %i[new show create]
@@ -23,6 +24,7 @@ Rails.application.routes.draw do
   resources :organizations, only: %i[new create edit update] do
     member do
       post :switch
+      delete :disconnect_slack
     end
   end
   resource :session

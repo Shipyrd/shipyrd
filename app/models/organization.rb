@@ -6,6 +6,12 @@ class Organization < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :users, through: :memberships
 
+  encrypts :slack_access_token
+
+  def slack_connected?
+    slack_team_id.present?
+  end
+
   def admin?(user)
     memberships.exists?(user: user, role: :admin)
   end

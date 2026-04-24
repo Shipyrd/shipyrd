@@ -17,7 +17,8 @@ class OauthToken < ApplicationRecord
   after_create :create_channel
 
   SCOPES = {
-    slack: "identify,incoming-webhook,chat:write:bot"
+    slack: "identify,incoming-webhook,chat:write:bot",
+    slack_bot: "commands,users:read,users:read.email"
   }
 
   def user_token?
@@ -134,6 +135,14 @@ class OauthToken < ApplicationRecord
         client_secret: ENV["SHIPYRD_SLACK_SECRET"],
         site: "https://slack.com",
         token_url: "/api/oauth.access"
+      }
+    when "slack_bot"
+      {
+        client_id: ENV["SHIPYRD_SLACK_CLIENT_ID"],
+        client_secret: ENV["SHIPYRD_SLACK_SECRET"],
+        site: "https://slack.com",
+        authorize_url: "/oauth/v2/authorize",
+        token_url: "/api/oauth.v2.access"
       }
     when "github"
       {
