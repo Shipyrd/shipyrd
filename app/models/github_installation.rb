@@ -18,6 +18,7 @@ class GithubInstallation < ApplicationRecord
     return unless event == :deploy
     return unless application.hosted_on_github?
 
+    details = details.symbolize_keys
     token = GithubAppClient.installation_token(installation_id)
     return unless token
 

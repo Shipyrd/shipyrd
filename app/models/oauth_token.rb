@@ -37,6 +37,7 @@ class OauthToken < ApplicationRecord
 
   def notify(event, details)
     if provider == "slack"
+      details = details.symbolize_keys
       return if event == :deploy && !%w[post-deploy failed].include?(details[:status].to_s)
 
       Slack.new(token).notify(

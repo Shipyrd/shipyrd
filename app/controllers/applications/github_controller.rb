@@ -14,6 +14,17 @@ class Applications::GithubController < ApplicationController
       return
     end
 
+    unless known_installation_ids.include?(installation_id.to_i)
+      redirect_to application_github_url(@application), alert: "Choose a repository."
+      return
+    end
+
+    repositories = GithubAppClient.installation_repositories(installation_id)
+    if repositories.nil? || repositories.none? { |r| r[:html_url] == html_url }
+      redirect_to application_github_url(@application), alert: "Choose a repository."
+      return
+    end
+
     @application.update!(repository_url: html_url)
     github_installation = @application.github_installation || @application.build_github_installation
     github_installation.update!(installation_id: installation_id)
@@ -27,11 +38,15 @@ class Applications::GithubController < ApplicationController
     @application = current_organization.applications.find(params[:application_id])
   end
 
-  def load_github_repositories
-    installation_ids = current_organization.applications
+  def known_installation_ids
+    current_organization.applications
       .joins(:github_installation)
       .distinct
       .pluck("github_installations.installation_id")
+  end
+
+  def load_github_repositories
+    installation_ids = known_installation_ids
 
     @failed_installations = []
 

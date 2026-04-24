@@ -16,6 +16,7 @@ class Webhook < ApplicationRecord
   end
 
   def notify(event, details)
+    details = details.symbolize_keys
     return if event == :deploy && !%w[post-deploy failed].include?(details[:status].to_s)
 
     logger.debug "Notifying #{url} of #{event} with #{details}"

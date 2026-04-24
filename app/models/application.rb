@@ -51,7 +51,10 @@ class Application < ApplicationRecord
   end
 
   def hosted_on_github?
-    repository_url&.include?("github.com")
+    return false if repository_url.blank?
+    URI.parse(repository_url).host&.downcase == "github.com"
+  rescue URI::InvalidURIError
+    false
   end
 
   def repository_name
