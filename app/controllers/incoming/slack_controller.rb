@@ -161,17 +161,18 @@ class Incoming::SlackController < ApplicationController
       return nil
     end
 
-    destinations = app.destinations
+    destinations = app.destinations.to_a
     destination = if destination_name.present?
-      destinations.find_by("lower(name) = ?", destination_name.downcase)
-    elsif destinations.count == 1
+      target = destination_name.downcase
+      destinations.find { |d| d.name&.downcase == target }
+    elsif destinations.size == 1
       destinations.first
     else
-      destinations.find_by(name: nil)
+      destinations.find { |d| d.name.nil? }
     end
 
     unless destination
-      if destination_name.blank? && destinations.count > 1
+      if destination_name.blank? && destinations.size > 1
         names = destinations.map { |d| "`#{d.display_name}`" }.join(", ")
         slack_respond("Multiple destinations exist for *#{app_name}*. Please specify one: #{names}")
       else

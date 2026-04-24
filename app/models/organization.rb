@@ -8,6 +8,8 @@ class Organization < ApplicationRecord
 
   encrypts :slack_access_token
 
+  after_update_commit :clear_membership_slack_bindings, if: :saved_change_to_slack_team_id?
+
   def slack_connected?
     slack_team_id.present?
   end
@@ -55,5 +57,11 @@ class Organization < ApplicationRecord
 
   def outside_business_hours?
     !within_business_hours?
+  end
+
+  private
+
+  def clear_membership_slack_bindings
+    memberships.where.not(slack_user_id: nil).update_all(slack_user_id: nil)
   end
 end
