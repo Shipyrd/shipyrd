@@ -91,4 +91,64 @@ class OauthControllerTest < ActionDispatch::IntegrationTest
       assert_redirected_to edit_application_url(@application)
     end
   end
+
+  describe "slack_bot provider" do
+    setup do
+      @admin = create(:user)
+      @organization.memberships.create(user: @admin, role: :admin)
+      sign_in(@admin.email, @admin.password)
+    end
+
+    test "authorize redirects non-admins away" do
+      non_admin = create(:user)
+      @organization.memberships.create(user: non_admin, role: :user)
+      delete session_url
+      sign_in(non_admin.email, non_admin.password)
+
+      get oauth_authorize_url(:slack_bot)
+
+      assert_redirected_to root_path
+    end
+
+    test "callback persists slack workspace fields on success" do
+      OauthController.any_instance.stubs(:oauth_session_state).returns("state-123")
+      token = stub(
+        token: "xoxb-bot-token",
+        params: {"team" => {"id" => "T9999", "name" => "Acme Workspace"}}
+      )
+      client = stub
+      auth_code = stub
+      client.stubs(:auth_code).returns(auth_code)
+      auth_code.stubs(:get_token).returns(token)
+      OauthToken.stubs(:oauth2_client).with("slack_bot").returns(client)
+
+      get oauth_callback_url(:slack_bot, code: "abc", state: "state-123")
+
+      assert_redirected_to edit_organization_url(@organization)
+      @organization.reload
+      assert_equal "T9999", @organization.slack_team_id
+      assert_equal "Acme Workspace", @organization.slack_team_name
+      assert_equal "xoxb-bot-token", @organization.slack_access_token
+    end
+
+    test "callback reports already-connected when team id is taken" do
+      create(:organization, slack_team_id: "T9999")
+      OauthController.any_instance.stubs(:oauth_session_state).returns("state-123")
+      token = stub(
+        token: "xoxb-bot-token",
+        params: {"team" => {"id" => "T9999", "name" => "Acme Workspace"}}
+      )
+      client = stub
+      auth_code = stub
+      client.stubs(:auth_code).returns(auth_code)
+      auth_code.stubs(:get_token).returns(token)
+      OauthToken.stubs(:oauth2_client).with("slack_bot").returns(client)
+
+      get oauth_callback_url(:slack_bot, code: "abc", state: "state-123")
+
+      assert_redirected_to edit_organization_url(@organization)
+      assert_match(/already connected/, flash[:alert])
+      assert_nil @organization.reload.slack_team_id
+    end
+  end
 end

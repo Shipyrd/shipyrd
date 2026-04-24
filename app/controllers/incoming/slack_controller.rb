@@ -80,7 +80,8 @@ class Incoming::SlackController < ApplicationController
       "v0:#{timestamp}:#{request.raw_post}"
     )
 
-    unless ActiveSupport::SecurityUtils.secure_compare(expected, signature)
+    unless signature.bytesize == expected.bytesize &&
+        ActiveSupport::SecurityUtils.secure_compare(expected, signature)
       head :unauthorized and return
     end
   end
@@ -98,13 +99,7 @@ class Incoming::SlackController < ApplicationController
     membership = @organization.memberships.find_by(slack_user_id: params[:user_id])
 
     if membership.nil?
-      response = Faraday.new("https://slack.com",
-        headers: {"Authorization" => "Bearer #{@organization.slack_access_token}"},
-        request: {open_timeout: 5, timeout: 5}) do |f|
-        f.response :json
-      end.get("/api/users.info", user: params[:user_id])
-
-      email = response.body.dig("user", "profile", "email")
+      email = fetch_slack_user_email(params[:user_id])
 
       if email.blank?
         slack_respond("Unable to verify your identity. Please try again.")
@@ -121,15 +116,37 @@ class Incoming::SlackController < ApplicationController
         return nil
       end
 
-      membership = @organization.memberships.find_by!(user: user)
-      @organization.memberships
-        .where(slack_user_id: params[:user_id])
-        .where.not(id: membership.id)
-        .update_all(slack_user_id: nil)
-      membership.update_column(:slack_user_id, params[:user_id])
+      membership = bind_slack_user_id(user)
     end
 
     membership.user
+  end
+
+  def fetch_slack_user_email(slack_user_id)
+    response = Faraday.new("https://slack.com",
+      headers: {"Authorization" => "Bearer #{@organization.slack_access_token}"},
+      request: {open_timeout: 5, timeout: 5}) do |f|
+      f.response :json
+    end.get("/api/users.info", user: slack_user_id)
+
+    return nil unless response.success? && response.body.is_a?(Hash) && response.body["ok"]
+
+    response.body.dig("user", "profile", "email")
+  rescue Faraday::Error, JSON::ParserError => e
+    Rails.logger.warn("Slack users.info failed: #{e.class}: #{e.message}")
+    nil
+  end
+
+  def bind_slack_user_id(user)
+    membership = @organization.memberships.find_by!(user: user)
+    @organization.memberships
+      .where(slack_user_id: params[:user_id])
+      .where.not(id: membership.id)
+      .update_all(slack_user_id: nil)
+    membership.update_column(:slack_user_id, params[:user_id])
+    membership
+  rescue ActiveRecord::RecordNotUnique
+    @organization.memberships.find_by!(slack_user_id: params[:user_id])
   end
 
   def find_destination(app_name, destination_name)

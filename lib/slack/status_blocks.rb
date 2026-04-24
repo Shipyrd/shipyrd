@@ -8,6 +8,7 @@ class Slack
 
     def initialize(destinations)
       @destinations = destinations
+      @latest_deploys = preload_latest_deploys
     end
 
     def build
@@ -17,6 +18,31 @@ class Slack
     private
 
     attr_reader :destinations
+
+    def preload_latest_deploys
+      return {} if destinations.empty?
+
+      latest = {}
+      destinations.each { |d| latest[[d.application_id, d.name]] = nil }
+
+      destinations.group_by(&:application_id).each do |app_id, dests|
+        names = dests.map(&:name).uniq
+        Deploy
+          .where(application_id: app_id, destination: names, command: [:deploy, :setup])
+          .order(created_at: :desc)
+          .each do |deploy|
+            key = [app_id, deploy.destination]
+            latest[key] ||= deploy if latest.key?(key)
+          end
+      end
+
+      latest
+    end
+
+    def latest_deploy_for(destination)
+      key = [destination.application_id, destination.name]
+      @latest_deploys.key?(key) ? @latest_deploys[key] : destination.latest_deploy
+    end
 
     def header_row
       ["App", "Destination", "Lock", "Last deploy"].map do |h|
@@ -47,7 +73,7 @@ class Slack
     end
 
     def deploy_cell(destination)
-      deploy = destination.latest_deploy
+      deploy = latest_deploy_for(destination)
       return {type: "raw_text", text: "no deploys"} unless deploy
 
       sha = deploy.version
