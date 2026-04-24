@@ -87,9 +87,5 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
 
-  # Allow act (local GitHub Actions runner) to reach the dev server via Docker
-  config.hosts << "host.docker.internal"
-
-  # Allow ngrok tunnels when running a local tunnel (e.g. for Slack slash commands).
-  config.hosts << /[a-z0-9-]+\.ngrok-free\.dev/
+  config.hosts.clear
 end
