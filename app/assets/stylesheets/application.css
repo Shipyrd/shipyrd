@@ -15,6 +15,7 @@
   --orange: hsl(39, 100%, 50%);
   --yellow: #ffe70f;
   --green: #42dca3;
+  --red: hsl(348, 86%, 53%);
 }
 
 pre code {
@@ -40,6 +41,10 @@ progress.yellow {
 
 progress.green {
   --bulma-progress-value-background-color: var(--green);
+}
+
+progress.red {
+  --bulma-progress-value-background-color: var(--red);
 }
 
 @media (prefers-color-scheme: light) {
@@ -97,4 +102,11 @@ progress.green {
   position: relative;
   background: white;
   padding: 0 1rem;
+}
+
+.setup-screenshot {
+  width: 75%;
+  border: 1px solid hsl(0, 0%, 86%);
+  border-radius: 4px;
+  margin-top: 0.75rem;
 }

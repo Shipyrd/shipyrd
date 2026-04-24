@@ -1,6 +1,6 @@
 require "application_system_test_case"
 
-class Incoming::RollbarTest < ApplicationSystemTestCase
+class Incoming::AppsignalTest < ApplicationSystemTestCase
   setup do
     @application = create(:application)
     @organization = @application.organization
@@ -10,14 +10,14 @@ class Incoming::RollbarTest < ApplicationSystemTestCase
     sign_in_as(@user.email, @user.password)
   end
 
-  test "setting up a rollbar incoming webhook" do
+  test "setting up an appsignal incoming webhook" do
     visit setup_application_path(@application)
 
-    click_on "Rollbar"
+    click_on "AppSignal"
 
-    assert_text "How to setup Rollbar with Shipyrd"
+    assert_text "How to setup AppSignal with Shipyrd"
 
-    click_on "Connect Rollbar"
+    click_on "Connect Appsignal"
 
     assert_text "Incoming webhook was successfully created"
     assert_text "Disconnect"

@@ -1,10 +1,5 @@
 module IncomingWebhooksHelper
   def incoming_webhook_icon(provider)
-    case provider.intern
-    when :honeybadger
-      "fa-solid fa-otter" # Yes, it's not a honeybadger
-    when :rollbar
-      "fa-solid fa-rotate"
-    end
+    image_tag("incoming_webhooks/logos/#{provider}.svg", size: "20x20", alt: provider.to_s.titleize)
   end
 end

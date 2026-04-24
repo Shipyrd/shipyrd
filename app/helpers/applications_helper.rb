@@ -1,14 +1,11 @@
 module ApplicationsHelper
   def application_status_color(status)
     case status
-    when "pre-connect"
-      "grey"
-    when "pre-build"
-      "orange"
-    when "pre-deploy"
-      "yellow"
-    when "post-deploy"
-      "green"
+    when "pre-connect" then "grey"
+    when "pre-build" then "orange"
+    when "pre-deploy" then "yellow"
+    when "post-deploy" then "green"
+    when "failed" then "red"
     end
   end
 

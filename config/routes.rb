@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   namespace :incoming do
     post "honeybadger/:token", action: :create, controller: :honeybadger, as: :honeybadger
     post "rollbar/:token", action: :create, controller: :rollbar, as: :rollbar
+    post "appsignal/:token", action: :create, controller: :appsignal, as: :appsignal
     post "stripe", action: :create, controller: :stripe, as: :stripe
     post "slack", action: :create, controller: :slack, as: :slack
   end
