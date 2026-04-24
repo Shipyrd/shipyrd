@@ -16,6 +16,7 @@ class Notification < ApplicationRecord
 
   def notify
     return true if notified_at.present?
+    return true if channel.owner.nil?
 
     channel.owner.notify(
       event,

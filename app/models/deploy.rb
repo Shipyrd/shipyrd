@@ -2,7 +2,6 @@ class Deploy < ApplicationRecord
   before_validation :set_service_name
   before_create :find_or_create_destination
   after_create :dispatch_notifications
-  after_create :dispatch_github_deployment
 
   belongs_to :application, optional: true, touch: true, inverse_of: "deploys"
 
@@ -25,16 +24,9 @@ class Deploy < ApplicationRecord
     "#{application.repository_url}/compare/#{previous_deploy.version}...#{version}"
   end
 
-  def dispatch_github_deployment
-    return unless KNOWN_HOOKS.include?(status)
-    return unless application.hosted_on_github?
-
-    GithubDeploymentJob.perform_later(id)
-  end
-
   def dispatch_notifications
-    return false unless status == "post-deploy"
     return false if target_destination.blank?
+    return false unless KNOWN_HOOKS.include?(status)
 
     target_destination.dispatch_notifications(
       :deploy,
@@ -52,7 +44,7 @@ class Deploy < ApplicationRecord
         :service,
         :commit_message,
         :compare_url
-      )
+      ).merge(deploy_id: id)
     )
   end
 

@@ -43,4 +43,31 @@ class WebhookTest < ActiveSupport::TestCase
 
     assert_requested(stub_request)
   end
+
+  test "fires on deploy event with post-deploy status" do
+    @webhook.url = "https://example.com"
+    stub = stub_request(:post, @webhook.url).to_return(status: 200)
+
+    @webhook.notify(:deploy, {status: "post-deploy"})
+
+    assert_requested(stub)
+  end
+
+  test "fires on deploy event with failed status" do
+    @webhook.url = "https://example.com"
+    stub = stub_request(:post, @webhook.url).to_return(status: 200)
+
+    @webhook.notify(:deploy, {status: "failed"})
+
+    assert_requested(stub)
+  end
+
+  test "skips deploy event on pre-deploy status" do
+    @webhook.url = "https://example.com"
+    stub = stub_request(:post, @webhook.url).to_return(status: 200)
+
+    @webhook.notify(:deploy, {status: "pre-deploy"})
+
+    assert_not_requested(stub)
+  end
 end

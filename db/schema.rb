@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_13_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_24_000001) do
   create_table "ahoy_events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.json "properties"
@@ -31,7 +31,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_000001) do
     t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
     t.index ["visitor_token", "started_at"], name: "index_ahoy_visits_on_visitor_token_and_started_at"
   end
-
 
   create_table "api_keys", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -172,6 +171,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_000001) do
     t.index ["user_id"], name: "index_email_addresses_on_user_id"
   end
 
+  create_table "github_installations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "application_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "installation_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_id"], name: "index_github_installations_on_application_id", unique: true
+    t.index ["installation_id"], name: "index_github_installations_on_installation_id"
+  end
+
   create_table "incoming_webhooks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "application_id", null: false
     t.datetime "created_at", null: false
@@ -302,6 +310,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_000001) do
   add_foreign_key "channels", "applications"
   add_foreign_key "destinations", "applications"
   add_foreign_key "email_addresses", "users"
+  add_foreign_key "github_installations", "applications"
   add_foreign_key "incoming_webhooks", "applications"
   add_foreign_key "invite_links", "users", column: "creator_id"
   add_foreign_key "memberships", "organizations"

@@ -1,6 +1,6 @@
 class Channel < ApplicationRecord
   belongs_to :application
-  belongs_to :owner, polymorphic: true, dependent: :destroy
+  belongs_to :owner, polymorphic: true, dependent: :destroy, optional: true
   has_many :notifications, dependent: :destroy
 
   enum :channel_type, {
@@ -19,6 +19,7 @@ class Channel < ApplicationRecord
 
     channels << :webhook
     channels << :slack if OauthToken.configured_providers.include?("slack")
+    channels << :github if ENV["SHIPYRD_GITHUB_APP_ID"].present? && ENV["SHIPYRD_GITHUB_APP_SLUG"].present?
 
     channels
   end

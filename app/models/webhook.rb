@@ -16,6 +16,8 @@ class Webhook < ApplicationRecord
   end
 
   def notify(event, details)
+    return if event == :deploy && !%w[post-deploy failed].include?(details[:status].to_s)
+
     logger.debug "Notifying #{url} of #{event} with #{details}"
 
     Faraday.new(request: {timeout: 10, open_timeout: 5}) do |f|

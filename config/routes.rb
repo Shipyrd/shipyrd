@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       patch :move_up
       patch :move_down
     end
+    resource :github, only: %i[show update], controller: "applications/github"
     resources :channels, only: %i[edit update destroy]
     resources :webhooks, only: %i[new create]
     resources :incoming_webhooks, only: %i[new create destroy]

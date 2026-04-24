@@ -31,12 +31,14 @@ class OauthToken < ApplicationRecord
     create_channel!(
       application: application,
       channel_type: provider,
-      events: Channel::EVENTS
+      events: github? ? ["deploy"] : Channel::EVENTS
     )
   end
 
   def notify(event, details)
     if provider == "slack"
+      return if event == :deploy && !%w[post-deploy failed].include?(details[:status].to_s)
+
       Slack.new(token).notify(
         event,
         details.merge(
