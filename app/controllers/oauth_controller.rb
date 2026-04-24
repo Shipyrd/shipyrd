@@ -7,7 +7,7 @@ class OauthController < ApplicationController
   before_action :verify_provider, only: %i[authorize callback]
   before_action :require_admin, if: -> { params[:provider] == "slack_bot" }, only: %i[authorize callback]
   before_action :set_current_application_id, only: %i[authorize]
-  before_action :load_invite_link, only: %i[callback]
+  before_action :load_invite_link, only: %i[callback], unless: -> { params[:provider] == "slack_bot" }
 
   def authorize
     rotate_oauth_state!
