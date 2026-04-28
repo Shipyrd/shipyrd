@@ -147,6 +147,17 @@ class Incoming::SlackControllerTest < ActionDispatch::IntegrationTest
     assert response.parsed_body["blocks"].is_a?(Array)
   end
 
+  test "lock finds app by slug" do
+    @membership.update!(slack_user_id: "U123")
+    multi_word_app = create(:application, name: "Pizza Tracker", organization: @organization)
+    destination = create(:destination, application: multi_word_app, name: "production")
+
+    post_signed(text: "lock #{multi_word_app.slug} production")
+
+    assert_response :success
+    assert destination.reload.locked?
+  end
+
   test "usage is returned for unknown command" do
     post_signed(text: "frobnicate")
 

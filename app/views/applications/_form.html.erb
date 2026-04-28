@@ -1,11 +1,19 @@
-<%= form_with(model: application, class: "contents") do |form| %>
+<%= form_with(model: application, class: "contents", data: {controller: "slugify"}) do |form| %>
   <%= render "shared/errors", form: form %>
 
   <div class="field">
     <%= form.label :name, class: "label" %>
     <div class="control">
-      <%= form.text_field :name, class: "input", placeholder: "My App" %>
+      <%= form.text_field :name, class: "input", placeholder: "My App", data: {slugify_target: "source", action: "input->slugify#update"} %>
     </div>
+  </div>
+
+  <div class="field">
+    <%= form.label :slug, class: "label" %>
+    <div class="control">
+      <%= form.text_field :slug, class: "input", placeholder: "my-app", data: {slugify_target: "slug", action: "input->slugify#markEdited"} %>
+    </div>
+    <p class="help">Used in Slack commands and notifications. Auto-fills from the name.</p>
   </div>
 
   <div class="field">

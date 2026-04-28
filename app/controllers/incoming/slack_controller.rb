@@ -151,7 +151,7 @@ class Incoming::SlackController < ApplicationController
       return nil
     end
 
-    app = @organization.applications.find_by("lower(name) = ?", app_name.downcase)
+    app = @organization.applications.find_by(slug: app_name.downcase)
     unless app
       slack_respond("App *#{app_name}* not found.")
       return nil

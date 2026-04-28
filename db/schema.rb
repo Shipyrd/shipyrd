@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_25_000002) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_28_000001) do
   create_table "ahoy_events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.json "properties"
@@ -46,9 +46,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_000002) do
     t.bigint "organization_id"
     t.string "repository_url"
     t.string "service"
+    t.string "slug"
     t.integer "sort_order", default: 0, null: false
     t.string "token"
     t.datetime "updated_at", null: false
+    t.index ["organization_id", "slug"], name: "index_applications_on_organization_id_and_slug", unique: true
     t.index ["organization_id"], name: "index_applications_on_organization_id"
     t.index ["token"], name: "index_applications_on_token", unique: true
   end
