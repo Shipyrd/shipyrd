@@ -14,7 +14,7 @@ class Membership < ApplicationRecord
 
   def create_stripe_customer
     return false if ENV["COMMUNITY_EDITION"] != "0"
-    return unless Stripe.api_key.present?
+    return if Stripe.api_key.blank?
     return if organization.stripe_customer_id.present?
 
     customer = Stripe::Customer.create(
