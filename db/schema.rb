@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_24_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_25_000002) do
   create_table "ahoy_events", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.json "properties"
@@ -196,10 +196,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_000001) do
     t.datetime "deactivated_at"
     t.datetime "expires_at"
     t.bigint "organization_id"
+    t.datetime "redeemed_at"
+    t.bigint "redeemed_by_user_id"
     t.integer "role"
     t.datetime "updated_at", null: false
     t.index ["code"], name: "index_invite_links_on_code", unique: true
     t.index ["creator_id"], name: "index_invite_links_on_creator_id"
+    t.index ["redeemed_by_user_id"], name: "index_invite_links_on_redeemed_by_user_id"
   end
 
   create_table "memberships", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -313,6 +316,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_24_000001) do
   add_foreign_key "github_installations", "applications"
   add_foreign_key "incoming_webhooks", "applications"
   add_foreign_key "invite_links", "users", column: "creator_id"
+  add_foreign_key "invite_links", "users", column: "redeemed_by_user_id"
   add_foreign_key "memberships", "organizations"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "channels"

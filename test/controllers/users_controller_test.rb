@@ -82,6 +82,20 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
           assert user.organizations.last.admin?(user)
           assert_equal user.organizations.last, @organization
         end
+
+        test "rolls back user creation when an admin invite link has already been redeemed" do
+          invite_link = @organization.invite_links.create!(role: :admin)
+          invite_link.accept!(create(:user))
+
+          user = build(:user)
+
+          assert_no_difference("User.count") do
+            post users_url, params: {code: invite_link.code, user: {email: user.email, name: user.name, password: "secretsecret"}}
+          end
+
+          assert_response :unprocessable_content
+          assert_nil User.find_by(email: user.email)
+        end
       end
     end
   end

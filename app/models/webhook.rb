@@ -3,7 +3,7 @@ class Webhook < ApplicationRecord
   belongs_to :application
   has_one :channel, as: :owner, dependent: :destroy
 
-  validates :url, presence: true, url: {no_local: true}
+  validates :url, presence: true, url: {no_local: true, schemes: ["https"]}
 
   after_create :create_channel
 
@@ -21,14 +21,23 @@ class Webhook < ApplicationRecord
 
     logger.debug "Notifying #{url} of #{event} with #{details}"
 
-    Faraday.new(request: {timeout: 10, open_timeout: 5}) do |f|
-      f.request :json
-      f.response :logger, Rails.logger if Rails.env.development?
-    end.post(url) do |r|
-      r.headers["Content-Type"] = "application/json"
-      r.body = {
-        event: event
-      }.merge(details).to_json
-    end
+    uri, pinned_ip = UrlSafety.verify!(url)
+
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = uri.scheme == "https"
+    http.open_timeout = 5
+    http.read_timeout = 10
+    # Pin the connection to the verified IP so a DNS rebind between verify!
+    # and the actual request cannot redirect us to a private host. The
+    # original hostname is retained for SNI / certificate verification.
+    http.ipaddr = pinned_ip
+
+    request = Net::HTTP::Post.new(uri)
+    request["Content-Type"] = "application/json"
+    request.body = {event: event}.merge(details).to_json
+
+    http.start { |conn| conn.request(request) }
+  rescue UrlSafety::BlockedHostError => e
+    logger.warn "Refusing webhook to #{url}: #{e.message}"
   end
 end
