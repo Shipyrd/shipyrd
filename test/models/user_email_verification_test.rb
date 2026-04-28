@@ -57,4 +57,13 @@ class UserEmailVerificationTest < ActiveSupport::TestCase
       assert_nil User.find_by_token_for(:email_verification, token)
     end
   end
+
+  test "email verification token is invalidated after verification" do
+    user = create(:user, :unverified)
+    token = user.generate_token_for(:email_verification)
+
+    user.update!(email_verified_at: Time.current)
+
+    assert_nil User.find_by_token_for(:email_verification, token)
+  end
 end

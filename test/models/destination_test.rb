@@ -69,7 +69,7 @@ class DestinationTest < ActiveSupport::TestCase
   it "dispatch_notifications" do
     destination = create(:destination, application: @application)
     user = create(:user)
-    webhook = @application.webhooks.create!(user: user, url: "http://example.com")
+    webhook = @application.webhooks.create!(user: user, url: "https://example.com")
     channel = webhook.channel
     event = :lock
 

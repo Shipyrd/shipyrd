@@ -41,7 +41,7 @@
             <span class="tag is-<%= status_bulma_class.call(latest.status) %> is-light ml-1"><%= latest.status %></span>
           </span>
         </div>
-        <div class="is-flex is-align-items-center" style="gap: 0.75rem;">
+        <div class="is-flex is-align-items-center shipyrd-flex-gap-md">
           <% if latest.compare_url.present? %>
             <%= link_to "Compare changes", latest.compare_url, target: "_blank", class: "button is-info is-small has-text-white" %>
           <% end %>
@@ -56,11 +56,11 @@
       <% end %>
 
       <% if deploy_group.length > 1 %>
-        <ul class="mt-2 ml-2" style="list-style: none; border-left: 2px solid #dbdbdb; padding-left: 0;">
+        <ul class="mt-2 ml-2 shipyrd-thread-list">
           <% deploy_group.reverse_each do |deploy| %>
             <% next if deploy == latest %>
-            <li class="is-size-7 has-text-grey py-1" style="padding-left: 0.75rem; position: relative;">
-              <span style="position: absolute; left: -0.05rem; color: #dbdbdb;">↳</span>
+            <li class="is-size-7 has-text-grey py-1 shipyrd-thread-item">
+              <span class="shipyrd-thread-arrow">↳</span>
               <span class="tag is-<%= status_bulma_class.call(deploy.status) %> is-light is-small mr-1"><%= deploy.status %></span>
               <% seconds = (latest.recorded_at - deploy.recorded_at).to_i %>
               <%= seconds < 60 ? "#{seconds}s" : distance_of_time_in_words(deploy.recorded_at, latest.recorded_at) %> before

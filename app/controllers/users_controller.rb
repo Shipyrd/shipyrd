@@ -40,18 +40,12 @@ class UsersController < ApplicationController
         @user.errors.add(:base, "Invalid invite link")
 
         format.html { render :new, status: :unprocessable_content }
-      elsif @user.password.present? && @user.save
-        organization = @invite_link&.organization || Organization.create!(name: @user.organization_name)
-        organization.memberships.create(
-          user: @user,
-          role: @invite_link ? @invite_link.role : :admin
-        )
+      elsif @user.password.blank?
+        @user.errors.add(:password, "can't be blank")
 
-        if @invite_link
-          @user.update!(email_verified_at: Time.current)
-        else
-          UserMailer.email_verification(@user).deliver_later
-        end
+        format.html { render :new, status: :unprocessable_content }
+      elsif (organization = create_user_with_organization)
+        UserMailer.email_verification(@user).deliver_later
 
         reset_session
         session[:user_id] = @user.id
@@ -60,8 +54,6 @@ class UsersController < ApplicationController
 
         format.html { redirect_to root_url }
       else
-        @user.errors.add(:password, "can't be blank") if @user.password.blank?
-
         format.html { render :new, status: :unprocessable_content }
       end
     end
@@ -86,6 +78,25 @@ class UsersController < ApplicationController
   end
 
   private
+
+  def create_user_with_organization
+    ApplicationRecord.transaction do
+      @user.save!
+      if @invite_link
+        @invite_link.accept!(@user)
+        @invite_link.organization
+      else
+        org = Organization.create!(name: @user.organization_name)
+        org.memberships.create!(user: @user, role: :admin)
+        org
+      end
+    end
+  rescue ActiveRecord::RecordInvalid
+    nil
+  rescue InviteLink::AlreadyRedeemed
+    @user.errors.add(:base, "Invite link is no longer valid")
+    nil
+  end
 
   def require_self
     redirect_to root_path unless @user.id == current_user.id

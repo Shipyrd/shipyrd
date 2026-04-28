@@ -18,7 +18,7 @@ class WebhooksControllerTest < ActionDispatch::IntegrationTest
 
   test "should create webhook" do
     assert_difference("Webhook.count") do
-      post application_webhooks_url(@application), params: {webhook: {url: "http://example.com"}}
+      post application_webhooks_url(@application), params: {webhook: {url: "https://example.com"}}
     end
 
     assert_redirected_to edit_application_url(@application)
@@ -27,6 +27,14 @@ class WebhooksControllerTest < ActionDispatch::IntegrationTest
   test "should not create webhook with invalid params" do
     assert_no_difference("Webhook.count") do
       post application_webhooks_url(@application), params: {webhook: {url: ""}}
+    end
+
+    assert_response :unprocessable_content
+  end
+
+  test "should not create webhook with http scheme" do
+    assert_no_difference("Webhook.count") do
+      post application_webhooks_url(@application), params: {webhook: {url: "http://example.com"}}
     end
 
     assert_response :unprocessable_content
