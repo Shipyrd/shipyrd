@@ -44,7 +44,7 @@ class Incoming::SlackController < ApplicationController
 
         slack_respond("Status for #{destination.application.name}", blocks: Slack::StatusBlocks.build([destination]))
       else
-        destinations = @organization.applications.includes(:destinations).flat_map(&:destinations)
+        destinations = @organization.applications.includes(destinations: :locker).flat_map(&:destinations)
         if destinations.any?
           slack_respond("Deployment status", blocks: Slack::StatusBlocks.build(destinations))
         else

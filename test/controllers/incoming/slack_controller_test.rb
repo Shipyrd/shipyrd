@@ -138,6 +138,7 @@ class Incoming::SlackControllerTest < ActionDispatch::IntegrationTest
 
   test "status with no args lists destinations" do
     @membership.update!(slack_user_id: "U123")
+    @destination.lock!(@user)
 
     post_signed(text: "status")
 
