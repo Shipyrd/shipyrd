@@ -39,8 +39,20 @@ class WebhookTest < ActiveSupport::TestCase
       }.to_json)
       .to_return(status: 200)
 
+    Resolv.stubs(:getaddresses).returns(["93.184.216.34"])
     @webhook.notify(:lock, {test: "true"})
 
     assert_requested(stub_request)
+  end
+
+  test "refuses to notify a private-IP host without raising" do
+    @webhook.url = "https://internal.example.com"
+    @webhook.save!
+
+    stub = stub_request(:post, @webhook.url)
+    Resolv.stubs(:getaddresses).returns(["10.0.0.5"])
+
+    assert_nothing_raised { @webhook.notify(:lock, {test: "true"}) }
+    assert_not_requested(stub)
   end
 end
