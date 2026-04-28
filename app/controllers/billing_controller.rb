@@ -16,6 +16,8 @@ class BillingController < ApplicationController
       }]
     )
 
+    raise "Unexpected Stripe checkout URL" unless session.url.to_s.start_with?("https://checkout.stripe.com/")
+
     redirect_to session.url, allow_other_host: true
   end
 end

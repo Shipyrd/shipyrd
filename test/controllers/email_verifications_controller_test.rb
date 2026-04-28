@@ -39,6 +39,27 @@ class EmailVerificationsControllerTest < ActionDispatch::IntegrationTest
         assert_equal "Verification link is invalid or has expired.", flash[:alert]
       end
     end
+
+    test "rejects token reuse after verification" do
+      user = create(:user, :unverified)
+      token = user.generate_token_for(:email_verification)
+
+      get email_verification_url(token)
+      assert_redirected_to root_path
+
+      get email_verification_url(token)
+      assert_redirected_to new_session_path
+      assert_equal "Verification link is invalid or has expired.", flash[:alert]
+    end
+
+    test "sets Referrer-Policy: no-referrer" do
+      user = create(:user, :unverified)
+      token = user.generate_token_for(:email_verification)
+
+      get email_verification_url(token)
+
+      assert_equal "no-referrer", response.headers["Referrer-Policy"]
+    end
   end
 
   describe "new (verification required page)" do
