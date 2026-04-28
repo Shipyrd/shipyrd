@@ -23,9 +23,18 @@
             are off
           <% end %>
 
+          <% if channel.github? && owner.repository_full_name.present? %>
+            &middot;
+            <span class="tag is-light"><%= owner.repository_full_name %></span>
+          <% end %>
+
         </div>
 
         <div class="column has-text-right is-flex is-justify-content-flex-end is-align-items-center shipyrd-flex-gap-sm">
+
+          <% if channel.github? %>
+            <%= link_to "Change repository", application_github_url(owner), class: "button", title: "Change GitHub repository" %>
+          <% end %>
 
           <%= button_to "Disconnect", application_channel_url(owner, channel), method: :delete, class: "button is-danger", title: "Disconnect #{channel.display_name}", data: { turbo_confirm: "Are you sure?" }, form_class: "is-inline" %>
 

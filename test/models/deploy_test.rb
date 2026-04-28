@@ -113,7 +113,7 @@ class DeployTest < ActiveSupport::TestCase
         :service,
         :commit_message,
         :compare_url
-      )
+      ).merge("deploy_id" => Deploy.last.id)
 
       assert_equal :deploy, Notification.last.event
       assert_equal details, Notification.last.details.except("recorded_at")

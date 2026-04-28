@@ -37,6 +37,7 @@ gem "solid_cable"
 gem "solid_queue"
 
 # Misc.
+gem "jwt"
 gem "jbuilder"
 gem "sshkey"
 gem "tty-command"

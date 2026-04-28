@@ -71,3 +71,13 @@ Migrations live in `db/migrate/`, `db/queue_migrate/`, and `db/cable_migrate/` r
 ## Workflow
 
 After creating a PR or pushing changes to an existing PR, run `bin/ci` to catch failures before GitHub Actions runs. Fix any issues before moving on.
+
+## GitHub App integration
+
+The Shipyrd GitHub App (used for deployment tracking via `GithubAppClient` / `GithubDeployment`) is registered with exactly these permissions — do not suggest adding others:
+
+- **Deployments:** Read & Write
+- **Environments:** Read & Write
+- **Metadata:** Read
+
+We intentionally do **not** request **Contents** access. Shipyrd only creates deployments and statuses on behalf of the user's installation; it does not read repo contents, and adding Contents access would broaden the App's scope without benefit. When walking users through setup (README, docs, UI hints, support answers), list only the three permissions above.

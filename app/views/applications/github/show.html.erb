@@ -1,0 +1,56 @@
+<% content_for :title, "Choose GitHub repository" %>
+
+<section class="section">
+  <div class="container">
+    <h1 class="title">Choose a GitHub repository</h1>
+    <p class="subtitle">
+      Pick which repository to connect to <strong><%= @application.display_name %></strong>.
+      Only repositories your GitHub App installations have access to are listed.
+    </p>
+
+    <% if @repositories.empty? %>
+      <% if @failed_installations.present? && @failed_installations.size == @installation_ids_count %>
+        <div class="notification is-warning">
+          <p>We couldn't reach your GitHub App installation. It may have been removed or the app credentials have changed.</p>
+          <p class="mt-2">Reinstall the Shipyrd GitHub App to continue.</p>
+        </div>
+      <% else %>
+        <div class="notification is-warning">
+          No repositories are available. Install the Shipyrd GitHub App on a repository, then return here.
+        </div>
+      <% end %>
+      <%= link_to "Install GitHub App", oauth_authorize_url(provider: :github, application_id: @application.id), class: "button is-primary" %>
+      <%= link_to "Cancel", edit_application_url(@application), class: "button" %>
+    <% else %>
+      <% if @failed_installations.present? %>
+        <div class="notification is-warning">
+          Some GitHub App installations could not be reached. If a repository is missing below, reinstall the Shipyrd GitHub App.
+        </div>
+      <% end %>
+      <%= form_with(model: @application, url: application_github_url(@application), method: :patch, class: "contents") do |form| %>
+        <div class="field">
+          <%= form.label :repository_url, "Repository", class: "label" %>
+          <div class="control">
+            <div class="select">
+              <%= form.select :repository_url,
+                    @repositories.map { |r| [r[:full_name], "#{r[:installation_id]}|#{r[:html_url]}"] },
+                    {include_blank: "Select a repository", selected: ("#{@application.github_installation&.installation_id}|#{@application.repository_url}" if @application.github_installation.present?)} %>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <%= form.submit "Connect", class: "button is-primary" %>
+          </div>
+          <div class="control">
+            <%= link_to "Install on another GitHub account", oauth_authorize_url(provider: :github, application_id: @application.id), class: "button is-light" %>
+          </div>
+          <div class="control">
+            <%= link_to "Cancel", edit_application_url(@application), class: "button" %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</section>

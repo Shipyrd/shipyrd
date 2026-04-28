@@ -17,6 +17,12 @@ class Notification < ApplicationRecord
   def notify
     return true if notified_at.present?
 
+    if channel.owner.nil?
+      Rails.logger.warn("Notification #{id} skipped: channel #{channel.id} has no owner")
+      update!(notified_at: Time.current)
+      return true
+    end
+
     channel.owner.notify(
       event,
       details.merge(

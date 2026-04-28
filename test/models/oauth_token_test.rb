@@ -145,4 +145,32 @@ class OauthTokensTest < ActiveSupport::TestCase
 
     token.notify(:lock, details)
   end
+
+  test "slack fires on deploy event with post-deploy status" do
+    token = create(:oauth_token, user: @user, application: @application, provider: :slack, extra_data: {channel_id: "C123456"})
+
+    notify = stub(notify: nil)
+    notify.expects(:notify).with(:deploy, has_entry(status: "post-deploy"))
+    Slack.expects(:new).with(token.token).returns(notify)
+
+    token.notify(:deploy, {status: "post-deploy"})
+  end
+
+  test "slack fires on deploy event with failed status" do
+    token = create(:oauth_token, user: @user, application: @application, provider: :slack, extra_data: {channel_id: "C123456"})
+
+    notify = stub(notify: nil)
+    notify.expects(:notify).with(:deploy, has_entry(status: "failed"))
+    Slack.expects(:new).with(token.token).returns(notify)
+
+    token.notify(:deploy, {status: "failed"})
+  end
+
+  test "slack skips deploy event on pre-deploy status" do
+    token = create(:oauth_token, user: @user, application: @application, provider: :slack, extra_data: {channel_id: "C123456"})
+
+    Slack.expects(:new).never
+
+    token.notify(:deploy, {status: "pre-deploy"})
+  end
 end

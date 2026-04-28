@@ -542,6 +542,7 @@ DEPENDENCIES
   hotwire-livereload
   importmap-rails
   jbuilder
+  jwt
   launchy
   letter_opener
   minitest-spec-rails

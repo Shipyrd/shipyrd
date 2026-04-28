@@ -8,6 +8,7 @@ class Application < ApplicationRecord
   has_many :channels, dependent: :destroy
   has_many :webhooks, dependent: :destroy
   has_many :incoming_webhooks, dependent: :destroy
+  has_one :github_installation, dependent: :destroy
   has_many :destinations, dependent: :destroy do
     def find_or_create_with_hosts(hosts_string:, name:)
       destination = find_or_create_by!(name: name)
@@ -49,11 +50,28 @@ class Application < ApplicationRecord
     deploys.where(destination: destination, command: [:deploy, :setup]).last
   end
 
+  def hosted_on_github?
+    return false if repository_url.blank?
+    URI.parse(repository_url).host&.downcase == "github.com"
+  rescue URI::InvalidURIError
+    false
+  end
+
   def repository_name
     repository_url.split("/").last
   end
 
   def repository_username
     repository_url.split("/").slice(-2)
+  end
+
+  def repository_full_name
+    return nil if repository_url.blank?
+    "#{repository_username}/#{repository_name}"
+  end
+
+  def matches_github_repository?(repositories)
+    return false if repository_full_name.blank?
+    repositories.any? { |r| r[:full_name].casecmp?(repository_full_name) }
   end
 end

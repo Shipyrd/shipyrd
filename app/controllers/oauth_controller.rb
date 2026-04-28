@@ -9,11 +9,17 @@ class OauthController < ApplicationController
   before_action :load_invite_link, only: %i[callback]
 
   def authorize
-    auth_url = client.auth_code.authorize_url(
-      scope: OauthToken::SCOPES[params[:provider].intern],
-      state: oauth_session_state,
-      redirect_uri: redirect_uri
-    )
+    set_current_application_id if params[:provider] == "github" && params[:application_id].present?
+
+    auth_url = if github_app_install?
+      "https://github.com/apps/#{ENV["SHIPYRD_GITHUB_APP_SLUG"]}/installations/new?state=#{oauth_session_state}"
+    else
+      client.auth_code.authorize_url(
+        scope: OauthToken::SCOPES[params[:provider].intern],
+        state: oauth_session_state,
+        redirect_uri: redirect_uri
+      )
+    end
 
     redirect_to auth_url, allow_other_host: true
   end
@@ -21,6 +27,36 @@ class OauthController < ApplicationController
   def callback
     raise "Invalid state" if oauth_session_state != params[:state]
 
+    if params[:installation_id]
+      handle_github_app_installation
+    else
+      handle_oauth_token
+    end
+  end
+
+  private
+
+  def handle_github_app_installation
+    application = current_organization.applications.find(session.delete(:current_application_id))
+    installation_id = params[:installation_id]
+    repositories = GithubAppClient.installation_repositories(installation_id)
+
+    if repositories.nil?
+      redirect_to edit_application_url(application), alert: "GitHub App installation could not be verified."
+      return
+    end
+
+    github_installation = application.github_installation || application.build_github_installation
+    github_installation.update!(installation_id: installation_id)
+
+    if application.matches_github_repository?(repositories)
+      redirect_to edit_application_url(application), notice: "GitHub App connected."
+    else
+      redirect_to application_github_url(application)
+    end
+  end
+
+  def handle_oauth_token
     auth = OauthToken.create_from_oauth_token(
       provider: params[:provider],
       code: params[:code],
@@ -40,14 +76,18 @@ class OauthController < ApplicationController
     end
   end
 
-  private
-
   def redirect_uri
-    oauth_callback_url(provider: params[:provider], host: ENV["SHIPYRD_HOST"], protocol: :https)
+    oauth_callback_url(provider: params[:provider], host: ENV["SHIPYRD_HOST"], protocol: ENV.fetch("SHIPYRD_PROTOCOL", "https"))
   end
 
   def verify_provider
     raise "Invalid provider" unless OauthToken.providers.key?(params[:provider])
+  end
+
+  def github_app_install?
+    params[:provider] == "github" &&
+      params[:application_id].present? &&
+      ENV["SHIPYRD_GITHUB_APP_SLUG"].present?
   end
 
   def oauth_session_state

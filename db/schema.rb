@@ -127,6 +127,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_000002) do
     t.string "commit_message"
     t.datetime "created_at", null: false
     t.string "destination"
+    t.bigint "github_deployment_id"
     t.text "hosts"
     t.string "performer"
     t.datetime "recorded_at"
@@ -168,6 +169,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_000002) do
     t.bigint "user_id", null: false
     t.index ["email"], name: "index_email_addresses_on_email"
     t.index ["user_id"], name: "index_email_addresses_on_user_id"
+  end
+
+  create_table "github_installations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "application_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "installation_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_id"], name: "index_github_installations_on_application_id", unique: true
+    t.index ["installation_id"], name: "index_github_installations_on_installation_id"
   end
 
   create_table "incoming_webhooks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -303,6 +313,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_000002) do
   add_foreign_key "channels", "applications"
   add_foreign_key "destinations", "applications"
   add_foreign_key "email_addresses", "users"
+  add_foreign_key "github_installations", "applications"
   add_foreign_key "incoming_webhooks", "applications"
   add_foreign_key "invite_links", "users", column: "creator_id"
   add_foreign_key "invite_links", "users", column: "redeemed_by_user_id"

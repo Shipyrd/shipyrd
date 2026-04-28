@@ -14,6 +14,12 @@ class ChannelsHelperTest < ActionView::TestCase
     assert_equal expected_url, connect_channel_url(provider, application_id: application_id)
   end
 
+  test "connect_channel_url returns picker URL for github" do
+    application_id = 123
+    expected_url = application_github_url(application_id)
+    assert_equal expected_url, connect_channel_url(:github, application_id: application_id)
+  end
+
   test "channel_icon returns correct icon for webhook" do
     assert_equal "fa-solid fa-share-nodes", channel_icon("webhook")
   end

@@ -25,8 +25,8 @@ class Deploy < ApplicationRecord
   end
 
   def dispatch_notifications
-    return false unless status == "post-deploy"
     return false if target_destination.blank?
+    return false unless KNOWN_HOOKS.include?(status)
 
     target_destination.dispatch_notifications(
       :deploy,
@@ -44,7 +44,7 @@ class Deploy < ApplicationRecord
         :service,
         :commit_message,
         :compare_url
-      )
+      ).merge(deploy_id: id)
     )
   end
 
