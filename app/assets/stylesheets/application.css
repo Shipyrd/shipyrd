@@ -49,8 +49,8 @@ progress.red {
 
 @media (prefers-color-scheme: light) {
 
-  main a,
-  main a:visited {
+  main a:not(.button),
+  main a:not(.button):visited {
     color: #303030;
   }
 }
