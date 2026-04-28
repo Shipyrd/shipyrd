@@ -122,4 +122,24 @@ class OrganizationTest < ActiveSupport::TestCase
       assert organization.business_hours_configured?
     end
   end
+
+  describe "slack_team_id changes" do
+    it "clears slack_user_id on memberships when team is disconnected" do
+      organization = create(:organization, slack_team_id: "T123")
+      membership = create(:membership, organization: organization, slack_user_id: "U123")
+
+      organization.update!(slack_team_id: nil)
+
+      assert_nil membership.reload.slack_user_id
+    end
+
+    it "clears slack_user_id on memberships when team is swapped" do
+      organization = create(:organization, slack_team_id: "T123")
+      membership = create(:membership, organization: organization, slack_user_id: "U123")
+
+      organization.update!(slack_team_id: "T999")
+
+      assert_nil membership.reload.slack_user_id
+    end
+  end
 end

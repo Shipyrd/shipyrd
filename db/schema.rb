@@ -199,8 +199,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_000002) do
     t.datetime "created_at", null: false
     t.bigint "organization_id", null: false
     t.integer "role", default: 0
+    t.string "slack_user_id"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["organization_id", "slack_user_id"], name: "index_memberships_on_organization_id_and_slack_user_id", unique: true
     t.index ["organization_id"], name: "index_memberships_on_organization_id"
     t.index ["user_id", "organization_id"], name: "index_memberships_on_user_id_and_organization_id", unique: true
     t.index ["user_id"], name: "index_memberships_on_user_id"
@@ -240,6 +242,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_000002) do
     t.datetime "created_at", null: false
     t.datetime "last_payment_at"
     t.string "name"
+    t.text "slack_access_token"
+    t.string "slack_team_id"
+    t.string "slack_team_name"
     t.string "stripe_customer_id"
     t.string "stripe_subscription_id"
     t.string "stripe_subscription_status"
@@ -247,6 +252,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_25_000002) do
     t.string "token"
     t.datetime "updated_at", null: false
     t.integer "users_count", default: 0
+    t.index ["slack_team_id"], name: "index_organizations_on_slack_team_id", unique: true
     t.index ["stripe_customer_id"], name: "index_organizations_on_stripe_customer_id"
     t.index ["stripe_subscription_id"], name: "index_organizations_on_stripe_subscription_id"
   end

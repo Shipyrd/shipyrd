@@ -21,13 +21,15 @@ SHIPYRD_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}
 SHIPYRD_QUEUE_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_queue
 SHIPYRD_CABLE_DATABASE_URL=mysql2://root:root@127.0.0.1:3306/shipyrd_${WORKSPACE_NAME}_cable
 
-PORT=\${CONDUCTOR_PORT}
 SHIPYRD_HOST=localhost:\${CONDUCTOR_PORT}
 SHIPYRD_HOOKS_HOST=localhost:\${CONDUCTOR_PORT}
 
 SHIPYRD_ENCRYPTION_PRIMARY_KEY=$(openssl rand -hex 16)
 SHIPYRD_ENCRYPTION_DETERMINISTIC_KEY=$(openssl rand -hex 16)
 SHIPYRD_ENCRYPTION_KEY_DERIVATION_SALT=$(openssl rand -hex 16)
+
+# Optional: set to your ngrok reserved subdomain to expose the dev server for Slack slash commands.
+# NGROK_URL=your-subdomain.ngrok-free.dev
 
 COMMUNITY_EDITION=0
 EOF

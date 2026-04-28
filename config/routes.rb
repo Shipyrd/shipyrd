@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     post "rollbar/:token", action: :create, controller: :rollbar, as: :rollbar
     post "appsignal/:token", action: :create, controller: :appsignal, as: :appsignal
     post "stripe", action: :create, controller: :stripe, as: :stripe
+    post "slack", action: :create, controller: :slack, as: :slack
   end
 
   resources :email_verifications, only: %i[new show create]
@@ -24,6 +25,7 @@ Rails.application.routes.draw do
   resources :organizations, only: %i[new create edit update] do
     member do
       post :switch
+      delete :disconnect_slack
     end
   end
   resource :session

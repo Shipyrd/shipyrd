@@ -1,0 +1,31 @@
+<hr>
+
+<h3 class="is-size-4 has-text-weight-medium mb-3">Slack Bot</h3>
+
+<p class="mb-4">
+  <small>
+    Connect your Slack workspace to enable the <code>/shipyrd</code> slash command
+    for locking and unlocking deployments from Slack.
+  </small>
+</p>
+
+<% if organization.slack_connected? %>
+  <div class="notification is-success is-light">
+    <span class="icon-text">
+      <span class="icon"><i class="fa-brands fa-slack"></i></span>
+      <span>Connected to workspace <strong><%= organization.slack_team_name %></strong></span>
+    </span>
+  </div>
+  <%= button_to disconnect_slack_organization_path(organization),
+        method: :delete,
+        class: "button is-danger is-light is-small",
+        data: {turbo_confirm: "Disconnect Slack? The /shipyrd command will stop working until you reinstall."} do %>
+    <span class="icon"><i class="fa-solid fa-plug-circle-xmark"></i></span>
+    <span>Disconnect Slack</span>
+  <% end %>
+<% else %>
+  <%= link_to oauth_authorize_url("slack_bot"), class: "button is-dark" do %>
+    <span class="icon"><i class="fa-brands fa-slack"></i></span>
+    <span>Add to Slack</span>
+  <% end %>
+<% end %>
