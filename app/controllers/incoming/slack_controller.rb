@@ -139,10 +139,6 @@ class Incoming::SlackController < ApplicationController
 
   def bind_slack_user_id(user)
     membership = @organization.memberships.find_by!(user: user)
-    @organization.memberships
-      .where(slack_user_id: params[:user_id])
-      .where.not(id: membership.id)
-      .update_all(slack_user_id: nil)
     membership.update_column(:slack_user_id, params[:user_id])
     membership
   rescue ActiveRecord::RecordNotUnique

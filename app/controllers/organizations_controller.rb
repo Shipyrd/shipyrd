@@ -43,14 +43,11 @@ class OrganizationsController < ApplicationController
   end
 
   def disconnect_slack
-    ActiveRecord::Base.transaction do
-      @organization.memberships.update_all(slack_user_id: nil)
-      @organization.update!(
-        slack_team_id: nil,
-        slack_team_name: nil,
-        slack_access_token: nil
-      )
-    end
+    @organization.update!(
+      slack_team_id: nil,
+      slack_team_name: nil,
+      slack_access_token: nil
+    )
 
     redirect_to edit_organization_url(@organization), notice: "Slack workspace disconnected."
   end
