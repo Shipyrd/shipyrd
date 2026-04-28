@@ -6,6 +6,12 @@ class MembershipTest < ActiveSupport::TestCase
   describe "create_stripe_customer" do
     setup do
       ENV["COMMUNITY_EDITION"] = "0"
+      @original_stripe_key = Stripe.api_key
+      Stripe.api_key = "sk_test_dummy"
+    end
+
+    teardown do
+      Stripe.api_key = @original_stripe_key
     end
 
     it "does nothing when organization already has a stripe customer" do
@@ -51,6 +57,20 @@ class MembershipTest < ActiveSupport::TestCase
       assert_no_enqueued_jobs only: CreateStripeCustomerJob do
         organization.memberships.create!(user: user, role: :user)
       end
+    end
+
+    it "does nothing when Stripe.api_key is not configured" do
+      Stripe.api_key = nil
+      organization = create(:organization, stripe_customer_id: nil)
+      user = create(:user)
+
+      Stripe::Customer.expects(:create).never
+
+      perform_enqueued_jobs do
+        organization.memberships.create!(user: user, role: :admin)
+      end
+
+      assert_nil organization.reload.stripe_customer_id
     end
   end
 end
