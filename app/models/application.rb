@@ -27,6 +27,12 @@ class Application < ApplicationRecord
   end
 
   validates :repository_url, url: {allow_blank: true, no_local: true}
+  validates :slug,
+    presence: true,
+    format: {with: /\A[a-z0-9]+(?:-[a-z0-9]+)*\z/, message: "may only contain lowercase letters, numbers, and dashes"},
+    uniqueness: {scope: :organization_id, case_sensitive: false}
+
+  before_validation :generate_slug
 
   broadcasts_refreshes # When an application is created, updated, or destroyed a refresh is streamed to "applications"
   broadcasts # For broadcasting deploys as they come in
@@ -38,7 +44,7 @@ class Application < ApplicationRecord
   end
 
   def display_name
-    name.presence || key
+    name.presence || slug
   end
 
   def current_status(destination:)
@@ -55,5 +61,26 @@ class Application < ApplicationRecord
 
   def repository_username
     repository_url.split("/").slice(-2)
+  end
+
+  private
+
+  def generate_slug
+    return if slug.present?
+
+    base = (name.presence || key).to_s.parameterize
+    return if base.blank?
+
+    candidate = base
+    counter = 1
+    scope = self.class.where(organization_id: organization_id)
+    scope = scope.where.not(id: id) if persisted?
+
+    while scope.where(slug: candidate).exists?
+      counter += 1
+      candidate = "#{base}-#{counter}"
+    end
+
+    self.slug = candidate
   end
 end

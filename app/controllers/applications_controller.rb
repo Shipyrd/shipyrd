@@ -85,6 +85,7 @@ class ApplicationsController < ApplicationController
   def application_params
     params.require(:application).permit(
       :name,
+      :slug,
       :repository_url,
       destinations_attributes: %i[id name branch url _destroy]
     )

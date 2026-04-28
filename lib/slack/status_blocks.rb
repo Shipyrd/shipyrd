@@ -66,11 +66,14 @@ class Slack
     end
 
     def app_name_cell(application)
-      rich_text_section_cell([{
-        type: "link",
-        url: application_url(application, host: ENV["SHIPYRD_HOST"], protocol: "https"),
-        text: application.name
-      }])
+      rich_text_section_cell([
+        {
+          type: "link",
+          url: application_url(application, host: ENV["SHIPYRD_HOST"], protocol: "https"),
+          text: application.name
+        },
+        {type: "text", text: " (`#{application.slug}`)"}
+      ])
     end
 
     def rich_text_section_cell(elements)

@@ -4,15 +4,62 @@ class ApplicationTest < ActiveSupport::TestCase
   let(:application) { create(:application, key: "bacon") }
 
   describe "display_name" do
-    it "Prefers name over key" do
+    it "prefers name over slug" do
       application.name = "Bacon"
-      assert_equal application.name, application.display_name
+      assert_equal "Bacon", application.display_name
 
       application.name = nil
-      assert_equal application.key, application.display_name
+      assert_equal application.slug, application.display_name
 
       application.name = ""
-      assert_equal application.key, application.display_name
+      assert_equal application.slug, application.display_name
+    end
+  end
+
+  describe "slug" do
+    it "auto-populates from the name on save" do
+      application = build(:application, name: "Pizza Tracker", slug: nil)
+      application.valid?
+
+      assert_equal "pizza-tracker", application.slug
+    end
+
+    it "preserves a user-provided slug" do
+      application = build(:application, name: "Pizza Tracker", slug: "pt")
+      application.valid?
+
+      assert_equal "pt", application.slug
+    end
+
+    it "rejects invalid slug formats" do
+      application = build(:application, slug: "Not Valid!")
+
+      refute application.valid?
+      assert_includes application.errors[:slug].first, "lowercase"
+    end
+
+    it "appends a counter when a generated slug would collide" do
+      organization = create(:organization)
+      create(:application, organization: organization, name: "Same Name")
+      sibling = create(:application, organization: organization, name: "Same Name")
+
+      assert_equal "same-name-2", sibling.slug
+    end
+
+    it "enforces uniqueness within an organization" do
+      organization = create(:organization)
+      create(:application, organization: organization, slug: "shared")
+      duplicate = build(:application, organization: organization, slug: "shared")
+
+      refute duplicate.valid?
+      assert_includes duplicate.errors[:slug], "has already been taken"
+    end
+
+    it "allows the same slug across organizations" do
+      create(:application, slug: "shared", organization: create(:organization))
+      sibling = build(:application, slug: "shared", organization: create(:organization))
+
+      assert sibling.valid?
     end
   end
 
