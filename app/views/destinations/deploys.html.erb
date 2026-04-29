@@ -42,12 +42,12 @@
           </span>
         </div>
         <div class="is-flex is-align-items-center shipyrd-flex-gap-md">
+          <time class="is-size-7 has-text-grey" datetime="<%= latest.recorded_at %>">
+            <%= latest.recorded_at.in_time_zone(latest.application.organization.selected_time_zone).strftime("%Y-%m-%d %I:%M %p") %>
+          </time>
           <% if latest.compare_url.present? %>
             <%= link_to "Compare changes", latest.compare_url, target: "_blank", class: "button is-info is-small has-text-white" %>
           <% end %>
-          <time class="timeago is-size-7 has-text-grey" datetime="<%= latest.recorded_at %>">
-            <%= time_ago_in_words(latest.recorded_at) %> ago
-          </time>
         </div>
       </div>
 

@@ -38,6 +38,10 @@ class Organization < ApplicationRecord
     !active_subscription? && !trial_active?
   end
 
+  def selected_time_zone
+    time_zone.present? ? ActiveSupport::TimeZone[time_zone] : Time.zone
+  end
+
   def business_hours_configured?
     time_zone.present? && business_hours_start.present? && business_hours_end.present?
   end
