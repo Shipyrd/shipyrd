@@ -22,6 +22,20 @@ class OrganizationTest < ActiveSupport::TestCase
     refute organization.active_subscription?
   end
 
+  describe "selected_time_zone" do
+    it "returns the configured time zone when set" do
+      organization = create(:organization, time_zone: "Central Time (US & Canada)")
+
+      assert_equal ActiveSupport::TimeZone["Central Time (US & Canada)"], organization.selected_time_zone
+    end
+
+    it "falls back to Time.zone when time_zone is blank" do
+      organization = create(:organization, time_zone: nil)
+
+      assert_equal Time.zone, organization.selected_time_zone
+    end
+  end
+
   describe "business hours" do
     it "returns true for within_business_hours? when no time zone configured" do
       organization = create(:organization, time_zone: nil)
