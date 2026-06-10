@@ -265,7 +265,7 @@ GEM
       railties (>= 7.1)
       stimulus-rails
       turbo-rails
-    mjml-rails (4.16.0)
+    mjml-rails (5.0.0)
     mocha (3.0.1)
       ruby2_keywords (>= 0.0.5)
     mrml (1.10.0-aarch64-linux)
