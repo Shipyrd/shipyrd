@@ -147,3 +147,8 @@ progress.red {
 .shipyrd-link-underline {
   text-decoration: underline;
 }
+
+.shipyrd-text-wrap {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}

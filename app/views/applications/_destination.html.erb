@@ -86,7 +86,7 @@
 
       <div class="column pt-1 is-three-fifths">
         <small>
-          <em><%= sanitize display_commit_message(deploy.commit_message, application), tags: %w(a), attributes: %w(href) %></em>
+          <em class="shipyrd-text-wrap"><%= sanitize display_commit_message(deploy.commit_message, application), tags: %w(a), attributes: %w(href) %></em>
         </small>
       </div>
 

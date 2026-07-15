@@ -52,7 +52,7 @@
       </div>
 
       <% if latest.commit_message.present? %>
-        <p class="mt-2 is-size-6 has-text-grey-dark"><em><%= sanitize display_commit_message(latest.commit_message, application), tags: %w(a), attributes: %w(href) %></em></p>
+        <p class="mt-2 is-size-6 has-text-grey-dark"><em class="shipyrd-text-wrap"><%= sanitize display_commit_message(latest.commit_message, application), tags: %w(a), attributes: %w(href) %></em></p>
       <% end %>
 
       <% if deploy_group.length > 1 %>
