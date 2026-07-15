@@ -35,7 +35,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@3caf19fbe3db1a1a6a8bdce189e09ac0ed35d513
+        uses: docker/metadata-action@860a41aba453ca8da198cc147883f6a6503507ee
         with:
           images: |
             shipyrd/shipyrd
