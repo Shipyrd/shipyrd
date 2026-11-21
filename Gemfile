@@ -1,4 +1,7 @@
-source "https://rubygems.org"
+# cooldown: ignore gem versions published less than a week ago, so a yanked or
+# compromised release has time to surface before we resolve onto it. Versions
+# already in Gemfile.lock are exempt. Pass `--cooldown 0` to bypass.
+source "https://rubygems.org", cooldown: 7
 
 ruby file: ".ruby-version"
 
