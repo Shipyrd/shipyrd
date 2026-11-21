@@ -21,7 +21,7 @@ class User < ApplicationRecord
 
   after_create :store_email_address
   after_create_commit :queue_populate_avatar
-  after_create_commit :enqueue_add_to_brevo_list
+  after_create_commit :enqueue_add_to_buttondown
 
   scope :has_password, -> { where.not(password_digest: nil) }
 
@@ -97,9 +97,9 @@ class User < ApplicationRecord
     update!(avatar_url: "#{user_info["avatar_url"]}&s=100")
   end
 
-  def enqueue_add_to_brevo_list
+  def enqueue_add_to_buttondown
     return if ENV["COMMUNITY_EDITION"] != "0"
-    AddToBrevoListJob.perform_later(id)
+    AddToButtondownJob.perform_later(id)
   end
 
   private
