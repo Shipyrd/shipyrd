@@ -17,7 +17,10 @@ document.addEventListener('turbo:load', (event) => {
     timeZoneName: "short",
   });
   document.querySelectorAll('time.local-time').forEach((el) => {
-    const date = new Date(el.getAttribute('datetime'));
+    const datetime = el.getAttribute('datetime');
+    if (!datetime) return;
+
+    const date = new Date(datetime);
     if (!isNaN(date.getTime())) {
       el.textContent = localTimeFormatter.format(date);
     }
