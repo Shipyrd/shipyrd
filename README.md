@@ -129,6 +129,22 @@ kamal accessory reboot shipyrd
 
 The reboot command retains your data and just stops the container, removes the container, and starts the container with the new version. Rebooting will cause a short downtime while the new container boots up, usually just a few seconds. You can tail the logs(`kamal accessory logs shipyrd`) to watch it come back online, you'll see a few healthchecks to /up and then it should start responding.
 
+### One-time: backfill user API tokens
+
+Users have an API token used to authenticate API requests. The column was added
+after Shipyrd shipped, and it is only generated when a user is created, so any
+user who signed up before it existed has no token and cannot use the API.
+
+If your instance predates that, run this once after upgrading:
+
+```
+kamal accessory exec shipyrd "bin/rails runner 'User.where(token: nil).find_each { |user| user.update_columns(token: SecureRandom.base58(64)) }'"
+```
+
+`update_columns` skips validations deliberately — this is a backfill, not an
+edit, and a legacy record that no longer validates should not stop it. It is
+safe to run more than once; users who already have a token are left alone.
+
 ## Contributing
 
 If you discover an issue, or are interested in a new feature, please open an issue. If you want to contribute code, feel free to open a pull request. If the PR is substantial, it may be beneficial to open an issue beforehand to discuss.
