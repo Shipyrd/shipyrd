@@ -158,4 +158,90 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       assert_no_match(/#{@organization1.name}/, @response.body)
     end
   end
+  describe "bearer scheme parsing" do
+    setup do
+      @user = create(:user)
+      @organization = create(:organization)
+      @organization.memberships.create(user: @user)
+    end
+
+    # Regression: the guard was /^bearer/i but Rails parses /^(Token|Bearer)\s+/,
+    # which is case-sensitive. A lowercase scheme satisfied the guard, never
+    # parsed, so nothing authenticated and nothing rendered — and the request
+    # carried on unauthenticated.
+    test "accepts a lowercase bearer scheme" do
+      get applications_url, headers: {Authorization: "bearer #{@user.token}", Accept: "application/json"}
+
+      assert_response :ok
+    end
+
+    test "rejects a lowercase bearer scheme carrying an invalid token" do
+      get applications_url, headers: {Authorization: "bearer nope", Accept: "application/json"}
+
+      assert_response :unauthorized
+      assert_equal "Invalid token", JSON.parse(response.body)["error"]
+    end
+
+    test "rejects a bearer scheme with no token" do
+      get applications_url, headers: {Authorization: "Bearer", Accept: "application/json"}
+
+      assert_response :unauthorized
+    end
+
+    test "rejects a bearer scheme with only whitespace" do
+      get applications_url, headers: {Authorization: "Bearer   ", Accept: "application/json"}
+
+      assert_response :unauthorized
+      assert_equal "Invalid token", JSON.parse(response.body)["error"]
+    end
+
+    test "accepts a quoted token" do
+      get applications_url, headers: {Authorization: "Bearer \"#{@user.token}\"", Accept: "application/json"}
+
+      assert_response :ok
+    end
+  end
+
+  describe "organization_id for token requests" do
+    setup do
+      @user = create(:user)
+      @organization1 = create(:organization, name: "Organization 1")
+      @organization2 = create(:organization, name: "Organization 2")
+      @organization1.memberships.create(user: @user)
+      @organization2.memberships.create(user: @user)
+
+      @application2 = create(:application, organization: @organization2)
+    end
+
+    # Without organization_id a token request always resolves to organizations.first,
+    # so a multi-organization user cannot reach anything in their other organizations.
+    test "scopes to the requested organization" do
+      get applications_url,
+        params: {organization_id: @organization2.id},
+        headers: auth_headers(@user.token).merge(Accept: "application/json")
+
+      assert_response :ok
+      assert_equal [@application2.id], JSON.parse(response.body).pluck("id")
+    end
+
+    test "ignores organization_id without a token" do
+      sign_in(@user.email, @user.password)
+
+      get applications_url, params: {organization_id: @organization2.id}
+
+      assert_response :success
+      assert_match @organization1.name, @response.body
+    end
+
+    test "404s for an organization the user does not belong to" do
+      other = create(:organization, name: "Someone else")
+
+      get applications_url,
+        params: {organization_id: other.id},
+        headers: auth_headers(@user.token).merge(Accept: "application/json")
+
+      assert_response :not_found
+      assert_equal "Not found", JSON.parse(response.body)["error"]
+    end
+  end
 end
