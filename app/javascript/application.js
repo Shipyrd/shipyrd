@@ -11,6 +11,21 @@ document.addEventListener('turbo:load', (event) => {
     timeago.render(timeago_nodes);
   }
 
+  const localTimeFormatter = new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZoneName: "short",
+  });
+  document.querySelectorAll('time.local-time').forEach((el) => {
+    const datetime = el.getAttribute('datetime');
+    if (!datetime) return;
+
+    const date = new Date(datetime);
+    if (!isNaN(date.getTime())) {
+      el.textContent = localTimeFormatter.format(date);
+    }
+  });
+
   // Copy to clipboard for key installation on servers
   const clipboard = new ClipboardJS('.clipboard');
   clipboard.on('success', function (e) {
