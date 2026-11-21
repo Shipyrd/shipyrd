@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     end
   end
   resource :session
+  get "me", to: "me#show", defaults: {format: :json}
   resources :invite_links
   resources :deploys
   get "billing/setup", to: "billing#setup", as: :billing_setup

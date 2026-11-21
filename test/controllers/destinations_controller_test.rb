@@ -144,4 +144,109 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal "Not found", response_data["error"]
     end
   end
+  describe "deploy history via API" do
+    setup do
+      @user = create(:user)
+      @organization.memberships.create(user: @user)
+    end
+
+    test "returns one entry per version, newest first" do
+      create(:deploy, application: @application, destination: @destination.name, version: "aaa111", status: "pre-deploy", recorded_at: 3.minutes.ago)
+      create(:deploy, application: @application, destination: @destination.name, version: "aaa111", status: "post-deploy", recorded_at: 2.minutes.ago, runtime: 42)
+      create(:deploy, application: @application, destination: @destination.name, version: "bbb222", status: "post-deploy", recorded_at: 1.minute.ago, commit_message: "Latest work")
+
+      get deploys_application_destination_path(@application, @destination.name, format: :json),
+        headers: auth_headers(@user.token)
+
+      assert_response :ok
+
+      body = JSON.parse(response.body)
+      assert_equal @application.slug, body.dig("application", "slug")
+      assert_equal "production", body["destination"]
+      assert_equal ["bbb222", "aaa111"], body["deploys"].pluck("version")
+
+      # A version collapses to its most recent lifecycle event.
+      assert_equal "post-deploy", body["deploys"].last["status"]
+      assert_equal 42, body["deploys"].last["runtime"]
+      assert_equal "Latest work", body["deploys"].first["commit_message"]
+    end
+
+    test "honours a limit" do
+      3.times { |i| create(:deploy, application: @application, destination: @destination.name, version: "v#{i}", recorded_at: i.minutes.ago) }
+
+      get deploys_application_destination_path(@application, @destination.name, format: :json),
+        params: {limit: 2},
+        headers: auth_headers(@user.token)
+
+      assert_response :ok
+      assert_equal 2, JSON.parse(response.body)["deploys"].length
+    end
+
+    test "clamps a limit beyond the page size and ignores a bad one" do
+      create(:deploy, application: @application, destination: @destination.name, version: "aaa111")
+
+      [999, 0, "banana"].each do |limit|
+        get deploys_application_destination_path(@application, @destination.name, format: :json),
+          params: {limit: limit},
+          headers: auth_headers(@user.token)
+
+        assert_response :ok
+        assert_equal 1, JSON.parse(response.body)["deploys"].length
+      end
+    end
+
+    test "excludes other destinations" do
+      create(:destination, application: @application, name: "staging")
+      create(:deploy, application: @application, destination: "staging", version: "staging1")
+      create(:deploy, application: @application, destination: @destination.name, version: "prod1")
+
+      get deploys_application_destination_path(@application, @destination.name, format: :json),
+        headers: auth_headers(@user.token)
+
+      assert_response :ok
+      assert_equal ["prod1"], JSON.parse(response.body)["deploys"].pluck("version")
+    end
+
+    test "404s for another organization's application" do
+      other = create(:destination, name: "production")
+
+      get deploys_application_destination_path(other.application, "production", format: :json),
+        headers: auth_headers(@user.token)
+
+      assert_response :not_found
+    end
+  end
+
+  describe "destination state via API" do
+    setup do
+      @user = create(:user)
+      @organization.memberships.create(user: @user)
+    end
+
+    test "reports lock and business-hours state" do
+      get application_destination_path(@application, @destination.name, format: :json),
+        headers: auth_headers(@user.token)
+
+      assert_response :ok
+
+      body = JSON.parse(response.body)
+      assert_equal "production", body["display_name"]
+      assert_equal "main", body["branch"]
+      refute body["locked"]
+      refute body["auto_lock_outside_business_hours"]
+      refute body["outside_business_hours"]
+    end
+
+    test "a destination with a blank name reports as default" do
+      destination = create(:destination, application: @application, name: nil)
+
+      assert destination.default?
+
+      get application_destination_path(@application, "default", format: :json),
+        headers: auth_headers(@user.token)
+
+      assert_response :ok
+      assert_equal "default", JSON.parse(response.body)["display_name"]
+    end
+  end
 end
