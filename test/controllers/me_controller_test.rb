@@ -61,7 +61,7 @@ class MeControllerTest < ActionDispatch::IntegrationTest
 
     body = response.parsed_body
     assert_equal "An active Shipyrd subscription is required.", body["error"]
-    assert_match "/billing/setup", body["billing_url"]
+    assert_match "/billing/checkout", body["billing_url"]
   end
 
   # A trial is not a subscription for MCP purposes, and the bare organization

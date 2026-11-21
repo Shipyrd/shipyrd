@@ -171,6 +171,20 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal "Latest work", body["deploys"].first["commit_message"]
     end
 
+    # chunk_while only merges adjacent events, so a redeploy of an earlier version
+    # is its own entry. Collapsing by version would hide the rollback.
+    test "reports a redeployed version as a separate entry" do
+      create(:deploy, application: @application, destination: @destination.name, version: "aaa111", status: "post-deploy", recorded_at: 3.minutes.ago)
+      create(:deploy, application: @application, destination: @destination.name, version: "bbb222", status: "post-deploy", recorded_at: 2.minutes.ago)
+      create(:deploy, application: @application, destination: @destination.name, version: "aaa111", status: "post-deploy", recorded_at: 1.minute.ago)
+
+      get deploys_application_destination_path(@application, @destination.name, format: :json),
+        headers: auth_headers(@user.token)
+
+      assert_response :ok
+      assert_equal ["aaa111", "bbb222", "aaa111"], JSON.parse(response.body)["deploys"].pluck("version")
+    end
+
     test "honours a limit" do
       3.times { |i| create(:deploy, application: @application, destination: @destination.name, version: "v#{i}", recorded_at: i.minutes.ago) }
 

@@ -26,9 +26,13 @@ class MeController < ApplicationController
     return if community_edition?
     return if current_user.organizations.any?(&:active_subscription?)
 
+    # billing_checkout_url, not billing_setup_url: `payment_required?` is false
+    # during a trial, so BillingController#setup bounces a trial organization back
+    # to the dashboard — and a trial is the common reason for landing here.
+    # #checkout has no such guard and starts the Stripe session directly.
     render json: {
       error: "An active Shipyrd subscription is required.",
-      billing_url: billing_setup_url
+      billing_url: billing_checkout_url
     }, status: :payment_required
   end
 end
