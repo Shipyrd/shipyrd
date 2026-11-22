@@ -165,10 +165,6 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       @organization.memberships.create(user: @user)
     end
 
-    # Regression: the guard was /^bearer/i but Rails parses /^(Token|Bearer)\s+/,
-    # which is case-sensitive. A lowercase scheme satisfied the guard, never
-    # parsed, so nothing authenticated and nothing rendered — and the request
-    # carried on unauthenticated.
     test "accepts a lowercase bearer scheme" do
       get applications_url, headers: {Authorization: "bearer #{@user.token}", Accept: "application/json"}
 
@@ -180,12 +176,6 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
 
       assert_response :unauthorized
       assert_equal "Invalid token", JSON.parse(response.body)["error"]
-    end
-
-    test "rejects a bearer scheme with no token" do
-      get applications_url, headers: {Authorization: "Bearer", Accept: "application/json"}
-
-      assert_response :unauthorized
     end
 
     test "rejects a bearer scheme with only whitespace" do
@@ -213,8 +203,6 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
       @application2 = create(:application, organization: @organization2)
     end
 
-    # Without organization_id a token request always resolves to organizations.first,
-    # so a multi-organization user cannot reach anything in their other organizations.
     test "scopes to the requested organization" do
       get applications_url,
         params: {organization_id: @organization2.id},

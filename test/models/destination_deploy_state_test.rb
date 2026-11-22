@@ -31,8 +31,6 @@ class DestinationDeployStateTest < ActiveSupport::TestCase
     assert_no_queries do
       assert_equal in_flight, preloaded.latest_deploy
       assert_equal settled, preloaded.latest_post_deploy
-      # `previous_deploy` is the newest post-deploy other than the deploy
-      # itself, and the deploy in flight is not one.
       assert_equal settled, preloaded.latest_deploy.previous_deploy
     end
   end
@@ -88,7 +86,6 @@ class DestinationDeployStateTest < ActiveSupport::TestCase
     create(:deploy, application: @application, destination: destination, status: status, version: version)
   end
 
-  # Everything the destination partials read off a preloaded destination.
   def render_state(destinations)
     preloaded = DestinationDeployState.preload(destinations)
 

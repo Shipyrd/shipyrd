@@ -17,12 +17,6 @@ module ActiveSupport
   class TestCase
     parallelize(workers: :number_of_processors)
 
-    # Counts the queries a block runs, ignoring schema reads and transaction
-    # bookkeeping. For pinning down a batch load that should not grow with the
-    # number of rows it covers. Cache hits count: tests run inside a
-    # transaction with the query cache on, so skipping them would hide the very
-    # queries we are counting, and a cache hit is still a query the code asked
-    # for rather than batched.
     def count_queries(&block)
       counted = 0
 

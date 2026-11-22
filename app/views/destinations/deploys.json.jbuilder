@@ -5,12 +5,6 @@ end
 
 json.destination @destination.display_name
 
-# One entry per contiguous run of deploys at the same version, newest first — the
-# same grouping the History page renders. `chunk_while` only merges adjacent events,
-# so a version that was deployed, superseded, then redeployed appears more than
-# once. That is deliberate: those are separate deploys, and collapsing them would
-# hide a rollback or a retry. Each entry carries the most recent lifecycle event of
-# its own run.
 json.deploys @grouped_deploys do |deploy_group|
   deploy = deploy_group.first
 

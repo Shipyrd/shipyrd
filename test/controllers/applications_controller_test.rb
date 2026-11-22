@@ -55,7 +55,6 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal "abc1234", states.first.dig("latest_deploy", "version")
     end
 
-    # (application_id, name) is not a unique index, so two rows can share a name.
     test "collapses destinations that share a name" do
       create(:destination, application: @application, name: "production")
       create(:destination, application: @application, name: "production")
@@ -92,9 +91,6 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal @user.display_name, by_name["staging"]["locked_by"]
     end
 
-    # `destination_states` renders the deploy state of every destination of every
-    # application, and the index is not paginated. The state is batch-loaded, so
-    # the query count must not grow with the number of destinations.
     test "does not query per destination" do
       headers = {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
       add_destination("production")

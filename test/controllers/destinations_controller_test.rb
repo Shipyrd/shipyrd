@@ -165,14 +165,11 @@ class DestinationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal "production", body["destination"]
       assert_equal ["bbb222", "aaa111"], body["deploys"].pluck("version")
 
-      # A version collapses to its most recent lifecycle event.
       assert_equal "post-deploy", body["deploys"].last["status"]
       assert_equal 42, body["deploys"].last["runtime"]
       assert_equal "Latest work", body["deploys"].first["commit_message"]
     end
 
-    # chunk_while only merges adjacent events, so a redeploy of an earlier version
-    # is its own entry. Collapsing by version would hide the rollback.
     test "reports a redeployed version as a separate entry" do
       create(:deploy, application: @application, destination: @destination.name, version: "aaa111", status: "post-deploy", recorded_at: 3.minutes.ago)
       create(:deploy, application: @application, destination: @destination.name, version: "bbb222", status: "post-deploy", recorded_at: 2.minutes.ago)

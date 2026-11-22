@@ -1,4 +1,6 @@
 class DestinationsController < ApplicationController
+  DEFAULT_DEPLOYS_LIMIT = 30
+
   before_action :set_application
   before_action :set_destination
 
@@ -58,13 +60,10 @@ class DestinationsController < ApplicationController
 
   private
 
-  # 30 is what the dashboard has always shown and stays the default. The API accepts
-  # a smaller page so a client can ask for just the last few deploys; anything absent,
-  # non-numeric or out of range falls back rather than erroring.
   def deploys_limit
     limit = params[:limit].to_i
 
-    limit.positive? ? limit.clamp(1, 30) : 30
+    limit.positive? ? limit.clamp(1, DEFAULT_DEPLOYS_LIMIT) : DEFAULT_DEPLOYS_LIMIT
   end
 
   # Use callbacks to share common setup or constraints between actions.

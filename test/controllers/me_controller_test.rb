@@ -2,8 +2,6 @@ require "test_helper"
 require "helpers/basic_auth_helpers"
 
 class MeControllerTest < ActionDispatch::IntegrationTest
-  # The hosted app. Community Edition is covered separately below, where the
-  # subscription gate does not apply.
   setup do
     ENV["COMMUNITY_EDITION"] = "0"
 
@@ -64,8 +62,6 @@ class MeControllerTest < ActionDispatch::IntegrationTest
     assert_match "/billing/checkout", body["billing_url"]
   end
 
-  # A trial is not a subscription for MCP purposes, and the bare organization
-  # factory is on trial by virtue of its created_at.
   test "a trial does not satisfy the subscription gate" do
     user = create(:user)
     organization = create(:organization)

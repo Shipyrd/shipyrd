@@ -31,12 +31,6 @@ class ApplicationController < ActionController::Base
     @current_organization ||= requested_organization || session_organization
   end
 
-  # A token-authenticated request carries no session, so without this a user who
-  # belongs to more than one organization is always scoped to `organizations.first`
-  # with no way to say otherwise. Scoping the lookup to the user's own
-  # organizations and letting it raise means asking for one you cannot see is
-  # answered the same way as one that does not exist — a 404 via
-  # `handle_not_found`, not a silent fallback to the wrong organization.
   def requested_organization
     return nil if @current_api_user.blank?
     return nil if params[:organization_id].blank?
@@ -99,11 +93,6 @@ class ApplicationController < ActionController::Base
     TOKEN_SCHEME.match?(request.authorization.to_s)
   end
 
-  # Parsed here rather than with `authenticate_with_http_token` because Rails
-  # matches /^(Token|Bearer)\s+/ — case-sensitive. A lowercase `bearer <token>`
-  # satisfied the old /^bearer/i guard but never parsed, so the block never ran,
-  # nothing rendered, and the request continued unauthenticated. RFC 7235 makes
-  # the scheme case-insensitive, so accept either casing and reject an empty token.
   def bearer_token
     request.authorization.to_s.sub(TOKEN_SCHEME, "").strip.delete_prefix('"').delete_suffix('"')
   end

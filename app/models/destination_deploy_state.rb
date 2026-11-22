@@ -1,18 +1,7 @@
-# Loads the deploy records a destination row reads — the latest deploy, the
-# latest post-deploy behind `on_deck_url`, and the post-deploy before it behind
-# `compare_url` — for a whole collection of destinations at once.
-#
-# Rendered a destination at a time those are four queries each, and they are
-# invisible to Bullet: `Destination#latest_deploy` and friends are scoped
-# `deploys.where(...)` calls rather than association reads, so nothing warns as
-# the count grows. Both the dashboard index and the applications JSON index
-# render every destination of every application, so the cost grew with the
-# number of destinations. This takes four queries no matter how many there are.
 class DestinationDeployState
   COMMANDS = %w[deploy setup].freeze
   POST_DEPLOY = "post-deploy".freeze
 
-  # Returns the destinations given, with their deploy state filled in.
   def self.preload(destinations)
     new(destinations.to_a).preload
   end
@@ -37,17 +26,11 @@ class DestinationDeployState
 
   private
 
-  # `Deploy#compare_url` reads `application.repository_url`. The application is
-  # already in hand, so hand it over rather than letting each deploy load its
-  # own — and rather than eager loading an association most of these deploys
-  # never read, which Bullet would flag as unused.
   def attach(deploy, destination)
     deploy.application = destination.application if deploy
     deploy
   end
 
-  # What `Deploy#previous_deploy` resolves to for the destination's latest
-  # deploy: the newest post-deploy that is not the deploy itself.
   def preceding_post_deploy_for(deploy)
     key = [deploy.application_id, deploy.destination]
     newest = latest_post_deploy_ids[key]
@@ -79,8 +62,6 @@ class DestinationDeployState
     end
   end
 
-  # `.last` on an unordered relation is the highest id, which is what
-  # `Destination#latest_deploy` and `Deploy#previous_deploy` both select.
   def group_newest(scope)
     scope.group(:application_id, :destination).maximum(:id)
   end

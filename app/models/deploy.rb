@@ -48,8 +48,6 @@ class Deploy < ApplicationRecord
     )
   end
 
-  # Memoized because `compare_url` reads it twice, and assignable so
-  # DestinationDeployState can batch-load it for a collection of destinations.
   attr_writer :previous_deploy
 
   def previous_deploy
