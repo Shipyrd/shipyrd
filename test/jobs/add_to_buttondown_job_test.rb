@@ -34,7 +34,7 @@ class AddToButtondownJobTest < ActiveSupport::TestCase
         .with(headers: {
           "Authorization" => "Token buttondown-test-key",
           "X-Buttondown-Collision-Behavior" => "add",
-          "X-API-Version" => Buttondown::API_VERSION
+          "X-API-Version" => Buttondown::Client::API_VERSION
         })
         .to_return(status: 201)
 
@@ -47,9 +47,13 @@ class AddToButtondownJobTest < ActiveSupport::TestCase
       user = create(:user, email: "rejected@example.com")
 
       stub_request(:post, "https://api.buttondown.com/v1/subscribers")
-        .to_return(status: 400)
+        .to_return(
+          status: 400,
+          body: {code: "invalid_email", detail: "Enter a valid email address."}.to_json,
+          headers: {"Content-Type" => "application/json"}
+        )
 
-      assert_raises(Faraday::BadRequestError) do
+      assert_raises(Buttondown::BadRequestError) do
         AddToButtondownJob.perform_now(user.id)
       end
     end
