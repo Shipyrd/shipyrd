@@ -6,11 +6,7 @@ json.display_name application.display_name
 # "what's deployed where" in one request instead of one call per destination.
 json.destinations application.destination_names
 
-# `.order(:name)` rather than the association itself on purpose: a scoped call
-# bypasses Bullet's N+1 tracking, the same way `destinations.latest` does in the
-# HTML views. uniq(&:name) because (application_id, name) is not a unique index —
-# `destination_names` dedupes with group(:name) for the same reason.
-# includes(:locker) because `locked_by` reads it for every destination, and Bullet
-# raises on that N+1 as soon as an application has two of them.
-json.destination_states application.destinations.order(:name).includes(:locker).uniq(&:name),
+# `destinations_by_name` batch-loads each destination's deploy state, so the
+# whole index costs a fixed number of queries rather than four per destination.
+json.destination_states application.destinations_by_name,
   partial: "destinations/destination", as: :destination

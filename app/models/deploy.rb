@@ -48,8 +48,14 @@ class Deploy < ApplicationRecord
     )
   end
 
+  # Memoized because `compare_url` reads it twice, and assignable so
+  # DestinationDeployState can batch-load it for a collection of destinations.
+  attr_writer :previous_deploy
+
   def previous_deploy
-    application.deploys.where(
+    return @previous_deploy if defined?(@previous_deploy)
+
+    @previous_deploy = application.deploys.where(
       destination: destination,
       command: [:deploy, :setup],
       status: "post-deploy"

@@ -71,15 +71,24 @@ class Destination < ApplicationRecord
     "#{application.repository_url}/compare/#{latest_deployed_sha}...#{branch}"
   end
 
+  # Both readers memoize so that a row rendering its deploy state asks once,
+  # and both are assignable so DestinationDeployState can batch-load a whole
+  # collection of destinations up front.
+  attr_writer :latest_deploy, :latest_post_deploy
+
   def latest_deploy
-    deploys.where(
+    return @latest_deploy if defined?(@latest_deploy)
+
+    @latest_deploy = deploys.where(
       destination: name,
       command: [:deploy, :setup]
     ).last
   end
 
   def latest_post_deploy
-    deploys.where(
+    return @latest_post_deploy if defined?(@latest_post_deploy)
+
+    @latest_post_deploy = deploys.where(
       destination: name,
       command: [:deploy, :setup],
       status: "post-deploy"

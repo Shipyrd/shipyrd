@@ -91,6 +91,31 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
       assert by_name["staging"]["locked"]
       assert_equal @user.display_name, by_name["staging"]["locked_by"]
     end
+
+    # `destination_states` renders the deploy state of every destination of every
+    # application, and the index is not paginated. The state is batch-loaded, so
+    # the query count must not grow with the number of destinations.
+    test "does not query per destination" do
+      headers = {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
+      add_destination("production")
+
+      one_destination = count_queries { get applications_url, headers: headers }
+
+      %w[staging canary demo].each { |name| add_destination(name) }
+
+      four_destinations = count_queries { get applications_url, headers: headers }
+
+      assert_response :ok
+      assert_equal 4, JSON.parse(response.body).first["destination_states"].length
+      assert_equal one_destination, four_destinations,
+        "destination deploy state should be batch-loaded, not queried per destination"
+    end
+
+    def add_destination(name)
+      create(:destination, application: @application, name: name, branch: "main")
+      create(:deploy, application: @application, destination: name, status: "post-deploy", version: "aaa#{name}")
+      create(:deploy, application: @application, destination: name, status: "post-deploy", version: "bbb#{name}")
+    end
   end
 
   describe "authenticated" do

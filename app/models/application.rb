@@ -43,6 +43,22 @@ class Application < ApplicationRecord
     destinations.group(:name).pluck(:name)
   end
 
+  # Newest first, the dashboard's order. No `includes(:locker)` here: the
+  # dashboard only names the locker of a destination that is locked, so eager
+  # loading it is wasted on most rows and Bullet flags it as unused.
+  def destinations_by_recency
+    DestinationDeployState.preload(destinations.latest)
+  end
+
+  # One per name, alphabetical, the API's order. (application_id, name) is not a
+  # unique index, so two rows can share a name — `destination_names` dedupes
+  # with group(:name) for the same reason. `includes(:locker)` because the JSON
+  # reports `locked_by` for every destination, and Bullet raises on that N+1 as
+  # soon as an application has two of them.
+  def destinations_by_name
+    DestinationDeployState.preload(destinations.order(:name).includes(:locker).uniq(&:name))
+  end
+
   def display_name
     name.presence || slug
   end
