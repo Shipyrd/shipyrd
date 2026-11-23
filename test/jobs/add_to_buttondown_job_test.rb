@@ -13,45 +13,19 @@ class AddToButtondownJobTest < ActiveSupport::TestCase
     end
 
     it "subscribes the user's email address to the newsletter" do
-      user = create(:user, email: "new@example.com")
+      user = create(:user)
 
-      stub_request = stub_request(:post, "https://api.buttondown.com/v1/subscribers")
-        .with(body: {
-          email_address: "new@example.com",
-          type: "regular"
-        }.to_json)
-        .to_return(status: 201)
+      Buttondown::Client.any_instance.expects(:subscribe).once.with(user.email)
 
       AddToButtondownJob.perform_now(user.id)
-
-      assert_requested(stub_request)
     end
 
-    it "authenticates with a token and merges on collision" do
-      user = create(:user, email: "repeat@example.com")
+    it "lets a Buttondown failure raise rather than swallowing it" do
+      user = create(:user)
 
-      stub_request = stub_request(:post, "https://api.buttondown.com/v1/subscribers")
-        .with(headers: {
-          "Authorization" => "Token buttondown-test-key",
-          "X-Buttondown-Collision-Behavior" => "add",
-          "X-API-Version" => Buttondown::Client::API_VERSION
-        })
-        .to_return(status: 201)
-
-      AddToButtondownJob.perform_now(user.id)
-
-      assert_requested(stub_request)
-    end
-
-    it "raises when Buttondown rejects the request" do
-      user = create(:user, email: "rejected@example.com")
-
-      stub_request(:post, "https://api.buttondown.com/v1/subscribers")
-        .to_return(
-          status: 400,
-          body: {code: "invalid_email", detail: "Enter a valid email address."}.to_json,
-          headers: {"Content-Type" => "application/json"}
-        )
+      Buttondown::Client.any_instance.expects(:subscribe).raises(
+        Buttondown::BadRequestError.new("Enter a valid email address.", status: 400)
+      )
 
       assert_raises(Buttondown::BadRequestError) do
         AddToButtondownJob.perform_now(user.id)

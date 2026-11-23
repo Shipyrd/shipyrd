@@ -33,7 +33,7 @@ gem "postmark-rails"
 gem "mjml-rails"
 gem "mrml"
 gem "stripe"
-gem "buttondown", "~> 0.1"
+gem "buttondown", "~> 0.1.1"
 
 # Jobs/Cable
 gem "mission_control-jobs"
