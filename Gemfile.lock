@@ -108,7 +108,7 @@ GEM
     bundler-audit (0.9.3)
       bundler (>= 1.2.0)
       thor (~> 1.0)
-    buttondown (0.1.1)
+    buttondown (0.3.0)
     capybara (3.40.0)
       addressable
       matrix
@@ -537,7 +537,7 @@ DEPENDENCIES
   brakeman
   bullet
   bundle-audit
-  buttondown (~> 0.1.1)
+  buttondown (~> 0.3.0)
   capybara
   debug
   dotenv
@@ -612,7 +612,7 @@ CHECKSUMS
   bundle-audit (0.2.0) sha256=cb499708f7fbc56d2d2e8bab09a1184f8f5b548bdbd628b757e5a1856874ca12
   bundler (4.1.0) sha256=d7b7a797b988e544a0677a9c6ed78146f2f63d05ae1af8bc7d9426cf88b46377
   bundler-audit (0.9.3) sha256=81c8766c71e47d0d28a0f98c7eed028539f21a6ea3cd8f685eb6f42333c9b4e9
-  buttondown (0.1.1) sha256=e2022e8133d61cffa22e5edcfb8ca92905e6151f6ce4aa896b83cca989074ef4
+  buttondown (0.3.0) sha256=f6e0ec25a42727d111d35d298760f23fb1b382e3f41846f7d5115ac75aad5997
   capybara (3.40.0) sha256=42dba720578ea1ca65fd7a41d163dd368502c191804558f6e0f71b391054aeef
   cgi (0.5.1) sha256=e93fcafc69b8a934fe1e6146121fa35430efa8b4a4047c4893764067036f18e9
   chartkick (5.2.1) sha256=2848d7de87189f30f28d077eb0bbdebc8a1f0f6f81de1ded95008fe564369949
