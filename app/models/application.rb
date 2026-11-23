@@ -43,6 +43,14 @@ class Application < ApplicationRecord
     destinations.group(:name).pluck(:name)
   end
 
+  def destinations_by_recency
+    DestinationDeployState.preload(destinations.latest)
+  end
+
+  def destinations_by_name
+    DestinationDeployState.preload(destinations.order(:name).includes(:locker).uniq(&:name))
+  end
+
   def display_name
     name.presence || slug
   end

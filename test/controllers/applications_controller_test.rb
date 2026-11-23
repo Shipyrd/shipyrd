@@ -33,6 +33,85 @@ class ApplicationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal @application.name, first_item["name"]
       assert_equal ["production"], first_item["destinations"]
     end
+
+    test "includes the slug and each destination's state" do
+      destination = create(:destination, application: @application, name: "production")
+      destination.lock!(@user)
+      create(:deploy, application: @application, destination: "production", status: "post-deploy", version: "abc1234")
+
+      get applications_url, headers: {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
+
+      assert_response :ok
+
+      first_item = JSON.parse(response.body).first
+      assert_equal @application.slug, first_item["slug"]
+      assert_equal @application.display_name, first_item["display_name"]
+
+      states = first_item["destination_states"]
+      assert_equal 1, states.length
+      assert_equal "production", states.first["name"]
+      assert states.first["locked"]
+      assert_equal @user.display_name, states.first["locked_by"]
+      assert_equal "abc1234", states.first.dig("latest_deploy", "version")
+    end
+
+    test "collapses destinations that share a name" do
+      create(:destination, application: @application, name: "production")
+      create(:destination, application: @application, name: "production")
+
+      get applications_url, headers: {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
+
+      assert_response :ok
+
+      first_item = JSON.parse(response.body).first
+      assert_equal ["production"], first_item["destination_states"].pluck("name")
+      assert_equal ["production"], first_item["destinations"]
+    end
+
+    test "reports several destinations, each with its own latest deploy" do
+      create(:destination, application: @application, name: "production")
+      staging = create(:destination, application: @application, name: "staging")
+      staging.lock!(@user)
+
+      create(:deploy, application: @application, destination: "production", status: "post-deploy", version: "prod111")
+      create(:deploy, application: @application, destination: "staging", status: "post-deploy", version: "stag222")
+
+      get applications_url, headers: {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
+
+      assert_response :ok
+
+      states = JSON.parse(response.body).first["destination_states"]
+      assert_equal ["production", "staging"], states.pluck("name")
+
+      by_name = states.to_h { |d| [d["name"], d] }
+      assert_equal "prod111", by_name.dig("production", "latest_deploy", "version")
+      assert_equal "stag222", by_name.dig("staging", "latest_deploy", "version")
+      refute by_name["production"]["locked"]
+      assert by_name["staging"]["locked"]
+      assert_equal @user.display_name, by_name["staging"]["locked_by"]
+    end
+
+    test "does not query per destination" do
+      headers = {Authorization: "Bearer #{@user.token}", Accept: "application/json"}
+      add_destination("production")
+
+      one_destination = count_queries { get applications_url, headers: headers }
+
+      %w[staging canary demo].each { |name| add_destination(name) }
+
+      four_destinations = count_queries { get applications_url, headers: headers }
+
+      assert_response :ok
+      assert_equal 4, JSON.parse(response.body).first["destination_states"].length
+      assert_equal one_destination, four_destinations,
+        "destination deploy state should be batch-loaded, not queried per destination"
+    end
+
+    def add_destination(name)
+      create(:destination, application: @application, name: name, branch: "main")
+      create(:deploy, application: @application, destination: name, status: "post-deploy", version: "aaa#{name}")
+      create(:deploy, application: @application, destination: name, status: "post-deploy", version: "bbb#{name}")
+    end
   end
 
   describe "authenticated" do

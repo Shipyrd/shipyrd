@@ -48,8 +48,12 @@ class Deploy < ApplicationRecord
     )
   end
 
+  attr_writer :previous_deploy
+
   def previous_deploy
-    application.deploys.where(
+    return @previous_deploy if defined?(@previous_deploy)
+
+    @previous_deploy = application.deploys.where(
       destination: destination,
       command: [:deploy, :setup],
       status: "post-deploy"

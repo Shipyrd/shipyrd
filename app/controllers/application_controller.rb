@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  TOKEN_SCHEME = /\A(?:token|bearer)\s+/i
+
   rate_limit to: 60, within: 1.minute
 
   before_action :authenticate
@@ -26,7 +28,18 @@ class ApplicationController < ActionController::Base
   def current_organization
     return nil unless current_user
 
-    @current_organization ||= if current_user.organizations.count == 1 || session[:organization_id].nil?
+    @current_organization ||= requested_organization || session_organization
+  end
+
+  def requested_organization
+    return nil if @current_api_user.blank?
+    return nil if params[:organization_id].blank?
+
+    current_user.organizations.find(params[:organization_id])
+  end
+
+  def session_organization
+    if current_user.organizations.count == 1 || session[:organization_id].nil?
       current_user.organizations.first
     else
       current_user.organizations.find_by(id: session[:organization_id])
@@ -56,14 +69,16 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate
-    if request.headers["Authorization"] && request.headers["Authorization"] =~ /^bearer/i
-      authenticate_with_http_token do |token, _options|
-        case controller_name
-        when "deploys"
-          authenticate_with_application_token(token)
-        else
-          authenticate_with_user_token(token)
-        end
+    if token_scheme?
+      token = bearer_token
+
+      return render json: {error: "Invalid token"}, status: :unauthorized if token.blank?
+
+      case controller_name
+      when "deploys"
+        authenticate_with_application_token(token)
+      else
+        authenticate_with_user_token(token)
       end
     elsif current_user.blank?
       if request.format.json?
@@ -72,6 +87,14 @@ class ApplicationController < ActionController::Base
         redirect_to main_app.new_session_url
       end
     end
+  end
+
+  def token_scheme?
+    TOKEN_SCHEME.match?(request.authorization.to_s)
+  end
+
+  def bearer_token
+    request.authorization.to_s.sub(TOKEN_SCHEME, "").strip.delete_prefix('"').delete_suffix('"')
   end
 
   def authenticate_with_application_token(token)

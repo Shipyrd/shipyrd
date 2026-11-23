@@ -30,7 +30,9 @@
     <% end %>
   </div>
 
-  <% if application.destinations.latest.empty? %>
+  <% destinations = application.destinations_by_recency %>
+
+  <% if destinations.empty? %>
     <div class="notification ">
       <p>
         <strong>Waiting for your first deploy...</strong>
@@ -41,6 +43,6 @@
       </p>
     </div>
   <% else %>
-    <%= render partial: "applications/destination", collection: application.destinations.latest %>
+    <%= render partial: "applications/destination", collection: destinations %>
   <% end %>
 </div>

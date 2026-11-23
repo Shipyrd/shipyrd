@@ -1,4 +1,6 @@
 class DestinationsController < ApplicationController
+  DEFAULT_DEPLOYS_LIMIT = 30
+
   before_action :set_application
   before_action :set_destination
 
@@ -19,7 +21,7 @@ class DestinationsController < ApplicationController
 
     @grouped_deploys = recent_deploys.chunk_while { |a, b|
       a.version == b.version
-    }.first(30)
+    }.first(deploys_limit)
   end
 
   # PATCH/PUT /destinations/1 or /destinations/1.json
@@ -57,6 +59,12 @@ class DestinationsController < ApplicationController
   end
 
   private
+
+  def deploys_limit
+    limit = params[:limit].to_i
+
+    limit.positive? ? limit.clamp(1, DEFAULT_DEPLOYS_LIMIT) : DEFAULT_DEPLOYS_LIMIT
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_application
