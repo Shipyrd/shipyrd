@@ -15,9 +15,26 @@ class AddToButtondownJobTest < ActiveSupport::TestCase
     it "subscribes the user's email address to the newsletter" do
       user = create(:user)
 
-      Buttondown::Client.any_instance.expects(:subscribe).once.with(user.email)
+      Buttondown::Client.any_instance.expects(:subscribe).once.with(user.email, collision_behavior: "add")
 
       AddToButtondownJob.perform_now(user.id)
+    end
+
+    it "passes the request IP through so Buttondown sees the reader's address" do
+      user = create(:user)
+
+      Buttondown::Client.any_instance.expects(:subscribe).once
+        .with(user.email, collision_behavior: "add", ip_address: "203.0.113.42")
+
+      AddToButtondownJob.perform_now(user.id, ip_address: "203.0.113.42")
+    end
+
+    it "omits a blank IP rather than claiming an empty address" do
+      user = create(:user)
+
+      Buttondown::Client.any_instance.expects(:subscribe).once.with(user.email, collision_behavior: "add")
+
+      AddToButtondownJob.perform_now(user.id, ip_address: "")
     end
 
     it "lets a Buttondown failure raise rather than swallowing it" do

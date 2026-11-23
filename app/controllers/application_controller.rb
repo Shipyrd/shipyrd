@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   rate_limit to: 60, within: 1.minute
 
+  before_action :set_current_request_ip
   before_action :authenticate
   before_action :check_email_verification
   skip_before_action :verify_authenticity_token, if: :json_request?
@@ -46,6 +47,10 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def set_current_request_ip
+    Current.request_ip = request.remote_ip
+  end
 
   def check_email_verification
     return unless email_requires_verification?

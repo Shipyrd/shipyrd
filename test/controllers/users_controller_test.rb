@@ -32,6 +32,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
         assert user.organizations.last.admin?(user)
       end
 
+      test "enqueues the Buttondown subscribe with the signup request's IP" do
+        user = build(:user)
+
+        post users_url,
+          params: {user: {organization_name: "Initech", email: user.email, name: user.name, password: "secretsecret"}},
+          headers: {"REMOTE_ADDR" => "203.0.113.42"}
+
+        assert_enqueued_with(job: AddToButtondownJob, args: [User.last.id, {ip_address: "203.0.113.42"}])
+      end
+
       describe "via invite link" do
         setup do
           @organization = create(:organization)

@@ -99,7 +99,7 @@ class User < ApplicationRecord
 
   def enqueue_add_to_buttondown
     return if ENV["COMMUNITY_EDITION"] != "0"
-    AddToButtondownJob.perform_later(id)
+    AddToButtondownJob.perform_later(id, ip_address: Current.request_ip)
   end
 
   private
