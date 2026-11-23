@@ -15,7 +15,7 @@ class AddToButtondownJobTest < ActiveSupport::TestCase
     it "subscribes the user's email address to the newsletter" do
       user = create(:user)
 
-      Buttondown::Client.any_instance.expects(:subscribe).once.with(user.email)
+      Buttondown::Client.any_instance.expects(:subscribe).once.with(user.email, collision_behavior: "add")
 
       AddToButtondownJob.perform_now(user.id)
     end
